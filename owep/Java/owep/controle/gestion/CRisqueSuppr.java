@@ -1,6 +1,7 @@
 package owep.controle.gestion ;
 
 
+import java.util.ResourceBundle;
 import javax.servlet.ServletException ;
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
@@ -80,13 +81,17 @@ public class CRisqueSuppr extends CControleurBase
    */
   public String traiter () throws ServletException
   {
+    ResourceBundle lMessages = ResourceBundle.getBundle("MessagesBundle") ;
+    
     // Supprime le problème.
     supprimer (mRisque) ;
     commit () ;
     close () ;
     
     // Affiche la page de visualisation de la liste des problèmes.
-    getRequete ().setAttribute (CConstante.PAR_MESSAGE, "Le risque \"" + mRisque.getNom () + "\" a été supprimé.") ;
+    String lMessage = lMessages.getString ("risqueModifMsgSuppression1") + mRisque.getNom () + lMessages.getString ("risqueModifMsgSuppression2") ;
+    getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
+    
     return "/Gestion/ListeRisqueVisu" ;
   }
 }

@@ -9,12 +9,8 @@
 
 
 <%
-  // Récuperation de la session.
-  HttpSession httpSession = request.getSession(true);
-  Session lSession = (Session) httpSession.getAttribute("SESSION");
-  
   //Récupération du ressource bundle.
-  ResourceBundle messages = lSession.getMessages () ;
+  ResourceBundle messages = ResourceBundle.getBundle ("MessagesBundle") ;
   
   // Récupération des paramètres.
   MProjet pProjet = (MProjet) request.getAttribute (CConstante.PAR_PROJET) ;

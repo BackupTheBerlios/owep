@@ -10,12 +10,8 @@
 
 
 <%
-  // Récuperation de la session.
-  HttpSession httpSession = request.getSession(true);
-  Session lSession = (Session) httpSession.getAttribute("SESSION");
-  
   //Récupération du ressource bundle.
-  ResourceBundle messages = lSession.getMessages () ;
+  ResourceBundle messages = ResourceBundle.getBundle ("MessagesBundle") ;
   
   // Récupération des paramètres.
   ArrayList pListeProblemes = (ArrayList) request.getAttribute (CConstante.PAR_LISTEPROBLEMES) ;

@@ -1,6 +1,7 @@
 package owep.controle.gestion ;
 
 
+import java.util.ResourceBundle ;
 import java.util.StringTokenizer;
 import javax.servlet.ServletException ;
 import owep.controle.CConstante ;
@@ -159,6 +160,8 @@ public class CProblemeModif extends CControleurBase
     }
     else
     {
+      ResourceBundle lMessages = ResourceBundle.getBundle("MessagesBundle") ;
+      
       // Si l'utilisateur valide les données, alors on les enregistre dans la base.
       String lMessage = "" ;
       if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
@@ -167,11 +170,11 @@ public class CProblemeModif extends CControleurBase
         if (mProbleme.getId () == 0)
         {
           creer (mProbleme) ;
-          lMessage = "Le problème \"" + mProbleme.getNom () + "\" a été créé." ;
+          lMessage = lMessages.getString ("problemeModifMsgCreation1") + mProbleme.getNom () + lMessages.getString ("problemeModifMsgCreation2") ;
         }
         else
         {
-          lMessage = "Le problème \"" + mProbleme.getNom () + "\" a été mis à jour." ;
+          lMessage = lMessages.getString ("problemeModifMsgModification1") + mProbleme.getNom () + lMessages.getString ("problemeModifMsgModification2") ;
         }
       }
       // Valide les données.

@@ -1,6 +1,7 @@
 package owep.controle.gestion ;
 
 
+import java.util.ResourceBundle;
 import javax.servlet.ServletException ;
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
@@ -125,15 +126,17 @@ public class CRisqueModif extends CControleurBase
       String lMessage = "" ;
       if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
       {
+        ResourceBundle lMessages = ResourceBundle.getBundle("MessagesBundle") ;
+        
         // Crée l'objet ou le met à jour s'il existe déjà.
         if (mRisque.getId () == 0)
         {
           creer (mRisque) ;
-          lMessage = "Le risque \"" + mRisque.getNom () + "\" a été créé." ;
+          lMessage = lMessages.getString ("risqueModifMsgCreation1") + mRisque.getNom () + lMessages.getString ("risqueModifMsgCreation2") ;
         }
         else
         {
-          lMessage = "Le risque \"" + mRisque.getNom () + "\" a été mis à jour." ;
+          lMessage = lMessages.getString ("risqueModifMsgModification1") + mRisque.getNom () + lMessages.getString ("risqueModifMsgModification2") ;
         }
       }
       // Valide les données.

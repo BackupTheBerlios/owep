@@ -1,6 +1,7 @@
 package owep.controle.gestion ;
 
 
+import java.util.ResourceBundle;
 import javax.servlet.ServletException ;
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
@@ -80,13 +81,17 @@ public class CProblemeSuppr extends CControleurBase
    */
   public String traiter () throws ServletException
   {
+    ResourceBundle lMessages = ResourceBundle.getBundle("MessagesBundle") ;
+    
     // Supprime le problème.
     supprimer (mProbleme) ;
     commit () ;
     close () ;
     
     // Affiche la page de visualisation de la liste des problèmes.
-    getRequete ().setAttribute (CConstante.PAR_MESSAGE, "Le problème \"" + mProbleme.getNom () + "\" a été supprimé.") ;
+    String lMessage = lMessages.getString ("problemeModifMsgSuppression1") + mProbleme.getNom () + lMessages.getString ("problemeModifMsgSuppression2") ;
+    getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
+    
     return "/Gestion/ListeProblemeVisu" ;
   }
 }
