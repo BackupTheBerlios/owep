@@ -7,14 +7,13 @@
 package owep.controle;
 
 
-import java.util.Date;
+import javax.servlet.ServletException;
 
-import javax.servlet.ServletException ;
+import org.exolab.castor.jdo.OQLQuery;
+import org.exolab.castor.jdo.PersistenceException;
+import org.exolab.castor.jdo.QueryResults;
 
-import owep.modele.execution.MActivite;
-import owep.modele.execution.MArtefact;
 import owep.modele.execution.MCollaborateur;
-import owep.modele.execution.MTache;
 
 
 /**
@@ -28,13 +27,10 @@ public class CListeTacheVisu extends CControleurBase
    */
   public String traiter () throws ServletException
   {
-    MCollaborateur lCollaborateur ;        // Collaborateur ayant ouvert la session.
+    MCollaborateur lCollaborateur=null ;        // Collaborateur ayant ouvert la session.
     //int lProjetId ;                        // Identifiant du projet consulté. 
     int lIterationNum ;                    // Numéro d'itération dont on liste les tâches.
-    
-    // Récupération des paramètres de la requête.
-    // lCollaborateur = (MCollaborateur) getRequete ().getSession ().getAttribute ("pCollaborateur") ;
-    // lProjetId      = Integer.parseInt ((String) getRequete ().getSession ().getAttribute ("pProjetId")) ;
+       
     if (getRequete ().getParameter ("pIterationNum") == null)
     {
       // requete recup it en cours
@@ -44,23 +40,39 @@ public class CListeTacheVisu extends CControleurBase
     {
       lIterationNum = Integer.parseInt (getRequete ().getParameter ("pIterationNum")) ;
     }
-    lCollaborateur = new MCollaborateur(1, "prenom1", "nom1", "adresse1", "tel1", "port1", "email1", "comm1");
-    MTache lTache1 = new MTache(1, "tache1", "desc1", 1.0, new Date(), new Date(), new MActivite ());
-    MTache lTache2 = new MTache(2, "tache2", "desc2", 2.0, new Date(), new Date(), new MActivite ());
-    MArtefact lArtefact1 = new MArtefact(1, "artefact1", "description1");
-    MArtefact lArtefact2 = new MArtefact(2, "artefact2", "description2");
-    MArtefact lArtefact3 = new MArtefact(3, "artefact3", "description3");
-    
-    lTache1.ajouterArtefactEntree(lArtefact1);
-    lTache1.ajouterArtefactSortie(lArtefact2);
-    
-    lTache2.ajouterArtefactSortie(lArtefact1);
-    lTache2.ajouterArtefactSortie(lArtefact3);
-    
-    lCollaborateur.ajouterTache(lTache1);
-    lCollaborateur.ajouterTache(lTache2);
-    
     lIterationNum = 1;
+
+    try
+    {
+      connexionBD();
+      OQLQuery     oql;
+      QueryResults results;
+      oql = getBaseDonnees().getOQLQuery( "select C from owep.modele.execution.MCollaborateur C where mId=$1" );
+      oql.bind (1) ;
+      // Retrieve results and print each one
+      results = oql.execute () ;  
+      while (results.hasMore ())
+      {
+        lCollaborateur = (MCollaborateur) results.next () ;       
+      }
+    }
+    catch (Exception eException)
+    {
+      // TODO Auto-generated catch block
+      eException.printStackTrace();
+    }
+    finally
+    {
+      try
+      {
+        deconnexionBD();
+      }
+      catch (PersistenceException eException)
+      {
+        // TODO Auto-generated catch block
+        eException.printStackTrace();
+      }
+    }
     
     // Appelle la JSP d'affichage.
     getRequete ().setAttribute ("pCollaborateur", lCollaborateur) ;

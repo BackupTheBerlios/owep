@@ -14,6 +14,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.exolab.castor.jdo.Database;
+import org.exolab.castor.jdo.DatabaseNotFoundException;
+import org.exolab.castor.jdo.JDO;
+import org.exolab.castor.jdo.PersistenceException;
+import org.exolab.castor.mapping.MappingException;
+
 /**
  * @author Administrateur
  *
@@ -24,6 +30,9 @@ public abstract class CControleurBase extends HttpServlet
 {
   private HttpServletRequest  mRequete ;
   private HttpServletResponse mReponse ;
+  private Database mBaseDonnees ;
+  public static final String CONFIGURATION_DATABASE = "D:\\Projet\\OWEP\\Source\\WEB-INF\\Database.xml" ;
+  public static final String NOM_DATABASE = "owep" ;
   
   /**
    * 
@@ -84,5 +93,30 @@ public abstract class CControleurBase extends HttpServlet
   public HttpServletRequest getRequete ()
   {
     return mRequete ;
+  }
+  
+  public void connexionBD () throws MappingException, DatabaseNotFoundException, PersistenceException
+  {
+    JDO lJdo ; 
+   
+    JDO.loadConfiguration (CONFIGURATION_DATABASE) ;
+    lJdo = new JDO (NOM_DATABASE) ;
+
+    mBaseDonnees = lJdo.getDatabase () ;
+    mBaseDonnees.begin () ;  
+  }
+  
+  public void deconnexionBD () throws PersistenceException
+  {
+    mBaseDonnees.commit();
+    mBaseDonnees.close(); 
+  }
+  
+  /**
+   * @return Retourne la valeur de l'attribut baseDonnees.
+   */
+  public Database getBaseDonnees ()
+  {
+    return mBaseDonnees ;
   }
 }

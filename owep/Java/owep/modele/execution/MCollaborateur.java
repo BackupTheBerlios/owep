@@ -24,7 +24,7 @@ public class MCollaborateur
   private String    mPortable ;
   private String    mEmail ;
   private String    mCommentaires ;
-  private ArrayList mListesTaches ;
+  private ArrayList mListeTaches ;
 
 
   /**
@@ -32,7 +32,7 @@ public class MCollaborateur
    */
   public MCollaborateur ()
   {
-    mListesTaches = new ArrayList () ;
+    mListeTaches = new ArrayList () ;
   }
 
   public MCollaborateur (int pId, String pPrenom, String pNom, String pAdresse, String pTelephone,
@@ -46,22 +46,22 @@ public class MCollaborateur
     mPortable = pPortable ;
     mEmail = pEmail ;
     mCommentaires = pCommentaires ;
-    mListesTaches = new ArrayList () ;
+    mListeTaches = new ArrayList () ;
   }
 
   public void ajouterTache (MTache lTache)
   {
-    mListesTaches.add(lTache) ;
+    mListeTaches.add(lTache) ;
   }
 
   public MTache getTache (int pIndice)
   {
-    return (MTache) mListesTaches.get(pIndice) ;
+    return (MTache) mListeTaches.get(pIndice) ;
   }
 
   public int getNbTache ()
   {
-    return mListesTaches.size() ;
+    return mListeTaches.size() ;
   }
 
   /**
@@ -113,19 +113,19 @@ public class MCollaborateur
   }
 
   /**
-   * @return Returns the mListesTaches.
+   * @return Returns the mListeTaches.
    */
-  public ArrayList getListesTaches ()
+  public ArrayList getListeTaches ()
   {
-    return mListesTaches ;
+    return mListeTaches ;
   }
 
   /**
-   * @param listesTaches The mListesTaches to set.
+   * @param ListeTaches The mListeTaches to set.
    */
-  public void setListesTaches (ArrayList listesTaches)
+  public void setListeTaches (ArrayList ListeTaches)
   {
-    mListesTaches = listesTaches ;
+    mListeTaches = ListeTaches ;
   }
 
   /**

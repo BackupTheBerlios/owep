@@ -16,6 +16,7 @@ public class MArtefact
   private int    mId ;
   private String mNom ;
   private String mDescription ;
+  private MTache mTache ;
 
 
   /**
@@ -78,5 +79,19 @@ public class MArtefact
   public void setNom (String pNom)
   {
     mNom = pNom ;
+  }
+  /**
+   * @return Retourne la valeur de l'attribut tache.
+   */
+  public MTache getTache ()
+  {
+    return mTache ;
+  }
+  /**
+   * @param initialse tache avec pTache.
+   */
+  public void setTache (MTache pTache)
+  {
+    mTache = pTache ;
   }
 }

@@ -32,9 +32,10 @@ public class MTache
   private Date            mDateDebutReelle ;
   private Date            mDateFinPrevue ;
   private Date            mDateFinReelle ;
-  private ArrayList       mListArtefactEntree ;
-  private ArrayList       mListArtefactSortie ;
+  private ArrayList       mListeArtefactEntree ;
+  private ArrayList       mListeArtefactSortie ;
   private MActivite       mActivite ;
+  private MCollaborateur  mCollaborateur ;
 
 
   /**
@@ -42,8 +43,8 @@ public class MTache
    */
   public MTache ()
   {
-    mListArtefactEntree = new ArrayList () ;
-    mListArtefactSortie = new ArrayList () ;
+    mListeArtefactEntree = new ArrayList () ;
+    mListeArtefactSortie = new ArrayList () ;
   }
 
   public MTache (int pId, String pNom, String pDescription, double pChargeInitiale,
@@ -56,8 +57,8 @@ public class MTache
     mDateDebutPrevue = pDateDebutPrevue ;
     mDateFinPrevue = pDateFinPrevue ;
     mActivite = pActivite ;
-    mListArtefactEntree = new ArrayList () ;
-    mListArtefactSortie = new ArrayList () ;
+    mListeArtefactEntree = new ArrayList () ;
+    mListeArtefactSortie = new ArrayList () ;
   }
 
   public MTache (int pId, String pNom, String pDescription, double pChargeInitiale,
@@ -75,39 +76,39 @@ public class MTache
     mDateFinPrevue = pDateFinPrevue ;
     mDateFinReelle = pDateFinReelle ;
     mActivite = pActivite ;
-    mListArtefactEntree = new ArrayList () ;
-    mListArtefactSortie = new ArrayList () ;
+    mListeArtefactEntree = new ArrayList () ;
+    mListeArtefactSortie = new ArrayList () ;
   }
 
 
   public void ajouterArtefactEntree (MArtefact pArtefactEntree)
   {
-    mListArtefactEntree.add(pArtefactEntree) ;
+    mListeArtefactEntree.add(pArtefactEntree) ;
   }
 
   public MArtefact getArtefactEntree (int pIndice)
   {
-    return (MArtefact) mListArtefactEntree.get(pIndice) ;
+    return (MArtefact) mListeArtefactEntree.get(pIndice) ;
   }
 
   public int getNbArtefactEntree ()
   {
-    return mListArtefactEntree.size() ;
+    return mListeArtefactEntree.size() ;
   }
 
   public void ajouterArtefactSortie (MArtefact pArtefactSortie)
   {
-    mListArtefactSortie.add (pArtefactSortie) ;
+    mListeArtefactSortie.add (pArtefactSortie) ;
   }
 
   public MArtefact getArtefactSortie (int pIndice)
   {
-    return (MArtefact) mListArtefactSortie.get(pIndice) ;
+    return (MArtefact) mListeArtefactSortie.get(pIndice) ;
   }
 
   public int getNbArtefactSortie ()
   {
-    return mListArtefactSortie.size() ;
+    return mListeArtefactSortie.size() ;
   }
 
   public int getEtat ()
@@ -314,35 +315,35 @@ public class MTache
   }
 
   /**
-   * @return Returns the mListArtefactEntree.
+   * @return Returns the mListeArtefactEntree.
    */
-  public ArrayList getListArtefactEntree ()
+  public ArrayList getListeArtefactEntree ()
   {
-    return mListArtefactEntree ;
+    return mListeArtefactEntree ;
   }
 
   /**
-   * @param listArtefactEntree The mListArtefactEntree to set.
+   * @param ListeArtefactEntree The mListeArtefactEntree to set.
    */
-  public void setListArtefactEntree (ArrayList listArtefactEntree)
+  public void setListeArtefactEntree (ArrayList ListeArtefactEntree)
   {
-    mListArtefactEntree = listArtefactEntree ;
+    mListeArtefactEntree = ListeArtefactEntree ;
   }
 
   /**
-   * @return Returns the mListArtefactSortie.
+   * @return Returns the mListeArtefactSortie.
    */
-  public ArrayList getListArtefactSortie ()
+  public ArrayList getListeArtefactSortie ()
   {
-    return mListArtefactSortie ;
+    return mListeArtefactSortie ;
   }
 
   /**
-   * @param listArtefactSortie The mListArtefactSortie to set.
+   * @param ListeArtefactSortie The mListeArtefactSortie to set.
    */
-  public void setListArtefactSortie (ArrayList listArtefactSortie)
+  public void setListeArtefactSortie (ArrayList ListeArtefactSortie)
   {
-    mListArtefactSortie = listArtefactSortie ;
+    mListeArtefactSortie = ListeArtefactSortie ;
   }
 
   /**
@@ -359,5 +360,19 @@ public class MTache
   public void setActivite (MActivite pActivite)
   {
     mActivite = pActivite ;
+  }
+  /**
+   * @return Retourne la valeur de l'attribut collaborateur.
+   */
+  public MCollaborateur getCollaborateur ()
+  {
+    return mCollaborateur ;
+  }
+  /**
+   * @param initialse collaborateur avec pCollaborateur.
+   */
+  public void setCollaborateur (MCollaborateur pCollaborateur)
+  {
+    mCollaborateur = pCollaborateur ;
   }
 }

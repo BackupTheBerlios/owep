@@ -1,7 +1,3 @@
-<%@ page import="owep.modele.execution.MCollaborateur" %> 
-
-<jsp:useBean id="pCollaborateur" class="owep.modele.execution.MCollaborateur" scope="page"/>
-
 <table class="regionMenu" style="width : 100%; height : 100%" cellpadding="0" cellspacing="0">
 <tbody>
   <!-- menu Avancement -->
@@ -15,7 +11,7 @@
   <tr>
     <td class="caseMenuConnexion">
       <a class="menuConnexion" href="">
-        Déconnexion (<%= ((MCollaborateur) request.getAttribute ("pCollaborateur")).getPrenom () %>)
+        Déconnexion 
       </a>
     </td>
   </tr>
