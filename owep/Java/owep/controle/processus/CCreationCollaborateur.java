@@ -216,16 +216,24 @@ public class CCreationCollaborateur extends CControleurBase
                 lResultat = lRequete.execute();
                 lCollaborateur = (MCollaborateur) lResultat.next();
                 
+                // Récupération projet
+                lRequete = getBaseDonnees().getOQLQuery("select PROJET from owep.modele.execution.MProjet PROJET where mId=$1");
+                lRequete.bind(getSession().getProjet().getId());
+                lResultat = lRequete.execute();
+                MProjet lProjetOuvert = (MProjet) lResultat.next();
+                
                 // Ajout du collaborateur au projet
                 ArrayList listeProjet = lCollaborateur.getListeProjets();
                 Iterator itProjet = listeProjet.iterator();
                 boolean b = false;
                 while(itProjet.hasNext() && !b){
                   MProjet lProjet = (MProjet) itProjet.next();
-                  if(lProjet.getId() == getSession().getProjet().getId()){
+                  if(lProjet.getId() == lProjetOuvert.getId()){
                     b = true;
-                    lCollaborateur.addProjet(lProjet);
                   }
+                }
+                if(!b){
+                    lCollaborateur.addProjet(lProjetOuvert);
                 }
                 
                 // Ajout du role au collaborateur
