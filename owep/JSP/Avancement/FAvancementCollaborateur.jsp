@@ -32,7 +32,7 @@
     </td>
     <td class="caseNiveau1" rowspan="2">
       <a href="#" class="niveau1" onmouseover="tooltipOn(this, event,
-       '<b>Créée</b> si le collaborateur ne peut lancé la tâche du fait d\'une tâche tierce non terminé ou démarré.<br/>' +
+       '<b>Créée</b> si le collaborateur ne peut lancer la tâche du fait d\'une tâche tierce non terminé ou démarré.<br/>' +
        '<b>Non démarré</b> si le collaborateur n\'a pas entamé la tâche.<br/>' +
        '<b>En cours</b> si le collaborateur travaille sur la tâche.<br/>' +
        '<b>Suspendu</b> si le collaborateur a entamé la tâche mais n\'y travaille pas actuellement dessus.<br/>' +
@@ -144,8 +144,8 @@
 
 <!-- Aide en ligne -->
 <script type="text/javascript" language="JavaScript">
-pCodeAide  = "La page de <b> Suivi d'avancement des collaborateurs</b> vous permet de visualiser le travail qu'a à réaliser chaque collaborateur pour les itérations passés, futures ou en cours." ;
-pCodeAide  = " Si vous avez choisi <b>l'itération en cours</b>, vous visualiserez la tâche qu'est en train d'effectuer chaque <b>collaborateur</b>" ;
+pCodeAide  = "La page de <b>Suivi d'avancement des collaborateurs</b> vous permet de visualiser le travail que réalise chaque collaborateur pour les itérations passés, futures ou en cours." ;
+pCodeAide += " Si vous avez choisi <b>l'itération en cours</b>, vous visualiserez la tâche qu'est en train d'effectuer chaque <b>collaborateur</b>" ;
 pCodeAide += " En cliquant sur le nom d'un collaborateur, vous pourrez visualiser le <b>détail des tâches</b> qu'il doit réaliser sur une itération." ;
 pCodeAide += " Pour les <b>itérations passés</b> et <b>futures</b>, la liste des tâches à réaliser, par collaborateur, sera affiché." ;
 </script>

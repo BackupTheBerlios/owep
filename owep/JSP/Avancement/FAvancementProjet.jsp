@@ -44,24 +44,61 @@
 <table class="tableau" border="0" cellpadding="0" cellspacing="0">
 <tbody>
   <tr>
-    <td class="caseNiveau1" rowspan="2">Tâches</td>
-    <td class="caseNiveau1" rowspan="2">Collaborateurs</td>
-    <td class="caseNiveau1" rowspan="2">Temps prévu(h)</td>
-    <td class="caseNiveau1" rowspan="2">Temps passé(h)</td>
-    <td class="caseNiveau1" rowspan="2">Reste à passer(h)</td>
-    <td class="caseNiveau1" rowspan="2">Etat</td>
-    <td class="caseNiveau1" colspan="4">Date</td>
-    <td class="caseNiveau1" colspan="2">Dépassement de charge</td>
-    <td class="caseNiveau1" rowspan="2">Budget consommé(%)</td>
-    <td class="caseNiveau1" rowspan="2">Avancement(%)</td>
+    <td class="caseNiveau1" rowspan="2">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Libellé de la tâche.')" onmouseout="tooltipOff(this, event)">Tâches</a>
+    </td>
+    <td class="caseNiveau1" rowspan="2">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Nom du collaborateur qui réalise la tâche.')" onmouseout="tooltipOff(this, event)">Collaborateurs</a>
+    </td>
+    <td class="caseNiveau1" rowspan="2">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Charge affectée par le chef de projet sur la tâche (en heures).')" onmouseout="tooltipOff(this, event)">Temps prévu(h)</a>
+    </td>
+    <td class="caseNiveau1" rowspan="2">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Temps effectivement passé par le collaborateur sur la tâche.')" onmouseout="tooltipOff(this, event)">Temps passé(h)</a>
+    </td>
+    <td class="caseNiveau1" rowspan="2">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Temps nécessaire, estimé par le collaborateur, pour réaliser la tâche.')" onmouseout="tooltipOff(this, event)">Reste à passer(h)</a>
+    </td>
+    <td class="caseNiveau1" rowspan="2">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event,
+       '<b>Créée</b> si le collaborateur ne peut lancer la tâche du fait d\'une tâche tierce non terminé ou démarré.<br/>' +
+       '<b>Non démarré</b> si le collaborateur n\'a pas entamé la tâche.<br/>' +
+       '<b>En cours</b> si le collaborateur travaille sur la tâche.<br/>' +
+       '<b>Suspendu</b> si le collaborateur a entamé la tâche mais n\'y travaille pas actuellement dessus.<br/>' +
+       '<b>Terminé</b> si le collbarateur a fini sa tâche.<br/>')" onmouseout="tooltipOff(this, event)">Etat</a>
+    </td>
+    <td class="caseNiveau1" colspan="4">
+      Date
+    </td>
+    <td class="caseNiveau1" colspan="2">
+      Dépassement de charge
+    </td>
+    <td class="caseNiveau1" rowspan="2">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Pourcentage de temps effectivement passé sur la tâche par rapport au temps prévu.')" onmouseout="tooltipOff(this, event)">Budget consommé(%)</a>
+    </td>
+    <td class="caseNiveau1" rowspan="2">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Niveau de réalisation la tâche (en pourcent).')" onmouseout="tooltipOff(this, event)">Avancement(%)</a>
+    </td>
   </tr>
   <tr>
-    <td class="caseNiveau1">début prévue</td>
-    <td class="caseNiveau1">début réelle</td>
-    <td class="caseNiveau1">fin prévue</td>
-    <td class="caseNiveau1">fin réestimée</td>
-    <td class="caseNiveau1">(%)</td>
-    <td class="caseNiveau1">(h)</td>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le chef de projet a prévue de démarrer la tâche.')" onmouseout="tooltipOff(this, event)">début prévue</a>
+    </td>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le collaborateur à effectivement démarré la tâche.')" onmouseout="tooltipOff(this, event)">début réelle</a>
+    </td>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le chef de projet a prévue de terminer la tâche.')" onmouseout="tooltipOff(this, event)">fin prévue</a>
+    </td>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le collaborateur à effectivement terminé la tâche.')" onmouseout="tooltipOff(this, event)">fin réestimée</a>
+    </td>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Dépassement du temps de réalisation pour la tâche (en pourcent).')" onmouseout="tooltipOff(this, event)">(%)</a>
+    </td>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Dépassement du temps de réalisation pour la tâche (en heures).')" onmouseout="tooltipOff(this, event)">(h)</a>
+    </td>
   </tr>
   <!--Affichage des taches de l iteration-->
   <%
@@ -148,7 +185,9 @@
   }
   %> 
   <tr>      
-      <td class="caseNiveau1" colspan="2">Total de l'itération</td>
+      <td class="caseNiveau1" colspan="2">
+        <a class="niveau1" href="#" onmouseover="tooltipOn(this, event, 'Bilan des charges et des dates pour toutes les tâches de l\'itération.')" onmouseout="tooltipOff(this, event)">Total de l'itération</a>
+      </td>
       <td class="caseNiveau2"><%=(int)lIteration.getChargeInitiale()%></td>
       <td class="caseNiveau2"><%=(int)lIteration.getTempsPasse()%></td>
       <td class="caseNiveau2"><%=(int)lIteration.getResteAPasser()%></td>
@@ -216,5 +255,12 @@
 <%
 }
 %>
-  
-  
+
+
+<!-- Aide en ligne -->
+<script type="text/javascript" language="JavaScript">
+pCodeAide  = "La page de <b>Suivi d'avancement du projet</b> vous permet de visualiser l'ensemble des tâches <b>à réaliser</b> pour une itération donné." ;
+pCodeAide += " Elle vous offre une vue à la fois générale et détaillée de la réalisation de l'itération." ;
+pCodeAide += " Vous pouvez y voir les <b>collaborateurs</b> qui réalisent chacune des tâches, les <b>charges</b>, les <b>dates de réalisation</b> et l'<b>état d'avancement</b>." ;
+pCodeAide += " Choisissez l'<b>itération à visualiser</b> par le biais du sélecteur d'itération." ;
+</script>
