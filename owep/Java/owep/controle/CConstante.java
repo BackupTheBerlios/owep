@@ -16,17 +16,21 @@ public class CConstante
   public static final String EXC_TRANSFERT   = "Une erreur est survenue lors d'un transfert de données." ;
   
   // Identifiants des paramètres transmis à la JSP.
-  public static final String PAR_VIDE                       = "" ;  
-  public static final String PAR_MODIFIER                   = "pModifier" ;  
-  public static final String PAR_SUBMIT                     = "pSubmit" ;
-  public static final String PAR_SUBMITAJOUTER              = "pSubmitAjouter" ;
-  public static final String PAR_SUBMITMODIFIER             = "pSubmitModifier" ;
-  public static final String PAR_SUBMITSUPPRIMER            = "pSubmitSupprimer" ;
-  public static final String PAR_SUBMITAJOUTER_ARTSORTIES   = "pSubmitAjouterArtSorties" ;
-  public static final String PAR_SUBMITMODIFIER_ARTSORTIES  = "pSubmitModifierArtSorties" ;
-  public static final String PAR_SUBMITSUPPRIMER_ARTSORTIES = "pSubmitSupprimerArtSorties" ;
-  public static final String PAR_SUBMITAJOUTER_ARTENTREES   = "pSubmitAjouterArtEntrees" ;
-  public static final String PAR_SUBMITSUPPRIMER_ARTENTREES = "pSubmitSupprimerArtEntrees" ;
+  public static final String PAR_VIDE                        = "" ;  
+  public static final String PAR_MODIFIER                    = "pModifier" ;  
+  public static final String PAR_SUBMIT                      = "pSubmit" ;
+  public static final String PAR_SUBMITAJOUTER               = "pSubmitAjouter" ;
+  public static final String PAR_SUBMITMODIFIER              = "pSubmitModifier" ;
+  public static final String PAR_SUBMITSUPPRIMER             = "pSubmitSupprimer" ;
+  public static final String PAR_SUBMITAJOUTER_ARTSORTIES    = "pSubmitAjouterArtSorties" ;
+  public static final String PAR_SUBMITMODIFIER_ARTSORTIES   = "pSubmitModifierArtSorties" ;
+  public static final String PAR_SUBMITSUPPRIMER_ARTSORTIES  = "pSubmitSupprimerArtSorties" ;
+  public static final String PAR_SUBMITAJOUTER_ARTENTREES    = "pSubmitAjouterArtEntrees" ;
+  public static final String PAR_SUBMITSUPPRIMER_ARTENTREES  = "pSubmitSupprimerArtEntrees" ;
+  public static final String PAR_SUBMITAJOUTER_TACPROVOQUE   = "pSubmitAjouterTacheProvoque" ;
+  public static final String PAR_SUBMITSUPPRIMER_TACPROVOQUE = "pSubmitSupprimerTacheProvoque" ;
+  public static final String PAR_SUBMITAJOUTER_TACRESOUT     = "pSubmitAjouterTacheResout" ;
+  public static final String PAR_SUBMITSUPPRIMER_TACRESOUT   = "pSubmitSupprimerTacheResout" ;
   
   public static final String PAR_FORMULAIRE            = "pFormulaire" ;
   public static final String PAR_COLLABORATEUR         = "pCollaborateur" ;

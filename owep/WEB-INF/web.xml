@@ -177,6 +177,14 @@
     <servlet-name>CProblemeModif</servlet-name>
     <url-pattern>/Gestion/ProblemeModif</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>CProblemeSuppr</servlet-name>
+    <servlet-class>owep.controle.gestion.CProblemeSuppr</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CProblemeSuppr</servlet-name>
+    <url-pattern>/Gestion/ProblemeSuppr</url-pattern>
+  </servlet-mapping>
   
   
   

@@ -64,9 +64,9 @@ public class MProbleme extends MModeleBase
 
 
   /**
-   * Retourne la tache d'indice pNumTacheProvoque qui a provoqué le problème.
+   * Retourne la tâche d'indice pNumTacheProvoque qui a provoqué le problème.
    * @param pNumTacheProvoque Indice d'une tache provoquant le problème.
-   * @return La tache désigné par le paramètre.
+   * @return La tâche désigné par le paramètre.
    */
   public MTache getTacheProvoque (int pNumTacheProvoque)
   {
@@ -75,8 +75,8 @@ public class MProbleme extends MModeleBase
 
 
   /**
-   * Ajoute une tache à la liste des taches provoquant le problème.
-   * @param pTache Tache provoquant le problème.
+   * Ajoute une tâche à la liste des tâches provoquant le problème.
+   * @param pTache Tâche provoquant le problème.
    */
   public void addTacheProvoque (MTache pTache)
   {
@@ -85,8 +85,18 @@ public class MProbleme extends MModeleBase
 
 
   /**
-   * Récupère la liste des taches provoquant le problème.
-   * @return Liste des taches provoquant le problème.
+   * Supprime une tâche de la liste des tâches provoquant le problème.
+   * @param pTache Tâche provoquant le problème.
+   */
+  public void supprimeTacheProvoque (MTache pTache)
+  {
+    mTacheProvoque.remove (pTache) ;
+  }
+
+
+  /**
+   * Récupère la liste des tâches provoquant le problème.
+   * @return Liste des tâches provoquant le problème.
    */
   public ArrayList getListeTacheProvoque ()
   {
@@ -95,8 +105,8 @@ public class MProbleme extends MModeleBase
 
 
   /**
-   * Initialise la liste des taches provoquant le problème.
-   * @param pListeTacheProvoque Liste des taches provoquant le problème.
+   * Initialise la liste des tâches provoquant le problème.
+   * @param pListeTacheProvoque Liste des tâches provoquant le problème.
    */
   public void setListeTacheProvoque (ArrayList pListeTacheProvoque)
   {
@@ -115,9 +125,9 @@ public class MProbleme extends MModeleBase
 
 
   /**
-   * Retourne la tache qui resout le problème ayant pour index le numèro passé en paramètre.
-   * @param pNumTacheResout Index de la tache que l'on souhaite récupèrer.
-   * @return Tache correspondant à l'index passé en paramètre.
+   * Retourne la tâche qui resout le problème ayant pour index le numèro passé en paramètre.
+   * @param pNumTacheResout Index de la tâche que l'on souhaite récupèrer.
+   * @return Tâche correspondant à l'index passé en paramètre.
    */
   public MTache getTacheResout (int pNumTacheResout)
   {
@@ -126,12 +136,22 @@ public class MProbleme extends MModeleBase
 
 
   /**
-   * Ajoute la tache à la liste des taches qui résout le problème.
-   * @param pTacheResout Tache à ajouter à la liste des taches qui résout le problème.
+   * Ajoute la tâche à la liste des taches qui résout le problème.
+   * @param pTacheResout Tâche qui résout le problème.
    */
   public void addTacheResout (MTache pTacheResout)
   {
     mTacheResout.add (pTacheResout) ;
+  }
+
+
+  /**
+   * Supprime la tâche de la liste des taches qui résout le problème.
+   * @param pTacheResout Tâche qui résout le problème.
+   */
+  public void supprimeTacheResout (MTache pTacheResout)
+  {
+    mTacheResout.remove (pTacheResout) ;
   }
 
 

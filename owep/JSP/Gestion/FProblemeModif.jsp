@@ -7,6 +7,9 @@
 
 
 <%
+  // Utilisé pour stocker le code javascript.
+  String lCodeValidation ;
+  
   // Récupération des paramètres.
   MProbleme pProbleme = (MProbleme) request.getAttribute (CConstante.PAR_PROBLEME) ;
 %>
@@ -76,11 +79,11 @@
       </td>
       <td class="caseNiveau3">
         <font class="titre3">Tâches choisies :</font><br/>
-        <select name="<%= CConstante.PAR_LISTETACHESPROVOQUE %>" class="niveau2" style="width: 250" size="6">
+        <select name="pSelectTachesProvoque" class="niveau2" style="width: 250" size="6">
         <%
         for (int lIndiceTache = 0; lIndiceTache < pProbleme.getNbTachesProvoque (); lIndiceTache ++)
         {
-          MTache lTache = (MTache) pProbleme.getTacheProvoque (lIndiceTache) ;
+          MTache lTache = pProbleme.getTacheProvoque (lIndiceTache) ;
         %>
           <option value="<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
         <%
@@ -90,13 +93,13 @@
       </td>
       <td class="caseNiveau3" align="center" valign="middle" width="0" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">&nbsp;</font><br/>
-        <input type="button" value="    < Ajouter    " class="bouton" onclick=""/><br/>
+        <input type="button" value="    < Ajouter    " class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoquePossible, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoque) ;"/>
         <br/>
-        <input type="button" value="Supprimer >" class="bouton" onclick=""/>
+        <input type="button" value="Supprimer >" class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoque, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoquePossible) ;"/>
       </td>
       <td class="caseNiveau3" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">Tâches possibles :</font><br/>
-        <select class="niveau2" style="width: 250" size="6">
+        <select name="pSelectTachesProvoquePossible" class="niveau2" style="width: 250" size="6">
         </select>
       </td>
     </tr>
@@ -106,11 +109,11 @@
       </td>
       <td class="caseNiveau3">
         <font class="titre3">Tâches choisies :</font><br/>
-        <select name="<%= CConstante.PAR_LISTETACHESRESOUT %>" class="niveau2" style="width: 250" size="6">
+        <select name="pSelectTachesResout" class="niveau2" style="width: 250" size="6">
         <%
         for (int lIndiceTache = 0; lIndiceTache < pProbleme.getNbTachesResout (); lIndiceTache ++)
         {
-          MTache lTache = (MTache) pProbleme.getTacheResout (lIndiceTache) ;
+          MTache lTache = pProbleme.getTacheResout (lIndiceTache) ;
         %>
           <option value="<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
         <%
@@ -120,17 +123,13 @@
       </td>
       <td class="caseNiveau3" align="center" valign="middle" width="0" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">&nbsp;</font><br/>
-        <input type="button" value="    < Ajouter    " class="bouton" onclick=""/><br/>
+        <input type="button" value="    < Ajouter    " class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResoutPossible, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResout)"/>
         <br/>
-        <input type="button" value="Supprimer >" class="bouton" onclick=""/>
-        <% String lCodeValidation  = "if (document." + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTETACHESRESOUT + ".selectedIndex != -1)" ; %>
-        <% lCodeValidation        += VTransfertConstante.getVerification (CConstante.PAR_ARBREPROBLEME)+ " () ;" ; %>
-        <% lCodeValidation        += "validerChamps () ;" ; %>
-        <transfert:transfertsubmit libelle="Valider" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="<%= lCodeValidation %>"/>
+        <input type="button" value="Supprimer >" class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResout, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResoutPossible)"/>
       </td>
       <td class="caseNiveau3" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">Tâches possibles :</font><br/>
-        <select class="niveau2" style="width: 250" size="6">
+        <select name="pSelectTachesResoutPossible" class="niveau2" style="width: 250" size="6">
         </select>
       </td>
     </tr>
@@ -140,8 +139,13 @@
   
   <p class="texteObligatoire">Les champs marqué d'un * sont obligatoires.</p>
   <p class="texteSubmit">
+    <input name="<%= CConstante.PAR_LISTETACHESPROVOQUE %>" type="hidden" value=""/>
+    <input name="<%= CConstante.PAR_LISTETACHESRESOUT %>" type="hidden" value=""/>
+    
     <input type="button" value="Annuler" class="bouton" onclick="window.location.href = '/owep/Gestion/ListeProblemeVisu' ;"/>
-    <% String lCodeValidation = VTransfertConstante.getVerification (CConstante.PAR_ARBREPROBLEME)+ " () ;" ; %>
+    <% lCodeValidation = VTransfertConstante.getVerification (CConstante.PAR_ARBREPROBLEME)+ " () ;" ; %>
+    <% lCodeValidation += "submitListesTaches (pSelectTachesProvoque, " + CConstante.PAR_LISTETACHESPROVOQUE + ") ;" ; %>
+    <% lCodeValidation += "submitListesTaches (pSelectTachesResout, " + CConstante.PAR_LISTETACHESRESOUT + ") ;" ; %>
     <% lCodeValidation += "validerChamps () ;" ; %>
     <transfert:transfertsubmit libelle="Valider" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="<%= lCodeValidation %>"/>
   </p>
@@ -155,12 +159,12 @@
 <!-- Code javascript -->
 <script type="text/javascript" language="JavaScript">
 
-  <!--------------------------------------------------------------------->
-  <!-- Fonctions de validation du bouton d'ajout/suppression de tâches -->
-  <!--------------------------------------------------------------------->
-  function validerSupprimerTache (pSelect, pIndice, pMessage)
+  <!----------------------------------------------------------------------->
+  <!-- Fonctions de validation des boutons d'ajout/suppression de tâches -->
+  <!----------------------------------------------------------------------->
+  function validerAjoutSupprTache (pIndice, pMessage)
   {
-    if (document.<%= CConstante.PAR_FORMULAIRE %>.<%= CConstante.PAR_LISTETACHESRESOUT %>.selectedIndex != -1)
+    if (pIndice != -1)
     {
       <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREPROBLEME) %> () ;
       validerChamps () ;
@@ -168,6 +172,15 @@
     else
     {
       alert (pMessage) ;
+    }
+  }
+  
+  function submitListesTaches (pSelect, pHidden)
+  {
+    pHidden.value = "" ;
+    for (i = 0; i < pSelect.length; i ++)
+    {
+      pHidden.value = pHidden.value + "-" + pSelect[i].value ;
     }
   }
   

@@ -29,7 +29,6 @@ function isVide (pValeur, pLibelle)
  */
 function isDate (pDate, pLibelle)
 {
-  //var lRegExpression = /^\d{1}\d{1}\-\d{1}\d{1}\-\d{1}\d{1}\d{1}\d{1}$/ ;
   var lRegExpression = /^\d{1}\d{1}\d{1}\d{1}\-\d{1}\d{1}\-\d{1}\d{1}$/ ;
   
   if ((pDate.length != 0) && (! lRegExpression.test (pDate)))
@@ -95,12 +94,26 @@ function validerSelect (pSelect, pMessage)
   }
 }
 
-function ajout(listeDep, listeArr)
+/** 
+ * Fonction qui ajoute l'item sélectionné d'une liste vers une autre.
+ */
+function transfererItem (pListeDep, pListeArr)
 {
-  var option = new Option(listeDep.options[listeDep.selectedIndex].text,listeDep.options[listeDep.selectedIndex].value); 
-  listeArr.options[listeArr.length] = option; 
-  listeDep.options[listeDep.selectedIndex] = null ;
+  if (pListeDep.selectedIndex != -1)
+  {
+    var lOption = new Option(pListeDep.options[pListeDep.selectedIndex].text, pListeDep.options[pListeDep.selectedIndex].value); 
+    pListeArr.options[pListeArr.length]        = lOption ; 
+    pListeDep.options[pListeDep.selectedIndex] = null ;
+    pListeArr.selectedIndex = pListeArr.length - 1 ;
+  }
 }
+
+
+
+
+
+
+
 
 
   function enleve(listeArr)
