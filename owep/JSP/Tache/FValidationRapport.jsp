@@ -14,37 +14,41 @@
 <HEAD>
 <SCRIPT LANGUAGE="JavaScript">
   <!--
-    /**
-    * Variables globales du module javascript.
-    */
     var gChampsInvalides = new String ('') ;
-    
-    // fonction de vérification du bon format de la date
-    function test_date(date, pLibelle) {
-      expr_reg = /^[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]$/ ;
-
-      if ( expr_reg.test(date.value) ==0 ) 
-      {
-        gChampsInvalides += '<%=messages.getString("JSChamp")%> \'' + pLibelle + '\' <%=messages.getString("JSIncorrect")%>\n' ;
-        // ce n'est pas une date valide
-        alert ("<%=messages.getString("JSAlertDate")%>") ;
-      }
-    } 
-    
-    // fonction de vérification du bon format des heures
-    function test_heure(heure, pLibelle) {
-      expr_reg = /^[0-9]+$/ ;
-
-      if ( expr_reg.test(heure.value) == 0 ) 
-      {
-        gChampsInvalides += '<%=messages.getString("JSChamp")%> \'' + pLibelle + '\' <%=messages.getString("JSIncorrect")%>\n' ;
-        // ce n'est pas un nombre entier
-        alert ("<%=messages.getString("JSAlertEntier")%>") ;
-      }
-    }  
+    var champDate = new String ('') ;
+    var champHeure = new String ('') ; 
     
     // fonction de conversion de la date saisie : jj/mm/aaaa en aaaa-mm-jj
     function valider() { 
+      
+      expr_reg_heure = /^[0-9]+$/ ;
+      expr_reg_date = /^[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]$/ ;
+      
+      champHeure = document.getElementById('<%=CConstante.PAR_TEMPSPASSE%>').value;
+
+      if ( expr_reg_heure.test(champHeure) == 0 ) 
+      {
+        gChampsInvalides += '<%=messages.getString("JSChamp")%> \'' + '<%=messages.getString("JSChampTempsPasse")%>' + '\' <%=messages.getString("JSIncorrect")%> ' + '<%=messages.getString("JSAlertEntier")%>. \n' ;
+      }
+
+      champHeure = document.getElementById('<%=CConstante.PAR_RESTEAPASSER%>').value;
+      if ( expr_reg_heure.test(champHeure) == 0 ) 
+      {
+        gChampsInvalides += '<%=messages.getString("JSChamp")%> \'' + '<%=messages.getString("JSChampResteAPasse")%>' + '\' <%=messages.getString("JSIncorrect")%> ' + '<%=messages.getString("JSAlertEntier")%>. \n' ;
+      }
+
+      champDate = document.getElementById('<%=CConstante.PAR_DATEDEBUTREELLE%>').value;
+      if ( expr_reg_date.test(champDate) ==0 ) 
+      {
+        gChampsInvalides += '<%=messages.getString("JSChamp")%> \'' + '<%=messages.getString("JSChampDDR")%>' + '\' <%=messages.getString("JSIncorrect")%> ' + '<%=messages.getString("JSAlertDate")%>. \n' ;
+      }
+      
+      champDate = document.getElementById('<%=CConstante.PAR_DATEFINREELLE%>').value;
+      if ( expr_reg_date.test(champDate) ==0 ) 
+      {
+        gChampsInvalides += '<%=messages.getString("JSChamp")%> \'' + '<%=messages.getString("JSChampDFR")%>' + '\' <%=messages.getString("JSIncorrect")%> ' + '<%=messages.getString("JSAlertDate")%>. \n' ;
+      }
+
       if (gChampsInvalides != '')
 		  {
 		    alert (gChampsInvalides) ;
@@ -155,12 +159,12 @@
 	      
 	      <!-- Affiche les propriétés de la tâche -->
 	      <td class='caseNiveau3'><%=(int)lTache.getChargeInitiale ()%></td>
-	      <td class='caseNiveau3'><input class="niveau2" type=text size=<%=CConstante.LNG_CHARGE%> name="<%=CConstante.PAR_TEMPSPASSE%>"   value="<%=((Integer)lTache.getListe("tempsPasse")).intValue()%>" onBlur="test_heure(this, '<%=messages.getString("validationRapportTempsPasse")%>')"></td>
+	      <td class='caseNiveau3'><input class="niveau2" type=text size=<%=CConstante.LNG_CHARGE%> name="<%=CConstante.PAR_TEMPSPASSE%>"   value="<%=((Integer)lTache.getListe("tempsPasse")).intValue()%>"></td>
 	      <% int bouton = Integer.parseInt(request.getParameter("pIdBoutonClique")) ; 
 	         if (bouton == 2)
 	         {
 	      %>
-	      <td class='caseNiveau3'><input class="niveau2" type=text size=<%=CConstante.LNG_CHARGE%> name="<%=CConstante.PAR_RESTEAPASSER%>" value="<%=((Double)lTache.getListe("resteAPasser")).intValue()%>" onBlur="test_heure(this, '<%=messages.getString("validationRapportResteAPasser")%>')"></td>
+	      <td class='caseNiveau3'><input class="niveau2" type=text size=<%=CConstante.LNG_CHARGE%> name="<%=CConstante.PAR_RESTEAPASSER%>" value="<%=((Double)lTache.getListe("resteAPasser")).intValue()%>"></td>
 	      <% } %>
 	      <% if (bouton == 3) 
 	        {
@@ -179,11 +183,11 @@
 	      <% } %>
 	      <td class='caseNiveau3'><%=lDateFormat.format (lTache.getDateDebutPrevue () )%></td>
 	      <td class='caseNiveau3'><input class="niveau2" type=text size=<%=CConstante.LNG_DATE%> name="<%=CConstante.PAR_DATEDEBUTREELLE%>"
-	                               value="<%=lDateFormat.format (lTache.getDateDebutReelle ()) %>" onBlur="test_date(this, '<%=messages.getString("validationRapportDDReelle")%>')">
+	                               value="<%=lDateFormat.format (lTache.getDateDebutReelle ()) %>">
 	      </td>
 	      <td class='caseNiveau3'><%=lDateFormat.format (lTache.getDateFinPrevue ())%></td>
 	      <td class='caseNiveau3'><input class="niveau2" type=text size=<%=CConstante.LNG_DATE%> name="<%=CConstante.PAR_DATEFINREELLE%>" 
-	                               value="<%=lDateFormat.format ((Date)lTache.getListe("dateFinReelle"))%>" onBlur="test_date(this, '<%=messages.getString("validationRapportDFReelle")%>')">
+	                               value="<%=lDateFormat.format ((Date)lTache.getListe("dateFinReelle"))%>">
 	      </td>
 	    </tr>
 	    <input type=hidden name="<%=CConstante.PAR_TYPE_TACHE%>" value="tache">
@@ -212,12 +216,12 @@
 	      
 	      <!-- Affiche les propriétés de la tâche -->
 	      <td class='caseNiveau3'><%=(int)lTacheImprevue.getChargeInitiale ()%></td>
-	      <td class='caseNiveau3'><input class="niveau2" type=text size=<%=CConstante.LNG_CHARGE%> name="<%=CConstante.PAR_TEMPSPASSE%>"   value="<%=((Integer)lTacheImprevue.getListe("tempsPasse")).intValue()%>" onBlur="test_heure(this, '<%=messages.getString("validationRapportTempsPasse")%>')"></td>
+	      <td class='caseNiveau3'><input class="niveau2" type=text size=<%=CConstante.LNG_CHARGE%> name="<%=CConstante.PAR_TEMPSPASSE%>"   value="<%=((Integer)lTacheImprevue.getListe("tempsPasse")).intValue()%>"></td>
 	      <% int bouton = Integer.parseInt(request.getParameter("pIdBoutonClique")) ; 
 	         if (bouton == 2)
 	         {
 	      %>
-	      <td class='caseNiveau3'><input class="niveau2" type=text size=<%=CConstante.LNG_CHARGE%> name="<%=CConstante.PAR_RESTEAPASSER%>" value="<%=((Double)lTacheImprevue.getListe("resteAPasser")).intValue()%>" onBlur="test_heure(this, '<%=messages.getString("validationRapportResteAPasser")%>')"></td>
+	      <td class='caseNiveau3'><input class="niveau2" type=text size=<%=CConstante.LNG_CHARGE%> name="<%=CConstante.PAR_RESTEAPASSER%>" value="<%=((Double)lTacheImprevue.getListe("resteAPasser")).intValue()%>"></td>
 	      <% } %>
 	      <% if (bouton == 3) 
 	        {
@@ -236,7 +240,7 @@
 	      <% } %>
 	      <td class='caseNiveau3'><%=lDateFormat.format (lTacheImprevue.getDateDebutPrevue () )%></td>
 	      <td class='caseNiveau3'><input class="niveau2" type=text size=<%=CConstante.LNG_DATE%> name="<%=CConstante.PAR_DATEDEBUTREELLE%>"
-	                               value="<%=lDateFormat.format (lTacheImprevue.getDateDebutReelle ()) %>" onBlur="test_date(this, '<%=messages.getString("validationRapportDDReelle")%>')">
+	                               value="<%=lDateFormat.format (lTacheImprevue.getDateDebutReelle ()) %>">
 	      </td>
 	      <td class='caseNiveau3'><%=lDateFormat.format (lTacheImprevue.getDateFinPrevue ())%></td>
 	      <td class='caseNiveau3'><input class="niveau2" type=text size=<%=CConstante.LNG_DATE%> name="<%=CConstante.PAR_DATEFINREELLE%>" 

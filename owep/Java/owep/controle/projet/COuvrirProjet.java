@@ -153,6 +153,12 @@ public class COuvrirProjet extends CControleurBase
 
       getBaseDonnees ().commit () ;
 
+      if (lIteration == null)
+      {  
+        getSession ().setIteration(null);
+        return "..\\JSP\\Iteration\\TAucuneIteration.jsp" ;
+      }  
+      
       // Enregistre l'itération à ouvrir dans la session
       getSession ().setIteration(lIteration) ;      
       

@@ -14,24 +14,29 @@
 <HEAD>
 <SCRIPT LANGUAGE="JavaScript">  
   <!--
-    /**
-    * Variables globales du module javascript.
-    */
     var gChampsInvalides = new String ('') ;
-    
-    // fonction de vérification du bon format des valeurs
-    function test_valeur(valeur, pLibelle, pIndicateur) {
-      expr_reg = /^[0-9]+$/ ;
-
-      if ( expr_reg.test(valeur.value) == 0 ) 
-      {
-        gChampsInvalides += '<%=messages.getString("JSChamp")%> \'' + pLibelle + '\' <%=messages.getString("indicateursJSIndic")%> \'' + pIndicateur + '\' <%=messages.getString("JSIncorrect")%>\n' ;
-        // ce n'est pas un nombre entier
-        alert ("<%=messages.getString("JSAlertEntier")%>") ;
-      }
-    } 
+    var champValeur = new String ('') ; 
     
     function valider() { 
+      
+      expr_reg = /^[0-9]+$/ ;
+      
+      <%
+      for (int i = 0; i < lProjet.getNbIndicateurs(); i ++)
+	  {
+      %>
+        if (document.getElementById('<%=CConstante.PAR_VALEURMESURE+i%>') != null)
+        {
+          champValeur = document.getElementById('<%=CConstante.PAR_VALEURMESURE+i%>').value;
+          if ( expr_reg.test(champValeur) == 0 ) 
+          {
+            gChampsInvalides += '<%=messages.getString("JSChamp")%> \'' + '<%=messages.getString("JSChampValeur")%>' + '\' <%=messages.getString("indicateursJSIndic")%> \'' + champValeur + '\' <%=messages.getString("JSIncorrect")%> ' + '<%=messages.getString("JSAlertEntier")%>. \n' ;
+          }
+        }
+      <%
+      }
+      %>
+      
       if (gChampsInvalides != '')
       {
         alert (gChampsInvalides) ;
@@ -103,7 +108,7 @@
           {
           %>
           <input type=hidden name="<%=CConstante.PAR_TYPEINDICATEUR+i%>" value="valeur">
-          <td class="caseNiveau3"><input class="niveau2" type=text size=<%=CConstante.LNG_VALEUR%> name="<%=CConstante.PAR_VALEURMESURE+i%>"   value="<%=(int)lMesureIndicateur.getValeur()%>" onBlur="test_valeur(this, '<%=messages.getString("indicateursValeur")%>', '<%=lProjet.getIndicateur(i).getNom()%>')"></td>
+          <td class="caseNiveau3"><input class="niveau2" type=text size=<%=CConstante.LNG_VALEUR%> name="<%=CConstante.PAR_VALEURMESURE+i%>"   value="<%=(int)lMesureIndicateur.getValeur()%>"></td>
 		      <td class="caseNiveau3"><%=lProjet.getIndicateur(i).getUnite()%></td>
 		    <%}%>
 		    <%if (lMesureIndicateur.getCommentaire()==null){

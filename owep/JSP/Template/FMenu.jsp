@@ -16,6 +16,7 @@
   
   // Variable de la page
   boolean mProjetOuvert = (lSession.getProjet() != null);
+  boolean lIterationExiste = (lSession.getIteration() != null);
   boolean mEstChefProjet = false;
   if(mProjetOuvert)
   {
@@ -36,6 +37,7 @@
   
   // Recuperation du projet ouvert
   lProjet = lSession.getProjet();
+  
   
   // Si aucun projet n'est ouvert
   if(lProjet == null)
@@ -94,7 +96,7 @@
   </tr>
   
 <%
-  if(mProjetOuvert){
+  if((mProjetOuvert)&&(lIterationExiste)){
 %>  
   <!-- menu avancement -->
   <tr>
@@ -123,6 +125,8 @@
   // Test si un projet est ouvert et si le collaborateur connecté est le responsale du projet ouvert
   if(mProjetOuvert && mEstChefProjet)
   {
+    if (lIterationExiste)
+    {
 %>
   <!-- menu Suivi de projet -->
   <tr>
@@ -172,7 +176,9 @@
       &nbsp;
     </td>
   </tr>
-  
+  <%
+    }
+  %>
   <!-- menu Gestion de projet -->
   <tr>
     <td class="caseMenuNiveau1">
@@ -203,6 +209,11 @@
       </a>
     </td>
   </tr>
+  
+  <%
+  if (lIterationExiste)
+  {
+  %>
   <tr>
     <td class="caseMenuNiveau2">
       <a class="menuNiveau2" href="../Processus/TacheImprevue"
@@ -211,6 +222,9 @@
       </a>
     </td>
   </tr>
+  <%
+  }
+  %>
   
 <%//Test si l'utilisateur connecté a les droits de l'administrateur
   if (mProjetOuvert && mEstAdmin) {%>
