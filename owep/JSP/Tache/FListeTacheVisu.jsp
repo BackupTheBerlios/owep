@@ -9,9 +9,9 @@
 <tbody>
   <tr>
     <td class="caseNiveau1" rowspan="2">Tâches</td>
-    <td class="caseNiveau1" rowspan="2">Temps prévu</td>
-    <td class="caseNiveau1" rowspan="2">Temps passé</td>
-    <td class="caseNiveau1" rowspan="2">Reste à passer</td>
+    <td class="caseNiveau1" rowspan="2">Temps prévu(h)</td>
+    <td class="caseNiveau1" rowspan="2">Temps passé(h)</td>
+    <td class="caseNiveau1" rowspan="2">Reste à passer(h)</td>
     <td class="caseNiveau1" rowspan="2">Etat</td>
     <td class="caseNiveau1" colspan="4">Date</td>
     <td class="caseNiveau1" colspan="2">Dépassement de charge</td>
@@ -22,7 +22,7 @@
     <td class="caseNiveau1">fin prévue</td>
     <td class="caseNiveau1">fin réestimée</td>
     <td class="caseNiveau1">(%)</td>
-    <td class="caseNiveau1">(h x j)</td>
+    <td class="caseNiveau1">(h)</td>
   </tr>
   
   <%
@@ -38,9 +38,9 @@
       <!-- Affiche la liste des artefacts -->
             
       <!-- Affiche les propriétés de la tâche -->
-      <td class='caseNiveau3'><%=lTache.getChargeInitiale ()%></td>
-      <td class='caseNiveau3'><%=lTache.getTempsPasse ()    %></td>
-      <td class='caseNiveau3'><%=lTache.getResteAPasser ()  %></td>
+      <td class='caseNiveau3'><%=(int)lTache.getChargeInitiale ()%></td>
+      <td class='caseNiveau3'><%=(int)lTache.getTempsPasse ()    %></td>
+      <td class='caseNiveau3'><%=(int)lTache.getResteAPasser ()  %></td>
       <!-- On passe l id du bouton cliqué et l id de la tache en parametre de la requete -->      
       <td class='caseNiveau3'>
       <!-- Si le collaborateur n'a pas de taches en état démarré, on peut commencer ou reprendre n'importe quelle tâche -->  
@@ -138,8 +138,8 @@
                                    out.print ("X") ;
                                  } %>
       </td>
-      <td class='caseNiveau3'><%= lTache.getPrcDepassementCharge () * 100 %></td>
-      <td class='caseNiveau3'><%= lTache.getHJDepassementCharge ()        %></td>
+      <td class='caseNiveau3'><%= (int)(lTache.getPrcDepassementCharge () * 100) %></td>
+      <td class='caseNiveau3'><%= (int)lTache.getHJDepassementCharge ()        %></td>
     </tr>
   <%
     }

@@ -93,7 +93,6 @@ public class COuvrirProjet extends CControleurBase
 
       // Enregistre le projet à ouvrir dans la session
       getSession ().ouvrirProjet (lProjet) ;
-
       return "..\\Tache\\ListeTacheVisu" ;
     }
     catch (PersistenceException e)

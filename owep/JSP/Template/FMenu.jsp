@@ -34,11 +34,6 @@
     </td>
   </tr>
   <tr>
-    <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Tache/RapportActivite">Rapport d'activité</a>
-    </td>
-  </tr>
-  <tr>
     <td class="caseMenuSeparation">
       &nbsp;
     </td>

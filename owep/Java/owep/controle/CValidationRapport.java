@@ -27,6 +27,8 @@ public class CValidationRapport extends CControleurBase{
   private double rps ; //reste a passer sur la tache
   private int ET ; //etat de la tache
   private Date finReest ; //date de fin reestimee de la tache
+  private Date debutReel ; //date de debut réelle de la tache
+  
   
   /**
    * Récupère les données nécessaire au controleur dans la base de données. 
@@ -97,7 +99,10 @@ public class CValidationRapport extends CControleurBase{
       
       // récupération de la date de fin reestimée
       finReest = new SimpleDateFormat ("yyyy-MM-dd").parse(getRequete().getParameter(CConstante.PAR_DATEFINREELLE));
-    
+
+      // récupération de la date de debut réelle
+      debutReel = new SimpleDateFormat ("yyyy-MM-dd").parse(getRequete().getParameter(CConstante.PAR_DATEDEBUTREELLE));
+      
       // Récupère le numéro d'itération.
       if (getRequete ().getParameter (CConstante.PAR_ITERATION) == null)
       {
@@ -130,6 +135,7 @@ public class CValidationRapport extends CControleurBase{
     mTache.setResteAPasser(rps) ; 
     mTache.setEtat(ET) ; 
     mTache.setDateFinReelle(finReest) ;
+    mTache.setDateDebutReelle(debutReel);
     mTache.setDateDebutChrono(null) ;
     // Le collaborateur n'a désormais plus de tâche en cours
     mCollaborateur.setTacheEnCours(0) ;

@@ -10,25 +10,35 @@
   <!--
     // fonction de vérification du bon format de la date
     function test_date(date) {
-      expr_reg = /^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/ ;
+      expr_reg = /^[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9][0-9][0-9]$/ ;
 
       if ( expr_reg.test(date.value) ==0 ) 
       {
         // ce n'est pas une date valide
-        alert ("La date que vous devez saisir doit être de la forme aaaa-mm-jj") ;
+        alert ("La date que vous devez saisir doit être de la forme jj/mm/aaaa") ;
       }
     } 
     
     // fonction de vérification du bon format des heures
     function test_heure(heure) {
-      expr_reg = /^[0-9]+.[0-9]+$/ ;
+      expr_reg = /^[0-9]+$/ ;
 
       if ( expr_reg.test(heure.value) == 0 ) 
       {
         // ce n'est pas un nombre entier
-        alert ("Le nombre que vous devez saisir doit être de la forme chiffre.chiffre") ;
+        alert ("Vous devez saisir un nombre entier") ;
       }
     }  
+    
+    // fonction de conversion de la date saisie : jj/mm/aaaa en aaaa-mm-jj
+    function valider() { 
+      var madateReelle = document.formValidation.pDateDebutReel.value ; 
+      var nouvelleDateReelle = madateReelle.split("\/"); 
+      document.formValidation.pDateDebutReel.value = nouvelleDateReelle[2]+"-"+nouvelleDateReelle[1]+"-"+nouvelleDateReelle[0] ; 
+      var madateReestimee = document.formValidation.pDateFinReestimee.value ; 
+      var nouvelleDateReestimee = madateReestimee.split("\/"); 
+      document.formValidation.pDateFinReestimee.value = nouvelleDateReestimee[2]+"-"+nouvelleDateReestimee[1]+"-"+nouvelleDateReestimee[0] ; 
+    }
   // -->
   </SCRIPT>
   
@@ -44,9 +54,9 @@
     <tr>
       <td class="caseNiveau1" rowspan="2">Nom de la tâche</td>
       <td class="caseNiveau1" rowspan="2">Artefacts</td>
-      <td class="caseNiveau1" rowspan="2">Temps prévu</td>
-      <td class="caseNiveau1" rowspan="2">Temps passé</td>
-      <td class="caseNiveau1" rowspan="2">Reste à passer</td>
+      <td class="caseNiveau1" rowspan="2">Temps prévu(h)</td>
+      <td class="caseNiveau1" rowspan="2">Temps passé(h)</td>
+      <td class="caseNiveau1" rowspan="2">Reste à passer(h)</td>
       <td class="caseNiveau1" rowspan="2">Etat</td>
       <td class="caseNiveau1" colspan="4">Date</td>
     </tr>
@@ -64,7 +74,7 @@
 	    <!-- Affiche la liste des artefacts -->
 	    <td class='caseNiveau2'>
 	      <%
-	        SimpleDateFormat lDateFormat = new SimpleDateFormat ("yyyy-MM-dd") ;
+	        SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
 	        out.print (lTache.getArtefactSortie (0).getNom ()) ;
 	        for (int j = 1; j < lTache.getNbArtefactsSorties (); j ++)
 	        {
@@ -74,28 +84,28 @@
 	    </td>
 	    
 	    <!-- Affiche les propriétés de la tâche -->
-	    <td class='caseNiveau3'><%=lTache.getChargeInitiale ()%></td>
-	    <td class='caseNiveau3'><input type=text size=1 name="<%=CConstante.PAR_TEMPSPASSE%>"   value="<%=lTache.getTempsPasse()%>" onBlur="test_heure(this)"></td>
+	    <td class='caseNiveau3'><%=(int)lTache.getChargeInitiale ()%></td>
+	    <td class='caseNiveau3'><input type=text size=1 name="<%=CConstante.PAR_TEMPSPASSE%>"   value="<%=(int)lTache.getTempsPasse()%>" onBlur="test_heure(this)"></td>
 	    <% int bouton = Integer.parseInt(request.getParameter("pIdBoutonClique")) ; 
 	       if (bouton == 2)
 	       {
 	    %>
-	    <td class='caseNiveau3'><input type=text size=1 name="<%=CConstante.PAR_RESTEAPASSER%>" value="<%=lTache.getResteAPasser()%>" onBlur="test_heure(this)"></td>
+	    <td class='caseNiveau3'><input type=text size=1 name="<%=CConstante.PAR_RESTEAPASSER%>" value="<%=(int)lTache.getResteAPasser()%>" onBlur="test_heure(this)"></td>
 	    <% } %>
       <% if (bouton == 3) 
         {
       %>
-      <td class='caseNiveau3'><%=lTache.getResteAPasser()%></td>
+      <td class='caseNiveau3'><%=(int)lTache.getResteAPasser()%></td>
 	    <% } %>
 	    <% if (lTache.getEtat () == 2)
 	     {
 	     %>
-	    <td class='caseNiveau3'>Suspendu</td>
+	    <td class='caseNiveau3'>Suspendue</td>
 	    <% } %>
       <% if (lTache.getEtat () == 3)
        {
        %>
-      <td class='caseNiveau3'>Terminé</td>
+      <td class='caseNiveau3'>Terminée</td>
       <% } %>
 	    <td class='caseNiveau3'><%=lDateFormat.format (lTache.getDateDebutPrevue () )%></td>
 	    <td class='caseNiveau3'><input type=text size=8 name="<%=CConstante.PAR_DATEDEBUTREELLE%>"
@@ -117,7 +127,7 @@
     <tr>
 	    <td>
 		    <font class="texteSubmit">
-		    <input type="submit" value="Valider">
+		    <input type="submit" value="Valider" OnClick="valider()">
 		    </font>
 	      </form>
       </td>
