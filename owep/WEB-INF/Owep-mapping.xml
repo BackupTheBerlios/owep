@@ -281,9 +281,12 @@
     <field name="mTaches" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTaches" set-method="setListeTaches">
       <sql many-key="TAC_COL_ID"/>
     </field>
+    <field name="mDroit" type="integer" get-method="getDroit" set-method="setDroit" required="true">
+      <sql name="COL_DROIT" type="integer"/>
+    </field>
     <field name="mProjetsChef" type="owep.modele.execution.MProjet" collection="arraylist" get-method="getListeProjetsChef" set-method="setListeProjetsChef">
       <sql many-key="PRJ_COL_ID_CHEF"/>
-    </field>
+    </field>    
     <field name="mRoles" type="owep.modele.processus.MRole" collection="arraylist" get-method="getListeRoles" set-method="setListeRoles">
       <sql name="R04_ROL_ID" many-table="R04_COL_ROL" many-key="R04_COL_ID"/>
     </field>

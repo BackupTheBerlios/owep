@@ -85,6 +85,10 @@ public class CListeTacheVisu extends CControleurBase
         // on regarde si toutes les conditions pour que la tache soit prete sont vérifiées
         MTache lTache = mCollaborateur.getTache(i);
         
+        //Si la tache corespond à l'itération sélectionnée
+        if(lTache.getIteration().getId() == mSession.getIteration().getId())
+        {
+        
         // si la tache n'est pas encore prete on verifie si on ne peut pas la faire passer a prete
         if (lTache.getEtat()==-1)
         {
@@ -116,6 +120,7 @@ public class CListeTacheVisu extends CControleurBase
         getBaseDonnees ().commit () ; 
         
         lListeTaches.add(lTache);
+        }  
       }
       mCollaborateur.setListeTaches(lListeTaches);
     }

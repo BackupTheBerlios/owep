@@ -57,7 +57,7 @@ Veuillez saisir un nom.<br>
    // Auncun probléme n'a été rencontré
 %>
 L'utilisateur a bien été enregistré<br>
-<a href="<%=mPageSource%>">Ok</a>
+<!--<a href="<%=mPageSource%>">Ok</a>-->
 <%
   }
   else
@@ -82,7 +82,7 @@ L'utilisateur a bien été enregistré<br>
     </tr>
     <tr>
       <td class="caseNiveau1">EMail *</td>
-      <td class="caseNiveau3"><input type="text" name="mMail" value=<%=(!mProbleme.equals("nouveau"))?mMail:""%>></td>
+      <td class="caseNiveau3"><input type="PASSWORD" name="mMail" value=<%=(!mProbleme.equals("nouveau"))?mMail:""%>></td>
     </tr>
     <tr>
       <td class="caseNiveau1">Adresse</td>

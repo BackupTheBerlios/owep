@@ -142,7 +142,18 @@ public class CEtat extends CControleurBase{
               // on retient la date courante
               mTache.setEtat(1) ; 
               mTache.setDateDebutReelle(new Date()) ; 
-              mTache.setDateFinReelle(mTache.getDateFinPrevue()) ;
+              
+              //si la date de début réelle est différente de celle prévue ; on modifie la date de fin réestimée
+              if(mTache.getDateDebutPrevue() != mTache.getDateDebutReelle())
+              {
+                long ecartDate = mTache.getDateFinPrevue().getTime() + mTache.getDateDebutReelle().getTime() - mTache.getDateDebutPrevue().getTime();	
+                mTache.setDateFinReelle(new Date(ecartDate)) ; 
+              }
+              else
+              {
+                mTache.setDateFinReelle(mTache.getDateFinPrevue()) ;
+              }
+              
               mTache.setDateDebutChrono(new Date()) ;
               // Le collaborateur a maintenant une tâche en cours
               mCollaborateur.setTacheEnCours(1) ;

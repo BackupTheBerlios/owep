@@ -28,7 +28,8 @@ public class CCreationCollaborateur extends CControleurBase
   private String mPortable ; // Numéro du portable du collaborateur à créer
   private String mCommentaire ; // Commentaire du collaborateur à créer
   private String mMdp ; // Mot de passe du collaborateur à créer
-
+  private int    mDroit ; //Droit du collaboratur (collaborateur = 0 ; chef de projet = 1) 
+  
   private MCollaborateur mCollaborateur ; // Collaborateur à créer
 
 
@@ -60,6 +61,7 @@ public class CCreationCollaborateur extends CControleurBase
     mTelephone = getRequete ().getParameter ("mTelephone") ;
     mPortable = getRequete ().getParameter ("mPortable") ;
     mCommentaire = getRequete ().getParameter ("mCommentaire") ;
+    mDroit = 0 ;
     mMdp = mLogin ;
   }
 
@@ -126,7 +128,7 @@ public class CCreationCollaborateur extends CControleurBase
 
       // Créé le nouveau collaborateur
       mCollaborateur = new MCollaborateur (mPrenom, mNom, mAdresse, mTelephone, mPortable, mMail,
-                                           mCommentaire, mLogin, mMdp) ;
+                                           mCommentaire, mLogin, mMdp, mDroit) ;
 
       // Enregistre le nouveau collaborateur dans la base de données
       getBaseDonnees ().create (mCollaborateur) ;

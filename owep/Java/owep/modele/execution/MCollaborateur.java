@@ -27,7 +27,8 @@ public class MCollaborateur extends MModeleBase
   private ArrayList mProjets ;      // Listes des projets sur lesquels travaille le collaborateur.
   private ArrayList mProjetsChef ;  // Listes des projets pour lesquels le collaborateur est chef.
   private int       mTacheEnCours ; // Booléen indiquant si le collaborateur est en train de réaliser une tâche
-
+  private int       mDroit ;        // Droits du collaborateur (collaborateur = 0 ; chef de projet = 1) 
+  
 
   /**
    * Crée une instance vide de MCollaborateur.
@@ -53,7 +54,7 @@ public class MCollaborateur extends MModeleBase
    */
   public MCollaborateur (String pPrenom, String pNom, String pAdresse, String pTelephone,
                          String pPortable, String pEmail, String pCommentaire, String pUtilisateur,
-                         String pMotDePasse)
+                         String pMotDePasse, int pDroit)
   {
     mPrenom       = pPrenom ;
     mNom          = pNom ;
@@ -64,6 +65,7 @@ public class MCollaborateur extends MModeleBase
     mCommentaires = pCommentaire;
     mUtilisateur  = pUtilisateur;
     mMotDePasse   = pMotDePasse;
+    mDroit        = pDroit;
     
     mTaches = new ArrayList () ;
   }
@@ -562,5 +564,25 @@ public class MCollaborateur extends MModeleBase
   public void setTacheEnCours (int pTacheEnCours)
   {
     mTacheEnCours = pTacheEnCours ;
+  }
+  
+  /**
+   * Récupère la variable Droit du collaborateur.
+   * 
+   * @return la variable Droit du collaborateur.
+   */
+  public int getDroit ()
+  {
+    return mDroit ;
+  }
+
+  /**
+   * Initialise la variable Droit du collaborateur.
+   * 
+   * @param pDroit variable Droit du collaborateur.
+   */
+  public void setDroit (int pDroit)
+  {
+    mDroit = pDroit ;
   }
 }

@@ -1,7 +1,7 @@
 <table width="100%" height="100%" cellpadding="0" cellspacing="0">
 <tbody>
 
-  <!-- menu Avancement -->
+  <!-- menu Général -->
   <tr>
     <td class="caseMenuProjet">
       <select class="menuProjet" name="LDProjet" size ="1">
@@ -37,8 +37,11 @@
       &nbsp;
     </td>
   </tr>
-  
-  
+
+
+<%//Test droit : partie chef de projet
+  if (((owep.infrastructure.Session)(request.getSession().getAttribute("SESSION"))).getCollaborateur().getDroit() == 1) {%>
+
   <!-- menu projet -->
   <tr>
     <td class="caseMenuNiveau1">
@@ -67,7 +70,14 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <p class="menuNiveau2">Tâche imprévues</p>
+
+      <a class="menuNiveau2" href="../Processus/CreationCollaborateur">Gestion des collaborateurs</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="caseMenuNiveau2">
+      Tâche imprévues
+
     </td>
   </tr>
   <tr>
@@ -76,6 +86,7 @@
     </td>
   </tr>
   
+  <%}%>
   
   <!-- menu configuration -->
   <tr>
@@ -85,7 +96,16 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <p class="menuNiveau2">Option de l'application</p>
+
+      Modifier son profil
+    </td>
+  </tr>
+  
+<%//Test droit : partie chef de projet
+  if (((owep.infrastructure.Session)(request.getSession().getAttribute("SESSION"))).getCollaborateur().getDroit() == 1) {%>  
+  <tr>
+    <td class="caseMenuNiveau2">
+      Option de l'application
     </td>
   </tr>
   <tr>
@@ -93,6 +113,7 @@
       <p class="menuNiveau2">Option de projet</p>
     </td>
   </tr>
+<%}%>  
   <tr>
     <td height="100%" class="caseMenuSeparation2">
       &nbsp;
