@@ -40,6 +40,11 @@ public class VDateConvertor
   }
   
   
+  /**
+   * Récupère une date formatée sous forme de chaîne.
+   * @param pDate Date à convertir.
+   * @return Date sous forme de chaîne formatée.
+   */
   public static String getString (Date pDate)
   {
     if (pDate != null)

@@ -3,7 +3,7 @@
 
 <mapping>
 
-  <!-- Mapping modèle Processus -->
+  <!-- Mapping modèle processus -->
   <class name="owep.modele.processus.MProcessus" identity="mId">
     <map-to table="PRC_PROCESSUS"/>
     <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
@@ -169,7 +169,7 @@
   
   
   
-  <!-- Mapping modèle Exécution -->
+  <!-- Mapping modèle exécution -->
   <class name="owep.modele.execution.MProjet" identity="mId">
     <map-to table="PRJ_PROJET"/>
     <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
@@ -389,7 +389,7 @@
 
   <class name="owep.modele.execution.MCondition" identity="mId">
     <map-to table="CND_CONDITION"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="CND_ID" type="integer"/>
     </field>
     <field name="mTache" type="owep.modele.execution.MTache" get-method="getTache" set-method="setTache" required="true">
@@ -404,24 +404,29 @@
   </class>
   
   
+  
+  
+  
+  
+  <!-- Mapping gestion de projet -->
   <class name="owep.modele.execution.MRisque" identity="mId">
     <map-to table="RIS_RISQUE"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="RIS_ID" type="integer"/>
     </field>
-    <field name="mNom" type="string" get-method="getNom" set-method="setNom">
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
       <sql name="RIS_NOM" type="char"/>
     </field>
     <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
       <sql name="RIS_DESCRIPTION" type="char"/>
     </field>
-    <field name="mPriorite" type="integer" get-method="getPriorite" set-method="setPriorite">
+    <field name="mPriorite" type="integer" get-method="getPriorite" set-method="setPriorite" required="true">
       <sql name="RIS_PRIORITE" type="integer"/>
     </field>
     <field name="mImpact" type="string" get-method="getImpact" set-method="setImpact">
       <sql name="RIS_IMPACT" type="char"/>
     </field>
-    <field name="mEtat" type="string" get-method="getEtat" set-method="setEtat">
+    <field name="mEtat" type="string" get-method="getEtat" set-method="setEtat" required="true">
       <sql name="RIS_ETAT" type="char"/>
     </field>
     <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet" required="true">
@@ -431,16 +436,16 @@
   
   <class name="owep.modele.execution.MMetrique" identity="mId">
     <map-to table="MET_METRIQUE"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="MET_ID" type="integer"/>
     </field>
-    <field name="mNom" type="string" get-method="getNom" set-method="setNom">
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
       <sql name="MET_NOM" type="char"/>
     </field>
-    <field name="mType" type="integer" get-method="getType" set-method="setType">
+    <field name="mType" type="integer" get-method="getType" set-method="setType" required="true">
       <sql name="MET_TYPE" type="integer"/>
     </field>
-    <field name="mValeur" type="integer" get-method="getValeur" set-method="setValeur">
+    <field name="mValeur" type="integer" get-method="getValeur" set-method="setValeur" required="true">
       <sql name="MET_VALEUR" type="integer"/>
     </field>
     <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
@@ -453,10 +458,10 @@
   
   <class name="owep.modele.execution.MActiviteImprevue" identity="mId">
     <map-to table="IMP_ACTIVITEIMP"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="IMP_ID" type="integer"/>
     </field>
-    <field name="mNom" type="string" get-method="getNom" set-method="setNom">
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
       <sql name="IMP_NOM" type="char"/>
     </field>
     <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
@@ -466,19 +471,19 @@
   
   <class name="owep.modele.execution.MProbleme" identity="mId">
     <map-to table="PRB_PROBLEME"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="PRB_ID" type="integer"/>
     </field>
-    <field name="mNom" type="string" get-method="getNom" set-method="setNom">
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
       <sql name="PRB_NOM" type="char"/>
     </field>
     <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
       <sql name="PRB_DESCRIPTION" type="char"/>
     </field>
-    <field name="mEtat" type="string" get-method="getEtat" set-method="setEtat">
+    <field name="mEtat" type="string" get-method="getEtat" set-method="setEtat" required="true">
       <sql name="PRB_ETAT" type="char"/>
     </field>
-    <field name="mDateIdentification" type="date" get-method="getDateIdentification" set-method="setDateIdentification">
+    <field name="mDateIdentification" type="date" get-method="getDateIdentification" set-method="setDateIdentification" required="true">
       <sql name="PRB_DATEIDENTIFICATION" type="date"/>
     </field>
     <field name="mDateCloture" type="date" get-method="getDateCloture" set-method="setDateCloture">
@@ -487,30 +492,35 @@
     <field name="mTacheResout" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTacheResout" set-method="setListeTacheResout">
       <sql name="R07_TAC_ID" many-table="R07_TAC_PRB_RESOUT" many-key="R07_PRB_ID"/>
     </field>
-    <field name="mTacheProvoque" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTacheProvoque" set-method="setListeTacheProvoque">
+    <field name="mTacheProvoque" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTacheProvoque" set-method="setListeTacheProvoque" required="true">
       <sql name="R08_TAC_ID" many-table="R08_TAC_PRB_PROVOQUE" many-key="R08_PRB_ID"/>
     </field>
   </class>
   
   
+  
+  
+  
+  
+  <!-- Mapping table de configuration -->
   <class name="owep.modele.configuration.MConfiguration" identity="mId">
     <map-to table="CON_CONFIGURATION"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="CON_ID" type="integer"/>
     </field>
-    <field name="mLangue" type="string" get-method="getLangue" set-method="setLangue">
+    <field name="mLangue" type="string" get-method="getLangue" set-method="setLangue" required="true">
       <sql name="CON_LANGUE" type="char"/>
     </field>
-    <field name="mPays" type="string" get-method="getPays" set-method="setPays">
+    <field name="mPays" type="string" get-method="getPays" set-method="setPays" required="true">
       <sql name="CON_PAYS" type="char"/>
     </field>
-    <field name="mApparence" type="string" get-method="getApparence" set-method="setApparence">
+    <field name="mApparence" type="string" get-method="getApparence" set-method="setApparence" required="true">
       <sql name="CON_APPARENCE" type="char"/>
     </field>
-    <field name="mPathArtefact" type="string" get-method="getPathArtefact" set-method="setPathArtefact">
+    <field name="mPathArtefact" type="string" get-method="getPathArtefact" set-method="setPathArtefact" required="true">
       <sql name="CON_PATH_ARTEFACT" type="char"/>
     </field>
-    <field name="mPathSauvegarde" type="string" get-method="getPathSauvegarde" set-method="setPathSauvegarde">
+    <field name="mPathSauvegarde" type="string" get-method="getPathSauvegarde" set-method="setPathSauvegarde" required="true">
       <sql name="CON_PATH_SAUVEGARDE" type="char"/>
     </field>
   </class>

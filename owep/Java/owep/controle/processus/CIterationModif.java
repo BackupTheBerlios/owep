@@ -3,12 +3,9 @@ package owep.controle.processus ;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import javax.servlet.ServletException ;
 import org.exolab.castor.jdo.OQLQuery ;
-import org.exolab.castor.jdo.PersistenceException;
 import org.exolab.castor.jdo.QueryResults ;
 import com.mysql.jdbc.Driver;
 import owep.controle.CConstante ;
@@ -425,7 +422,7 @@ public class CIterationModif extends CControleurBase
       try
       {
         DriverManager.registerDriver (new Driver ()) ;
-        lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", "root", "6431") ;
+        lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", "root", "puppetmaster") ;
         lConnection.setAutoCommit(false);
         if (mIteration.getId () == 0)
         {

@@ -1,4 +1,3 @@
-
 <%@page import="java.util.ArrayList"%>
 <%@page import="owep.infrastructure.Session"%>
 <%@page import="owep.modele.execution.MProjet"%>
