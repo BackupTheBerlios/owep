@@ -10,7 +10,7 @@ body
 }
 a
 {
-  color           : rgb(128,0,0) ;
+  color           : rgb(57,101,198) ;
   font-family     : arial ;
   font-size       : 12px ;
   text-decoration : none ;
@@ -36,6 +36,204 @@ a:visited
   font-size       : 12px ;
   text-decoration : none ;
 }
+.titre
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 32px ;
+  font-weight     : bold ;
+  margin          : 0px 0px 32px 0px ;
+  text-align      : center ;
+  text-decoration : underline ;
+}
+.titre1
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 22px ;
+  font-weight     : bold ;
+  text-decoration : underline ;
+}
+.titre2
+{
+  color       : rgb(51,85,165) ;
+  font-family : arial ;
+  font-size   : 16px ;
+  font-weight : bold ;
+}
+.titre3
+{
+  color       : rgb(51,85,165) ;
+  font-family : arial ;
+  font-size   : 12px ;
+  font-weight : bold ;
+}
+.texte
+{
+  color       : black ;
+  font-family : arial ;
+  font-size   : 12px ;
+  text-indent : 24px ;
+}
+.texteImportant
+{
+  text-align  : center ;
+  color       : black ;
+  font-family : arial ;
+  font-size   : 12px ;
+  font-weight : bold ;
+  text-indent : 24px ;
+}
+.texteObligatoire
+{
+  text-align  : center ;
+  color       : black ;
+  font-family : arial ;
+  font-size   : 10px ;
+  font-weight : bold ;
+  text-indent : 24px ;
+}
+.texteMessage
+{
+  text-align  : center ;
+  color       : rgb(80,123,184) ;
+  font-family : arial ;
+  font-size   : 12px ;
+  font-weight : bold ;
+  text-indent : 24px ;
+}
+.texteSubmit
+{
+  text-align : right ;
+}
+a.niveau1:active
+{
+  color           : rgb(255,255,255) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.niveau1:hover
+{
+  color           : rgb(255,255,255) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : underline ;
+}
+a.niveau1:link
+{
+  color           : rgb(255,255,255) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.niveau1:visited
+{
+  color           : rgb(255,255,255) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+}
+a.niveau2:active
+{
+  color           : rgb(80,123,184) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.niveau2:hover
+{
+  color           : rgb(80,123,184) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight      : bold ;
+  text-decoration : underline ;
+}
+a.niveau2:link
+{
+  color           : rgb(80,123,184) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.niveau2:visited
+{
+  color           : rgb(80,123,184) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+}
+a.niveau3:active
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.niveau3:hover
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight      : bold ;
+  text-decoration : underline ;
+}
+a.niveau3:link
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.niveau3:visited
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+}
+a.texte:active
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  text-decoration : none ;
+}
+a.texte:hover
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  text-decoration : underline ;
+}
+a.texte:link
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  text-decoration : none ;
+}
+a.texte:visited
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+}
+
+
+
+
+
+/**************************************************************************************************
+ * Styles formulaires
+ **************************************************************************************************/
 input.bouton
 {
   background-color : rgb(80,123,184) ;
@@ -110,67 +308,14 @@ select.niveau2
   font-weight      : bold ;
   margin           : 1px 0px 1px 0px ;
 }
-.titre
-{
-  color           : rgb(51,85,165) ;
-  font-family     : arial ;
-  font-size       : 32px ;
-  font-weight     : bold ;
-  margin          : 0px 0px 32px 0px ;
-  text-align      : center ;
-  text-decoration : underline ;
-}
-.titre1
-{
-  color           : rgb(51,85,165) ;
-  font-family     : arial ;
-  font-size       : 22px ;
-  font-weight     : bold ;
-  text-decoration : underline ;
-}
-.titre2
-{
-  color       : rgb(51,85,165) ;
-  font-family : arial ;
-  font-size   : 16px ;
-  font-weight : bold ;
-}
-.titre3
-{
-  color       : rgb(51,85,165) ;
-  font-family : arial ;
-  font-size   : 12px ;
-  font-weight : bold ;
-}
-p.texte
-{
-  color       : black ;
-  font-family : arial ;
-  font-size   : 12px ;
-  text-indent : 24px ;
-}
-p.texteImportant
-{
-  text-align  : center ;
-  color       : black ;
-  font-family : arial ;
-  font-size   : 12px ;
-  font-weight : bold ;
-  text-indent : 24px ;
-}
-p.texteObligatoire
-{
-  text-align  : center ;
-  color       : black ;
-  font-family : arial ;
-  font-size   : 10px ;
-  font-weight : bold ;
-  text-indent : 24px ;
-}
-p.texteSubmit
-{
-  text-align : right ;
-}
+
+
+
+
+
+/**************************************************************************************************
+ * Styles tableaux
+ **************************************************************************************************/
 table.tableau
 {
   border       : solid rgb(57,101,198) ;
@@ -262,20 +407,6 @@ td.caseNiveau3SansBordure
   padding-top      : 2px ;
   text-align       : left ;
 }
-a.niveau1
-{
-  color           : rgb(255,255,255) ;
-  font-family     : arial ;
-  font-size       : 12px ;
-  text-decoration : none ;
-}
-a.niveau1:hover
-{
-  color           : rgb(255,255,255) ;
-  font-family     : arial ;
-  font-size       : 12px ;
-  text-decoration : underline ;
-}
 
 
 
@@ -302,6 +433,17 @@ td.regionPrincipal
 {
   border         : solid rgb(57,101,198) ;
   border-width   : 1px 0px 0px 1px ;
+  height         : 100% ;
+  padding-bottom : 16px ;
+  padding-left   : 12px ;
+  padding-right  : 12px ;
+  padding-top    : 16px ;
+  vertical-align : top ;
+}
+td.regionAidePrincipal
+{
+  border         : solid rgb(57,101,198) ;
+  border-width   : 2px 2px 2px 2px ;
   height         : 100% ;
   padding-bottom : 16px ;
   padding-left   : 12px ;
@@ -385,6 +527,22 @@ select.menuProjet
   font-size        : 13px ;
   font-weight      : bolder ;
 }
+a.menuConnexion:active
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.menuConnexion:link
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
 a.menuConnexion:hover
 {
   color           : rgb(51,85,165) ;
@@ -393,13 +551,12 @@ a.menuConnexion:hover
   font-weight     : bold ;
   text-decoration : underline ;
 }
-a.menuConnexion
+a.menuConnexion:visited
 {
   color           : rgb(51,85,165) ;
   font-family     : arial ;
   font-size       : 12px ;
   font-weight     : bold ;
-  text-decoration : none ;
 }
 p.menuNiveau1
 {
@@ -414,7 +571,7 @@ p.menuNiveau1
   font-family     : arial ;
   font-size       : 12px ;
 }
-a.menuNiveau2
+a.menuNiveau2:active
 {
   color           : rgb(51,85,165) ;
   font-family     : arial ;
@@ -429,6 +586,21 @@ a.menuNiveau2:hover
   font-size       : 12px ;
   font-weight     : bold ;
   text-decoration : underline ;
+}
+a.menuNiveau2:link
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.menuNiveau2:visited
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
 }
 
 
@@ -558,6 +730,13 @@ td.regionPied
 /**************************************************************************************************
  * Aide en ligne
  **************************************************************************************************/
+img.imageAide
+{
+  border           : solid rgb(57,101,198) ;
+  border-width     : 1px 1px 1px 1px ;
+  margin           : 0px 0px 30px 0px ;
+  text-align       : right ;
+}
 img.iconeAide
 {
   background-image : url(/owep/Image/Blue/iconeAide.png) ;
@@ -577,6 +756,7 @@ img.iconeCaseAide
   font-size      : 12px ;
   padding-bottom : 20px ;
   padding-top    : 20px ;
+  text-align     : justify ;
 }
 div.domTT
 {
@@ -597,4 +777,44 @@ div.domTTContent
   font-family      : sans-serif ;
   padding          : 3px 2px ;
   background-color : rgb(171,221,229) ;
+}
+
+
+
+
+/**************************************************************************************************
+ * Page d'identification
+ **************************************************************************************************/
+table.regionIdentificationGauche
+{
+  border            : solid rgb(57,101,198) ;
+  border-width      : 2px 0px 0px 2px ;
+  height       : 100% ;
+  width        : 100% ;
+}
+table.regionIdentificationDroite
+{
+  border       : solid rgb(57,101,198) ;
+  border-width : 2px 2px 0px 0px ;
+  height       : 100% ;
+  width        : 100% ;
+}
+td.regionIdentificationPrincipal
+{
+  border         : solid rgb(57,101,198) ;
+  border-width   : 0px 0px 0px 0px ;
+  height         : 100% ;
+  padding-bottom : 16px ;
+  padding-left   : 12px ;
+  padding-right  : 12px ;
+  padding-top    : 16px ;
+  vertical-align : top ;
+}
+img.logoIdentification
+{
+  background-image  : url(/owep/Image/Blue/regionIdentification.png) ;
+  background-repeat : no-repeat ;
+  height            : 400px ;
+  vertical-align    : top ;
+  width             : 400px ;
 }
