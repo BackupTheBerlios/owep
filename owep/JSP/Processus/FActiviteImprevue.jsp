@@ -1,12 +1,18 @@
 <%@page import="owep.controle.CConstante"%>
 <%@page import="owep.vue.transfert.VTransfert"%>
 <%@page import="owep.vue.transfert.VTransfertConstante"%>
-<%@page import="owep.infrastructure.Session"%>
 <%@page import="owep.modele.execution.MProjet"%>
 <%@page import="owep.modele.execution.MActiviteImprevue"%>
+<%@page import="java.util.ResourceBundle"%>
+<%@page import="owep.infrastructure.Session"%>
 <%@taglib uri='/WEB-INF/tld/transfert.tld' prefix='transfert' %>
 
 <%
+  // Recuperation de la session
+  HttpSession httpSession = request.getSession(true);
+  //Récupération du ressource bundle
+  ResourceBundle messages = ((Session) httpSession.getAttribute("SESSION")).getMessages();
+  
   MProjet lProjet = (MProjet) request.getAttribute (CConstante.PAR_PROJET) ;
   
   // Liste des champs transférés.
@@ -15,7 +21,7 @@
 %>
 
 
-<p class="titre1">PROJET : <%= lProjet.getNom () %></p>
+<p class="titre1"><%= messages.getString("projet") %> : <%= lProjet.getNom () %></p>
 <p class="texte"><%= lProjet.getDescription () %></p>
 <br/><br/>
  
@@ -46,12 +52,13 @@
   
     <!-- Champs de l'activité imprévue -->
     <tr> 
-      <td class="caseNiveau1" colspan="2">Activité imprévue :</td>
+      <td class="caseNiveau1" colspan="2"><%= messages.getString("activiteImprevue") %> :</td>
     </tr>
     <tr>
       <td>
         <select name="<%= CConstante.PAR_LISTEACTIVITESIMPREVUES %>" class="niveau2" style="width: 200" size="5"
-        onchange="selectActiviteImprevue (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITESIMPREVUES %>.selectedIndex)">
+         onchange="selectActiviteImprevue (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITESIMPREVUES %>.selectedIndex)"
+         onmouseover="tooltipOn (this, event, '<%= messages.getString("activiteImprevueListeActivite") %>')" onmouseout="tooltipOff(this, event)">
           <% for (int lIndiceActiviteImprevue = 0; lIndiceActiviteImprevue < lProjet.getNbActivitesImprevues (); lIndiceActiviteImprevue++)
              {
           %>
@@ -66,23 +73,23 @@
         <table width="100%" cellpadding="0" cellspacing="0" valign="top">
           <tr>
             <td class="caseNiveau3SansBordure">
-              Nom de l'activité * :
+              <%= messages.getString("activiteImprevueNom") %> * :
             </td>
             <td>
               <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom de l\\'activité" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREACTIVITE %>"/>
-               type="text" size="48" class="niveau2"
-               value="" maxlength="<%= CConstante.TXT_MOYEN %>">
+               type="text" size="48" class="niveau2" value="" maxlength="<%= CConstante.TXT_MOYEN %>"
+               onmouseover="tooltipOn (this, event, '<%= messages.getString("activiteImprevueSaisieNom") %>')" onmouseout="tooltipOff(this, event)">
               <% lChampActiviteImprevueNom = VTransfert.getDernierChamp () ; %>
             </td>
           </tr>
           <tr>
             <td class="caseNiveau3SansBordure">
-             Description :
+             <%= messages.getString("activiteImprevueDescription") %> :
             </td>
             <td>
               <input <transfert:transfertchamp membre="setDescription" type="java.lang.String" libelle="Description" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBREACTIVITE %>"/> 
-               type="text" size="48" class="niveau2"
-               value=""  maxlength="<%= CConstante.TXT_MOYEN %>">
+               type="text" size="48" class="niveau2" value=""  maxlength="<%= CConstante.TXT_MOYEN %>"
+               onmouseover="tooltipOn (this, event, '<%= messages.getString("activiteImprevueSaisieDescription") %>')" onmouseout="tooltipOff(this, event)">
               <% lChampActiviteImprevueDescription = VTransfert.getDernierChamp () ; %>
             </td>
           </tr>
@@ -90,14 +97,15 @@
       </td>
     </tr>
   </table>
+  <p class="texteObligatoire"><%= messages.getString("champObligatoire") %></p>
 
   </transfert:transfertbean>
 
   <br>
   <p class="paragrapheSubmit">
-    <transfert:transfertsubmit libelle="Ajouter" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="validerFormulaireAjouter () ;"/>
-    <transfert:transfertsubmit libelle="Modifier" valeur="<%= CConstante.PAR_SUBMITMODIFIER %>" verification="true" validation="validerFormulaireModifier () ;"/>
-    <transfert:transfertsubmit libelle="Supprimer" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER %>" verification="true" validation="validerFormulaireSupprimer () ;"/>
+    <transfert:transfertsubmit libelle="<%= messages.getString("boutonAjouter") %>" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="validerFormulaireAjouter () ;"/>
+    <transfert:transfertsubmit libelle="<%= messages.getString("boutonModifier") %>" valeur="<%= CConstante.PAR_SUBMITMODIFIER %>" verification="true" validation="validerFormulaireModifier () ;"/>
+    <transfert:transfertsubmit libelle="<%= messages.getString("boutonSupprimer") %>" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER %>" verification="true" validation="validerFormulaireSupprimer () ;"/>
   </p>
 
 </form>
@@ -139,7 +147,7 @@
   
   function validerFormulaireModifier () 
   {
-    if (confirm("Certaines tâches imprévues peuvent dépendre de cette activité. Etes vous sûr de vouloir la modifier ?"))
+    if (confirm("<%= messages.getString("activiteImprevueMessageModifier") %>"))
     {
       <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREACTIVITE) %> () ;
       validerChamps () ;
@@ -148,10 +156,15 @@
   
   function validerFormulaireSupprimer () 
   {
-    if (confirm("Certaines tâches imprévues peuvent dépendre de cette activité. Etes vous sûr de vouloir la supprimer car cela entrainnera la suppression des tâches imprévues et de leurs artefacts ?"))
+    if (confirm("<%= messages.getString("activiteImprevueMessageSupprimer") %>"))
     {
       <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREACTIVITE) %> () ;
       validerChamps () ;
     }
   }
+</script>
+
+<!-- Aide en ligne -->
+<script type="text/javascript" language="JavaScript">
+pCodeAide  = "<%= messages.getString("activiteImprevueAide") %>" ;
 </script>

@@ -8,14 +8,22 @@
 <%@page import="owep.vue.transfert.VTransfert"%>
 <%@page import="owep.vue.transfert.VTransfertConstante"%>
 <%@page import="owep.vue.transfert.convertor.VDateConvertor"%>
+<%@page import="java.util.ResourceBundle"%>
+<%@page import="owep.infrastructure.Session"%>
 <%@taglib uri='/WEB-INF/tld/transfert.tld' prefix='transfert' %>
 
 
 <!-- Déclaration des variables locales -->
 <%
+  // Recuperation de la session
+  HttpSession httpSession = request.getSession(true);
+  //Récupération du ressource bundle
+  ResourceBundle messages = ((Session) httpSession.getAttribute("SESSION")).getMessages();
+
   MProjet lProjet = (MProjet) request.getAttribute (CConstante.PAR_PROJET) ;
   MIteration lIteration = (MIteration) request.getAttribute (CConstante.PAR_ITERATION) ;
   String lCodeValidation ;
+  String lCodeAdditionnel;
 
   // Liste des champs transférés.
   String lChampTacheImprevueNom             = "" ;
@@ -30,26 +38,26 @@
 
 
 
-<p class="titre1">PROJET : <%= lProjet.getNom () %></p>
+<p class="titre1"><%= messages.getString("projet") %> : <%= lProjet.getNom () %></p>
 <p class="texte"><%= lProjet.getDescription () %></p>
 <br/><br/>
 
 <table class="tableau" width="100%" cellpadding="0" cellspacing="0">
 <tbody> 
   <tr> 
-    <td class="caseNiveau1" colspan="2">Informations sur l'itération en cours :</td>
+    <td class="caseNiveau1" colspan="2"><%= messages.getString("tacheImprevueInfoIte") %> :</td>
   </tr>
   <tr>
     <td class="caseNiveau3" colspan="2">
-      Nom de l'itération  : <%= lIteration.getNom() %>
+      <%= messages.getString("iterationNom") %>  : <%= lIteration.getNom () %>
     </td>
   </tr>
   <tr>
     <td class="caseNiveau3">
-      Date de début réelle : <%= lIteration.getDateDebutPrevue() %>
+      <%= messages.getString("iterationDateDebutReelle") %> : <%= VDateConvertor.getString(lIteration.getDateDebutReelle ()) %>
     </td>
     <td class="caseNiveau3">
-      Date de fin prévue : <%= lIteration.getDateFinPrevue() %>
+      <%= messages.getString("iterationDateFinPrevue") %> : <%= VDateConvertor.getString(lIteration.getDateFinPrevue ()) %>
     </td>
   </tr>
 </table>
@@ -68,7 +76,7 @@
     <!-- Liste des tâches imprévues-->
     <tr>
       <td class="caseNiveau1" colspan="2">
-        Liste des tâches imprévues à réaliser :
+        <%= messages.getString("tacheImprevueListe") %> :
       </td>
     </tr>
     <tr> 
@@ -127,7 +135,8 @@
       
       <td class="caseNiveau3">
         <select name="<%= CConstante.PAR_LISTETACHESIMPREVUES %>" class="niveau2" style="width: 200" size="29"
-         onchange="selectTacheImprevue (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHESIMPREVUES %>.selectedIndex)">
+         onchange="selectTacheImprevue (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHESIMPREVUES %>.selectedIndex)"
+          onmouseover="tooltipOn(this, event, 'Liste des tâches imprévues actuellement définies pour l\'itération. Selectionnez-en une pour pouvoir la modifier.')" onmouseout="tooltipOff(this, event)">
           <%
             for (int lIndiceTacheImprevue = 0; lIndiceTacheImprevue < lIteration.getNbTachesImprevues (); lIndiceTacheImprevue ++)
             {
@@ -147,12 +156,17 @@
         <table width="100%" cellpadding="0" cellspacing="0" valign="top">
           <tr>
             <td colspan="2">
-              <p class="titre2">Détail de la tâche imprévue :</p>
+              <p class="titre2" onmouseout="tooltipOff(this, event)" onmouseover="tooltipOn(this, event, '<%= messages.getString("aideChampObligatoire") %><b>Section</b> vous permettant de spécifier les informations sur une tâches imprévues.<br/>' +
+               ' Cliquez ensuite sur le bouton <b>Ajouter</b> ou <b>Modifier</b> en bas à gauche pour valider.')">
+                <%= messages.getString("tacheImprevueDetail") %> :
+              </p>
             </td>        
           </tr>
           <tr>
-            <td width="50%" class="caseNiveau3SansBordure">    
-              Nom * :
+            <td width="50%" class="caseNiveau3SansBordure">
+              <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, '<%= messages.getString("aideChampObligatoire") %>', '<%= messages.getString("aideTacheImprevueNom") %>')" onmouseout="tooltipOff(this, event)">    
+                <%= messages.getString("tacheNom") %> * :
+              </a>
             </td>
             <td>
               <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHESIMPREVUES %>"/>
@@ -163,7 +177,9 @@
           </tr>
           <tr>
             <td class="caseNiveau3SansBordure">
-              Description :
+              <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, '<%= messages.getString("aideChampObligatoire") %>', '<%= messages.getString("aideTacheImprevueDescription") %>')" onmouseout="tooltipOff(this, event)">
+                <%= messages.getString("tacheDescription") %> :
+              </a>
             </td>
             <td>
               <input <transfert:transfertchamp membre="setDescription" type="java.lang.String" libelle="Description" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBRETACHESIMPREVUES %>"/>
@@ -173,7 +189,9 @@
           </tr>
           <tr>
             <td class="caseNiveau3SansBordure">
-              Charge initiale * :
+              <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, '<%= messages.getString("aideChampObligatoire") %>', '<%= messages.getString("aideTacheImprevueCharge") %>')" onmouseout="tooltipOff(this, event)">
+                <%= messages.getString("tacheChargeInitiale") %> * :
+              </a>
             </td>
             <td>
               <input <transfert:transfertchamp membre="setChargeInitiale" type="java.lang.Double" libelle="Charge initiale" convertor="VDoubleConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHESIMPREVUES %>"/>
@@ -183,7 +201,9 @@
           </tr>
           <tr>
             <td class="caseNiveau3SansBordure">
-              Date de début prévue * :
+              <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, '<%= messages.getString("aideChampObligatoire") %>', '<%= messages.getString("aideTacheImprevueDateDebut") %>')" onmouseout="tooltipOff(this, event)">
+                <%= messages.getString("tacheDateDebutPrevue") %> * :
+              </a>
             </td>
             <td>
               <input <transfert:transfertchamp membre="setDateDebutPrevue" type="java.util.Date" libelle="Date de début prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHESIMPREVUES %>"/>
@@ -193,7 +213,9 @@
           </tr>
           <tr>
             <td class="caseNiveau3SansBordure">
-              Date de fin prévue * :
+              <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, '<%= messages.getString("aideChampObligatoire") %>', '<%= messages.getString("aideTacheImprevueDateFin") %>')" onmouseout="tooltipOff(this, event)">
+                <%= messages.getString("tacheDateFinPrevue") %> * :
+              </a>
             </td>
             <td>
               <input <transfert:transfertchamp membre="setDateFinPrevue" type="java.lang.Date" libelle="Date de fin prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHESIMPREVUES %>"/>
@@ -212,7 +234,9 @@
           <tr>
             <td class="caseNiveau3SansBordure">
               <!-- Données de l'activité imprévue. -->
-              Activité imprévue * :
+              <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, '<%= messages.getString("aideChampObligatoire") %>', '<%= messages.getString("aideTacheImprevueActivite") %>')" onmouseout="tooltipOff(this, event)">
+                <%= messages.getString("activiteImprevue") %> * :
+              </a>
               <select class="niveau2" name="<%= CConstante.PAR_LISTEACTIVITESIMPREVUES %>" onchange="">
               <%
                 for (int i = 0 ; i < lProjet.getNbActivitesImprevues () ; i++)
@@ -227,7 +251,9 @@
           </tr>
           <tr>
             <td colspan="2" class="caseNiveau3SansBordure">
-              Collaborateur affecté * :
+              <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, '<%= messages.getString("aideChampObligatoire") %>', '<%= messages.getString("aideTacheImprevueCollaborateur") %>')" onmouseout="tooltipOff(this, event)">
+                <%= messages.getString("tacheCollaborateurAffecte") %> * :
+              </a>
               <select class="niveau2" name="<%= CConstante.PAR_LISTECOLLABORATEURS %>">
               <%
                 for (int i = 0 ; i < lProjet.getNbCollaborateurs () ; i++)
@@ -249,13 +275,13 @@
               <transfert:transfertbean scope="Session" type="owep.modele.execution.MArtefact" bean="getArtefactSortie" idArbre="<%= CConstante.PAR_ARBREARTEFACTSORTIES %>">
               
               <% lCodeValidation = "validerTacheImprevueAjout () ;" ; %>
-              <transfert:transfertsubmit libelle="Ajouter" valeur="<%= CConstante.PAR_SUBMITAJOUTER %>" verification="true" validation="<%= lCodeValidation %>"/>
+              <transfert:transfertsubmit libelle="<%= messages.getString("boutonAjouter") %>" valeur="<%= CConstante.PAR_SUBMITAJOUTER %>" verification="true" validation="<%= lCodeValidation %>"/>
         
-              <% lCodeValidation = "validerTacheImprevueModif (document. " + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTETACHESIMPREVUES + ", 'Attention aucune tâche imprévue n\\'a été sélectionnée.') ;" ; %>
-              <transfert:transfertsubmit libelle="Modifier" valeur="<%= CConstante.PAR_SUBMITMODIFIER %>" verification="true" validation="<%= lCodeValidation %>"/>
+              <% lCodeValidation = "validerTacheImprevueModif (document. " + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTETACHESIMPREVUES + ", '" +  messages.getString("tacheImprevueMessageAucuneSelect") + "') ;" ; %>
+              <transfert:transfertsubmit libelle="<%= messages.getString("boutonModifier") %>" valeur="<%= CConstante.PAR_SUBMITMODIFIER %>" verification="true" validation="<%= lCodeValidation %>"/>
         
-              <% lCodeValidation = "validerTacheImprevueSuppr (document. " + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTETACHESIMPREVUES + ", 'Attention aucune tâche imprévue n\\'a été sélectionnée.') ;" ; %>
-              <transfert:transfertsubmit libelle="Supprimer" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER %>" verification="true" validation="<%= lCodeValidation %>"/>
+              <% lCodeValidation = "validerTacheImprevueSuppr (document. " + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTETACHESIMPREVUES + ", '" + messages.getString("tacheImprevueMessageAucuneSelect") + "') ;" ; %>
+              <transfert:transfertsubmit libelle="<%= messages.getString("boutonSupprimer") %>" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER %>" verification="true" validation="<%= lCodeValidation %>"/>
             </td>
           </tr>
           <tr>
@@ -271,10 +297,14 @@
             <td>
               <!-- Liste des artefacts en sorties -->
               
-              <p class="titre2">Artefacts en Sorties :</p>
+              <p class="titre2" onmouseout="tooltipOff(this, event)" onmouseover="tooltipOn(this, event, '<%= messages.getString("aideArtefactImprevueSortie") %>')">
+                <%= messages.getString("artefactSortie") %> :
+              </p>
             </td>
             <td>
-              <p class="titre2">Artefacts en Entrées :</p>
+              <p class="titre2" onmouseout="tooltipOff(this, event)" onmouseover="tooltipOn(this, event, '<%= messages.getString("aideArtefactImprevueEntree") %>')">
+                <%= messages.getString("artefactEntree") %> :
+              </p>  
             </td>
           </tr>
           <tr>
@@ -282,13 +312,17 @@
               <table width="100%" cellpadding="0" cellspacing="0" valign="top">
                 <tr>       
                   <td colspan="2" align="center">
-                    <select class="niveau2" name="<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>" style="width: 80%" onchange="selectArtefactImprevueSortie (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHESIMPREVUES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.selectedIndex)" size="4">
+                    <select class="niveau2" name="<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>" style="width: 80%" 
+                     onchange="selectArtefactImprevueSortie (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHESIMPREVUES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.selectedIndex)" size="4"
+                     onmouseout="tooltipOff(this, event)" onmouseover="tooltipOn(this, event, '<%= messages.getString("aideArtefactImprevueSortieListe") %>')">
                     </select>
                   </td>
                 </tr>
                 <tr>
-                  <td width="50%" class="caseNiveau3SansBordure">     
-                    Nom * :
+                  <td width="50%" class="caseNiveau3SansBordure"> 
+                    <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, '<%= messages.getString("aideChampObligatoire") %>', '<%= messages.getString("aideArtefactSortieNom") %>')" onmouseout="tooltipOff(this, event)">    
+                      <%= messages.getString("artefactNom") %> * :
+                    </a>
                   </td>
                   <td>
                     <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREARTEFACTSORTIES %>"/>
@@ -298,7 +332,9 @@
                   </td>
                 </tr>
                   <td class="caseNiveau3SansBordure">
-                    Description :
+                    <a href="#" class="texte" onmouseover="tooltipOn(this, event, '<%= messages.getString("aideArtefactSortieDescription") %>')" onmouseout="tooltipOff(this, event)">
+                      <%= messages.getString("artefactDescription") %> :
+                    </a>
                   </td>
                   <td>
                     <input <transfert:transfertchamp membre="setDescription" type="java.lang.String" libelle="Description" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBREARTEFACTSORTIES %>"/>
@@ -310,7 +346,9 @@
               </transfert:transfertbean>
                 <tr>
                   <td class="caseNiveau3SansBordure">
-                    Responsable * :
+                    <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, '<%= messages.getString("aideChampObligatoire") %>', '<%= messages.getString("aideArtefactSortieResponsable") %>')" onmouseout="tooltipOff(this, event)">
+                      <%= messages.getString("artefactResponsable") %> * :
+                    </a>
                   </td>
                   <td>
                     <select class="niveau2" name="<%= CConstante.PAR_LISTERESPONSABLES %>">
@@ -330,13 +368,19 @@
                   <td colspan="2">        
                     <!-- Barre d'outils d'artefacts -->
                     <% lCodeValidation = "validerArtefactImprevueSortie (document. " + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTETACHESIMPREVUES + ", 'Attention aucune tâche imprévue n\\'a été sélectionnée.' ) ;" ; %>
-                    <transfert:transfertsubmit libelle="Ajouter"   valeur="<%= CConstante.PAR_SUBMITAJOUTER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"/>
+                    <% lCodeAdditionnel  = "onmouseover=\"tooltipOn(this, event, '" + messages.getString("aideArtefactSortieAjouter") + "')\" onmouseout=\"tooltipOff(this, event)\"" ; %>
+                    <transfert:transfertsubmit libelle="<%= messages.getString("boutonAjouter") %>"   valeur="<%= CConstante.PAR_SUBMITAJOUTER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"
+                     additionnel="<%= lCodeAdditionnel %>"/>
                     
                     <% lCodeValidation = "validerArtefactImprevueSortie (document. " + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTEARTEFACTSSORTIES + ", 'Attention aucun artefact en sortie n\\'a été sélectionné.') ;" ; %>
-                    <transfert:transfertsubmit libelle="Modifier"  valeur="<%= CConstante.PAR_SUBMITMODIFIER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"/>
+                    <% lCodeAdditionnel  = "onmouseover=\"tooltipOn(this, event, '" + messages.getString("aideArtefactSortieModifier") + "')\" onmouseout=\"tooltipOff(this, event)\"" ; %>
+                    <transfert:transfertsubmit libelle="<%= messages.getString("boutonModifier") %>"  valeur="<%= CConstante.PAR_SUBMITMODIFIER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"
+                     additionnel="<%= lCodeAdditionnel %>"/>
                     
                     <% lCodeValidation = "validerArtefactImprevueSortieSuppr (document. " + CConstante.PAR_FORMULAIRE +"." + CConstante.PAR_LISTEARTEFACTSSORTIES + ", 'Attention aucun artefact en sortie n\\'a été sélectionné.') ;" ; %>
-                    <transfert:transfertsubmit libelle="Supprimer" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"/>
+                    <% lCodeAdditionnel  = "onmouseover=\"tooltipOn(this, event, '" + messages.getString("aideArtefactSortieSupprimer") + "')\" onmouseout=\"tooltipOff(this, event)\"" ; %>
+                    <transfert:transfertsubmit libelle="<%= messages.getString("boutonSupprimer") %>" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"
+                     additionnel="<%= lCodeAdditionnel %>"/>
                   </td>
                 </tr>
               </table>    
@@ -347,11 +391,15 @@
               <!-- Liste des artefacts en entrées -->
               <table width="100%" height="100%" cellpadding="0" cellspacing="0" valign="top">
                 <tr>
-                  <td class="caseNiveau3SansBordure" width="50%">        
-                    <p class="">Possibles :</p>
+                  <td class="caseNiveau3SansBordure" width="50%"> 
+                    <a href="#" class="texte" onmouseover="tooltipOn(this, event, '<%= messages.getString("aideArtefactEntreeListePossible") %>')" onmouseout="tooltipOff(this, event)">       
+                      <%= messages.getString("artefactEntreePossibles") %> :
+                    </a>
                   </td>
-                  <td class="caseNiveau3SansBordure">       
-                    Effectifs :
+                  <td class="caseNiveau3SansBordure"> 
+                    <a href="#" class="texte" onmouseover="tooltipOn(this, event, '<%= messages.getString("aideArtefactEntreeListeEffectif") %>')" onmouseout="tooltipOff(this, event)">      
+                      <%= messages.getString("artefactEntreesEffectifs") %> :
+                    </a>
                   </td>
                 </tr>
                 <tr>
@@ -367,11 +415,15 @@
                 <tr>
                   <td align="center">
                     <% lCodeValidation = "validerArtefactImprevueEntree (document. " + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ", 'Attention aucun artefact en entrée n\\'a été sélectionné.' ) ;" ; %>
-                    <transfert:transfertsubmit libelle="Ajouter"  valeur="<%= CConstante.PAR_SUBMITAJOUTER_ARTENTREES %>" verification="true" validation="<%= lCodeValidation %>"/>
+                    <% lCodeAdditionnel  = "onmouseover=\"tooltipOn(this, event, '" + messages.getString("aideArtefactEntreeAjouter") + "')\" onmouseout=\"tooltipOff(this, event)\"" ; %>
+                     <transfert:transfertsubmit libelle="<%= messages.getString("boutonAjouter") %>"  valeur="<%= CConstante.PAR_SUBMITAJOUTER_ARTENTREES %>" verification="true" validation="<%= lCodeValidation %>"
+                     additionnel="<%= lCodeAdditionnel %>"/>
                   </td>
                   <td align="center">     
                     <% lCodeValidation = "validerArtefactImprevueEntreeSuppr (document. " + CConstante.PAR_FORMULAIRE +"." + CConstante.PAR_LISTEARTEFACTSENTREES + ", 'Attention aucun artefact en entrée n\\'a été sélectionné.' ) ;" ; %>
-                    <transfert:transfertsubmit libelle="Supprimer"  valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_ARTENTREES %>" verification="true" validation="<%= lCodeValidation %>"/>
+                    <% lCodeAdditionnel  = "onmouseover=\"tooltipOn(this, event, '" + messages.getString("aideArtefactEntreeSupprimer") + "')\" onmouseout=\"tooltipOff(this, event)\"" ; %>
+                    <transfert:transfertsubmit libelle="<%= messages.getString("boutonSupprimer") %>"  valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_ARTENTREES %>" verification="true" validation="<%= lCodeValidation %>"
+                     additionnel="<%= lCodeAdditionnel %>"/>
                   </td>
                 </tr>
               </table>
@@ -387,12 +439,13 @@
     </tr>
   </tbody>
   </table>
+  <p class="texteObligatoire"><%= messages.getString("champObligatoire") %></p>
   
   </transfert:transfertbean>
 
   <br>
   <p class="paragrapheSubmit">
-    <transfert:transfertsubmit libelle="Valider" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="validerFormulaire () ;"/>
+    <transfert:transfertsubmit libelle="<%= messages.getString("boutonValider") %>" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="validerFormulaire () ;"/>
   </p>
   
 </form>
@@ -711,4 +764,9 @@
     return date.getDate()==date.getFullYear()==dt[2]?date:false&&date.getMonth()+1==dt[1]&&dt[0];
   } 
   
+</script>
+
+<!-- Aide en ligne -->
+<script type="text/javascript" language="JavaScript">
+pCodeAide  = "<%= messages.getString("aideTacheImprevuePage") %>"
 </script>
