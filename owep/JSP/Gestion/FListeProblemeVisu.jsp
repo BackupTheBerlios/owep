@@ -43,33 +43,19 @@
   
   
   <%
-  // S'il aucun problème n'est survenu sur le projet,
-  if (pListeProblemes.size () == 0)
+  for (int lIndiceProbleme = 0; lIndiceProbleme < pListeProblemes.size (); lIndiceProbleme ++)
   {
-  %>
-  </tr>
-    <td class="caseNiveau3" colspan="7">
-      Aucun problème n'a été détecté sur  ce projet.
-    </td>
-  </tr>
-  <%
-  }
-  // Si des problèmes sont survenus sur le projet,
-  else
-  {
-    for (int lIndiceProbleme = 0; lIndiceProbleme < pListeProblemes.size (); lIndiceProbleme ++)
-    {
-      MProbleme lProbleme = (MProbleme) pListeProblemes.get (lIndiceProbleme) ;
+    MProbleme lProbleme = (MProbleme) pListeProblemes.get (lIndiceProbleme) ;
   %>
     </tr>
-      <td class="caseNiveau2">
-        <a href="/owep/Gestion/ProblemeModif?<%= CConstante.PAR_PROBLEME %>=<%= lProbleme.getId () %>"><%= lProbleme.getNom () %></a>
+     <td class="caseNiveau2">
+        <a href="/owep/Gestion/ProblemeModif?<%= CConstante.PAR_PROBLEME %>=<%= lProbleme.getId () %>"><%= VStringConvertor.getString (lProbleme.getNom (), false) %></a>
       </td>
       <td class="caseNiveau3">
-        <%= VStringConvertor.getString (lProbleme.getEtat ()) %>
+        <%= VStringConvertor.getString (lProbleme.getEtat (), false) %>
       </td>
       <td class="caseNiveau3">
-        <%= VStringConvertor.getString (lProbleme.getDescription ()) %>
+        <%= VStringConvertor.getString (lProbleme.getDescription (), false) %>
       </td>
       <td style="text-align: center" class="caseNiveau3">
         <%= VDateConvertor.getString (lProbleme.getDateIdentification (), false) %>
@@ -128,8 +114,14 @@
       </td>
     </tr>
   <%
-    }
   }
   %>
+
+  </tr>
+    <td class="caseNiveau3Lien" colspan="8">
+      <a href="/owep/Gestion/ProblemeModif">Ajouter un problème...</a>
+    </td>
+  </tr>
+  
 </tbody>
 </table>

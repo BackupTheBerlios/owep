@@ -14,7 +14,7 @@ public class VStringConvertor
    */
   public static Class getType ()
   {
-    return String.class;  
+    return String.class ;  
   }
   
   
@@ -32,9 +32,10 @@ public class VStringConvertor
   /**
    * Convertit une chaîne potentiellement nulle.
    * @param pChaine Chaîne potentiellement nulle.
+   * @param pVide Si vrai, renvoie une chaîne vide, sinon renvoie un espace insécable HTML.
    * @return Chaîne initialisé à la valeur de pChaine ou à la chaîne vide si pChaine est null.
    */
-  public static String getString (String pChaine)
+  public static String getString (String pChaine, boolean pVide)
   {
     if (pChaine != null && (! pChaine.trim ().equals ("")))
     {
@@ -42,7 +43,14 @@ public class VStringConvertor
     }
     else
     {
-      return "&nbsp;" ;
+      if (pVide)
+      {
+        return "" ;
+      }
+      else
+      {
+        return "&nbsp;" ;
+      }
     }
   }
   

@@ -119,8 +119,9 @@ public class CProblemeModif extends CControleurBase
       StringTokenizer lTokenizer = new StringTokenizer (getRequete ().getParameter (CConstante.PAR_LISTETACHESPROVOQUE), "-") ;
       while (lTokenizer.hasMoreTokens ())
       {
-        int lIdTache = Integer.parseInt (lTokenizer.nextToken ()) ;
-        mProbleme.addTacheProvoque (chercherTache (lIdTache)) ;
+        MTache lTache = chercherTache (Integer.parseInt (lTokenizer.nextToken ())) ;
+        mProbleme.addTacheProvoque (lTache) ;
+        lTache.addProblemeEntree (mProbleme) ;
       }
       
       // Récupère la liste des tâches résolvant le problème.
@@ -128,8 +129,9 @@ public class CProblemeModif extends CControleurBase
       lTokenizer = new StringTokenizer (getRequete ().getParameter (CConstante.PAR_LISTETACHESRESOUT), "-") ;
       while (lTokenizer.hasMoreTokens ())
       {
-        int lIdTache = Integer.parseInt (lTokenizer.nextToken ()) ;
-        mProbleme.addTacheResout (chercherTache (lIdTache)) ;
+        MTache lTache = chercherTache (Integer.parseInt (lTokenizer.nextToken ())) ;
+        mProbleme.addTacheResout (lTache) ;
+        lTache.addProblemeSortie (mProbleme) ;
       }
     }
   }
@@ -166,7 +168,7 @@ public class CProblemeModif extends CControleurBase
         {
           if (mProbleme.getId () == 0)
           {
-            getBaseDonnees ().create (mProbleme) ;
+            mProbleme.create (getBaseDonnees ()) ;
           }
           else
           {

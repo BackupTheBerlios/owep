@@ -352,6 +352,12 @@
     <field name="mConditions" type="owep.modele.execution.MCondition" collection="arraylist" get-method="getListeConditions" set-method="setListeConditions">
       <sql many-key="CND_TAC_ID"/>
     </field>
+    <field name="mProblemesEntrees" type="owep.modele.execution.MProbleme" collection="arraylist" get-method="getListeProblemesSorties" set-method="setListeProblemesSorties">
+      <sql name="R07_PRB_ID" many-table="R07_PRB_TAC_RESOUT" many-key="R07_TAC_ID"/>
+    </field>
+    <field name="mProblemesSorties" type="owep.modele.execution.MProbleme" collection="arraylist" get-method="getListeProblemesEntrees" set-method="setListeProblemesEntrees" required="true">
+      <sql name="R08_PRB_ID" many-table="R08_PRB_TAC_PROVOQUE" many-key="R08_TAC_ID"/>
+    </field>
   </class>
   
   

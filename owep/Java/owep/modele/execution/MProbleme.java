@@ -1,9 +1,21 @@
 package owep.modele.execution ;
 
 
+import java.sql.Connection ;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList ;
 import java.util.Date ;
+import org.exolab.castor.jdo.ClassNotPersistenceCapableException;
+import org.exolab.castor.jdo.Database;
+import org.exolab.castor.jdo.DuplicateIdentityException;
+import org.exolab.castor.jdo.PersistenceException;
+import org.exolab.castor.jdo.TransactionNotInProgressException;
+import com.mysql.jdbc.Driver;
 
+import owep.infrastructure.localisation.LocalisateurIdentifiant;
 import owep.modele.MModeleBase ;
 
 
@@ -53,6 +65,45 @@ public class MProbleme extends MModeleBase
   }
 
 
+  /**
+   * Insertion du problème dans la base de données.
+   * @param pConnection Connexion avec la base de données
+   * @throws PersistenceException Si une erreur survient durant l'insertion dans la BD.
+   * @throws TransactionNotInProgressException Si une erreur survient durant l'insertion dans la BD.
+   * @throws DuplicateIdentityException Si une erreur survient durant l'insertion dans la BD.
+   * @throws ClassNotPersistenceCapableException Si une erreur survient durant l'insertion dans la BD.
+   * @throws SQLException Si une erreur survient durant l'insertion dans la BD.
+   */
+  public void create (Database pConnection) throws ClassNotPersistenceCapableException, DuplicateIdentityException, TransactionNotInProgressException, PersistenceException, SQLException 
+  {
+    // TODO Régler le problème de castor avec les Create et Update pour supprimer cette portion de code.
+    String lRequete = "SELECT MAX(PRB_ID) + 1 FROM PRB_PROBLEME" ;
+    
+    DriverManager.registerDriver (new Driver ()) ;
+    Connection lConnection = null ;
+    lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", LocalisateurIdentifiant.LID_BDUSER, LocalisateurIdentifiant.LID_BDPASS) ;
+    lConnection.setAutoCommit (false) ;
+    Statement lRequest = lConnection.createStatement (ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE) ;
+    ResultSet result = lRequest.executeQuery (lRequete) ;
+    if (result.next ())
+    {
+      setId (result.getInt (1)) ;
+    }
+    result.close () ;
+    lConnection.close () ;
+    
+    pConnection.update (this) ;
+    for (int i = 0; i < getNbTachesProvoque (); i ++)
+    {
+      pConnection.update (getTacheProvoque (i)) ;
+    }
+    for (int i = 0; i < getNbTachesResout (); i ++)
+    {
+      pConnection.update (getTacheResout (i)) ;
+    }
+  }
+  
+  
   /**
    * Retourne le nombre de tâches ayant provoqué le problème.
    * @return Nombre de tâches ayant provoqué le problème.

@@ -4,6 +4,7 @@
 <%@page import="owep.modele.execution.MIteration" %>
 <%@page import="owep.modele.execution.MTache" %>
 <%@page import="owep.vue.transfert.convertor.VDateConvertor" %>
+<%@page import="owep.vue.transfert.convertor.VStringConvertor" %>
 <%@page import="owep.vue.transfert.VTransfertConstante" %>
 <%@taglib uri='/WEB-INF/tld/transfert.tld' prefix='transfert' %>
 
@@ -37,7 +38,7 @@
       </td>
       <td class="caseNiveau3" width="80%" colspan="3">
         <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom du problème" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREPROBLEME %>"/>
-         class="niveau2" type="text" value="<%= pProbleme.getNom () %>" size="<%= CConstante.LNG_MOYEN %>" maxlength="<%= CConstante.TXT_MOYEN %>">
+         class="niveau2" type="text" value="<%= VStringConvertor.getString (pProbleme.getNom (), true) %>" size="<%= CConstante.LNG_MOYEN %>" maxlength="<%= CConstante.TXT_MOYEN %>">
       </td>
     </tr>
     <tr>
@@ -46,7 +47,7 @@
       </td>
       <td class="caseNiveau3" colspan="3">
         <input <transfert:transfertchamp membre="setEtat" type="java.lang.String" libelle="Etat du problème" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBREPROBLEME %>"/>
-         class="niveau2" type="text" value="<%= pProbleme.getEtat () %>" size="<%= CConstante.LNG_MOYEN %>" maxlength="<%= CConstante.TXT_MOYEN %>">
+         class="niveau2" type="text" value="<%= VStringConvertor.getString (pProbleme.getEtat (), true) %>" size="<%= CConstante.LNG_MOYEN %>" maxlength="<%= CConstante.TXT_MOYEN %>">
       </td>
     </tr>
     <tr>
@@ -55,7 +56,7 @@
       </td>
       <td class="caseNiveau3" colspan="3">
         <textarea  <transfert:transfertchamp membre="setDescription" type="java.lang.String" libelle="Description du problème" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBREPROBLEME %>"/>
-         class="niveau2" rows="4" cols="<%= CConstante.LNG_LARGE %>" maxlength="<%= CConstante.TXT_LARGE %>"><%= pProbleme.getDescription () %></textarea>
+         class="niveau2" rows="4" cols="<%= CConstante.LNG_LARGE %>" maxlength="<%= CConstante.TXT_LARGE %>"><%= VStringConvertor.getString (pProbleme.getDescription (), true) %></textarea>
       </td>
     </tr>
     <tr>

@@ -60,8 +60,6 @@ public class CProblemeSuppr extends CControleurBase
         {
           throw new ServletException (CConstante.EXC_TRAITEMENT) ;
         }
-        
-        getBaseDonnees ().commit () ;
       }
       catch (Exception eException)
       {
@@ -105,7 +103,6 @@ public class CProblemeSuppr extends CControleurBase
     try
     {
       // Supprime le problème.
-      getBaseDonnees ().begin () ;
       getBaseDonnees ().remove (mProbleme) ;
       getBaseDonnees ().commit () ;
     }
