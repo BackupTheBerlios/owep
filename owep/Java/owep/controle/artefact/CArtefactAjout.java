@@ -52,8 +52,8 @@ public class CArtefactAjout extends CControleurBase
       idArtefact = Integer.parseInt(getRequete().getParameter("pArtefact"));
     }
     
-    //si l'idArtefact est valorisé 
-    //(si ce n'est pas le cas celà sera fait dans traiter à cause des problème avec le formulaire de type "multipart/form-data")
+    // si l'idArtefact est valorisé 
+    //(si ce n'est pas le cas cela sera fait dans traiter à cause des problème avec le formulaire de type "multipart/form-data")
     if(idArtefact >=0)
     {
       try
@@ -99,44 +99,44 @@ public class CArtefactAjout extends CControleurBase
     {
       HttpServletRequest request = getRequete() ;
       
-      	//Si on a validé le formulaire pour uploader un fichier
-        //La méthode qui suis est utilisée car le formulaire est de type "multipart/form-data"
-        //pour récupérer des fichiers. On ne peut donc pas utilisé les méthodes habituelles
-        //comme getParameter
-        if(DiskFileUpload.isMultipartContent(request))
+      //Si on a validé le formulaire pour uploader un fichier
+      //La méthode qui suis est utilisée car le formulaire est de type "multipart/form-data"
+      //pour récupérer des fichiers. On ne peut donc pas utilisé les méthodes habituelles
+      //comme getParameter
+      if(DiskFileUpload.isMultipartContent(request))
+      {
+        DiskFileUpload upload = new DiskFileUpload();
+        List items;
+        FileItem itemFichier = null;
+        File fullFile = null;
+        
+        try
         {
-          DiskFileUpload upload = new DiskFileUpload();
-          List items;
-          FileItem itemFichier = null;
-          File fullFile = null;
-          
-          try
+          //on crée la liste des éléments du formulaire
+          items = upload.parseRequest(request) ;
+          //itérateur parcourant la liste
+          Iterator itr = items.iterator();
+          //parcour de la liste
+          while(itr.hasNext())
           {
-            //on crée la liste des éléments du formulaire
-            items = upload.parseRequest(request) ;
-            //itérateur parcourant la liste
-            Iterator itr = items.iterator();
-            //parcour de la liste
-            while(itr.hasNext())
+            //récupération des éléments de la liste dans item
+            FileItem item = (FileItem) itr.next();
+            String fieldName = item.getFieldName();
+            
+            //si l'élément est l'idArtefact
+            if(fieldName.equals("pArtefact"))
             {
-              //récupération des éléments de la liste dans item
-              FileItem item = (FileItem) itr.next();
-              String fieldName = item.getFieldName();
-              
-              //si l'élément est l'idArtefact
-              if(fieldName.equals("pArtefact"))
-              {
-                //on initialise la BD
-                initialiserBaseDonnees ();
-              }
-              
-              //si l'élément est la fichier
-              if(fieldName.equals("fichierArtefact"))
-              {     
-                itemFichier = item;
-                fullFile = new File(item.getName());
-              }              
+              //on initialise la BD
+              initialiserBaseDonnees ();
             }
+            
+            //si l'élément est la fichier
+            if(fieldName.equals("fichierArtefact"))
+            {     
+              itemFichier = item;
+              fullFile = new File(item.getName());
+            }              
+          }
         }
         catch (FileUploadException e1)
         {
@@ -145,10 +145,10 @@ public class CArtefactAjout extends CControleurBase
         }
         
         //Si l'utilisateur a entré un nom de fichier
-        if(fullFile.getName()!="")
+        if (fullFile.getName() != "")
         {
           //sauvegarde du nom du fichier dans la bd
-          mArtefact.setNomFichier(fullFile.getName());  
+          mArtefact.setNomFichier (fullFile.getName()) ;  
           
           //Création du répertoire ou on télécharge le fichier si il n'existe pas
           (new File(getServletContext().getRealPath("/")+PATH_ARTEFACT+mArtefact.getPathFichier())).mkdirs();
@@ -164,12 +164,11 @@ public class CArtefactAjout extends CControleurBase
             // TODO Auto-generated catch block
             e.printStackTrace();
           }       
- 
         }
-          // Met à jour la base de données.
-          getBaseDonnees ().begin () ;
-          getBaseDonnees ().update (mArtefact) ;
-          getBaseDonnees ().commit () ;
+        // Met à jour la base de données.
+        getBaseDonnees ().begin () ;
+        getBaseDonnees ().update (mArtefact) ;
+        getBaseDonnees ().commit () ;
         
         return "..\\Tache\\TacheVisu?pTacheAVisualiser="+mArtefact.getTacheSortie().getId() ;
       }

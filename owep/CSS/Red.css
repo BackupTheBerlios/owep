@@ -149,11 +149,13 @@ p.texte
   font-size   : 12px ;
   text-indent : 24px ;
 }
-p.texte
+p.texteImportant
 {
+  text-align  : center ;
   color       : black ;
   font-family : arial ;
   font-size   : 12px ;
+  font-weight : bold ;
   text-indent : 24px ;
 }
 p.texteObligatoire
@@ -618,6 +620,7 @@ img.iconeCaseAide
   font-size      : 12px ;
   padding-bottom : 20px ;
   padding-top    : 20px ;
+  text-align     : justify ;
 }
 div.domTT
 {

@@ -81,16 +81,20 @@ public class CConstante
   public static final String SES_TACHE     = "pSessionTache" ;
   
   // Longueur des champs dans le formulaire.
-  public static final int LNG_CHARGE = 5 ;
-  public static final int LNG_DATE   = 7 ;
-  public static final int LNG_PETIT  = 35 ;
-  public static final int LNG_MOYEN  = 53 ;
-  public static final int LNG_LARGE  = 60 ;
+  public static final int LNG_CHARGE  = 5 ;
+  public static final int LNG_DATE    = 7 ;
+  public static final int LNG_PETIT   = 35 ;
+  public static final int LNG_MOYEN   = 53 ;
+  public static final int LNG_LARGE   = 60 ;
+  public static final int LNG_LOGIN   = 15 ;
+  public static final int LNG_FICHIER = 75 ;
   
   // Taille des champs dans la base de données.
-  public static final int TXT_CHARGE = 5 ;
-  public static final int TXT_DATE   = 10 ;
-  public static final int TXT_PETIT  = 32 ;
-  public static final int TXT_MOYEN  = 48 ;
-  public static final int TXT_LARGE  = 256 ;
+  public static final int TXT_CHARGE  = 5 ;
+  public static final int TXT_DATE    = 10 ;
+  public static final int TXT_PETIT   = 32 ;
+  public static final int TXT_MOYEN   = 48 ;
+  public static final int TXT_LARGE   = 256 ;
+  public static final int TXT_LOGIN   = 24 ;
+  public static final int TXT_FICHIER = 255 ;
 }
