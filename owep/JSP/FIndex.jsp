@@ -18,7 +18,7 @@ Le login et le mot de passe saisi ne sont pas valide<br>
   }
 %>
 
-<form action="../Outil/Connexion" method="post">
+<form action="/owep/Outil/Connexion" method="post">
   <table class="tableauInvisible" border="0" cellpadding="1" cellspacing="1">
     <tr>
       <td class="caseInvisible">
