@@ -1,3 +1,4 @@
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <table class="regionMenu" style="width : 100%; height : 100%" cellpadding="0" cellspacing="0">
 <tbody>
   <!-- menu Avancement -->
@@ -17,9 +18,11 @@
   </tr>
   <tr>
     <td class="caseMenuSeparation">
-      <font class="menuNiveauSeparation">&nbsp;</font>
+      &nbsp;
     </td>
   </tr>
+  
+  <!-- menu avancement -->
   <tr>
     <td class="caseMenuNiveau1">
       <font class="menuNiveau1">Avancement :</font>
@@ -27,21 +30,21 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="ConsultationActivIT2.html">Liste des tâches</a>
+      <a class="menuNiveau2" href="../Tache/ListeTacheVisu">Liste des tâches</a>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="c_rendu_activ.html">Rapport d'activité</a>
+      <a class="menuNiveau2" href="../Tache/RapportActivite">Rapport d'activité</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="caseMenuSeparation">
+      &nbsp;
     </td>
   </tr>
 
   <!-- menu projet -->
-  <tr>
-    <td class="caseMenuSeparation">
-      <font class="menuNiveauSeparation">&nbsp;</font>
-    </td>
-  </tr>
   <tr>
     <td class="caseMenuNiveau1">
       <font class="menuNiveau1">Projet :</font>
@@ -49,12 +52,12 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="Favancement2.html">Suivi du projet</a>
+      Suivi du projet
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="FavancementCollab2.html">Suivi des collaborateurs</a>
+      Suivi des collaborateurs
     </td>
   </tr>
   <tr>
@@ -69,16 +72,16 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="FTacheImprevueGestion.html">Tâche imprévues</a>
+      Tâche imprévues
+    </td>
+  </tr>
+  <tr>
+    <td class="caseMenuSeparation">
+      &nbsp;
     </td>
   </tr>
   
   <!-- menu configuration -->
-  <tr>
-    <td class="caseMenuSeparation">
-      <font class="menuNiveauSeparation">&nbsp;</font>
-    </td>
-  </tr>
   <tr>
     <td class="caseMenuNiveau1">
       <font class="menuNiveau1">Configuration :</font>
@@ -94,15 +97,14 @@
       Option de projet
     </td>
   </tr>
-  
   <tr>
-    <td class="caseMenuSeparation">
-      <font class="menuSeparation" href="">&nbsp;</font>
+    <td style="height : 100%" class="caseMenuSeparation2">
+      &nbsp;
     </td>
   </tr>
   <tr>
-    <td style="height : 100%" class="caseMenuSeparation">
-      <font class="menuSeparation" href="">&nbsp;</font>
+    <td class="caseMenuSeparation">
+      &nbsp;
     </td>
   </tr>
 </tbody>

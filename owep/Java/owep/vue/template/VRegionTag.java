@@ -1,48 +1,34 @@
-/*
- * Created on 28 nov. 2004
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-package owep.vue.template;
+package owep.vue.template ;
 
-import java.io.IOException;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.TagSupport;
+import java.io.IOException ;
+import javax.servlet.jsp.JspException ;
+import javax.servlet.jsp.PageContext ;
+import javax.servlet.jsp.tagext.TagSupport ;
+
 
 /**
- * @author Administrateur
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * Tag à insérer dans le template d'une JSP pour définir une région. Cette région sera remplacée,
+ * lors du traîtement de la page, par la section définie dans un tag VSectionTag.
  */
 public class VRegionTag extends TagSupport
 {
-  // Nom de la région, à partir de laquelle la section est récupérée.
-  private String  mNom ;
-  
+  private String mNom ; // Nom de la région, à partir de laquelle la section est récupérée
+
+
   /**
-   * 
-   */
-  public VRegionTag ()
-  {
-    super() ;
-  }
-  
-  
-  /* (non-Javadoc)
-   * @see javax.servlet.jsp.tagext.Tag#doStartTag()
+   * Récupère la section correspondant à la région, dans  la pile de template, puis l'affiche dans
+   * la page.
+   * @throws JspException S'il est impossible d'écrire la section sur le flux de sortie
    */
   public int doStartTag () throws JspException
   {
     // Vérifie que la pile de template a bien été créée.
     assert pageContext.getAttribute ("TEMPLATE_PILE", PageContext.REQUEST_SCOPE) != null ;
     
-    
     // Récupère la section à inclure.
-    VSection lSection = ((VPileTemplate) pageContext.getAttribute ("TEMPLATE_PILE", PageContext.REQUEST_SCOPE)).getSection (mNom) ;
+    VSection lSection = ((VPileTemplate) pageContext
+      .getAttribute ("TEMPLATE_PILE", PageContext.REQUEST_SCOPE)).getSection (mNom) ;
     
     // Si la section à inclure a été définie
     if (lSection != null)
@@ -56,9 +42,9 @@ public class VRegionTag extends TagSupport
           pageContext.getOut ().flush () ;
           pageContext.include (lSection.getContenu ()) ;
         }
-        catch(Exception lException)
-        { 
-          throw new JspException (lException.getMessage()) ;
+        catch (Exception lException)
+        {
+          throw new JspException (lException.getMessage ()) ;
         }
       }
       else
@@ -71,17 +57,17 @@ public class VRegionTag extends TagSupport
         }
         catch (IOException lException)
         {
-          throw new JspException (lException.getMessage()) ;
+          throw new JspException (lException.getMessage ()) ;
         }
       }
     }
-
-    return SKIP_BODY;
+    return SKIP_BODY ;
   }
 
-  
+
   /**
-   * @param pNom The nom to set.
+   * Initialise le nom de la région définie dans le template.
+   * @param pNom Nom de la région définie dans le template
    */
   public void setNom (String pNom)
   {

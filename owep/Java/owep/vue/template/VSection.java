@@ -1,57 +1,45 @@
-/*
- * Created on 28 nov. 2004
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-package owep.vue.template;
+package owep.vue.template ;
+
 
 /**
- * @author Administrateur
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * Classe contenant les données décrivant la section.
+ * @see owep.vue.template.VPileTemplate
  */
 public class VSection
 {
-  private String  mContenu ;  // Nom du fichier ou valeur à inclure dans la région.
-  private boolean mTypePage ; // Indique si la section fait référence à une page ou à une valeur à afficher.
+  private String  mContenu ;  // Nom du fichier ou texte à inclure dans la région
+  private boolean mTypePage ; // Indique si la section à afficher est une page ou un simple texte
+  
   
   /**
-   * 
+   * Crée une nouvelle instance vide de VSection.
+   * @param pContenu Nom du fichier ou texte à inclure dans la région
+   * @param pTypePage Indique si la section à afficher est une page ou un simple texte
    */
-  public VSection ()
+  public VSection (String pContenu, boolean pTypePage)
   {
     super () ;
-    // TODO Auto-generated constructor stub
+    
+    mContenu  = pContenu ;
+    mTypePage = pTypePage ;
   }
-
+  
+  
   /**
-   * @return Returns the Page.
+   * Indique si la section à inclure est une page JSP ou du texte.
+   * @return Vrai si la section correspond à une page à inclure et Faux s'il s'agit de texte
    */
   public boolean isTypePage ()
   {
     return mTypePage ;
   }
+  
+  
   /**
-   * @param pPage The Page to set.
-   */
-  public void setTypePage (boolean pTypePage)
-  {
-    mTypePage = pTypePage ;
-  }
-  /**
-   * @return Returns the contenu.
+   * @return Contenu à insérer (texte ou page selon le cas).
    */
   public String getContenu ()
   {
     return mContenu ;
-  }
-  /**
-   * @param pSection The contenu to set.
-   */
-  public void setContenu (String pContenu)
-  {
-    mContenu = pContenu ;
   }
 }

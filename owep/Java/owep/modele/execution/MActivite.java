@@ -1,16 +1,17 @@
-package owep.modele.execution;
+package owep.modele.execution ;
 
 
-public class MActivite
+public class MActivite extends MModeleBase
 {
   private String mNom ;
-  /**
-   * @return Returns the nom.
-   */
+  
+  
   public String getNom ()
   {
     return mNom ;
   }
+  
+  
   /**
    * @param pNom The nom to set.
    */

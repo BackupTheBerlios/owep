@@ -1,82 +1,98 @@
-/*
- * Created on 25 nov. 2004
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-package owep.controle;
+package owep.controle ;
 
 
-import javax.servlet.ServletException;
-
-import org.exolab.castor.jdo.OQLQuery;
-import org.exolab.castor.jdo.PersistenceException;
-import org.exolab.castor.jdo.QueryResults;
-
-import owep.modele.execution.MCollaborateur;
+import javax.servlet.ServletException ;
+import org.exolab.castor.jdo.OQLQuery ;
+import org.exolab.castor.jdo.PersistenceException ;
+import org.exolab.castor.jdo.QueryResults ;
+import owep.modele.execution.MCollaborateur ;
 
 
 /**
- * @author Administrateur TODO To change the template for this generated type comment go to Window -
- *         Preferences - Java - Code Style - Code Templates
+ * Controleur pour l'affichage de la liste des tâches de l'utilisateur.
  */
 public class CListeTacheVisu extends CControleurBase
 {
-  /* (non-Javadoc)
-   * @see owep.controle.CControleurBase#traiter(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+  private int mIterationNum ;             // Numéro d'itération dont on liste les tâches
+  private MCollaborateur mCollaborateur ; // Collaborateur ayant ouvert la session
+  
+  
+  /**
+   * Récupère les données nécessaire au controleur dans la base de données. 
+   * @throws ServletException Si une erreur survient durant la connexion
+   * @see owep.controle.CControleurBase#initialiserBaseDonnees()
    */
-  public String traiter () throws ServletException
+  public void initialiserBaseDonnees () throws ServletException
   {
-    MCollaborateur lCollaborateur=null ;        // Collaborateur ayant ouvert la session.
-    //int lProjetId ;                        // Identifiant du projet consulté. 
-    int lIterationNum ;                    // Numéro d'itération dont on liste les tâches.
-       
-    if (getRequete ().getParameter ("pIterationNum") == null)
-    {
-      // requete recup it en cours
-      lIterationNum = 0 ;
-    }
-    else
-    {
-      lIterationNum = Integer.parseInt (getRequete ().getParameter ("pIterationNum")) ;
-    }
-    lIterationNum = 1;
-
+    OQLQuery       lRequete ;       // Requête à réaliser sur la base
+    QueryResults   lResultat ;      // Résultat de la requête sur la base
+    
     try
     {
-      connexionBD();
-      OQLQuery     oql;
-      QueryResults results;
-      oql = getBaseDonnees().getOQLQuery( "select C from owep.modele.execution.MCollaborateur C where mId=$1" );
-      oql.bind (1) ;
-      // Retrieve results and print each one
-      results = oql.execute () ;  
-      while (results.hasMore ())
-      {
-        lCollaborateur = (MCollaborateur) results.next () ;       
-      }
+      getBaseDonnees ().begin () ;
+      
+      // Récupère la liste des tâches du collaborateur.
+      lRequete = getBaseDonnees ().getOQLQuery ("select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mId = $1") ;
+      lRequete.bind (1) ;
+      lResultat      = lRequete.execute () ;
+      mCollaborateur = (MCollaborateur) lResultat.next () ;
+      
+      getBaseDonnees ().commit () ;
     }
     catch (Exception eException)
     {
-      // TODO Auto-generated catch block
-      eException.printStackTrace();
+      eException.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
     }
+    // Ferme la connexion à la base de données.
     finally
     {
       try
       {
-        deconnexionBD();
+        getBaseDonnees ().close () ;
       }
       catch (PersistenceException eException)
       {
-        // TODO Auto-generated catch block
-        eException.printStackTrace();
+        eException.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_DECONNEXION) ;
       }
     }
+  }
+  
+  
+  /**
+   * Récupère les paramètres passés au controleur. 
+   * @throws ServletException -
+   * @see owep.controle.CControleurBase#initialiserParametres()
+   */
+  public void initialiserParametres () throws ServletException
+  {
+    // Récupère le numéro d'itération.
+    if (getRequete ().getParameter (CConstante.PAR_ITERATION) == null)
+    {
+      // TODO Requête recup it en cours.
+    }
+    else
+    {
+      mIterationNum = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_ITERATION)) ;
+    }
+    mIterationNum = 1 ;
+  }
+  
+  
+  /**
+   * Récupère la liste des tâches d'un collaborateur pour l'itération choisie, et la transmet à la
+   * JSP. 
+   * @return URL de la page vers laquelle doit être redirigé le client.
+   * @throws ServletException Si une erreur survient dans le controleur
+   * @see owep.controle.CControleurBase#traiter()
+   */
+  public String traiter () throws ServletException
+  {
+    // Transmet les données à la JSP d'affichage.
+    getRequete ().setAttribute (CConstante.PAR_COLLABORATEUR, mCollaborateur) ;
+    getRequete ().setAttribute (CConstante.PAR_ITERATION,     new Integer (mIterationNum)) ;
     
-    // Appelle la JSP d'affichage.
-    getRequete ().setAttribute ("pCollaborateur", lCollaborateur) ;
-    getRequete ().setAttribute ("pNumIteration", new Integer(lIterationNum));
     return "..\\JSP\\Tache\\TListeTacheVisu.jsp" ;
   }
 }

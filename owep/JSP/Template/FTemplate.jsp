@@ -8,7 +8,7 @@
   <meta name="author" content="OWEP Team">
   <meta name="description" content="Outil de Workflow pour une équipe de Projet">
   <title>OWEP</title>
-  <link rel="stylesheet" href="../CSS/Standard.css" type="text/css">
+  <link rel="stylesheet" href="../CSS/Red.css" type="text/css">
   <script language="javascript" src="../JavaScript/<template:region nom="RegionScript"/>"></script>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
@@ -48,7 +48,7 @@
       <!-- colonne principale -->
       <td style="width : 100%">
         <table class="regionDroit" style="width : 100%; height : 100%" cellpadding="0" cellspacing="0">
-        <tbody style="text-align : left; vertical-align : top">
+        <tbody>
                 
           <!-- messagerie -->
           <tr>
@@ -57,24 +57,32 @@
             </td>
           </tr>
           
-          <!-- titre -->
-          <tr>
-            <td class="regionTitre">
-              <template:region nom="RegionTitre"/>
-            </td>
-          </tr>
-          
-          <!-- navigation -->
-          <tr>
-            <td class="regionNavigation">
-              <template:region nom="RegionNavigation"/>
-            </td>
-          </tr>
-          
-          <!-- contenu -->
-          <tr style="height: 100%">
-            <td class="regionPrincipal">
-              <template:region nom="RegionPrincipal"/>
+          <tr style="height: 100%; width: 100%">
+            <td>
+              <table class="regionPrincipal" style="height: 100%; width: 100%">
+              <tbody>
+                <!-- titre -->
+                <tr>
+                  <td class="regionTitre">
+                    <template:region nom="RegionTitre"/>
+                  </td>
+                </tr>
+                
+                <!-- navigation -->
+                <tr>
+                  <td class="regionNavigation">
+                    <template:region nom="RegionNavigation"/>
+                  </td>
+                </tr>
+                
+                <!-- contenu -->
+                <tr style="height: 100%">
+                  <td class="regionContenu">
+                    <template:region nom="RegionPrincipal"/>
+                  </td>
+                </tr>
+              </tbody>
+              </table>
             </td>
           </tr>
           

@@ -1,75 +1,79 @@
-/*
- * Created on 27 nov. 2004
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-package owep.controle;
+package owep.controle ;
 
-import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.IOException ;
+import javax.servlet.RequestDispatcher ;
+import javax.servlet.ServletException ;
+import javax.servlet.http.HttpServlet ;
+import javax.servlet.http.HttpServletRequest ;
+import javax.servlet.http.HttpServletResponse ;
+import org.exolab.castor.jdo.Database ;
+import org.exolab.castor.jdo.JDO ;
+import owep.infrastructure.localisation.LocalisateurIdentifiant;
 
-import org.exolab.castor.jdo.Database;
-import org.exolab.castor.jdo.DatabaseNotFoundException;
-import org.exolab.castor.jdo.JDO;
-import org.exolab.castor.jdo.PersistenceException;
-import org.exolab.castor.mapping.MappingException;
 
 /**
- * @author Administrateur
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * Classe de base pour tous les controleurs, simplifiant la connexion à la base de données et la
+ * redirection.
  */
 public abstract class CControleurBase extends HttpServlet
 {
-  private HttpServletRequest  mRequete ;
-  private HttpServletResponse mReponse ;
-  private Database mBaseDonnees ;
-  public static final String CONFIGURATION_DATABASE = "D:\\Projet\\OWEP\\Source\\WEB-INF\\Database.xml" ;
-  public static final String NOM_DATABASE = "owep" ;
+  private HttpServletRequest  mRequete ; // Requête HTTP à l'origine de l'appel du controleur
+  private HttpServletResponse mReponse ; // Réponse HTTP du controleur à la requête
+  private Database mBaseDonnees ;        // Connexion à la base de données
+  
   
   /**
-   * 
-   */
-  public CControleurBase ()
-  {
-    super() ;
-    // TODO Auto-generated constructor stub
-  }
-  
-  
-  /* (non-Javadoc)
-   * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+   * Appellé lors d'une requête d'un client. Redirige le client vers la page retourné par la méthode
+   * traiter.
+   * @param pRequete Requête HTTP à l'origine de l'appel du controleur
+   * @param pReponse Réponse HTTP du controleur à la requête
    */
   protected void doGet (HttpServletRequest pRequete, HttpServletResponse pReponse)
-      throws ServletException, IOException
+    throws ServletException, IOException
   {
     doPost (pRequete, pReponse) ;
   }
   
-  /* (non-Javadoc)
-   * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+  
+  /**
+   * Appellé lors d'une requête d'un client contenant des données transmises. Redirige le client
+   * vers la page retourné par la méthode traiter.
+   * @param pRequete Requête HTTP à l'origine de l'appel du controleur
+   * @param pReponse Réponse HTTP du controleur à la requête
    */
   protected void doPost (HttpServletRequest pRequete, HttpServletResponse pReponse)
-      throws ServletException, IOException
+    throws ServletException, IOException
   {
-    RequestDispatcher lRequeteDispatcher ;  // Permet d'appeler la JSP d'affichage.
+    RequestDispatcher lRequeteDispatcher ; // Permet d'appeler la JSP d'affichage.
+    JDO lJdo ;                             // Charge le système de persistence avec la base de données
     
-    // initialise les variables membres
+    // Initialise les variables membres.
     mRequete = pRequete ;
     mReponse = pReponse ;
     
-    // Appelle la JSP d'affichage.
+    // Initie la connexion à la base de données.
+    try
+    {
+      JDO.loadConfiguration (LocalisateurIdentifiant.LID_BDCONFIGURATION) ;
+      lJdo = new JDO (LocalisateurIdentifiant.LID_BDNOM) ;
+
+      mBaseDonnees = lJdo.getDatabase () ;
+      mBaseDonnees.setAutoStore (false) ;
+    }
+    catch (Exception eException)
+    {
+      eException.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_CONNEXION) ;
+    }
+    
+    // Appelle la JSP d'affichage retournée par traiter.
+    initialiserBaseDonnees () ;
+    initialiserParametres () ;
     lRequeteDispatcher = pRequete.getRequestDispatcher (traiter ()) ;
     if (lRequeteDispatcher == null)
     {
-      throw new ServletException ("La page n'a pu être trouvée.") ;
+      throw new ServletException (CConstante.EXC_FORWARD) ;
     }
     else
     {
@@ -77,46 +81,56 @@ public abstract class CControleurBase extends HttpServlet
     }
   }
   
-  public abstract String traiter () throws ServletException ;
   
   /**
-   * @return Returns the reponse.
+   * Récupère une connexion à la base de données.
+   * @return Connexion à la base de données.
+   */
+  public Database getBaseDonnees ()
+  {
+    return mBaseDonnees ;
+  }
+  
+  
+  /**
+   * Récupère la réponse HTTP que le controleur va fournir au client.
+   * @return Réponse HTTP du controleur.
    */
   public HttpServletResponse getReponse ()
   {
     return mReponse ;
   }
   
+  
   /**
-   * @return Returns the requete.
+   * Récupère la requête HTTP à l'origine de l'appel du controleur.
+   * @return Requête HTTP à l'origine de l'appel du controleur.
    */
   public HttpServletRequest getRequete ()
   {
     return mRequete ;
   }
   
-  public void connexionBD () throws MappingException, DatabaseNotFoundException, PersistenceException
-  {
-    JDO lJdo ; 
-   
-    JDO.loadConfiguration (CONFIGURATION_DATABASE) ;
-    lJdo = new JDO (NOM_DATABASE) ;
-
-    mBaseDonnees = lJdo.getDatabase () ;
-    mBaseDonnees.begin () ;  
-  }
-  
-  public void deconnexionBD () throws PersistenceException
-  {
-    mBaseDonnees.commit();
-    mBaseDonnees.close(); 
-  }
   
   /**
-   * @return Retourne la valeur de l'attribut baseDonnees.
+   * Récupère les données nécessaire au controleur dans la base de données. 
+   * @throws ServletException Si une erreur survient lors de l'initialisation
    */
-  public Database getBaseDonnees ()
-  {
-    return mBaseDonnees ;
-  }
+  public abstract void initialiserBaseDonnees () throws ServletException ;
+  
+  
+  /**
+   * Récupère les paramètres passés au controleur. 
+   * @throws ServletException Si une erreur survient lors de l'initialisation
+   */
+  public abstract void initialiserParametres () throws ServletException ;
+  
+  
+  /**
+   * Effectue tout le traîtement du controleur puis retourne l'URL vers laquelle le client doit
+   * être redirigé. 
+   * @return URL de la page vers laquelle doit être redirigé le client.
+   * @throws ServletException Si une erreur survient dans le controleur
+   */
+  public abstract String traiter () throws ServletException ;
 }

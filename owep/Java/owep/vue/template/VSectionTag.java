@@ -1,41 +1,25 @@
-/*
- * Created on 28 nov. 2004
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-package owep.vue.template;
+package owep.vue.template ;
 
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.TagSupport;
+
+import javax.servlet.jsp.JspException ;
+import javax.servlet.jsp.PageContext ;
+import javax.servlet.jsp.tagext.TagSupport ;
+
 
 /**
- * @author Administrateur
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * Tag définissant une page ou du texte à inclure. Cette section fait référence à une région où
+ * sera effectivement incluse la section.
  */
 public class VSectionTag extends TagSupport
 {
-  // Nom de la région dans laquelle doit être incluse la section.
-  private String   mRegion ;
-  // Définit la section à inclure dans la région.
-  private VSection mSection ;
+  private boolean  mTypePage ; // Indique si la section à afficher est une page ou un simple texte
+  private String   mRegion ;   // Nom de la région dans laquelle doit être incluse la section
+  private String   mContenu ;  // Référence vers la page ou valeur du texte à inclure
+  
   
   /**
-   * 
-   */
-  public VSectionTag ()
-  {
-    super() ;
-    
-    mSection = new VSection () ;
-  }
-  
-  
-  /* (non-Javadoc)
-   * @see javax.servlet.jsp.tagext.Tag#doStartTag()
+   * Ajoute la nouvelle section dans la pile de template.
+   * @throws JspException -
    */
   public int doStartTag () throws JspException
   {
@@ -44,37 +28,41 @@ public class VSectionTag extends TagSupport
     // Vérifie que la pile de template a bien été créée.
     assert pageContext.getAttribute ("TEMPLATE_PILE", PageContext.REQUEST_SCOPE) != null ;
     
-    VPileTemplate lPileTemplate = (VPileTemplate) pageContext.getAttribute ("TEMPLATE_PILE", PageContext.REQUEST_SCOPE) ;
-    lPileTemplate.ajouterSection (mRegion, mSection) ;
-    
-    // Réinitialise le tag
-    mSection = new VSection () ;
+    // Récupère la pile de template et y insère la nouvelle section.
+    VPileTemplate lPileTemplate = (VPileTemplate) pageContext
+      .getAttribute ("TEMPLATE_PILE", PageContext.REQUEST_SCOPE) ;
+    lPileTemplate.ajouterSection (mRegion, new VSection (mContenu, mTypePage)) ;
     
     return SKIP_BODY ;
   }
 
-  
+
   /**
-   * @param pPage The Page to set.
+   * Indique si la section à afficher est une page ou un simple texte
+   * @param pPage Vrai si la section à afficher est une page ou Faux s'il s'agit de texte simple
    */
   public void setTypePage (String pTypePage)
   {
-    mSection.setTypePage (pTypePage.equals ("true")) ;
+    mTypePage = pTypePage.equals ("true") ;
   }
-  
+
+
   /**
-   * @param pRegion The region to set.
+   * Spécifie la région ou doit être insérée la section.
+   * @param pRegion Région ou doit être insérée la section
    */
   public void setRegion (String pRegion)
   {
     mRegion = pRegion ;
   }
-  
+
+
   /**
-   * @param pVue The vue to set.
+   * Spécifie la page ou le texte qui doit être inséré.
+   * @param pContenu Page ou texte à insérer
    */
   public void setContenu (String pContenu)
   {
-    mSection.setContenu (pContenu) ;
+    mContenu = pContenu ;
   }
 }

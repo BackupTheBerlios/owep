@@ -16,7 +16,21 @@
   </servlet> 
   <servlet-mapping> 
     <servlet-name>CListeTacheVisu</servlet-name> 
-    <url-pattern>/Tache/FListeTacheVisu</url-pattern> 
+    <url-pattern>/Tache/ListeTacheVisu</url-pattern> 
   </servlet-mapping> 
+  
+  <servlet> 
+    <servlet-name>CRapportActivite</servlet-name> 
+    <servlet-class>owep.controle.CRapportActivite</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CRapportActivite</servlet-name> 
+    <url-pattern>/Tache/RapportActivite</url-pattern> 
+  </servlet-mapping> 
+  
+  <!-- Configuration de la session -->
+  <session-config>
+	<session-timeout>30</session-timeout>
+  </session-config>
 
 </web-app>

@@ -1,94 +1,112 @@
-/*
- * Created on 25 nov. 2004
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-package owep.modele.execution;
+package owep.modele.execution ;
 
 
 /**
- * @author Administrateur TODO To change the template for this generated type comment go to Window -
- *         Preferences - Java - Code Style - Code Templates
+ * Un artefact représente un sous ensemble de produit, réalisé durant l'exécution d'un processus.
  */
-public class MArtefact
+public class MArtefact extends MModeleBase
 {
-  private int    mId ;
-  private String mNom ;
-  private String mDescription ;
-  private MTache mTache ;
-
-
+  private int    mId ;          // Identifie l'artefact de manière unique
+  private String mNom ;         // Nom de l'artefact
+  private String mDescription ; // Description de l'artefact
+  private MTache mTache ;       // Tâche au cours de laquelle est produit l'artefact
+  
+  
   /**
-   * 
+   * Crée une instance vide de MArtefact.
    */
   public MArtefact ()
   {
   }
-
+  
+  
+  /**
+   * Crée une instance initialisée de MArtefact.
+   * @param pId Identifiant unique de l'artefact
+   * @param pNom Nom de l'artefact
+   * @param pDescription Description de l'artefact
+   */
   public MArtefact (int pId, String pNom, String pDescription)
   {
     mId          = pId ;
     mNom         = pNom ;
     mDescription = pDescription ;
   }
-
+  
+  
   /**
-   * @return Returns the mDescription.
+   * Récupère la description de l'artefact.
+   * @return Description de l'artefact
    */
   public String getDescription ()
   {
     return mDescription ;
   }
-
+  
+  
   /**
-   * @param description The mDescription to set.
+   * Initialise la description de l'artefact.
+   * @param pDescription Description de l'artefact
    */
   public void setDescription (String pDescription)
   {
     mDescription = pDescription ;
   }
-
+  
+  
   /**
-   * @return Returns the mId.
+   * Récupère l'identifiant de l'artefact.
+   * @return Identifiant unique de l'artefact
    */
   public int getId ()
   {
     return mId ;
   }
-
+  
+  
   /**
-   * @param id The mId to set.
+   * Initialise l'identifiant de l'artefact.
+   * @param pId Identifiant unique de l'artefact
    */
   public void setId (int pId)
   {
     mId = pId ;
   }
-
+  
+  
   /**
-   * @return Returns the mNom.
+   * Récupère le nom de l'artefact.
+   * @return Nom de l'artefact
    */
   public String getNom ()
   {
     return mNom ;
   }
-
+  
+  
   /**
-   * @param nom The mNom to set.
+   * Initialise le nom de l'artefact.
+   * @param pNom Nom de l'artefact
    */
   public void setNom (String pNom)
   {
     mNom = pNom ;
   }
+  
+  
   /**
-   * @return Retourne la valeur de l'attribut tache.
+   * Récupère la tâche dont est issu l'artefact.
+   * @return Tâche dont est issu l'artefact
    */
   public MTache getTache ()
   {
     return mTache ;
   }
+  
+  
   /**
-   * @param initialse tache avec pTache.
+   * Initialise la tâche dont est issu l'artefact.
+   * @param pTache Tâche dont est issu l'artefact
    */
   public void setTache (MTache pTache)
   {
