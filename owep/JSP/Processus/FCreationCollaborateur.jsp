@@ -74,49 +74,49 @@ L'utilisateur a bien été enregistré<br>
       <td class="caseNiveau1">
         <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Nom du collaborateur.')" onmouseout="tooltipOff(this, event)">Nom *</a>
       </td>
-      <td class="caseNiveau3"><input type="text" name="mNom" value=<%=(!mProbleme.equals("nouveau"))?mNom:""%>></td>
+      <td class="caseNiveau3"><input class="niveau2" type="text" name="mNom" value=<%=(!mProbleme.equals("nouveau"))?mNom:""%>></td>
     </tr>
     <tr>
       <td class="caseNiveau1">
         <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Prénom du collaborateur.')" onmouseout="tooltipOff(this, event)">Prénom</a>
       </td>
-      <td class="caseNiveau3"><input type="text" name="mPrenom" value=<%=(!mProbleme.equals("nouveau"))?mPrenom:""%>></td>
+      <td class="caseNiveau3"><input class="niveau2" type="text" name="mPrenom" value=<%=(!mProbleme.equals("nouveau"))?mPrenom:""%>></td>
     </tr>
     <tr>
       <td class="caseNiveau1">
         <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Nom que le collaborateur utilisera pour se connecter. Ce login doit être unique.')" onmouseout="tooltipOff(this, event)">Login *</a>
       </td>
-      <td class="caseNiveau3"><input type="text" name="mLogin" value=<%=(!mProbleme.equals("nouveau"))?mLogin:""%>></td>
+      <td class="caseNiveau3"><input class="niveau2" type="text" name="mLogin" value=<%=(!mProbleme.equals("nouveau"))?mLogin:""%>></td>
     </tr>
     <tr>
       <td class="caseNiveau1">
         <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Adresse mail du collaborateur. Cette adresse sera utilisée par <b>OWEP</b> pour transmettre des messages.')" onmouseout="tooltipOff(this, event)">E-Mail *</a>
       </td>
-      <td class="caseNiveau3"><input type="text" name="mMail" value=<%=(!mProbleme.equals("nouveau"))?mMail:""%>></td>
+      <td class="caseNiveau3"><input class="niveau2" type="text" name="mMail" value=<%=(!mProbleme.equals("nouveau"))?mMail:""%>></td>
     </tr>
     <tr>
       <td class="caseNiveau1">
         <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Domicile du collaborateur.')" onmouseout="tooltipOff(this, event)">Adresse</a>
       </td>
-      <td class="caseNiveau3"><textarea name="mAdresse" rows=3><%=(!mProbleme.equals("nouveau"))?mAdresse:""%></textarea></td>
+      <td class="caseNiveau3"><textarea class="niveau2" name="mAdresse" rows=3><%=(!mProbleme.equals("nouveau"))?mAdresse:""%></textarea></td>
     </tr>
     <tr>
       <td class="caseNiveau1">
         <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Numéro de téléphone fixe du collaborateur.')" onmouseout="tooltipOff(this, event)">Numéro de téléphone</a>
       </td>
-      <td class="caseNiveau3"><input type="text" name="mTelephone" value=<%=(!mProbleme.equals("nouveau"))?mTelephone:""%>></td>
+      <td class="caseNiveau3"><input class="niveau2" type="text" name="mTelephone" value=<%=(!mProbleme.equals("nouveau"))?mTelephone:""%>></td>
     </tr>
     <tr>
       <td class="caseNiveau1">
         <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Numéro de portable du collaborateur.')" onmouseout="tooltipOff(this, event)">Numéro de portable</a>
       </td>
-      <td class="caseNiveau3"><input type="text" name="mPortable" value=<%=(!mProbleme.equals("nouveau"))?mPortable:""%>></td>
+      <td class="caseNiveau3"><input class="niveau2" type="text" name="mPortable" value=<%=(!mProbleme.equals("nouveau"))?mPortable:""%>></td>
     </tr>
     <tr>
       <td class="caseNiveau1">
         <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Commentaires et précisions sur le collaborateur. Ces informations ne sont visibles que par les chefs de projets.')" onmouseout="tooltipOff(this, event)">Commentaires</a>
       </td>
-      <td class="caseNiveau3"><textarea name="mCommentaire" rows=3><%=(!mProbleme.equals("nouveau"))?mCommentaire:""%></textarea></td>
+      <td class="caseNiveau3"><textarea class="niveau2" name="mCommentaire" rows=3><%=(!mProbleme.equals("nouveau"))?mCommentaire:""%></textarea></td>
     </tr>
     <tr>
       <td class="caseNiveau1">
@@ -132,7 +132,7 @@ L'utilisateur a bien été enregistré<br>
     for(int i = 0 ; i<mListeRole.size() ; i++)
     {
 %>
-              <input type="checkbox" name="mRoleSelect<%=((MRole) mListeRole.get(i)).getId()%>" value="<%=((MRole) mListeRole.get(i)).getId()%>"><%=((MRole) mListeRole.get(i)).getNom()%><br>
+              <input class="texte" type="checkbox" name="mRoleSelect<%=((MRole) mListeRole.get(i)).getId()%>" value="<%=((MRole) mListeRole.get(i)).getId()%>"><%=((MRole) mListeRole.get(i)).getNom()%></input><br>
 <%
     }
 %>

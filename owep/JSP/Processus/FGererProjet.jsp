@@ -20,7 +20,7 @@
       <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Nom du projet.')" onmouseout="tooltipOff(this, event)">Nom *</a>
     </td>
     <td class="caseNiveau3">
-      <input type="text" name="mNom" value="">
+      <input class="niveau2" type="text" name="mNom" value="">
     </td>
   </tr>
   <tr>
@@ -28,7 +28,7 @@
       <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Date prévue à laquelle doit commencer le projet.')" onmouseout="tooltipOff(this, event)">Date de début *</a>
     </td>
     <td class="caseNiveau3">
-      <input type="text" name="mDateDebut" value="">
+      <input class="niveau2" type="text" name="mDateDebut" value="">
     </td>
   </tr>
   <tr>
@@ -36,7 +36,7 @@
       <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Date prévue à laquelle doit se terminer le projet.')" onmouseout="tooltipOff(this, event)">Date de fin *</a>
     </td>
     <td class="caseNiveau3">
-      <input type="text" name="mDateFin" value="">
+      <input class="niveau2" type="text" name="mDateFin" value="">
     </td>
   </tr>
   <tr>
@@ -44,7 +44,7 @@
       <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Description de ce qui doit être réalisé au cours du projet.')" onmouseout="tooltipOff(this, event)">Description</a>
     </td>
     <td class="caseNiveau3">
-      <textarea name="mDescription"></textarea>
+      <textarea class="niveau2" name="mDescription"></textarea>
     </td>
   </tr>
   <tr>
@@ -52,7 +52,7 @@
       <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Choisissez le fichier <b>.DPE</b> qui définit le processus à appliquer sur le projet.')" onmouseout="tooltipOff(this, event)">Processus *</a>
     </td>
     <td class="caseNiveau3">
-      <input type="file" name="mFichierProcessus" value="">
+      <input class="niveau2" type="file" name="mFichierProcessus" value="">
     </td>
   </tr>
   <tr>
@@ -66,7 +66,7 @@
   {
     lCollaborateur = (MCollaborateur) it.next();
 %>
-      <input name="mResponsable" type="radio" value="<%=lCollaborateur.getId()%>">
+      <input class="texte" name="mResponsable" type="radio" value="<%=lCollaborateur.getId()%>">
       <%= lCollaborateur.getPrenom()+"&nbsp;"+lCollaborateur.getNom()%>
       <br>
 <%
@@ -74,15 +74,13 @@
 %>
     </td>
   </tr>
-  <tr>
-    <td colspan="2">
-      <center><input class="bouton" type="button" value="Valider" onclick="envoyer();"></center>
-    </td>
-  </tr>
 </tbody>
 </table>
 </form>
 </center>
+
+<p class="texteObligatoire">Les champs marqué d'un * sont obligatoires.</p>
+<p class="texteSubmit"><input class="bouton" type="button" value="Valider" onclick="envoyer();"></p>
 
 
 <script language="javascript">

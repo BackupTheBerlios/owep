@@ -68,14 +68,14 @@ a:visited
   font-size   : 12px ;
   font-weight : bold ;
 }
-p.texte
+.texte
 {
   color       : black ;
   font-family : arial ;
   font-size   : 12px ;
   text-indent : 24px ;
 }
-p.texteImportant
+.texteImportant
 {
   text-align  : center ;
   color       : black ;
@@ -84,7 +84,7 @@ p.texteImportant
   font-weight : bold ;
   text-indent : 24px ;
 }
-p.texteObligatoire
+.texteObligatoire
 {
   text-align  : center ;
   color       : black ;
@@ -93,7 +93,7 @@ p.texteObligatoire
   font-weight : bold ;
   text-indent : 24px ;
 }
-p.texteSubmit
+.texteSubmit
 {
   text-align : right ;
 }

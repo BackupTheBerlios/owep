@@ -92,11 +92,11 @@
       </td>
     </tr>
   </table>
-
   </transfert:transfertbean>
-
-  <br>
-  <p class="paragrapheSubmit">
+  
+  
+  <p class="texteObligatoire">Les champs marqué d'un * sont obligatoires.</p>
+  <p class="texteSubmit">
     <transfert:transfertsubmit libelle="Valider" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="validerFormulaire () ;"/>
   </p>
 
