@@ -208,11 +208,6 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Processus/CreationCollaborateur">Collaborateurs</a>
-    </td>
-  </tr>
-  <tr>
-    <td class="caseMenuNiveau2">
       <a class="menuNiveau2" href="../Processus/GererProjet">Création d'un projet</a><br>
     </td>
   </tr>
