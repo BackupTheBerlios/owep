@@ -332,11 +332,11 @@
                 </tr>
                 <tr>
                   <td align="center">        
-                    <select class="niveau2" name="<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>"  style="width: 90%" size="9">
+                    <select class="niveau2" name="<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>"  style="width: 95%" size="9">
                     </select>
                   </td>
                   <td align="center">       
-                    <select class="niveau2" name="<%= CConstante.PAR_LISTEARTEFACTSENTREES %>" style="width: 90%" size="9">
+                    <select class="niveau2" name="<%= CConstante.PAR_LISTEARTEFACTSENTREES %>" style="width: 95%" size="9">
                     </select>
                   </td>
                 </tr>
