@@ -260,7 +260,7 @@ td.caseNiveau3SansBordure
   padding-top      : 2px ;
   text-align       : left ;
 }
-a.niveau1
+a.niveau1:active
 {
   color           : rgb(255,255,255) ;
   font-family     : arial ;
@@ -273,6 +273,19 @@ a.niveau1:hover
   font-family     : arial ;
   font-size       : 12px ;
   text-decoration : underline ;
+}
+a.niveau1:link
+{
+  color           : rgb(255,255,255) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  text-decoration : none ;
+}
+a.niveau1:visited
+{
+  color           : rgb(255,255,255) ;
+  font-family     : arial ;
+  font-size       : 12px ;
 }
 
 
@@ -383,6 +396,22 @@ select.menuProjet
   font-size        : 13px ;
   font-weight      : bolder ;
 }
+a.menuConnexion:active
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.menuConnexion:link
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
 a.menuConnexion:hover
 {
   color           : rgb(51,85,165) ;
@@ -391,13 +420,12 @@ a.menuConnexion:hover
   font-weight     : bold ;
   text-decoration : underline ;
 }
-a.menuConnexion
+a.menuConnexion:visited
 {
   color           : rgb(51,85,165) ;
   font-family     : arial ;
   font-size       : 12px ;
   font-weight     : bold ;
-  text-decoration : none ;
 }
 p.menuNiveau1
 {
@@ -412,7 +440,7 @@ p.menuNiveau1
   font-family     : arial ;
   font-size       : 12px ;
 }
-a.menuNiveau2
+a.menuNiveau2:active
 {
   color           : rgb(51,85,165) ;
   font-family     : arial ;
@@ -427,6 +455,21 @@ a.menuNiveau2:hover
   font-size       : 12px ;
   font-weight     : bold ;
   text-decoration : underline ;
+}
+a.menuNiveau2:link
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.menuNiveau2:visited
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
 }
 
 

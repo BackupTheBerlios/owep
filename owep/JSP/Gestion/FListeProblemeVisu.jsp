@@ -11,30 +11,29 @@
   ArrayList pListeProblemes = (ArrayList) request.getAttribute (CConstante.PAR_LISTEPROBLEMES) ;
 %>
 
-
 <table class="tableau" border="0" cellpadding="0" cellspacing="0">
 <tbody>
   <tr>
     <td class="caseNiveau1">
-      Nom
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Libellé du problème.')" onmouseout="tooltipOff(this, event)">Nom</a>
     </td>
     <td class="caseNiveau1">
-      Etat
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Degré de résolution du problème (Entamé, Résolu, etc.).')" onmouseout="tooltipOff(this, event)">Etat</a>
     </td>
     <td class="caseNiveau1">
-      Description
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Description des causes et impacts du problème.')" onmouseout="tooltipOff(this, event)">Description</a>
     </td>
     <td class="caseNiveau1">
-      Date</br>d'identification
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le problème a été détecté.')" onmouseout="tooltipOff(this, event)">Date</br>d'identification</a>
     </td>
     <td class="caseNiveau1">
-      Date de clôture
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le problème a été résolu.')" onmouseout="tooltipOff(this, event)">Date de clôture</a>
     </td>
     <td class="caseNiveau1">
-      Tâches à l'origine</br>du problème
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Tâches au cours desquelles est apparu le problème.')" onmouseout="tooltipOff(this, event)">Tâches à l'origine</br>du problème</a>
     </td>
     <td class="caseNiveau1">
-      Tâches de résolution</br>du problème
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Tâches au cours desquelles sera résolu le problème.')" onmouseout="tooltipOff(this, event)">Tâches de résolution</br>du problème</a>
     </td>
     <td class="caseNiveau1">
       &nbsp;
@@ -119,9 +118,17 @@
 
   </tr>
     <td class="caseNiveau3Lien" colspan="8">
-      <a href="/owep/Gestion/ProblemeModif">Ajouter un problème...</a>
+      <a href="/owep/Gestion/ProblemeModif" onmouseover="tooltipOn(this, event, 'Ajoute un nouveau problème survenu sur le projet.')" onmouseout="tooltipOff(this, event)">Ajouter un problème...</a>
     </td>
   </tr>
   
 </tbody>
 </table>
+
+
+<!-- Aide en ligne -->
+<script type="text/javascript" language="JavaScript">
+pCodeAide  = "La page de <b>gestion de problème</b> permet de visualiser tout les problèmes qui sont <b>survenus</b> sur votre projet." ;
+pCodeAide += " Chaque problème est relié aux tâches qui l'ont <b>engendré</b>" ;
+pCodeAide += " et éventuellement au tâches durant lesquelles le problème sera <b>résolu</b>." ;
+</script>

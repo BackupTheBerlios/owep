@@ -10,6 +10,11 @@
   <title>OWEP</title>
   <link rel="stylesheet" href="../CSS/Red.css" type="text/css">
   <script language="javascript" src="<template:region nom="RegionScript"/>"></script>
+  <script language="javascript" src="/owep/JavaScript/VerificationChamp.js"></script>
+  <script language="javascript" src="/owep/JavaScript/AideEnLigne.js"></script>
+  <script language="javascript" src="/owep/JavaScript/DomTT/domLib.js"></script>
+  <script language="javascript" src="/owep/JavaScript/DomTT/alphaAPI.js"></script>
+  <script language="javascript" src="/owep/JavaScript/DomTT/domTT.js"></script>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 
@@ -58,7 +63,25 @@
           
           <tr>
             <td class="regionPrincipal">
-              <p class="titre"><template:region nom="RegionTitre"/></p>
+              <table>
+                <tr>
+                  <td class="titre" width="100%">
+                    <template:region nom="RegionTitre"/>
+                  </td>
+                  <td>
+                    <a onclick="afficherAide (pCodeAide)">
+                      <img src="/owep/Image/Vide.gif" class="iconeAide"      onmouseover="tooltipOn(this, event, 'Cliquez pour afficher de l\'aide sur cette page.')" onmouseout="tooltipOff(this, event)"/>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="caseAide" colspan="2">
+                    <div id="regionAide">
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              <br/>
               <template:region nom="RegionNavigation"/>
               <template:region nom="RegionPrincipal"/>
             </td>

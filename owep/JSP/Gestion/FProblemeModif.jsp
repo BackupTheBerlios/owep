@@ -34,7 +34,7 @@
   <tbody>
     <tr>
       <td class="caseNiveau1" width="20%">
-        Nom *
+        <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Libellé du problème.')" onmouseout="tooltipOff(this, event)">Nom *</a>
       </td>
       <td class="caseNiveau3" width="80%" colspan="3">
         <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom du problème" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREPROBLEME %>"/>
@@ -43,7 +43,7 @@
     </tr>
     <tr>
       <td class="caseNiveau1">
-        Etat
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Degré de résolution du problème (Entamé, Résolu, etc.).')" onmouseout="tooltipOff(this, event)">Etat</a>
       </td>
       <td class="caseNiveau3" colspan="3">
         <input <transfert:transfertchamp membre="setEtat" type="java.lang.String" libelle="Etat du problème" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBREPROBLEME %>"/>
@@ -52,7 +52,7 @@
     </tr>
     <tr>
       <td class="caseNiveau1">
-        Description
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Description des causes et impacts du problème.')" onmouseout="tooltipOff(this, event)">Description</a>
       </td>
       <td class="caseNiveau3" colspan="3">
         <textarea  <transfert:transfertchamp membre="setDescription" type="java.lang.String" libelle="Description du problème" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBREPROBLEME %>"/>
@@ -61,7 +61,7 @@
     </tr>
     <tr>
       <td class="caseNiveau1">
-        Date<br/>d'identification *
+        <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Date à laquelle le problème a été détecté.')" onmouseout="tooltipOff(this, event)">Date</br>d'identification *</a>
       </td>
       <td class="caseNiveau3" colspan="3">
         <input <transfert:transfertchamp membre="setDateIdentification" type="java.lang.Date" libelle="Date d\\'identification" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREPROBLEME %>"/>
@@ -70,7 +70,7 @@
     </tr>
     <tr>
       <td class="caseNiveau1">
-        Date de clôture
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le problème a été résolu.')" onmouseout="tooltipOff(this, event)">Date de clôture</a>
       </td>
       <td class="caseNiveau3" colspan="3">
         <input <transfert:transfertchamp membre="setDateCloture" type="java.lang.Date" libelle="Date de clôture" convertor="VDateConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBREPROBLEME %>"/>
@@ -79,27 +79,7 @@
     </tr>
     <tr>
       <td class="caseNiveau1">
-        Tâches à l'origine<br/>du problème *
-      </td>
-      <td class="caseNiveau3">
-        <font class="titre3">Tâches choisies :</font><br/>
-        <select name="pSelectTachesProvoque" class="niveau2" style="width: 250" size="6">
-        <%
-        for (int lIndiceTache = 0; lIndiceTache < pProbleme.getNbTachesProvoque (); lIndiceTache ++)
-        {
-          MTache lTache = pProbleme.getTacheProvoque (lIndiceTache) ;
-        %>
-          <option value="<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
-        <%
-        }
-        %>
-        </select>
-      </td>
-      <td class="caseNiveau3" align="center" valign="middle" width="0" style="border-width : 0px 0px 1px 0px ;">
-        <font class="titre3">&nbsp;</font><br/>
-        <input type="button" value="    < Ajouter    " class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoquePossible, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoque) ;"/>
-        <br/>
-        <input type="button" value="Supprimer >" class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoque, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoquePossible) ;"/>
+        <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Tâches au cours desquelles est apparu le problème.')" onmouseout="tooltipOff(this, event)">Tâches à l'origine</br>du problème *</a>
       </td>
       <td class="caseNiveau3" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">Tâches possibles :</font><br/>
@@ -135,10 +115,32 @@
         %>
         </select>
       </td>
+      <td class="caseNiveau3" align="center" valign="middle" width="0" style="border-width : 0px 0px 1px 0px ;">
+        <font class="titre3">&nbsp;</font><br/>
+        <input type="button" value="     Ajouter >   " class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoquePossible, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoque) ;"
+         onmouseover="tooltipOn(this, event, 'Cliquez pour ajouter la tâche de la liste de gauche à la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
+        <br/>
+        <input type="button" value="< Supprimer" class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoque, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoquePossible) ;"
+         onmouseover="tooltipOn(this, event, 'Cliquez pour supprimer la tâche de la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
+      </td>
+      <td class="caseNiveau3">
+        <font class="titre3">Tâches choisies :</font><br/>
+        <select name="pSelectTachesProvoque" class="niveau2" style="width: 250" size="6">
+        <%
+        for (int lIndiceTache = 0; lIndiceTache < pProbleme.getNbTachesProvoque (); lIndiceTache ++)
+        {
+          MTache lTache = pProbleme.getTacheProvoque (lIndiceTache) ;
+        %>
+          <option value="<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
+        <%
+        }
+        %>
+        </select>
+      </td>
     </tr>
     <tr>
       <td class="caseNiveau1">
-        Tâches de résolution<br/>du problème
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Tâches au cours desquelles sera résolu le problème.')" onmouseout="tooltipOff(this, event)">Tâches de résolution</br>du problème</a>
       </td>
       <td class="caseNiveau3">
         <font class="titre3">Tâches choisies :</font><br/>
@@ -156,9 +158,11 @@
       </td>
       <td class="caseNiveau3" align="center" valign="middle" width="0" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">&nbsp;</font><br/>
-        <input type="button" value="    < Ajouter    " class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResoutPossible, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResout)"/>
+        <input type="button" value="     Ajouter >   " class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResoutPossible, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResout)"
+         onmouseover="tooltipOn(this, event, 'Cliquez pour ajouter la tâche de la liste de gauche à la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
         <br/>
-        <input type="button" value="Supprimer >" class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResout, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResoutPossible)"/>
+        <input type="button" value="< Supprimer" class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResout, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResoutPossible)"
+         onmouseover="tooltipOn(this, event, 'Cliquez pour supprimer la tâche de la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
       </td>
       <td class="caseNiveau3" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">Tâches possibles :</font><br/>
@@ -209,8 +213,10 @@
     <% lCodeValidation += "submitListesTaches (pSelectTachesProvoque, " + CConstante.PAR_LISTETACHESPROVOQUE + ") ;" ; %>
     <% lCodeValidation += "submitListesTaches (pSelectTachesResout, " + CConstante.PAR_LISTETACHESRESOUT + ") ;" ; %>
     <% lCodeValidation += "validerChamps () ;" ; %>
-    <transfert:transfertsubmit libelle="Valider" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="<%= lCodeValidation %>"/>
-    <input type="button" value="Annuler" class="bouton" onclick="window.location.href = '/owep/Gestion/ListeProblemeVisu' ;"/>
+    <transfert:transfertsubmit libelle="Valider" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="<%= lCodeValidation %>"
+     additionnel="onmouseover=\"tooltipOn(this, event, 'Cliquez pour valider toutes les modifications et revenir à la page liste des problèmes.')\" onmouseout=\"tooltipOff(this, event)\""/>
+    <input type="button" value="Annuler" class="bouton" onclick="window.location.href = '/owep/Gestion/ListeProblemeVisu' ;"
+     onmouseover="tooltipOn(this, event, 'Cliquez pour annuler toutes les modifications et revenir à la page liste des problèmes.')" onmouseout="tooltipOff(this, event)"/>
   </p>
 
 </form>
@@ -247,4 +253,12 @@
     }
   }
   
+</script>
+
+
+<!-- Aide en ligne -->
+<script type="text/javascript" language="JavaScript">
+pCodeAide  = "La page de <b>Détail du problème</b> vous permet de spécifier ou de modifier un <b>problème</b>." ;
+pCodeAide += " Vous pouvez y décrire votre problème (<b>état</b> de résolution, date à laquelle celui-ci a été <b>découvert</b>, date à laquelle il a été <b>résolu</b>)" ;
+pCodeAide += " et le relier aux tâches qui ont <b>provoqué</b> le problème et celles au cours desquelles il sera <b>résolu</b>." ;
 </script>

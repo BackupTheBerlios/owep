@@ -19,6 +19,7 @@ public class VTransfertSubmitTag extends TagSupport
   private String  mValeur ;       // Valeur renvoyée par le bouton de soumission.
   private boolean mVerification ; // Indique si la vérification de champ doit être réalisée.
   private String  mValidation ;   // Code javascript de validation.
+  private String  mAdditionnel ;   // Code javascript additionnel.
 
 
   /**
@@ -60,7 +61,7 @@ public class VTransfertSubmitTag extends TagSupport
       {
         pageContext.getOut ().print ("<input class='bouton' type=\"button\" value=\"" + mLibelle + "\" " + 
                                      "onclick=\"" + VTransfertConstante.TRANSFERT_SOUMISSION + ".value='" + mValeur + "' ;\n" +  
-                                     mValidation + "\">") ;
+                                     mValidation + "\"" + mAdditionnel + ">") ;
       }
       else
       {
@@ -135,6 +136,26 @@ public class VTransfertSubmitTag extends TagSupport
     
     // Retourne le gestionnaire d'évenement.
     return lGestionnaireValidation ;
+  }
+
+
+  /**
+   * Récupère le code additionnel javascript pour le bouton.
+   * @return Code additionnel (pour ajouter de nouveaux évenements par exemple).
+   */
+  public String getAdditionnel ()
+  {
+    return mAdditionnel ;
+  }
+
+
+  /**
+   * Initialise le code additionnel javascript pour le bouton.
+   * @param pAdditionnel Code additionnel (pour ajouter de nouveaux évenements par exemple).
+   */
+  public void setAdditionnel (String pAdditionnel)
+  {
+    mAdditionnel = pAdditionnel ;
   }
 
 
