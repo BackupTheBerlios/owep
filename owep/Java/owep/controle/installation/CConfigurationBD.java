@@ -77,14 +77,6 @@ public class CConfigurationBD extends CControleurBaseInstallation
       Class.forName ("com.mysql.jdbc.Driver").newInstance () ;
       conn = (Connection) DriverManager.getConnection (mUrlBd + "?user=" + mLogin + "&password="
                                                        + mMdp) ;
-      st = (Statement) conn.createStatement () ;
-      conn.setCatalog ("owep") ;
-      st.close () ;
-    }
-    catch (SQLException e)
-    {
-      mErreur = "Une erreur s'est produite lors de la connexion à la database owep. Vérifier qu'elle existe." ;
-      e.printStackTrace();
     }
     catch (InstantiationException e)
     {
@@ -99,6 +91,21 @@ public class CConfigurationBD extends CControleurBaseInstallation
     catch (ClassNotFoundException e)
     {
       mErreur = "Une erreur s'est produite lors de la connexion à la base de donnée." ;
+      e.printStackTrace();
+    }
+    catch (SQLException e)
+    {
+      // TODO Ecrire le bloc try-catch.
+      e.printStackTrace () ;
+    }
+    try{
+      st = (Statement) conn.createStatement () ;
+      conn.setCatalog ("owep") ;
+      st.close () ;
+    }
+    catch (SQLException e)
+    {
+      mErreur = "Une erreur s'est produite lors de la connexion à la database owep. Vérifier qu'elle existe." ;
       e.printStackTrace();
     }
 
