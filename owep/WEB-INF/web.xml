@@ -195,6 +195,15 @@
     <url-pattern>/Projet/OuvrirProjet</url-pattern> 
   </servlet-mapping> 
   
+  <servlet> 
+    <servlet-name>CDemarrerProjet</servlet-name> 
+    <servlet-class>owep.controle.outil.CDemarrerProjet</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CDemarrerProjet</servlet-name> 
+    <url-pattern>/Outil/DemarrerProjet</url-pattern> 
+  </servlet-mapping> 
+  
   
   
   <!-- Liste des servlets pour le processus -->

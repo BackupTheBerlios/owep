@@ -1,6 +1,7 @@
 package owep.infrastructure ;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import owep.modele.configuration.MConfigurationSite;
@@ -24,6 +25,9 @@ public class Session
   private int mIdCollaborateur = 0;
   private int mIdProjet = 0;
   private int mIdIteration = 0;
+  private HashMap mListeIdNomProjetPossible = null; // key : idProjet / value : nomProjet 
+  private boolean mEstChefProjet = false;
+  private boolean mEstSuperviseur = false;
   
   /**
    * TODO Récupère idCollabAVisualiser.
@@ -52,11 +56,18 @@ public class Session
    */
   public void ouvertureSession (MCollaborateur pCollaborateur)
   {
+    // TODO suppr
     mCollaborateur = pCollaborateur ;
     mIdCollaborateur = pCollaborateur.getId();
 
     if (mListeProjetPossible == null)
       mListeProjetPossible = new ArrayList () ;
+  }
+  public void ouvertreSession(int pIdCollaborateur){
+    mIdCollaborateur = pIdCollaborateur;
+    
+    if(mListeIdNomProjetPossible == null)
+      mListeIdNomProjetPossible = new HashMap();
   }
 
   /**
@@ -66,7 +77,11 @@ public class Session
    */
   public MCollaborateur getCollaborateur ()
   {
+    // TODO suppr
     return mCollaborateur ;
+  }
+  public int getIdCollaborateur(){
+    return mIdCollaborateur;
   }
 
   /**
@@ -76,7 +91,12 @@ public class Session
    */
   public MProjet getProjet ()
   {
+    // TODO suppr
     return mProjet ;
+  }
+  public int getIdProjet()
+  {
+    return mIdProjet;
   }
 
   /**
@@ -86,8 +106,13 @@ public class Session
    */
   public void ouvrirProjet (MProjet pProjet)
   {
+    // TODO suppr
     mProjet = pProjet ;
     mIdProjet = pProjet.getId();
+  }
+  public void ouvrirProjet(int pIdProjet)
+  {
+    mIdProjet = pIdProjet;
   }
 
   /**
@@ -101,8 +126,13 @@ public class Session
 
   public void setProjet (MProjet pProjet)
   {
+    // TODO suppr
     mProjet = pProjet ;
     mIdProjet = pProjet.getId();
+  }
+  public void setIdProjet(int pIdProjet)
+  {
+    mIdProjet = pIdProjet;
   }
 
   /**
@@ -112,7 +142,12 @@ public class Session
    */
   public ArrayList getListProjetPossible ()
   {
+    // TODO suppr
     return mListeProjetPossible ;
+  }
+  public HashMap getListeProjetPossible()
+  {
+    return mListeIdNomProjetPossible;
   }
 
   /**
@@ -122,19 +157,33 @@ public class Session
    */
   public void setListProjetPossible (ArrayList pListProjetPossible)
   {
+    // TODO suppr
     mListeProjetPossible = pListProjetPossible ;
+  }
+  public void setListeProjetPossible (HashMap pListeProjetPossible)
+  {
+    mListeIdNomProjetPossible = pListeProjetPossible;
   }
 
   public MIteration getIteration ()
   {
+    // TODO suppr
     return mIteration ;
+  }
+  public int getIdIteration(){
+    return mIdIteration;
   }
 
   public void setIteration (MIteration pIteration)
   {
+    // TODO suppr
     mIteration = pIteration ;
     if(pIteration != null)
     mIdIteration = pIteration.getId();
+  }
+  public void setIdIteration(int pIdIteration)
+  {
+    mIdIteration = pIdIteration;
   }
 
   /**
@@ -186,14 +235,6 @@ public class Session
   }
   
   /**
-   * @return Retourne la valeur de l'attribut idCollaborateur.
-   */
-  public int getIdCollaborateur ()
-  {
-    return mIdCollaborateur ;
-  }
-  
-  /**
    * @param initialse idCollaborateur avec pIdCollaborateur.
    */
   public void setIdCollaborateur (int pIdCollaborateur)
@@ -202,34 +243,31 @@ public class Session
   }
   
   /**
-   * @return Retourne la valeur de l'attribut idIteration.
+   * @return Retourne la valeur de l'attribut estChefProjet.
    */
-  public int getIdIteration ()
+  public boolean isEstChefProjet ()
   {
-    return mIdIteration ;
+    return mEstChefProjet ;
   }
-  
   /**
-   * @param initialse idIteration avec pIdIteration.
+   * @param initialse estChefProjet avec pEstChefProjet.
    */
-  public void setIdIteration (int pIdIteration)
+  public void setEstChefProjet (boolean pEstChefProjet)
   {
-    mIdIteration = pIdIteration ;
+    mEstChefProjet = pEstChefProjet ;
   }
-  
   /**
-   * @return Retourne la valeur de l'attribut idProjet.
+   * @return Retourne la valeur de l'attribut estSuperviseur.
    */
-  public int getIdProjet ()
+  public boolean isEstSuperviseur ()
   {
-    return mIdProjet ;
+    return mEstSuperviseur ;
   }
-  
   /**
-   * @param initialse idProjet avec pIdProjet.
+   * @param initialse estSuperviseur avec pEstSuperviseur.
    */
-  public void setIdProjet (int pIdProjet)
+  public void setEstSuperviseur (boolean pEstSuperviseur)
   {
-    mIdProjet = pIdProjet ;
+    mEstSuperviseur = pEstSuperviseur ;
   }
 }
