@@ -49,13 +49,18 @@ public class CArtefactAjout extends CControleurBase
     //Cas ou l'idArtefact est passé dans l'url
     if(getRequete().getParameter("pArtefact") != null)
     {
+      getRequete().getSession().setAttribute(CConstante.PAR_ARTEFACT,getRequete().getParameter(CConstante.PAR_ARTEFACT));
       idArtefact = Integer.parseInt(getRequete().getParameter("pArtefact"));
+    }
+    else
+    {
+      idArtefact = Integer.parseInt((String)(getRequete().getSession().getAttribute(CConstante.PAR_ARTEFACT)));
     }
     
     // si l'idArtefact est valorisé 
     //(si ce n'est pas le cas cela sera fait dans traiter à cause des problème avec le formulaire de type "multipart/form-data")
-    if(idArtefact >=0)
-    {
+    /*if(idArtefact >=0)
+    {*/
       try
       {
         getBaseDonnees ().begin () ;
@@ -70,7 +75,7 @@ public class CArtefactAjout extends CControleurBase
         eException.printStackTrace () ;
         throw new ServletException (CConstante.EXC_TRAITEMENT) ;
       }
-    }
+    //}
   }
   
   
@@ -93,6 +98,7 @@ public class CArtefactAjout extends CControleurBase
    */
   public String traiter () throws ServletException
   {
+    boolean ok = false;
     try
     {
       HttpServletRequest request = getRequete() ;
@@ -103,6 +109,7 @@ public class CArtefactAjout extends CControleurBase
       //comme getParameter
       if(DiskFileUpload.isMultipartContent(request))
       {
+        ok = true;
         DiskFileUpload upload = new DiskFileUpload();
         List items;
         FileItem itemFichier = null;
@@ -122,11 +129,11 @@ public class CArtefactAjout extends CControleurBase
             String fieldName = item.getFieldName();
             
             //si l'élément est l'idArtefact
-            if(fieldName.equals("pArtefact"))
+            /*if(fieldName.equals("pArtefact"))
             {
               //on initialise la BD
               initialiserBaseDonnees ();
-            }
+            }*/
             
             //si l'élément est la fichier
             if(fieldName.equals("fichierArtefact"))
@@ -164,7 +171,7 @@ public class CArtefactAjout extends CControleurBase
           }       
         }
         
-        return "..\\Tache\\TacheVisu?pTacheAVisualiser="+mArtefact.getTacheSortie().getId() ;
+       // return "..\\Tache\\TacheVisu?pTacheAVisualiser="+mArtefact.getTacheSortie().getId() ;
       }
       else
       {
@@ -172,7 +179,7 @@ public class CArtefactAjout extends CControleurBase
         getRequete ().setAttribute (CConstante.PAR_ARTEFACT, mArtefact) ;
         getRequete ().setAttribute (CConstante.SES_SESSION, getSession()) ;
         
-        return "..\\JSP\\Artefact\\TArtefactAjout.jsp"  ;
+        //return "..\\JSP\\Artefact\\TArtefactAjout.jsp"  ;
       }
     }
     catch (Exception eException)
@@ -193,6 +200,14 @@ public class CArtefactAjout extends CControleurBase
         eException.printStackTrace () ;
         throw new ServletException (CConstante.EXC_DECONNEXION) ;
       }
+    }
+    if (ok)
+    {
+      return "..\\Tache\\TacheVisu?pTacheAVisualiser="+mArtefact.getTacheSortie().getId() ;
+    }
+    else
+    {
+      return "..\\JSP\\Artefact\\TArtefactAjout.jsp"  ;
     }
   }
 }
