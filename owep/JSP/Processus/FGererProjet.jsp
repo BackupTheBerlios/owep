@@ -81,12 +81,32 @@ function envoyer()
         document.formCreerProjet.mExtension.value = extension;
   }
   
+  // Verification format date
+  if(texte == ""){
+    if(!isDate(document.formCreerProjet.mDateDebut.value)
+        || !isDate(document.formCreerProjet.mDateFin.value))
+      texte = texte + "<%=lMessage.getString("projetErreurDate")%>\n";
+  }
+  
   if(texte == "")
     document.formCreerProjet.submit();
   else
     alert(texte);
 }
 
+function isDate (pDate)
+{
+  var lRegExpression = /^\d{1}\d{1}\/\d{1}\d{1}\/\d{1}\d{1}\d{1}\d{1}$/ ;
+  
+  if ((pDate.length != 0) && (! lRegExpression.test (pDate)))
+  {
+    return false ;
+  }
+  else
+  {
+    return true ;
+  }
+}
 </script>
 
 <center>
