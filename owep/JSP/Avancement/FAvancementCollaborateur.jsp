@@ -19,7 +19,7 @@
       <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Nom du collaborateur.')" onmouseout="tooltipOff(this, event)">Collaborateurs</a>
     </td>
     <td class="caseNiveau1" rowspan="2">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Tâches que le collaborateur réalise ou doit réaliser.')" onmouseout="tooltipOff(this, event)">Tâches</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Tâches que le collaborateur doit réaliser.')" onmouseout="tooltipOff(this, event)">Tâches</a>
     </td>
     <td class="caseNiveau1" rowspan="2">
       <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Charge affectée par le chef de projet sur la tâche (en heures).')" onmouseout="tooltipOff(this, event)">Temps prévu(h)</a>
@@ -71,6 +71,8 @@
       <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Dépassement du temps de réalisation pour la tâche (en heures).')" onmouseout="tooltipOff(this, event)">(h)</a>
     </td>
   </tr>
+  
+  
   <!--Affichage des taches en cours des collaborateurs-->
 	<%
 	// pour chaque collaborateur

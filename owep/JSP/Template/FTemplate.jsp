@@ -70,7 +70,8 @@
                   </td>
                   <td>
                     <a onclick="afficherAide (pCodeAide)">
-                      <img src="/owep/Image/Vide.gif" class="iconeAide"      onmouseover="tooltipOn(this, event, 'Cliquez pour afficher de l\'aide sur cette page.')" onmouseout="tooltipOff(this, event)"/>
+                      <img src="/owep/Image/Vide.gif" class="iconeAide" onmouseout="tooltipOff(this, event)"
+                       onmouseover="tooltipTitreOn(this, event, 'Aide en ligne', 'Cliquez pour afficher de l\'aide sur cette page.')"/>
                     </a>
                   </td>
                 </tr>

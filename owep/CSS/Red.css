@@ -36,6 +36,137 @@ a:visited
   font-size       : 12px ;
   text-decoration : none ;
 }
+.titre
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 32px ;
+  font-weight     : bold ;
+  margin          : 0px 0px 32px 0px ;
+  text-align      : center ;
+  text-decoration : underline ;
+}
+.titre1
+{
+  color           : rgb(51,85,165) ;
+  font-family     : arial ;
+  font-size       : 22px ;
+  font-weight     : bold ;
+  text-decoration : underline ;
+}
+.titre2
+{
+  color       : rgb(51,85,165) ;
+  font-family : arial ;
+  font-size   : 16px ;
+  font-weight : bold ;
+}
+.titre3
+{
+  color       : rgb(51,85,165) ;
+  font-family : arial ;
+  font-size   : 12px ;
+  font-weight : bold ;
+}
+p.texte
+{
+  color       : black ;
+  font-family : arial ;
+  font-size   : 12px ;
+  text-indent : 24px ;
+}
+p.texteImportant
+{
+  text-align  : center ;
+  color       : black ;
+  font-family : arial ;
+  font-size   : 12px ;
+  font-weight : bold ;
+  text-indent : 24px ;
+}
+p.texteObligatoire
+{
+  text-align  : center ;
+  color       : black ;
+  font-family : arial ;
+  font-size   : 10px ;
+  font-weight : bold ;
+  text-indent : 24px ;
+}
+p.texteSubmit
+{
+  text-align : right ;
+}
+a.niveau1:active
+{
+  color           : rgb(255,255,255) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.niveau1:hover
+{
+  color           : rgb(255,255,255) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : underline ;
+}
+a.niveau1:link
+{
+  color           : rgb(255,255,255) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.niveau1:visited
+{
+  color           : rgb(255,255,255) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+}
+a.niveau2:active
+{
+  color           : rgb(180,50,15) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.niveau2:hover
+{
+  color           : rgb(180,50,15) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight      : bold ;
+  text-decoration : underline ;
+}
+a.niveau2:link
+{
+  color           : rgb(180,50,15) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+  text-decoration : none ;
+}
+a.niveau2:visited
+{
+  color           : rgb(180,50,15) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  font-weight     : bold ;
+}
+
+
+
+
+
+/**************************************************************************************************
+ * Styles formulaires
+ **************************************************************************************************/
 input.bouton
 {
   background-color : rgb(180,50,15) ;
@@ -110,67 +241,14 @@ select.niveau2
   font-weight      : bold ;
   margin           : 1px 0px 1px 0px ;
 }
-.titre
-{
-  color           : rgb(51,85,165) ;
-  font-family     : arial ;
-  font-size       : 32px ;
-  font-weight     : bold ;
-  margin          : 0px 0px 32px 0px ;
-  text-align      : center ;
-  text-decoration : underline ;
-}
-.titre1
-{
-  color           : rgb(51,85,165) ;
-  font-family     : arial ;
-  font-size       : 22px ;
-  font-weight     : bold ;
-  text-decoration : underline ;
-}
-.titre2
-{
-  color       : rgb(51,85,165) ;
-  font-family : arial ;
-  font-size   : 16px ;
-  font-weight : bold ;
-}
-.titre3
-{
-  color       : rgb(51,85,165) ;
-  font-family : arial ;
-  font-size   : 12px ;
-  font-weight : bold ;
-}
-p.texte
-{
-  color       : black ;
-  font-family : arial ;
-  font-size   : 12px ;
-  text-indent : 24px ;
-}
-p.texteImportant
-{
-  text-align  : center ;
-  color       : black ;
-  font-family : arial ;
-  font-size   : 12px ;
-  font-weight : bold ;
-  text-indent : 24px ;
-}
-p.texteObligatoire
-{
-  text-align  : center ;
-  color       : black ;
-  font-family : arial ;
-  font-size   : 10px ;
-  font-weight : bold ;
-  text-indent : 24px ;
-}
-p.texteSubmit
-{
-  text-align : right ;
-}
+
+
+
+
+
+/**************************************************************************************************
+ * Styles tableaux
+ **************************************************************************************************/
 table.tableau
 {
   border       : solid rgb(128,0,0) ;
@@ -261,33 +339,6 @@ td.caseNiveau3SansBordure
   padding-right    : 2px ;
   padding-top      : 2px ;
   text-align       : left ;
-}
-a.niveau1:active
-{
-  color           : rgb(255,255,255) ;
-  font-family     : arial ;
-  font-size       : 12px ;
-  text-decoration : none ;
-}
-a.niveau1:hover
-{
-  color           : rgb(255,255,255) ;
-  font-family     : arial ;
-  font-size       : 12px ;
-  text-decoration : underline ;
-}
-a.niveau1:link
-{
-  color           : rgb(255,255,255) ;
-  font-family     : arial ;
-  font-size       : 12px ;
-  text-decoration : none ;
-}
-a.niveau1:visited
-{
-  color           : rgb(255,255,255) ;
-  font-family     : arial ;
-  font-size       : 12px ;
 }
 
 

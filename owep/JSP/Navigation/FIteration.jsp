@@ -10,8 +10,10 @@
 <center>
 
 	<form action="/owep/Navigation/NavigationIteration" id="navigation" name="formulaireIteration">
-    Choisissez l'itération : 	    
-       <select name="<%=CConstante.PAR_ITERATION%>" size=1 onChange="formulaireIteration.submit();">   
+    <a href="#" class="niveau2" onmouseover="tooltipTitreOn(this, event, 'Sélecteur d\'itération', 'Choisissez l\'itération que vous voulez visualiser.')" onmouseout="tooltipOff(this, event)">
+      Choisissez l'itération :
+    </a>
+      <select class="niveau1" name="<%=CConstante.PAR_ITERATION%>" size=1 onChange="formulaireIteration.submit();">   
       <%
       	MIteration iteration;
       	lSession = (Session)(request.getSession().getAttribute("SESSION"));
