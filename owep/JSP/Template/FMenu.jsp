@@ -82,7 +82,12 @@
         <option VALUE="" selected>
           &nbsp;
         </option>
-<%}%>
+<%
+  }
+  
+  // Recuperation du projet ouvert
+  lProjet = lSession.getProjet() ;
+%>
       </select>
     </td>
   </tr>
