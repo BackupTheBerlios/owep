@@ -7,8 +7,7 @@
 <%@taglib uri='/WEB-INF/tld/transfert.tld' prefix='transfert' %>
 
 <%
-  Session    lSession   = (Session) session.getAttribute (CConstante.SES_SESSION) ;
-  MProjet    lProjet    = lSession.getProjet() ;
+  MProjet lProjet = (MProjet) request.getAttribute (CConstante.PAR_PROJET) ;
   
   // Liste des champs transférés.
   String lChampActiviteImprevueNom             = "" ;
@@ -38,10 +37,10 @@
        </transfert:transfertbean>
       <%
         }
-      %>
-  
-  
-  
+      %>  
+        
+
+
   <table class="tableau" width="100%" cellpadding="0" cellspacing="0">
   <tbody>
   
@@ -52,8 +51,7 @@
     <tr>
       <td>
         <select name="<%= CConstante.PAR_LISTEACTIVITESIMPREVUES %>" class="niveau2" style="width: 200" size="5"
-         onchange="selectActiviteImprevue (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITESIMPREVUES %>.selectedIndex)"
-         onmouseover="tooltipOn (this, event, 'Liste des activités imprévues existantes.')" onmouseout="tooltipOff(this, event)">
+        onchange="selectActiviteImprevue (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITESIMPREVUES %>.selectedIndex)">
           <% for (int lIndiceActiviteImprevue = 0; lIndiceActiviteImprevue < lProjet.getNbActivitesImprevues (); lIndiceActiviteImprevue++)
              {
           %>
@@ -72,8 +70,8 @@
             </td>
             <td>
               <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom de l\\'activité" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREACTIVITE %>"/>
-               type="text" size="48" class="niveau2" value="" maxlength="<%= CConstante.TXT_MOYEN %>"
-               onmouseover="tooltipOn (this, event, 'Saisissez le nouveau nom de l\'activité.')" onmouseout="tooltipOff(this, event)">
+               type="text" size="48" class="niveau2"
+               value="" maxlength="<%= CConstante.TXT_MOYEN %>">
               <% lChampActiviteImprevueNom = VTransfert.getDernierChamp () ; %>
             </td>
           </tr>
@@ -83,8 +81,8 @@
             </td>
             <td>
               <input <transfert:transfertchamp membre="setDescription" type="java.lang.String" libelle="Description" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBREACTIVITE %>"/> 
-               type="text" size="48" class="niveau2" value=""  maxlength="<%= CConstante.TXT_MOYEN %>"
-               onmouseover="tooltipOn (this, event, 'Saisissez la description de l\'activité.')" onmouseout="tooltipOff(this, event)">
+               type="text" size="48" class="niveau2"
+               value=""  maxlength="<%= CConstante.TXT_MOYEN %>">
               <% lChampActiviteImprevueDescription = VTransfert.getDernierChamp () ; %>
             </td>
           </tr>
@@ -92,12 +90,14 @@
       </td>
     </tr>
   </table>
+
   </transfert:transfertbean>
-  
-  
-  <p class="texteObligatoire">Les champs marqué d'un * sont obligatoires.</p>
-  <p class="texteSubmit">
-    <transfert:transfertsubmit libelle="Valider" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="validerFormulaire () ;"/>
+
+  <br>
+  <p class="paragrapheSubmit">
+    <transfert:transfertsubmit libelle="Ajouter" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="validerFormulaireAjouter () ;"/>
+    <transfert:transfertsubmit libelle="Modifier" valeur="<%= CConstante.PAR_SUBMITMODIFIER %>" verification="true" validation="validerFormulaireModifier () ;"/>
+    <transfert:transfertsubmit libelle="Supprimer" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER %>" verification="true" validation="validerFormulaireSupprimer () ;"/>
   </p>
 
 </form>
@@ -131,16 +131,27 @@
   <!-- Fonctions de validation du formulaire -->
   <!------------------------------------------->
 
-  function validerFormulaire () 
+  function validerFormulaireAjouter () 
   {
     <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREACTIVITE) %> () ;
     validerChamps () ;
   }
-</script>
-
-
-<!-- Aide en ligne -->
-<script type="text/javascript" language="JavaScript">
-pCodeAide  = "La page de <b>Activité imprévue</b> offre la possibilité de définir des activités (c'est à dire des regroupements de tâches) <b>non prévues</b> dans le processus." ;
-pCodeAide += " Ces activités imprévues doivent donc être utilisés en conjonction avec des <b>tâches imprévues</b> (accessibles depuis le menu)." ;
+  
+  function validerFormulaireModifier () 
+  {
+    if (confirm("Certaines tâches imprévues peuvent dépendre de cette activité. Etes vous sûr de vouloir la modifier ?"))
+    {
+      <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREACTIVITE) %> () ;
+      validerChamps () ;
+    }
+  }
+  
+  function validerFormulaireSupprimer () 
+  {
+    if (confirm("Certaines tâches imprévues peuvent dépendre de cette activité. Etes vous sûr de vouloir la supprimer car cela entrainnera la suppression des tâches imprévues et de leurs artefacts ?"))
+    {
+      <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREACTIVITE) %> () ;
+      validerChamps () ;
+    }
+  }
 </script>

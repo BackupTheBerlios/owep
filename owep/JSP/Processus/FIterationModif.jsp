@@ -22,9 +22,8 @@
 <!-- Déclaration des variables locales -->
 <%
   boolean lModif = request.getParameter (CConstante.PAR_SUBMIT) != null ;
-  Session    lSession   = (Session) session.getAttribute (CConstante.SES_SESSION) ;
-  MIteration lIteration = (MIteration) session.getAttribute (CConstante.SES_ITERATION) ;
-  MProjet    lProjet    = lIteration.getProjet () ;
+  MIteration lIteration = (MIteration) session.getAttribute (CConstante.PAR_ITERATION) ;
+  MProjet lProjet = (MProjet) request.getAttribute (CConstante.PAR_PROJET) ;
   MProcessus lProcessus = lProjet.getProcessus () ;
   String lCodeValidation ;
 

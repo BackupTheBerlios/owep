@@ -1,17 +1,16 @@
 package owep.controle.processus ;
 
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import javax.servlet.ServletException ;
+import org.exolab.castor.jdo.ClassNotPersistenceCapableException;
+import org.exolab.castor.jdo.DuplicateIdentityException;
 import org.exolab.castor.jdo.OQLQuery ;
+import org.exolab.castor.jdo.PersistenceException;
 import org.exolab.castor.jdo.QueryResults ;
-import com.mysql.jdbc.Driver;
+import org.exolab.castor.jdo.TransactionNotInProgressException;
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
 import owep.infrastructure.Session ;
-import owep.infrastructure.localisation.LocalisateurIdentifiant;
 import owep.modele.execution.MArtefact ;
 import owep.modele.execution.MCollaborateur ;
 import owep.modele.execution.MCondition;
@@ -33,7 +32,7 @@ import owep.vue.transfert.VTransfert ;
 public class CIterationModif extends CControleurBase
 {
   private MProjet    mProjet ;    // Projet actuellement ouvert par l'utilisateur.
-  private MIteration mIteration ; // Itération modifiée ou ajoutée.
+  private MIteration mIteration; // Itération modifiée ou ajoutée.
   
   
   /**
@@ -42,35 +41,86 @@ public class CIterationModif extends CControleurBase
    */
   public void initialiserBaseDonnees () throws ServletException
   {
-    // Si on accède pour la première fois au controleur (ajout ou modification d'une itération).
-    if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_VIDE) ||
-        getRequete ().getParameter (CConstante.PAR_MODIFIER) != null)
+    Session          lSession ;  // Session actuelle de l'utilisateur.
+    OQLQuery         lRequete ;  // Requête à réaliser sur la base
+    QueryResults     lResultat ; // Résultat de la requête sur la base
+    
+    lSession = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
+    mProjet  = lSession.getProjet () ;
+    
+    // Charge une copie du projet ouvert.
+    try
     {
-      Session          lSession ;  // Session actuelle de l'utilisateur.
-      OQLQuery         lRequete ;  // Requête à réaliser sur la base
-      QueryResults     lResultat ; // Résultat de la requête sur la base
+      getBaseDonnees ().begin () ;
       
-      lSession = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
-      mProjet  = lSession.getProjet () ;
+      // Récupère la liste des tâches du collaborateur.
+      lRequete = getBaseDonnees ().getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
+      lRequete.bind (mProjet.getId ()) ;
+      lResultat  = lRequete.execute () ;
+      mProjet = (MProjet)lResultat.next () ;
       
-      // Charge une copie du projet ouvert.
-      try
+      getRequete ().setAttribute(CConstante.PAR_PROJET, mProjet);
+      
+      if ((VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_VIDE)) &&
+          (getRequete ().getParameter (CConstante.PAR_MODIFIER) == null))
       {
-        getBaseDonnees ().begin () ;
-        
-        // Récupère la liste des tâches du collaborateur.
-        lRequete = getBaseDonnees ().getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
-        lRequete.bind (mProjet.getId ()) ;
-        lResultat  = lRequete.execute () ;
-        mProjet = (MProjet) lResultat.next () ;
-        
-        getBaseDonnees ().commit () ;
+//        Initialise une nouvelle itération.
+        mIteration = new MIteration () ;
+        mIteration.setNom ("") ;
+        mIteration.setNumero (mProjet.getNbIterations () + 1) ;
+        mIteration.setProjet (mProjet) ;
+        mProjet.addIteration(mIteration);
+
+        try
+        {
+          // création de l'itération dans la base de données.
+          getBaseDonnees ().create (mIteration) ;
+        }
+        catch (ClassNotPersistenceCapableException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        catch (DuplicateIdentityException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        catch (TransactionNotInProgressException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        catch (PersistenceException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
       }
-      catch (Exception eException)
+      
+      int lIdIteration ;
+      // si c'est une modification, récupération de l'identifiant de l'itération à modifier
+      if (getRequete ().getParameter (CConstante.PAR_MODIFIER) != null)
       {
-        eException.printStackTrace () ;
-        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        lIdIteration = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_ITERATION)) ;
       }
+      // sinon on récupère l'identifiant de l'itération que l'on vient de rajouter dans la BD.
+      else
+      {
+        lIdIteration = mIteration.getId () ;
+      }
+      
+      lRequete = getBaseDonnees ().getOQLQuery ("select ITERATION from owep.modele.execution.MIteration ITERATION where mId = $1") ;
+      lRequete.bind (lIdIteration) ;
+      lResultat  = lRequete.execute () ;
+      mIteration = (MIteration) lResultat.next () ;
+      getRequete().getSession().setAttribute (CConstante.PAR_ITERATION, mIteration);
+
+    }
+    catch (Exception eException)
+    {
+      eException.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
     }
   }
   
@@ -81,40 +131,42 @@ public class CIterationModif extends CControleurBase
    */
   public void initialiserParametres () throws ServletException
   {
+    Session          lSession ;  // Session actuelle de l'utilisateur.
+    OQLQuery         lRequete ;  // Requête à réaliser sur la base
+    QueryResults     lResultat ; // Résultat de la requête sur la base
+    
     // Modification d'une itération.
     if (getRequete ().getParameter (CConstante.PAR_MODIFIER) != null)
     {
       // Récupère l'itération à modifier et la met dans la session.
       int lIdIteration = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_ITERATION)) ;
       
-      int lIndiceIteration = 0 ;
-      while (mProjet.getIteration (lIndiceIteration).getId () != lIdIteration)
+      try
       {
-        lIndiceIteration ++ ;
+        lRequete = getBaseDonnees ().getOQLQuery ("select ITERATION from owep.modele.execution.MIteration ITERATION where mId = $1") ;
+        lRequete.bind (lIdIteration) ;
+        lResultat  = lRequete.execute () ;
+        mIteration = (MIteration) lResultat.next () ;
       }
-      getRequete ().getSession ().setAttribute (CConstante.SES_ITERATION, mProjet.getIteration (lIndiceIteration)) ;
+      catch (PersistenceException e)
+      {
+        e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      }
+      
+      getRequete ().getSession ().setAttribute (CConstante.PAR_ITERATION, mIteration) ;
     }
-    else
-    // Ajout d'une nouvelle itération.
-    if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_VIDE))
-    {
-      // Initialise une nouvelle itération.
-      mIteration = new MIteration () ;
-      mIteration.setNom ("") ;
-      mIteration.setNumero (mProjet.getNbIterations () + 1) ;
-      mIteration.setProjet (mProjet) ;
-
-      getRequete ().getSession ().setAttribute (CConstante.SES_ITERATION, mIteration) ;
-    }
-    else
-    {
+    //else
+   // {
       // Projet ouvert par l'utilisateur.
-      mIteration      = (MIteration) getRequete ().getSession ().getAttribute (CConstante.SES_ITERATION) ;
-      MProjet lProjet = mIteration.getProjet () ;
+      //mIteration      = (MIteration) getRequete ().getSession ().getAttribute (CConstante.SES_ITERATION) ;
+      //MProjet lProjet = mIteration.getProjet () ;
+      MProcessus lProcessus = mProjet.getProcessus () ; 
       
       // Ajout d'une tâche.
       if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITAJOUTER))
       {
+        boolean trouve = false ;
         MTache lTache = new MTache () ;
         MCollaborateur lCollaborateur = null;
         MActivite      lActivite = null ;
@@ -122,37 +174,47 @@ public class CIterationModif extends CControleurBase
         int lIdCollaborateur = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTECOLLABORATEURS)) ;
         int lIdActivite      = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEACTIVITES)) ;
         
-        // TODO : faire une méthode de recherche avec classe de base contenant getId
-        for (int i = 0 ; i < lProjet.getNbCollaborateurs () ; i ++) 
+        // Recherche du collaborateur effectuant cette tâche.
+        for (int i = 0 ; !trouve && i < mProjet.getNbCollaborateurs () ; i ++) 
         {
-          if (lProjet.getCollaborateur (i).getId () == lIdCollaborateur)
+          if (mProjet.getCollaborateur (i).getId () == lIdCollaborateur)
           {
-            lCollaborateur = lProjet.getCollaborateur (i) ;
+            lCollaborateur = mProjet.getCollaborateur (i) ;
+            trouve = true ;
           }  
         }  
-        // TODO : fin
-        // TODO : idem
-        MProcessus lProcessus = lProjet.getProcessus () ; 
-        for (int i = 0 ; i <  lProcessus.getNbComposants () ; i++)
+
+        // Recherche de l'activité à laquelle est liée la tâche
+        trouve = false ;
+        for (int i = 0 ;!trouve &&  i <  lProcessus.getNbComposants () ; i++)
         {
           MComposant lComposant = lProcessus.getComposant (i) ;
-          for (int j = 0 ; j < lComposant.getNbDefinitionsTravail (); j++)
+          for (int j = 0 ; !trouve && j < lComposant.getNbDefinitionsTravail (); j++)
           {
             MDefinitionTravail lDefTrav = lComposant.getDefinitionTravail (j) ;
-            for (int k = 0 ; k < lDefTrav.getNbActivites (); k++)
+            for (int k = 0 ; !trouve && k < lDefTrav.getNbActivites (); k++)
             {
               if (lDefTrav.getActivite(k).getId() == lIdActivite)
               {
                 lActivite = lDefTrav.getActivite(k) ;
+                trouve = true ;
               }  
             }
           }  
         }  
-        // TODO : idem fin
         
-        VTransfert.transferer (getRequete (), mIteration, CConstante.PAR_ARBREITERATION) ;
+        if (mIteration.getNom() == "")
+        {
+          MIteration lIterationTmp = new MIteration ();
+          // Récupération des données de l'itération ainsi que celle pour la tâche.
+          VTransfert.transferer (getRequete (), lIterationTmp, CConstante.PAR_ARBREITERATION) ;  
+          mIteration.setDateDebutPrevue (lIterationTmp.getDateDebutPrevue ());
+          mIteration.setDateFinPrevue (lIterationTmp.getDateFinPrevue ());
+          mIteration.setNom (lIterationTmp.getNom ());
+        }
+        
         VTransfert.transferer (getRequete (), lTache, CConstante.PAR_ARBRETACHES) ;
-        
+
         // Met à jour le modèle.
         lTache.setIteration (mIteration) ;
         lTache.setCollaborateur (lCollaborateur) ;
@@ -160,6 +222,32 @@ public class CIterationModif extends CControleurBase
         mIteration.addTache (lTache) ;
         lCollaborateur.addTache (lTache) ;
         lActivite.addTache (lTache) ;
+        
+        try
+        {
+          // ajout de la tâche dans la base de données.
+          getBaseDonnees ().create (lTache);
+        }
+        catch (ClassNotPersistenceCapableException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        catch (DuplicateIdentityException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        catch (TransactionNotInProgressException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        catch (PersistenceException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
       }
       // Modification d'une tâche si on la modifie directement ou si on ajoute, modifie ou supprime un artefact.
       else if ((VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITMODIFIER)) ||
@@ -167,27 +255,27 @@ public class CIterationModif extends CControleurBase
         (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITMODIFIER_ARTSORTIES)) ||
         (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER_ARTSORTIES)))
       {
+        boolean trouve = false ;
         MTache lTacheTmp    = new MTache () ;
-        
         MCollaborateur lCollaborateur = null ;
         MActivite      lActivite = null ;
         
         int lIdCollaborateur = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTECOLLABORATEURS)) ;
         int lIdActivite      = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEACTIVITES)) ;
         
-        // TODO : faire une méthode de recherche avec classe de base contenant getId
-        // TODO : ne faire le parcours que si l'activité ou le collaborateur a changé
-        for (int i = 0 ; i < lProjet.getNbCollaborateurs() ; i ++) 
+        // Recherche du collaborateur effectuant la tâche.
+        for (int i = 0 ; !trouve && i < mProjet.getNbCollaborateurs() ; i ++) 
         {
-          if (lProjet.getCollaborateur (i).getId () == lIdCollaborateur)
+          if (mProjet.getCollaborateur (i).getId () == lIdCollaborateur)
           {
-            lCollaborateur = lProjet.getCollaborateur (i) ;
+            lCollaborateur = mProjet.getCollaborateur (i) ;
+            trouve = true ;
           }  
         }  
-        // TODO : fin
-        // TODO : idem
-        MProcessus lProcessus = lProjet.getProcessus () ; 
-        for (int i = 0 ; i <  lProcessus.getNbComposants () ; i++)
+        
+        // Recherche de l'activité à laquelle est liée la tâche.
+        trouve = false ;
+        for (int i = 0 ; !trouve && i <  lProcessus.getNbComposants () ; i++)
         {
           MComposant lComposant = lProcessus.getComposant (i) ;
           for (int j = 0 ; j < lComposant.getNbDefinitionsTravail (); j++)
@@ -198,36 +286,61 @@ public class CIterationModif extends CControleurBase
               if (lDefTrav.getActivite(k).getId() == lIdActivite)
               {
                 lActivite = lDefTrav.getActivite(k) ;
+                trouve = true ;
               }  
             }
           }  
         }  
-        // TODO : idem fin
 
         // Indice de la tâche et de l'artefact dans leur liste respective.
         int lIndiceTache     = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTETACHES)) ;
         
-        VTransfert.transferer (getRequete (), mIteration, CConstante.PAR_ARBREITERATION) ;
+        //VTransfert.transferer (getRequete (), mIteration, CConstante.PAR_ARBREITERATION) ;
         VTransfert.transferer (getRequete (), lTacheTmp, CConstante.PAR_ARBRETACHES) ;
         
-        // Met à jour le modèle.
-        // Remarque : On ne met pas à jour la liste des artefacts car l'activité ne peut être
-        // modifiée si un artefact est présent (cf. FIterationModif.jsp)
-        MTache lTache = mIteration.getTache (lIndiceTache) ;
-        lTache.setNom (lTacheTmp.getNom ()) ;
-        lTache.setChargeInitiale (lTacheTmp.getChargeInitiale ()) ;
-        lTache.setDescription (lTacheTmp.getDescription ()) ;
-        lTache.setDateDebutPrevue (lTacheTmp.getDateDebutPrevue ()) ;
-        lTache.setDateFinPrevue (lTacheTmp.getDateDebutPrevue ()) ;
-        
-        lTache.getCollaborateur ().supprimerTache (lTache) ;
-        lTache.setCollaborateur (lCollaborateur) ;
-        lCollaborateur.addTache (lTache) ;
-        lTache.getActivite ().supprimerTache (lTache) ;
-        lTache.setActivite (lActivite) ;
-        lActivite.addTache (lTache) ;
+        try
+        {
+          // Récupération de l'identifiant de la tâche imprévue que l'on souhaite modifier.
+          int lIdTache = mIteration.getTache (lIndiceTache).getId () ;
+          // On récupère la tache imprévue que l'on souhaite modifier dans la base.
+          lRequete = getBaseDonnees ().getOQLQuery ("select TACHE from owep.modele.execution.MTache TACHE where mId = $1") ;
+          lRequete.bind (lIdTache) ;
+          lResultat  = lRequete.execute () ;
+          MTache lTache = (MTache) lResultat.next () ;
+          
+          // Mise à jour de la tâche.
+          lTache.setNom (lTacheTmp.getNom ()) ;
+          lTache.setChargeInitiale (lTacheTmp.getChargeInitiale ()) ;
+          lTache.setDescription (lTacheTmp.getDescription ()) ;
+          lTache.setDateDebutPrevue (lTacheTmp.getDateDebutPrevue ()) ;
+          lTache.setDateFinPrevue (lTacheTmp.getDateDebutPrevue ()) ;
+          
+          // Mise à jour du modèle.
+          lTache.getCollaborateur ().supprimerTache (lTache) ;
+          lTache.setCollaborateur (lCollaborateur) ;
+          lCollaborateur.addTache (lTache) ;
+          lTache.getActivite ().supprimerTache (lTache) ;
+          lTache.setActivite (lActivite) ;
+          lActivite.addTache (lTache) ;
+
+        }
+        catch (ClassNotPersistenceCapableException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        catch (TransactionNotInProgressException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        catch (PersistenceException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
       }
-      // Supprimer une tâche.
+      // TODO : Supprimer une tâche.
       else if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER))
       {
         // Indice de la tâche et de l'artefact dans leur liste respective.
@@ -310,8 +423,35 @@ public class CIterationModif extends CControleurBase
         {
           lCondition.setEtat (3) ;
         }
-        lTache.addCondition (lCondition) ;        
+        lTache.addCondition (lCondition) ;  
+        
+        try
+        {
+          // ajout de la condition dans la base de données.
+          getBaseDonnees ().create (lCondition) ;
+        }
+        catch (ClassNotPersistenceCapableException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        catch (DuplicateIdentityException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        catch (TransactionNotInProgressException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        catch (PersistenceException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
       }
+      // TODO : Supprimer dépendance entre tâche.
       else if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER_TACDEPEND))
       {
         int lIndiceTache    = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTETACHES)) ;
@@ -340,12 +480,38 @@ public class CIterationModif extends CControleurBase
         // Mise à jour du modèle.
         lArtefactSortie.setTacheSortie (lTache) ;
         lTache.addArtefactSortie (lArtefactSortie) ;
-        lArtefactSortie.setProjet (lProjet) ;
-        lProjet.addArtefact (lArtefactSortie) ;
+        lArtefactSortie.setProjet (mProjet) ;
+        mProjet.addArtefact (lArtefactSortie) ;
         lArtefactSortie.setProduit (lProduit) ;
         lProduit.addArtefact (lArtefactSortie) ;
         lArtefactSortie.setResponsable (lResponsable) ;
         lResponsable.addArtefact (lArtefactSortie) ;
+        
+        try
+        {
+          // ajout de l'artefact dans la base de données.
+          getBaseDonnees ().create (lArtefactSortie) ;
+        }
+        catch (ClassNotPersistenceCapableException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        catch (DuplicateIdentityException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        catch (TransactionNotInProgressException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        catch (PersistenceException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
       }
       // Modification d'un artefact.
       else if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITMODIFIER_ARTSORTIES))
@@ -356,33 +522,51 @@ public class CIterationModif extends CControleurBase
         int lIndiceProduit     = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEPRODUITS)) ;
         int lIndiceResponsable = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTERESPONSABLES)) ;
         
-        MArtefact lArtefactSortieTmp = new MArtefact () ;
-        MArtefact lArtefactSortie = mIteration.getTache (lIndiceTache).getArtefactSortie (lIndiceArtSortie) ;
         
+        int lIdArtefactSortie = mIteration.getTache (lIndiceTache).getArtefactSortie (lIndiceArtSortie).getId () ;
+        
+        MArtefact lArtefactSortieTmp = new MArtefact () ;
         VTransfert.transferer (getRequete (), lArtefactSortieTmp, CConstante.PAR_ARBREARTEFACTSORTIES) ;
         
-        MTache         lTache       = mIteration.getTache (lIndiceTache) ;
-        MActivite      lActivite    = lTache.getActivite () ;
-        MProduit       lProduit     = lActivite.getProduitSortie (lIndiceProduit) ;
-        MCollaborateur lResponsable = lProduit.getResponsable ().getCollaborateur (lIndiceResponsable) ;
+        try
+        {
+          lRequete = getBaseDonnees ().getOQLQuery ("select ARTEFACT from owep.modele.execution.MArtefact ARTEFACT where mId = $1") ;
+          lRequete.bind (lIdArtefactSortie) ;
+          lResultat  = lRequete.execute () ;
+          MArtefact lArtefactSortie = (MArtefact) lResultat.next () ;
+          
+          MTache         lTache       = mIteration.getTache (lIndiceTache) ;
+          MActivite      lActivite    = lTache.getActivite () ;
+          MProduit       lProduit     = lActivite.getProduitSortie (lIndiceProduit) ;
+          MCollaborateur lResponsable = lProduit.getResponsable ().getCollaborateur (lIndiceResponsable) ;
+          
+          // Mise à jour de l'artefact.
+          lArtefactSortie.setNom (lArtefactSortieTmp.getNom ()) ;
+          lArtefactSortie.setDescription (lArtefactSortieTmp.getDescription ()) ;
+          lArtefactSortie.setProduit (lActivite.getProduitSortie (lIndiceProduit)) ;
+          lArtefactSortie.setResponsable (lProduit.getResponsable ().getCollaborateur (lIndiceResponsable)) ;
+          
+          // Mise à jour du modèle.
+          lArtefactSortie.getTacheSortie ().supprimerArtefactSortie (lArtefactSortie) ;
+          lArtefactSortie.setTacheSortie (lTache) ;
+          lTache.addArtefactSortie (lArtefactSortie) ;
+          lArtefactSortie.getProduit ().supprimerArtefact (lArtefactSortie) ;
+          lArtefactSortie.setProduit (lProduit) ;
+          lProduit.addArtefact (lArtefactSortie) ;
+          lArtefactSortie.getResponsable ().supprimerArtefact (lArtefactSortie) ;
+          lArtefactSortie.setResponsable (lResponsable) ;
+          lResponsable.addArtefact (lArtefactSortie) ;
+        }
+        catch (PersistenceException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
         
-        lArtefactSortie.setNom (lArtefactSortieTmp.getNom ()) ;
-        lArtefactSortie.setDescription (lArtefactSortieTmp.getDescription ()) ;
-        lArtefactSortie.setProduit (lActivite.getProduitSortie (lIndiceProduit)) ;
-        lArtefactSortie.setResponsable (lProduit.getResponsable ().getCollaborateur (lIndiceResponsable)) ;
         
-        // Mise à jour du modèle.
-        lArtefactSortie.getTacheSortie ().supprimerArtefactSortie (lArtefactSortie) ;
-        lArtefactSortie.setTacheSortie (lTache) ;
-        lTache.addArtefactSortie (lArtefactSortie) ;
-        lArtefactSortie.getProduit ().supprimerArtefact (lArtefactSortie) ;
-        lArtefactSortie.setProduit (lProduit) ;
-        lProduit.addArtefact (lArtefactSortie) ;
-        lArtefactSortie.getResponsable ().supprimerArtefact (lArtefactSortie) ;
-        lArtefactSortie.setResponsable (lResponsable) ;
-        lResponsable.addArtefact (lArtefactSortie) ;
+        
       }
-      // Supprimer un artefact en sortie.
+      // TODO : Supprimer un artefact en sortie.
       else if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER_ARTSORTIES))
       {
         // Indice de la tâche et de l'artefact dans leur liste respective.
@@ -415,22 +599,24 @@ public class CIterationModif extends CControleurBase
         
         MTache    lTache          = mIteration.getTache (lIndiceTache) ;
         MActivite lActivite = lTache.getActivite () ;
-        MArtefact lArtEntree = null;
         
-        for (int i = 0; i <  lActivite.getNbProduitsEntrees() ; i ++)
+        try
         {
-          MProduit lProduitEntree = lActivite.getProduitEntree(i) ;
-          for (int j = 0; j < lProduitEntree.getNbActivitesEntrees (); j ++) 
-          {
-            
-            if (lProduitEntree.getArtefact (j).getId () == lIdArtEntree) 
-            {
-              lArtEntree = lProduitEntree.getArtefact (j) ;   
-            }
-          }
+          lRequete = getBaseDonnees ().getOQLQuery ("select ARTEFACT from owep.modele.execution.MArtefact ARTEFACT where mId = $1") ;
+          lRequete.bind (lIdArtEntree) ;
+          lResultat  = lRequete.execute () ;
+          MArtefact lArtEntree = (MArtefact) lResultat.next () ;
+          
+          lTache.addArtefactEntrees (lArtEntree) ;
+          lArtEntree.setTacheEntree (lTache) ;
         }
-        lTache.addArtefactEntrees (lArtEntree) ;
-        lArtEntree.setTacheEntree (lTache) ;
+        catch (PersistenceException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        
+        
       }
       // Supprimer un artefact en entrée
       else if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER_ARTENTREES)) 
@@ -438,14 +624,20 @@ public class CIterationModif extends CControleurBase
         int lIndiceTache     = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTETACHES)) ;
         int lIdArtEntree = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEARTEFACTSENTREES)) ;
         
-        for (int i = 0; i < mIteration.getTache (lIndiceTache).getNbArtefactsEntrees (); i++)
+        try
         {
-          MArtefact lArtEntTmp =  mIteration.getTache (lIndiceTache).getArtefactEntree (i) ;
-          if (lArtEntTmp.getId () == lIdArtEntree) 
-          {
-            mIteration.getTache (lIndiceTache).supprimerArtefactEntree (i) ;
-            lArtEntTmp.setTacheEntree (null) ;
-          }
+          lRequete = getBaseDonnees ().getOQLQuery ("select ARTEFACT from owep.modele.execution.MArtefact ARTEFACT where mId = $1") ;
+          lRequete.bind (lIdArtEntree) ;
+          lResultat  = lRequete.execute () ;
+          MArtefact lArtEntree = (MArtefact) lResultat.next () ;
+          
+          mIteration.getTache(lIndiceTache).supprimerArtefactEntree(lArtEntree) ;
+          lArtEntree.setTacheEntree (null) ;
+        }
+        catch (PersistenceException e)
+        {
+          e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
         }
       }
       // Validation de l'itération.
@@ -453,7 +645,7 @@ public class CIterationModif extends CControleurBase
       {
         VTransfert.transferer (getRequete (), mIteration, CConstante.PAR_ARBREITERATION) ;
       }
-    }
+    //}
   }
   
   
@@ -465,159 +657,26 @@ public class CIterationModif extends CControleurBase
    */
   public String traiter () throws ServletException
   {
-    // Si l'itération est toujours en cours de modification.
+    
+//  Ferme la connexion à la base de données.    
+    try
+    {
+      getBaseDonnees ().commit () ;
+      getBaseDonnees ().close () ;
+      getRequete().getSession().setAttribute (CConstante.PAR_ITERATION, mIteration);
+    }
+    catch (PersistenceException e)
+    {
+      e.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+    }
     if (! VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
     {
-      // Transmet les données à la JSP d'affichage.
       return "..\\JSP\\Processus\\TIterationModif.jsp" ;
     }
     else
     {
-      boolean nouvelIt = false ; // modif tmp
-      Connection lConnection = null ;
-      try
-      {
-        DriverManager.registerDriver (new Driver ()) ;
-        lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", LocalisateurIdentifiant.LID_BDUSER, LocalisateurIdentifiant.LID_BDPASS) ;
-        lConnection.setAutoCommit(false);
-        if (mIteration.getId () == 0)
-        {
-          mIteration.create (lConnection) ;
-          nouvelIt = true; // modif tmp
-        }
-        else
-        {
-          mIteration.update (lConnection) ;
-        }
-        
-        // Mise à jour de toutes les tâches dans la BD.
-        for (int i = 0; i < mIteration.getNbTaches (); i++)
-        {
-          MTache lTache = mIteration.getTache (i) ;
-          
-          if (lTache.getId () == 0)
-          {
-            lTache.create (lConnection) ;
-          }
-          else
-          {
-            lTache.update (lConnection) ;
-          }
-        }
-          
-        // Mise à jour de tous les artefacts et les conditions dans la BD.
-        for (int i = 0; i < mIteration.getNbTaches (); i++)
-        {
-          MTache lTache = mIteration.getTache (i) ;
-          
-          // Mise à jour des conditions de la tâche
-          for (int j = 0 ; j < lTache.getNbConditions (); j++)
-          {
-            MCondition lCondition = lTache.getCondition (j) ;
-            if (lCondition.getId () == 0)
-            {
-              lCondition.create (lConnection) ;
-            }
-            else
-            {
-              lCondition.update (lConnection) ;
-            }
-          }
-          
-          // Mise à jour des artefacts en sorties de la tache
-          for (int j = 0; j < lTache.getNbArtefactsSorties (); j ++)
-          {
-            MArtefact lArtefact = lTache.getArtefactSortie (j) ;
-            if (lArtefact.getId () == 0)
-            {
-              lArtefact.create (lConnection) ;
-            }
-            else
-            {
-              lArtefact.update (lConnection) ;
-            }
-          }
-
-          
-          // Mise à jour de tous les artefacts en entrées dans la BD.
-          for (int j = 0; j < lTache.getNbArtefactsEntrees (); j ++)
-          {
-            MArtefact lArtefact = lTache.getArtefactEntree (j) ;
-            if (lArtefact.getId () == 0)
-            {
-              lArtefact.create (lConnection) ;
-            }
-            else
-            {
-              lArtefact.update (lConnection) ;
-            }
-          }
-        }
-
-        lConnection.commit () ;
-        
-                   
-        // modif tmp
-        if (nouvelIt)
-          mProjet.addIteration (mIteration); // Temporaire car sinon on ne voit pas l'itération dans la fene^tre de visuprojet
-
-        // Enregistre le projet à ouvrir dans la session
-        getSession ().ouvrirProjet (mProjet) ;
-
-        Session lSession ;
-        lSession = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
-        mProjet  = lSession.getProjet () ;
-        int mIdProjet = mProjet.getId ();
-        OQLQuery lRequete ; // Requête à réaliser sur la base
-        QueryResults lResultat ; // Résultat de la requête sur la base
-        //MProjet lProjet ; // Projet à ouvrir
-        getBaseDonnees ().begin () ;
-        // Cherche le projet à ouvrir
-        lRequete = getBaseDonnees ()
-          .getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
-        lRequete.bind (mIdProjet) ;
-        lResultat = lRequete.execute () ;
-
-        mProjet = (MProjet) lResultat.next () ;
-
-        getBaseDonnees ().commit () ;
-        
-        
-        // modif tmp
-        if (nouvelIt)
-          mProjet.addIteration (mIteration); // Temporaire car sinon on ne voit pas l'itération dans la fene^tre de visuprojet
-
-        // Enregistre le projet à ouvrir dans la session
-        getSession ().ouvrirProjet (mProjet) ;
-        
-        // MODIF YANN : ajout de l'itération au projet en cours et retour sur la page affichant la liste des itérations
-        //Session lSession ;
-        //lSession = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
-        //mProjet  = lSession.getProjet () ;
-        //mProjet.addIteration(mIteration) ;
-        //lSession.setProjet(mProjet) ;
-        
-
-        return "..\\Processus\\ProjetVisu" ;
-      }
-      catch (Exception eException)
-      {
-        eException.printStackTrace () ;
-        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-      }
-      // Ferme la connexion à la base de données.
-      finally
-      {        
-        try
-        {
-          lConnection.close () ;
-        }
-        catch (SQLException eException)
-        {
-          eException.printStackTrace () ;
-          throw new ServletException (CConstante.EXC_DECONNEXION) ;
-        } 
-      }
+      return "..\\JSP\\Processus\\TProjetVisu.jsp" ;
     }
   }
 }

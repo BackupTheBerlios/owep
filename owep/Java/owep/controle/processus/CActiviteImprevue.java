@@ -5,13 +5,17 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
 import org.exolab.castor.jdo.OQLQuery;
+import org.exolab.castor.jdo.PersistenceException;
 import org.exolab.castor.jdo.QueryResults;
+import org.exolab.castor.jdo.TransactionAbortedException;
+import org.exolab.castor.jdo.TransactionNotInProgressException;
 import com.mysql.jdbc.Driver;
 import owep.controle.CConstante;
 import owep.controle.CControleurBase;
 import owep.infrastructure.localisation.LocalisateurIdentifiant;
 import owep.infrastructure.Session;
 import owep.modele.execution.MActiviteImprevue;
+import owep.modele.execution.MArtefactImprevue;
 import owep.modele.execution.MProjet;
 import owep.modele.execution.MTacheImprevue;
 import owep.vue.transfert.VTransfert;
@@ -35,8 +39,9 @@ public class CActiviteImprevue extends CControleurBase
   public void initialiserBaseDonnees () throws ServletException
   {
     // Si on accède pour la première fois au controleur (ajout ou modification d'une itération).
-    if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_VIDE) ||
-        getRequete ().getParameter (CConstante.PAR_MODIFIER) != null)
+    if ((! VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT)) ||
+      (! VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITMODIFIER)) ||
+      (! VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER)))
     {
       Session          lSession ;  // Session actuelle de l'utilisateur.
       OQLQuery         lRequete ;  // Requête à réaliser sur la base
@@ -50,13 +55,13 @@ public class CActiviteImprevue extends CControleurBase
       {
         getBaseDonnees ().begin () ;
         
-        // Récupère la liste des tâches du collaborateur.
+        // Récupère le projet ouvert.
         lRequete = getBaseDonnees ().getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
         lRequete.bind (mProjet.getId ()) ;
         lResultat  = lRequete.execute () ;
         mProjet = (MProjet) lResultat.next () ;
         
-        getBaseDonnees ().commit () ;
+        getRequete ().setAttribute (CConstante.PAR_PROJET, mProjet) ;
       }
       catch (Exception eException)
       {
@@ -89,34 +94,50 @@ public class CActiviteImprevue extends CControleurBase
         (! VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITMODIFIER)) &&
         (! VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER)))
     {
-      // Transmet les données à la JSP d'affichage.
-      return "..\\JSP\\Processus\\TActiviteImprevue.jsp" ;
+      try
+      {
+        getBaseDonnees().commit();
+      }
+      catch (TransactionNotInProgressException e)
+      {
+        // TODO Ecrire le bloc try-catch.
+        e.printStackTrace () ;
+      }
+      catch (TransactionAbortedException e)
+      {
+        // TODO Ecrire le bloc try-catch.
+        e.printStackTrace () ;
+      }
+      finally
+      {        
+        try
+        {
+          getBaseDonnees().close () ;
+        }
+        catch (PersistenceException e)
+        {
+          // TODO Ecrire le bloc try-catch.
+          e.printStackTrace () ;
+        }
+      }
     }
     else
     {    
-        Connection lConnection = null ;
-        
         try
         {
-          DriverManager.registerDriver (new Driver ()) ;
-	      lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", LocalisateurIdentifiant.LID_BDUSER, LocalisateurIdentifiant.LID_BDPASS) ;
-	      lConnection.setAutoCommit(false);
+          // Ajout d'une activité imprévue
           if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
           {
             
             mActiviteImprevue = new MActiviteImprevue ();
             VTransfert.transferer (getRequete (), mActiviteImprevue, CConstante.PAR_ARBREACTIVITE) ;
 	        mActiviteImprevue.setProjet (mProjet);
-	        
-	    //    getBaseDonnees().begin();
-	      //  getBaseDonnees().create(mActiviteImprevue);
-	        //getBaseDonnees ().commit () ;
-	        mActiviteImprevue.create (lConnection) ;
-	        lConnection.commit () ;
-	
 	        mProjet.addActiviteImprevue (mActiviteImprevue) ;
-	        getSession ().ouvrirProjet (mProjet) ;
+	        
+	        getBaseDonnees().create(mActiviteImprevue);
+	        //getSession ().setProjet(mProjet) ;
           }
+          // Suppression d'une activité imprévue
           else if(VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER))
           {
             int lIndiceActiviteImprevue = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEACTIVITESIMPREVUES));
@@ -131,22 +152,30 @@ public class CActiviteImprevue extends CControleurBase
               }
               lActiviteImprevue.supprimerTacheImprevue (i);
             }
-            lActiviteImprevue.delete (lConnection) ;
             mProjet.supprimerActiviteImprevue (lIndiceActiviteImprevue) ;
-            lConnection.commit ();
-          }
+           }
+          // Modification d'une activité imprévue.
           else if(VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITMODIFIER))
           {
+            Session          lSession ;  // Session actuelle de l'utilisateur.
+            OQLQuery         lRequete ;  // Requête à réaliser sur la base
+            QueryResults     lResultat ; // Résultat de la requête sur la base
+            
             int lIndiceActiviteImprevue     = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEACTIVITESIMPREVUES)) ;
             MActiviteImprevue lActiviteImprevueTmp = new MActiviteImprevue ();
             VTransfert.transferer (getRequete (), lActiviteImprevueTmp, CConstante.PAR_ARBREACTIVITE) ;
             
-            MActiviteImprevue lActiviteImprevue = mProjet.getActiviteImprevue(lIndiceActiviteImprevue);
+            int lIdActiviteImprevue = mProjet.getActiviteImprevue (lIndiceActiviteImprevue).getId () ;
+            
+            lRequete = getBaseDonnees ().getOQLQuery ("select ACTIVITEIMPREVUE from owep.modele.execution.MActiviteImprevue ACTIVITEIMPREVUE where mId = $1") ;
+            lRequete.bind (lIdActiviteImprevue) ;
+            lResultat  = lRequete.execute () ;
+            MActiviteImprevue lActiviteImprevue = (MActiviteImprevue) lResultat.next () ;
+            
             lActiviteImprevue.setNom(lActiviteImprevueTmp.getNom());
             lActiviteImprevue.setDescription(lActiviteImprevueTmp.getDescription());
-            lActiviteImprevue.update(lConnection);
-            lConnection.commit();
-          }   
+          } 
+
         }
         catch (Exception eException)
         {
@@ -158,13 +187,15 @@ public class CActiviteImprevue extends CControleurBase
         {        
           try
           {
-            lConnection.close () ;
+            getBaseDonnees ().commit () ;
+            getBaseDonnees().close () ;
+            getRequete ().setAttribute (CConstante.PAR_PROJET, mProjet) ;
           }
-          catch (SQLException eException)
+          catch (PersistenceException e)
           {
-            eException.printStackTrace () ;
-            throw new ServletException (CConstante.EXC_DECONNEXION) ;
-          } 
+            // TODO Ecrire le bloc try-catch.
+            e.printStackTrace () ;
+          }
         }
       }
     return "..\\JSP\\Processus\\TActiviteImprevue.jsp" ;

@@ -1,6 +1,4 @@
 <%@page import="owep.controle.CConstante"%>
-<%@page import="owep.infrastructure.Session"%>
-<%@page import="owep.modele.processus.MProcessus"%>
 <%@page import="owep.modele.execution.MIteration"%>
 <%@page import="owep.modele.execution.MTacheImprevue"%>
 <%@page import="owep.modele.execution.MActiviteImprevue"%>
@@ -15,11 +13,8 @@
 
 <!-- Déclaration des variables locales -->
 <%
-  Session    lSession   = (Session) session.getAttribute (CConstante.SES_SESSION) ;
-  MIteration lIteration = lSession.getIteration () ;
-  MProjet    lProjet    = lIteration.getProjet () ;
-  MProcessus lProcessus = lProjet.getProcessus () ;
-
+  MProjet lProjet = (MProjet) request.getAttribute (CConstante.PAR_PROJET) ;
+  MIteration lIteration = (MIteration) request.getAttribute (CConstante.PAR_ITERATION) ;
   String lCodeValidation ;
 
   // Liste des champs transférés.
@@ -586,7 +581,6 @@
   <!------------------------------------------->
   function validerTacheImprevueAjout ()
   {
-    isDateComprise(<%=lIteration.getDateDebutPrevue()%>, <%=lIteration.getDateFinPrevue()%>, document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampTacheImprevueDateDebutPrevue %>.value);
     <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) %> () ;
     <%= VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHESIMPREVUES) %> () ;
     validerChamps () ;  

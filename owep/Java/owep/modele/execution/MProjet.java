@@ -91,7 +91,23 @@ public class MProjet extends MModeleBase
     mIndicateurs        = new ArrayList () ;
   }
 
-
+  /**
+   * Permet de récupèrer l'itération en cours du projet. 
+   * @return l'itération en cours.
+   */
+  public MIteration getIterationEnCours () 
+  {
+    for (int i = 0 ; i < getNbIterations () ; i ++)
+    {
+      MIteration lIteration = getIteration(i);
+      if (lIteration.getEtat () == 1)
+      {
+        return lIteration;
+      }
+    }
+    return null ;
+  }
+  
   /**
    * Récupère la liste des artefacts réalisés durant le projet.
    * @return Liste des artefacts réalisés durant le projet.

@@ -4,8 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
+import org.exolab.castor.jdo.ClassNotPersistenceCapableException;
+import org.exolab.castor.jdo.DuplicateIdentityException;
 import org.exolab.castor.jdo.OQLQuery;
+import org.exolab.castor.jdo.PersistenceException;
 import org.exolab.castor.jdo.QueryResults;
+import org.exolab.castor.jdo.TransactionAbortedException;
+import org.exolab.castor.jdo.TransactionNotInProgressException;
 import com.mysql.jdbc.Driver;
 import owep.controle.CConstante;
 import owep.controle.CControleurBase;
@@ -43,81 +48,85 @@ public class CTacheImprevue extends CControleurBase
   
   public void initialiserBaseDonnees () throws ServletException
   {
-    // Si on accède pour la première fois au controleur (ajout ou modification d'une itération).
-    if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_VIDE) ||
-        getRequete ().getParameter (CConstante.PAR_MODIFIER) != null)
+    Session          lSession ;  // Session actuelle de l'utilisateur.
+    OQLQuery         lRequete ;  // Requête à réaliser sur la base
+    QueryResults     lResultat ; // Résultat de la requête sur la base
+    
+    lSession = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
+    mProjet  = lSession.getProjet () ;
+    
+    // Charge une copie du projet ouvert.
+    try
     {
-      Session          lSession ;  // Session actuelle de l'utilisateur.
-      OQLQuery         lRequete ;  // Requête à réaliser sur la base
-      QueryResults     lResultat ; // Résultat de la requête sur la base
+      getBaseDonnees ().begin () ;
       
-      lSession = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
-      mProjet  = lSession.getProjet () ;
+      // Récupère la liste des tâches du collaborateur.
+      lRequete = getBaseDonnees ().getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
+      lRequete.bind (mProjet.getId ()) ;
+      lResultat  = lRequete.execute () ;
+      mProjet = (MProjet) lResultat.next () ;
+      getRequete().setAttribute(CConstante.PAR_PROJET, mProjet);
       
-      // Charge une copie du projet ouvert.
-      try
-      {
-        getBaseDonnees ().begin () ;
-        
-        // Récupère la liste des tâches du collaborateur.
-        lRequete = getBaseDonnees ().getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
-        lRequete.bind (mProjet.getId ()) ;
-        lResultat  = lRequete.execute () ;
-        mProjet = (MProjet) lResultat.next () ;
-        
-        getBaseDonnees ().commit () ;
-      }
-      catch (Exception eException)
-      {
-        eException.printStackTrace () ;
-        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-      }
+      // Récupère l'itération en cours.
+      int lIdIterationCours = mProjet.getIterationEnCours ().getId () ;
+      lRequete = getBaseDonnees ().getOQLQuery ("select ITERATION from owep.modele.execution.MIteration ITERATION where mId = $1") ;
+      lRequete.bind (lIdIterationCours) ;
+      lResultat  = lRequete.execute () ;
+      mIteration = (MIteration) lResultat.next () ;
+      getRequete().setAttribute (CConstante.PAR_ITERATION, mIteration);
+    }
+    catch (Exception eException)
+    {
+      eException.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
     }
   }
 
   /**
-   * TODO Description de initialiserParametres.
+   * Cette méthode permet d'initialiser leparamètres suites aux formulaires de saisie.
    * @throws ServletException
    * @see owep.controle.CControleurBase#initialiserParametres()
    */
   
   public void initialiserParametres () throws ServletException
   {
-//  Projet ouvert par l'utilisateur.
-    //mIteration      = (MIteration) getRequete ().getSession ().getAttribute (CConstante.SES_ITERATION) ;
-    Session    lSession   = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
-    mIteration = lSession.getIteration () ;
-    MProjet lProjet = mIteration.getProjet () ;
+    Session          lSession ;  // Session actuelle de l'utilisateur.
+    OQLQuery         lRequete ;  // Requête à réaliser sur la base
+    QueryResults     lResultat ; // Résultat de la requête sur la base
     
     // Ajout d'une tâche.
     if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITAJOUTER))
     {
+      boolean trouve = false ;
       MTacheImprevue lTacheImprevue = new MTacheImprevue () ;
       MCollaborateur lCollaborateur = null;
       MActiviteImprevue      lActiviteImprevue = null ;
       
+      // Récupération de l'identifiant du collaborateur et de l'activité imprévue.
       int lIdCollaborateur    = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTECOLLABORATEURS)) ;
       int lIdActiviteImprevue = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEACTIVITESIMPREVUES)) ;
       
       // Recherche du collaborateur affecté à la tâche imprévue
-      for (int i = 0 ; i < lProjet.getNbCollaborateurs () ; i ++) 
+      for (int i = 0 ; !trouve && i < mProjet.getNbCollaborateurs () ; i ++) 
       {
-        if (lProjet.getCollaborateur (i).getId () == lIdCollaborateur)
+        if (mProjet.getCollaborateur (i).getId () == lIdCollaborateur)
         {
-          lCollaborateur = lProjet.getCollaborateur (i) ;
+          lCollaborateur = mProjet.getCollaborateur (i) ;
+          trouve = true ;
         }  
       }  
       
       // recherche de l'activité imprévue
-      for (int i = 0 ; i <  lProjet.getNbActivitesImprevues () ; i++)
+      trouve = false ;
+      for (int i = 0 ;!trouve &&  i <  mProjet.getNbActivitesImprevues () ; i++)
       {
-        if (lProjet.getActiviteImprevue(i).getId () == lIdActiviteImprevue)
+        if (mProjet.getActiviteImprevue(i).getId () == lIdActiviteImprevue)
         {
-          lActiviteImprevue = lProjet.getActiviteImprevue (i) ;
+          lActiviteImprevue = mProjet.getActiviteImprevue (i) ;
+          trouve = true ;
         }
       }  
-      
-      VTransfert.transferer (getRequete (), mIteration, CConstante.PAR_ARBREITERATION) ;
+      // Récupération de la nouvelle tâche imprévue.
       VTransfert.transferer (getRequete (), lTacheImprevue, CConstante.PAR_ARBRETACHESIMPREVUES) ;
       
       // Met à jour le modèle.
@@ -127,6 +136,32 @@ public class CTacheImprevue extends CControleurBase
       mIteration.addTacheImprevue (lTacheImprevue) ;
       lCollaborateur.addTacheImprevue (lTacheImprevue) ;
       lActiviteImprevue.addTacheImprevue (lTacheImprevue) ;
+      
+      try
+      {
+        // insertion de la nouvelle tache dans la base de données.
+        getBaseDonnees ().create (lTacheImprevue) ; 
+      }
+      catch (ClassNotPersistenceCapableException e)
+      {
+        e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      }
+      catch (DuplicateIdentityException e)
+      {
+        e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      }
+      catch (TransactionNotInProgressException e)
+      {
+        e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      }
+      catch (PersistenceException e)
+      {
+        e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      }
     }
     //  Modification d'une tâche si on la modifie directement ou si on ajoute, modifie ou supprime un artefact.
     else if ((VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITMODIFIER)) ||
@@ -134,63 +169,90 @@ public class CTacheImprevue extends CControleurBase
       (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITMODIFIER_ARTSORTIES)) ||
       (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER_ARTSORTIES)))
     {
+      boolean trouve = false ;
       MTacheImprevue lTacheImprevueTmp    = new MTacheImprevue () ;
-      
       MCollaborateur lCollaborateur = null ;
       MActiviteImprevue      lActiviteImprevue = null ;
       
+      // Récupération de l'identifiant du collaborateur et celui de la tâche imprévue.
       int lIdCollaborateur    = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTECOLLABORATEURS)) ;
       int lIdActiviteImprevue = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEACTIVITESIMPREVUES)) ;
       
       // recherche du collaborateur
-      for (int i = 0 ; i < lProjet.getNbCollaborateurs() ; i ++) 
+      for (int i = 0 ; !trouve && i < mProjet.getNbCollaborateurs() ; i ++) 
       {
-        if (lProjet.getCollaborateur (i).getId () == lIdCollaborateur)
+        if (mProjet.getCollaborateur (i).getId () == lIdCollaborateur)
         {
-          lCollaborateur = lProjet.getCollaborateur (i) ;
+          lCollaborateur = mProjet.getCollaborateur (i) ;
+          trouve = true ;
         }  
       }  
       
       // recherche de l'activite imprévue
-      for (int i = 0; i < lProjet.getNbActivitesImprevues (); i ++)
+      trouve = false ;
+      for (int i = 0; !trouve && i < mProjet.getNbActivitesImprevues (); i ++)
       {
-        if (lProjet.getActiviteImprevue (i).getId () == lIdActiviteImprevue)
+        if (mProjet.getActiviteImprevue (i).getId () == lIdActiviteImprevue)
         {
-          lActiviteImprevue = lProjet.getActiviteImprevue (i) ;
+          lActiviteImprevue = mProjet.getActiviteImprevue (i) ;
+          trouve = true ;
         }
       }
 
       // Indice de la tâche et de l'artefact dans leur liste respective.
       int lIndiceTacheImprevue     = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTETACHESIMPREVUES)) ;
       
-      VTransfert.transferer (getRequete (), mIteration, CConstante.PAR_ARBREITERATION) ;
       VTransfert.transferer (getRequete (), lTacheImprevueTmp, CConstante.PAR_ARBRETACHESIMPREVUES) ;
       
-      // Met à jour le modèle.
-      // Remarque : On ne met pas à jour la liste des artefacts car l'activité ne peut être
-      // modifiée si un artefact est présent (cf. FIterationModif.jsp)
-      MTacheImprevue lTacheImprevue = mIteration.getTacheImprevue (lIndiceTacheImprevue) ;
-      lTacheImprevue.setNom (lTacheImprevueTmp.getNom ()) ;
-      lTacheImprevue.setChargeInitiale (lTacheImprevueTmp.getChargeInitiale ()) ;
-      lTacheImprevue.setDescription (lTacheImprevueTmp.getDescription ()) ;
-      lTacheImprevue.setDateDebutPrevue (lTacheImprevueTmp.getDateDebutPrevue ()) ;
-      lTacheImprevue.setDateFinPrevue (lTacheImprevueTmp.getDateDebutPrevue ()) ;
-      
-      lTacheImprevue.getCollaborateur ().supprimerTacheImprevue (lTacheImprevue) ;
-      lTacheImprevue.setCollaborateur (lCollaborateur) ;
-      lCollaborateur.addTacheImprevue (lTacheImprevue) ;
-      lTacheImprevue.getActiviteImprevue ().supprimerTacheImprevue (lTacheImprevue) ;
-      lTacheImprevue.setActiviteImprevue (lActiviteImprevue) ;
-      lActiviteImprevue.addTacheImprevue (lTacheImprevue) ;
+      try
+      {
+        // Récupération de l'identifiant de la tâche imprévue que l'on souhaite modifier.
+        int lIdTacheImprevue = mIteration.getTacheImprevue (lIndiceTacheImprevue).getId () ;
+        // On récupère la tache imprévue que l'on souhaite modifier dans la base.
+        lRequete = getBaseDonnees ().getOQLQuery ("select TACHEIMPREVUE from owep.modele.execution.MTacheImprevue TACHEIMPREVUE where mId = $1") ;
+        lRequete.bind (lIdTacheImprevue) ;
+        lResultat  = lRequete.execute () ;
+        MTacheImprevue lTacheImprevue = (MTacheImprevue) lResultat.next () ;
+        
+        // Mise à jour de la tâche imprévue.
+        lTacheImprevue.setNom (lTacheImprevueTmp.getNom ()) ;
+        lTacheImprevue.setChargeInitiale (lTacheImprevueTmp.getChargeInitiale ()) ;
+        lTacheImprevue.setDescription (lTacheImprevueTmp.getDescription ()) ;
+        lTacheImprevue.setDateDebutPrevue (lTacheImprevueTmp.getDateDebutPrevue ()) ;
+        lTacheImprevue.setDateFinPrevue (lTacheImprevueTmp.getDateDebutPrevue ()) ;
+        
+        // Mise à jour du modèle.
+        lTacheImprevue.getCollaborateur ().supprimerTacheImprevue (lTacheImprevue) ;
+        lTacheImprevue.setCollaborateur (lCollaborateur) ;
+        lCollaborateur.addTacheImprevue (lTacheImprevue) ;
+        lTacheImprevue.getActiviteImprevue ().supprimerTacheImprevue (lTacheImprevue) ;
+        lTacheImprevue.setActiviteImprevue (lActiviteImprevue) ;
+        lActiviteImprevue.addTacheImprevue (lTacheImprevue) ;
+
+      }
+      catch (ClassNotPersistenceCapableException e)
+      {
+        e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      }
+      catch (TransactionNotInProgressException e)
+      {
+        e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      }
+      catch (PersistenceException e)
+      {
+        e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      }
     }
     
-    // Supprimer une tâche.
+    // TODO : Supprimer une tâche.
     else if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER))
     {
       // Indice de la tâche et de l'artefact dans leur liste respective.
       int lIndiceTacheImprevue     = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTETACHESIMPREVUES)) ;
       
-      VTransfert.transferer (getRequete (), mIteration, CConstante.PAR_ARBREITERATION) ;
       MTacheImprevue lTacheImprevue = mIteration.getTacheImprevue (lIndiceTacheImprevue) ;
       
       // Met à jour le modèle.
@@ -232,46 +294,87 @@ public class CTacheImprevue extends CControleurBase
       
       MTacheImprevue    lTacheImprevue    = mIteration.getTacheImprevue (lIndiceTacheImprevue) ;
       MActiviteImprevue lActiviteImprevue = lTacheImprevue.getActiviteImprevue () ;
-      MCollaborateur lResponsable = lProjet.getCollaborateur (lIndiceResponsable) ;
+      MCollaborateur lResponsable = mProjet.getCollaborateur (lIndiceResponsable) ;
       
       // Mise à jour du modèle.
       lArtefactImprevueSortie.setTacheImprevueSortie (lTacheImprevue) ;
       lTacheImprevue.addArtefactImprevueSortie (lArtefactImprevueSortie) ;
-      lArtefactImprevueSortie.setProjet (lProjet) ;
-      lProjet.addArtefactImprevue (lArtefactImprevueSortie) ;
+      lArtefactImprevueSortie.setProjet (mProjet) ;
+      mProjet.addArtefactImprevue (lArtefactImprevueSortie) ;
       lArtefactImprevueSortie.setResponsable (lResponsable) ;
       lResponsable.addArtefactImprevue (lArtefactImprevueSortie) ;
+      
+      try
+      {
+        // insertion de l'artefact imprévue en sortie de la tâche dans la bd.
+        getBaseDonnees ().create (lArtefactImprevueSortie) ;
+      }
+      catch (ClassNotPersistenceCapableException e)
+      {
+        e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      }
+      catch (DuplicateIdentityException e)
+      {
+        e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      }
+      catch (TransactionNotInProgressException e)
+      {
+        e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      }
+      catch (PersistenceException e)
+      {
+        e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      }
     }
     // Modification d'un artefact.
     else if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITMODIFIER_ARTSORTIES))
     {
       // Indice de la tâche et de l'artefact dans leur liste respective.
       int lIndiceTacheImprevue     = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTETACHESIMPREVUES)) ;
-      int lIndiceArtImprevueSortie = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEARTEFACTSSORTIES)) ;
+      //int lIndiceArtImprevueSortie = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEARTEFACTSSORTIES)) ;
+      int lIdArtImprevueSortie = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEARTEFACTSSORTIES)) ;
       int lIndiceResponsable = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTERESPONSABLES)) ;
       
       MArtefactImprevue lArtefactImprevueSortieTmp = new MArtefactImprevue () ;
-      MArtefactImprevue lArtefactImprevueSortie = mIteration.getTacheImprevue (lIndiceTacheImprevue).getArtefactImprevueSortie (lIndiceArtImprevueSortie) ;
-      
       VTransfert.transferer (getRequete (), lArtefactImprevueSortieTmp, CConstante.PAR_ARBREARTEFACTSORTIES) ;
       
-      MTacheImprevue         lTacheImprevue       = mIteration.getTacheImprevue (lIndiceTacheImprevue) ;
-      MActiviteImprevue      lActiviteImprevue    = lTacheImprevue.getActiviteImprevue () ;
-      MCollaborateur lResponsable = lProjet.getCollaborateur (lIndiceResponsable);
+      try
+      {
+        lRequete = getBaseDonnees ().getOQLQuery ("select ARTEFACTIMPREVUE from owep.modele.execution.MArtefactImprevue ARTEFACTIMPREVUE where mId = $1") ;
+        lRequete.bind (lIdArtImprevueSortie) ;
+        lResultat  = lRequete.execute () ;
+        MArtefactImprevue lArtefactImprevueSortie = (MArtefactImprevue) lResultat.next () ;
+        
+        MTacheImprevue         lTacheImprevue       = mIteration.getTacheImprevue (lIndiceTacheImprevue) ;
+        MCollaborateur lResponsable = mProjet.getCollaborateur (lIndiceResponsable);
+        
+        // Mise à jour de l'artefact.
+        lArtefactImprevueSortie.setNom (lArtefactImprevueSortieTmp.getNom ()) ;
+        lArtefactImprevueSortie.setDescription (lArtefactImprevueSortieTmp.getDescription ()) ;
+        lArtefactImprevueSortie.setResponsable (lResponsable) ;
+        
+        // Mise à jour du modèle.
+        lArtefactImprevueSortie.getTacheImprevueSortie ().supprimerArtefactImprevueSortie (lArtefactImprevueSortie) ;
+        lArtefactImprevueSortie.setTacheImprevueSortie (lTacheImprevue) ;
+        lTacheImprevue.addArtefactImprevueSortie (lArtefactImprevueSortie) ;
+        lArtefactImprevueSortie.getResponsable ().supprimerArtefactImprevue (lArtefactImprevueSortie) ;
+        lArtefactImprevueSortie.setResponsable (lResponsable) ;
+        lResponsable.addArtefactImprevue (lArtefactImprevueSortie) ;
+      }
+      catch (PersistenceException e)
+      {
+        e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      }
       
-      lArtefactImprevueSortie.setNom (lArtefactImprevueSortieTmp.getNom ()) ;
-      lArtefactImprevueSortie.setDescription (lArtefactImprevueSortieTmp.getDescription ()) ;
-      lArtefactImprevueSortie.setResponsable (lResponsable) ;
       
-      // Mise à jour du modèle.
-      lArtefactImprevueSortie.getTacheImprevueSortie ().supprimerArtefactImprevueSortie (lArtefactImprevueSortie) ;
-      lArtefactImprevueSortie.setTacheImprevueSortie (lTacheImprevue) ;
-      lTacheImprevue.addArtefactImprevueSortie (lArtefactImprevueSortie) ;
-      lArtefactImprevueSortie.getResponsable ().supprimerArtefactImprevue (lArtefactImprevueSortie) ;
-      lArtefactImprevueSortie.setResponsable (lResponsable) ;
-      lResponsable.addArtefactImprevue (lArtefactImprevueSortie) ;
+      
     }
-    // Supprimer un artefact en sortie.
+    // TODO : Supprimer un artefact en sortie.
     else if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER_ARTSORTIES))
     {
       // Indice de la tâche et de l'artefact dans leur liste respective.
@@ -302,22 +405,23 @@ public class CTacheImprevue extends CControleurBase
       
       MTacheImprevue    lTacheImprevue          = mIteration.getTacheImprevue (lIndiceTacheImprevue) ;
       MActiviteImprevue lActiviteImprevue = lTacheImprevue.getActiviteImprevue () ;
-      MArtefactImprevue lArtImprevueEntree = null;
       
-      for (int i = 0; i < mIteration.getNbTachesImprevues (); i++)
+      try
       {
-        MTacheImprevue lTacheImp = mIteration.getTacheImprevue (i) ;
-        for (int j = 0; j < lTacheImp.getNbArtefactsImprevuesSorties (); j++)
-        {
-          if (lTacheImp.getArtefactImprevueSortie (j).getId () == lIdArtImprevueEntree)
-          {
-            lArtImprevueEntree = lTacheImp.getArtefactImprevueSortie (j);
-          }
-        }
+        lRequete = getBaseDonnees ().getOQLQuery ("select ARTEFACTIMPREVUE from owep.modele.execution.MArtefactImprevue ARTEFACTIMPREVUE where mId = $1") ;
+        lRequete.bind (lIdArtImprevueEntree) ;
+        lResultat  = lRequete.execute () ;
+        MArtefactImprevue lArtImprevueEntree = (MArtefactImprevue) lResultat.next () ;
+        
+        lTacheImprevue.addArtefactImprevueEntrees (lArtImprevueEntree) ;
+        lArtImprevueEntree.setTacheImprevueEntree (lTacheImprevue) ;
+      }
+      catch (PersistenceException e)
+      {
+        e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
       }
       
-      lTacheImprevue.addArtefactImprevueEntrees (lArtImprevueEntree) ;
-      lArtImprevueEntree.setTacheImprevueEntree (lTacheImprevue) ;
     }
     // Supprimer un artefact en entrée
     else if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER_ARTENTREES)) 
@@ -325,14 +429,20 @@ public class CTacheImprevue extends CControleurBase
       int lIndiceTacheImprevue     = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTETACHESIMPREVUES)) ;
       int lIdArtImprevueEntree = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEARTEFACTSENTREES)) ;
       
-      for (int i = 0; i < mIteration.getTacheImprevue (lIndiceTacheImprevue).getNbArtefactsImprevuesEntrees (); i++)
+      try
       {
-        MArtefactImprevue lArtImprevueEntTmp =  mIteration.getTacheImprevue (lIndiceTacheImprevue).getArtefactImprevueEntree (i) ;
-        if (lArtImprevueEntTmp.getId () == lIdArtImprevueEntree) 
-        {
-          mIteration.getTacheImprevue (lIndiceTacheImprevue).supprimerArtefactImprevueEntree (i) ;
-          lArtImprevueEntTmp.setTacheImprevueEntree (null) ;
-        }
+        lRequete = getBaseDonnees ().getOQLQuery ("select ARTEFACTIMPREVUE from owep.modele.execution.MArtefactImprevue ARTEFACTIMPREVUE where mId = $1") ;
+        lRequete.bind (lIdArtImprevueEntree) ;
+        lResultat  = lRequete.execute () ;
+        MArtefactImprevue lArtImprevueEntree = (MArtefactImprevue) lResultat.next () ;
+        
+        mIteration.getTacheImprevue(lIndiceTacheImprevue).supprimerArtefactImprevueEntree(lArtImprevueEntree) ;
+        lArtImprevueEntree.setTacheImprevueEntree (null) ;
+      }
+      catch (PersistenceException e)
+      {
+        e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
       }
     }
     //  Validation de l'itération.
@@ -351,119 +461,82 @@ public class CTacheImprevue extends CControleurBase
   
   public String traiter () throws ServletException
   {
-//  Si l'itération est toujours en cours de modification.
-    if (! VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
+    /*if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
     {
-      // Transmet les données à la JSP d'affichage.
-      return "..\\JSP\\Processus\\TTacheImprevue.jsp" ;
-    }
-    else
-    {
-    Connection lConnection = null ;
-    try
-    {
-      DriverManager.registerDriver (new Driver ()) ;
-      lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", LocalisateurIdentifiant.LID_BDUSER, LocalisateurIdentifiant.LID_BDPASS) ;
-      lConnection.setAutoCommit(false);
-      
-        mIteration.update (lConnection) ;
-      
-      // Mise à jour de toutes les tâches dans la BD.
-      for (int i = 0; i < mIteration.getNbTachesImprevues (); i++)
-      {
-        MTacheImprevue lTacheImprevue = mIteration.getTacheImprevue (i) ;
-        
-        if (lTacheImprevue.getId () == 0)
-        {
-          lTacheImprevue.create (lConnection) ;
-        }
-        else
-        {
-          lTacheImprevue.update (lConnection) ;
-        }
-      }
-        
-      // Mise à jour de tous les artefacts et les conditions dans la BD.
-      for (int i = 0; i < mIteration.getNbTachesImprevues (); i++)
-      {
-        MTacheImprevue lTacheImprevue = mIteration.getTacheImprevue (i) ;
-        
-        // Mise à jour des artefacts en sorties de la tache
-        for (int j = 0; j < lTacheImprevue.getNbArtefactsImprevuesSorties (); j ++)
-        {
-          MArtefactImprevue lArtefactImprevue = lTacheImprevue.getArtefactImprevueSortie (j) ;
-          if (lArtefactImprevue.getId () == 0)
-          {
-            lArtefactImprevue.create (lConnection) ;
-          }
-          else
-          {
-            lArtefactImprevue.update (lConnection) ;
-          }
-        }
-        
-        // Mise à jour de tous les artefacts en entrées dans la BD.
-        for (int j = 0; j < lTacheImprevue.getNbArtefactsImprevuesEntrees (); j ++)
-        {
-          MArtefactImprevue lArtefactImprevue = lTacheImprevue.getArtefactImprevueEntree (j) ;
-          if (lArtefactImprevue.getId () == 0)
-          {
-            lArtefactImprevue.create (lConnection) ;
-          }
-          else
-          {
-            lArtefactImprevue.update (lConnection) ;
-          }
-        }
-      }
-
-      lConnection.commit () ;
-      
-      
-      
-      
-      Session lSession ;
-      lSession = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
-      mProjet  = lSession.getProjet () ;
-      int mIdProjet = mProjet.getId ();
-      OQLQuery lRequete ; // Requête à réaliser sur la base
-      QueryResults lResultat ; // Résultat de la requête sur la base
-      //MProjet lProjet ; // Projet à ouvrir
-      getBaseDonnees ().begin () ;
-      // Cherche le projet à ouvrir
-      lRequete = getBaseDonnees ()
-        .getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
-      lRequete.bind (mIdProjet) ;
-      lResultat = lRequete.execute () ;
-
-      mProjet = (MProjet) lResultat.next () ;
-
-      getBaseDonnees ().commit () ;
-      
-      
-      // Enregistre le projet à ouvrir dans la session
-      getSession ().ouvrirProjet (mProjet) ;
-      
-      return "..\\JSP\\Processus\\TTacheImprevue.jsp" ;
-    }
-    catch (Exception eException)
-    {
-      eException.printStackTrace () ;
-      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-    }
-    // Ferme la connexion à la base de données.
-    finally
-    {        
       try
       {
-        lConnection.close () ;
+        getBaseDonnees ().update (mIteration) ;
+              
+        // Mise à jour de toutes les tâches dans la BD.
+        for (int i = 0; i < mIteration.getNbTachesImprevues (); i++)
+        {
+          MTacheImprevue lTacheImprevue = mIteration.getTacheImprevue (i) ;
+        
+          if (lTacheImprevue.getId () == 0)
+          {
+            getBaseDonnees ().create (lTacheImprevue) ;
+          }
+          else
+          {
+            getBaseDonnees ().update (lTacheImprevue) ;
+          }
+        }
+        
+        // Mise à jour de tous les artefacts et les conditions dans la BD.
+        for (int i = 0; i < mIteration.getNbTachesImprevues (); i++)
+        {
+          MTacheImprevue lTacheImprevue = mIteration.getTacheImprevue (i) ;
+        
+          // Mise à jour des artefacts en sorties de la tache
+          for (int j = 0; j < lTacheImprevue.getNbArtefactsImprevuesSorties (); j ++)
+          {
+            MArtefactImprevue lArtefactImprevue = lTacheImprevue.getArtefactImprevueSortie (j) ;
+            if (lArtefactImprevue.getId () == 0)
+            {
+              getBaseDonnees ().create (lArtefactImprevue) ;
+            }
+            else
+            {
+              getBaseDonnees ().update (lArtefactImprevue) ;
+            }
+          }
+        
+          // Mise à jour de tous les artefacts en entrées dans la BD.
+          for (int j = 0; j < lTacheImprevue.getNbArtefactsImprevuesEntrees (); j ++)
+          {
+            MArtefactImprevue lArtefactImprevue = lTacheImprevue.getArtefactImprevueEntree (j) ;
+            
+            if (lArtefactImprevue.getId () == 0)
+            {
+              getBaseDonnees ().create (lArtefactImprevue) ;
+            }
+            else
+            {
+              getBaseDonnees ().update (lArtefactImprevue) ;
+            }
+          } 
+        }
+      
       }
-      catch (SQLException eException)
+      catch (Exception eException)
       {
         eException.printStackTrace () ;
-        throw new ServletException (CConstante.EXC_DECONNEXION) ;
-      } 
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      }
+    }*/
+    
+    // Ferme la connexion à la base de données.    
+    try
+    {
+      getBaseDonnees ().commit () ;
+      getBaseDonnees ().close () ;
+      getRequete().setAttribute (CConstante.PAR_ITERATION, mIteration);
     }
+    catch (PersistenceException e)
+    {
+      e.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
     }
+    return "..\\JSP\\Processus\\TTacheImprevue.jsp" ;
   }
 }

@@ -6,8 +6,8 @@
 <form name="projetVisu" action="../Processus/IterationModif">
   <input type="hidden" name="<%= CConstante.PAR_ITERATION %>" value="">
 <%
-  Session lSession = (Session) session.getAttribute (CConstante.SES_SESSION) ;
-  MProjet lProjet  = lSession.getProjet () ;%>
+  MProjet lProjet = (MProjet) request.getAttribute (CConstante.PAR_PROJET) ;%>
+  
   <%
   for (int i = 0; i < lProjet.getNbIterations (); i ++)
   {
@@ -20,10 +20,3 @@
 %>
 </form>
 <a href="../Processus/IterationModif">Ajouter une itération...</a>
-
-
-<!-- Aide en ligne -->
-<script type="text/javascript" language="JavaScript">
-pCodeAide  = "La page de <b>Gestion du projet</b> vous offre la possibilité d'accéder à une itération pour la <b>modifier</b> ou d'en <b>créer</b> une nouvelle." ;
-pCodeAide += " Choisissez pour cela une itération (bouton \"<b>Modifier</b>\" ou cliquez sur le lien \"<b>Ajouter une itération...</b>\"." ;
-</script>
