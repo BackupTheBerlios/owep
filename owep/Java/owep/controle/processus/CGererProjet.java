@@ -84,17 +84,6 @@ public class CGererProjet extends CControleurBase
       getBaseDonnees ().commit () ;
       getRequete ().setAttribute ("mListCollaborateur", listCollaborateur) ;
 
-      getBaseDonnees ().begin () ;
-      lRequete = getBaseDonnees ()
-        .getOQLQuery ("select PROCESSUS from owep.modele.processus.MProcessus PROCESSUS") ;
-      lResultat = lRequete.execute () ;
-      ArrayList listProcessus = new ArrayList () ;
-      while (lResultat.hasMore ())
-      {
-        listProcessus.add (lResultat.next ()) ;
-      }
-      getBaseDonnees ().commit () ;
-      getRequete ().setAttribute ("mListProcessus", listProcessus) ;
     }
     catch (PersistenceException e)
     {

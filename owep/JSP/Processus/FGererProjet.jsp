@@ -1,13 +1,11 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="owep.modele.execution.MCollaborateur"%>
-<%@page import="owep.modele.processus.MProcessus"%>
 <%@page import="owep.controle.CConstante" %>
 <%@page import="owep.infrastructure.Session" %>
 <%@page import="java.util.ResourceBundle" %>
 
 <jsp:useBean id="lCollaborateur" class="owep.modele.execution.MCollaborateur" scope="page"/>
-<jsp:useBean id="lProcessus" class="owep.modele.processus.MProcessus" scope="page"/>
 <jsp:useBean id="lSession" class="owep.infrastructure.Session" scope="page"/>
 
 <%@ page language="java" %>
@@ -22,7 +20,6 @@
   
   // Récupération parametres
   ArrayList listCollaborateur = (ArrayList) request.getAttribute("mListCollaborateur");
-  ArrayList listProcessus = (ArrayList) request.getAttribute("mListProcessus");
   String lErreur = (String) request.getAttribute("erreur");
   String lIdProjet = (String) request.getAttribute("idProjet");
   
@@ -32,23 +29,6 @@
 %>
 
 <script language="javascript">
-function decocher()
-{
-<%
-  if(listProcessus.size() > 0)
-  {
-%>
-  document.formCreerProjet.mProcessus[<%=listProcessus.size()%>].checked = true;
-<%
-  }
-  else
-  {
-%>
-  document.formCreerProjet.mProcessus.checked = true;
-<%
-  }
-%>
-}
 
 function envoyer()
 {
@@ -90,27 +70,16 @@ function envoyer()
     texte = texte + "<%=lMessage.getString("projetMessageResponsable")%>\n";
   // Verification d'un processus selectionné
   if(!(
-<%
-  int nbProcessus;
-  for(nbProcessus = 0 ; nbProcessus < listProcessus.size() ; nbProcessus++)
-  {
-%>
-      document.formCreerProjet.mProcessus[<%=nbProcessus%>].checked ||
-<%
-  }
-%>
       document.formCreerProjet.mFichierProcessus.value != ""))
     texte = texte + "<%=lMessage.getString("projetMessageProcessus")%>\n";
-    
-    if(document.formCreerProjet.mProcessus<%=listProcessus.size()>0?"["+listProcessus.size()+"]":""%>.checked)
-    {
+  else{
       var fich = document.formCreerProjet.mFichierProcessus.value;
       var extension = fich.slice(fich.length-4);
       if(extension != ".dpc" && extension != ".dpe")
         texte = texte + "<%=lMessage.getString("projetMessageExtension")%>\n";
       else
         document.formCreerProjet.mExtension.value = extension;
-    }
+  }
   
   if(texte == "")
     document.formCreerProjet.submit();
@@ -171,19 +140,7 @@ function envoyer()
       <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Choisissez le fichier <b>.DPE</b> qui définit le processus à appliquer sur le projet.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("projetProcessus")%> *</a>
     </td>
     <td class="caseNiveau3">
-<%
-    Iterator itProcessus = listProcessus.iterator();
-    while(itProcessus.hasNext()){
-      lProcessus = (MProcessus) itProcessus.next();
-%>
-      <input name="mProcessus" type="radio" value="<%=lProcessus.getId()%>">
-      <%=lProcessus.getNom()%>
-      <br>
-<%
-    }
-%>
-      <input name="mProcessus" type="radio" value="0">
-      <input type="file" name="mFichierProcessus" value="<%=lMessage.getString("projetParcourir")%>" size="<%= CConstante.TXT_LOGIN %>" onclick="decocher();" class="niveau2">
+      <input type="file" name="mFichierProcessus" value="<%=lMessage.getString("projetParcourir")%>" size="<%= CConstante.TXT_LOGIN %>"  class="niveau2">
     </td>
   </tr>
   <tr>
