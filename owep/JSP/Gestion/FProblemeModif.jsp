@@ -204,13 +204,13 @@
     <input name="<%= CConstante.PAR_LISTETACHESPROVOQUE %>" type="hidden" value=""/>
     <input name="<%= CConstante.PAR_LISTETACHESRESOUT %>" type="hidden" value=""/>
     
-    <input type="button" value="Annuler" class="bouton" onclick="window.location.href = '/owep/Gestion/ListeProblemeVisu' ;"/>
     <% lCodeValidation = VTransfertConstante.getVerification (CConstante.PAR_ARBREPROBLEME)+ " () ;" ; %>
     <% lCodeValidation += "isSelectVide (document." + CConstante.PAR_FORMULAIRE + ".pSelectTachesProvoque, 'liste des tâches à l\\'origine du problème') ;" ; %>
     <% lCodeValidation += "submitListesTaches (pSelectTachesProvoque, " + CConstante.PAR_LISTETACHESPROVOQUE + ") ;" ; %>
     <% lCodeValidation += "submitListesTaches (pSelectTachesResout, " + CConstante.PAR_LISTETACHESRESOUT + ") ;" ; %>
     <% lCodeValidation += "validerChamps () ;" ; %>
     <transfert:transfertsubmit libelle="Valider" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="<%= lCodeValidation %>"/>
+    <input type="button" value="Annuler" class="bouton" onclick="window.location.href = '/owep/Gestion/ListeProblemeVisu' ;"/>
   </p>
 
 </form>

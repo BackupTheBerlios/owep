@@ -87,7 +87,12 @@ public class MProbleme extends MModeleBase
     ResultSet result = lRequest.executeQuery (lRequete) ;
     if (result.next ())
     {
-      setId (result.getInt (1)) ;
+      int lID = result.getInt (1) ;
+      if (lID == 0)
+      {
+        lID = 1 ;
+      }
+      setId (lID) ;
     }
     result.close () ;
     lConnection.close () ;
