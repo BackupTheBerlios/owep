@@ -4,6 +4,7 @@ package owep.controle.projet ;
 import java.util.ArrayList ;
 
 import javax.servlet.ServletException ;
+import javax.servlet.http.HttpSession;
 
 import org.exolab.castor.jdo.OQLQuery ;
 import org.exolab.castor.jdo.PersistenceException ;
@@ -11,6 +12,7 @@ import org.exolab.castor.jdo.QueryResults ;
 
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
+import owep.infrastructure.Session;
 import owep.modele.execution.MCollaborateur ;
 import owep.modele.execution.MIteration;
 import owep.modele.execution.MProjet ;
@@ -23,7 +25,8 @@ public class COuvrirProjet extends CControleurBase
 {
   private String mIdProjet ; // Id du projet que le collaborateur souhaite ouvrir
   private ArrayList mListeProjetPossible ; // Liste des projets concernant l'utilisateur connecté
-
+  private Session mSession ;              // Session associé à la connexion 
+  
   /**
    * Récupère les données nécessaire au controleur dans la base de données.
    * 
@@ -105,6 +108,7 @@ public class COuvrirProjet extends CControleurBase
     OQLQuery lRequete ; // Requête à réaliser sur la base
     QueryResults lResultat ; // Résultat de la requête sur la base
     MProjet lProjet ; // Projet à ouvrir
+    MCollaborateur lCollaborateur ; 
 
     if (mIdProjet == null)
     {
@@ -154,8 +158,25 @@ public class COuvrirProjet extends CControleurBase
       getBaseDonnees ().commit () ;
 
       if (lIteration == null)
-      {  
+      { 
+        // Récupère le collaborateur connecté
+        HttpSession session = getRequete ().getSession (true) ;
+        mSession = (Session)session.getAttribute("SESSION") ;
+        lCollaborateur = mSession.getCollaborateur() ;
+        
+        getBaseDonnees ().begin () ;
+        
+        int idCollab = lCollaborateur.getId() ;
+        // Récupère la liste des tâches du collaborateur.
+        lRequete = getBaseDonnees ().getOQLQuery ("select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mId = $1") ;
+        lRequete.bind (idCollab) ;
+        lResultat      = lRequete.execute () ;
+        lCollaborateur = (MCollaborateur) lResultat.next () ;
+        
+        getBaseDonnees ().commit () ;
+        
         getSession ().setIteration(null);
+        getRequete ().setAttribute (CConstante.PAR_COLLABORATEUR, lCollaborateur) ;
         return "..\\JSP\\Iteration\\TAucuneIteration.jsp" ;
       }  
       

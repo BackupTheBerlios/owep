@@ -11,12 +11,34 @@
     java.util.ResourceBundle messages;
     messages = java.util.ResourceBundle.getBundle("MessagesBundle");
 %>
+<% 
+   String lTypeTache = (String) request.getAttribute (CConstante.PAR_TYPE_TACHE) ; 
+   if (lTypeTache.equals("tache")) 
+   { 
+     lTache = (MTache) request.getAttribute (CConstante.PAR_TACHE) ; 
+   }
+   else
+   {
+     lTacheImprevue = (MTacheImprevue) request.getAttribute (CConstante.PAR_TACHE_IMPREVUE) ;
+   } 
+%>
 <HEAD>
 <SCRIPT LANGUAGE="JavaScript">
   <!--
     var gChampsInvalides = new String ('') ;
     var champDate = new String ('') ;
     var champHeure = new String ('') ; 
+    var typeTache = new String ('<%=lTypeTache%>') ;
+    var etatTache = new String ('');
+    
+    if (typeTache=='tache')
+    {
+      etatTache = new String ('<%=(Integer)lTache.getListe("etat")%>');
+    }
+    else
+    {
+      etatTache = new String ('<%=(Integer)lTacheImprevue.getListe("etat")%>');
+    }
     
     // fonction de conversion de la date saisie : jj/mm/aaaa en aaaa-mm-jj
     function valider() { 
@@ -31,10 +53,13 @@
         gChampsInvalides += '<%=messages.getString("JSChamp")%> \'' + '<%=messages.getString("JSChampTempsPasse")%>' + '\' <%=messages.getString("JSIncorrect")%> ' + '<%=messages.getString("JSAlertEntier")%>. \n' ;
       }
 
-      champHeure = document.getElementById('<%=CConstante.PAR_RESTEAPASSER%>').value;
-      if ( expr_reg_heure.test(champHeure) == 0 ) 
-      {
-        gChampsInvalides += '<%=messages.getString("JSChamp")%> \'' + '<%=messages.getString("JSChampResteAPasse")%>' + '\' <%=messages.getString("JSIncorrect")%> ' + '<%=messages.getString("JSAlertEntier")%>. \n' ;
+      if ((typeTache == 'tache' && etatTache=='2')||(typeTache == 'tacheImprevue' && etatTache=='2'))
+	  {
+        champHeure = document.getElementById('<%=CConstante.PAR_RESTEAPASSER%>').value;
+        if ( expr_reg_heure.test(champHeure) == 0 ) 
+        {
+          gChampsInvalides += '<%=messages.getString("JSChamp")%> \'' + '<%=messages.getString("JSChampResteAPasse")%>' + '\' <%=messages.getString("JSIncorrect")%> ' + '<%=messages.getString("JSAlertEntier")%>. \n' ;
+        }
       }
 
       champDate = document.getElementById('<%=CConstante.PAR_DATEDEBUTREELLE%>').value;
@@ -136,23 +161,28 @@
     </tr>
     
     <% 
-      String lTypeTache = (String) request.getAttribute (CConstante.PAR_TYPE_TACHE) ; 
       if (lTypeTache.equals("tache")) 
       { 
     %>
     
 	    <tr>
-	      <% lTache = (MTache) request.getAttribute (CConstante.PAR_TACHE) ; %>
 	      <td class='caseNiveau2'><%= lTache.getNom ()%></td>
 	      <!--
 	      <!-- Affiche la liste des artefacts -->
 	      <td class='caseNiveau2'>
 	        <%
-	          SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
-	          out.print (lTache.getArtefactSortie (0).getNom ()) ;
-	          for (int j = 1; j < lTache.getNbArtefactsSorties (); j ++)
+	           SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
+	          if (lTache.getNbArtefactsSorties()==0)
 	          {
-	            out.print ("<br/>" + lTache.getArtefactSortie (j).getNom ()) ;
+	            out.print ("X") ;
+	          }
+	          else
+	          {
+	            out.print (lTache.getArtefactSortie (0).getNom ()) ;
+	            for (int j = 1; j < lTache.getNbArtefactsSorties (); j ++)
+	            {
+	              out.print ("<br/>" + lTache.getArtefactSortie (j).getNom ()) ;
+	            }
 	          }
 	        %>
 	      </td>
@@ -169,8 +199,9 @@
 	      <% if (bouton == 3) 
 	        {
 	      %>
+          <input type=hidden name="<%=CConstante.PAR_RESTEAPASSER%>" value="0">
 	      <td class='caseNiveau3'><%=((Double)lTache.getListe("resteAPasser")).intValue()%></td>
-	      <% } %>
+          <%}%>
 	      <% if (((Integer)lTache.getListe("etat")).intValue() == 2)
 	       {
 	       %>
@@ -199,17 +230,23 @@
 	  {
 	  %>
 		<tr>
-	      <% lTacheImprevue = (MTacheImprevue) request.getAttribute (CConstante.PAR_TACHE) ; %>
 	      <td class='caseNiveau2'><%= lTacheImprevue.getNom ()%></td>
 	      <!--
 	      <!-- Affiche la liste des artefacts -->
 	      <td class='caseNiveau2'>
 	        <%
 	          SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
-	          out.print (lTacheImprevue.getArtefactImprevueSortie (0).getNom ()) ;
-	          for (int j = 1; j < lTacheImprevue.getNbArtefactsImprevuesSorties (); j ++)
+	          if (lTacheImprevue.getNbArtefactsImprevuesSorties()==0)
 	          {
-	            out.print ("<br/>" + lTacheImprevue.getArtefactImprevueSortie (j).getNom ()) ;
+	            out.print ("X") ;
+	          }
+	          else
+	          {
+	            out.print (lTacheImprevue.getArtefactImprevueSortie (0).getNom ()) ;
+	            for (int j = 1; j < lTacheImprevue.getNbArtefactsImprevuesSorties (); j ++)
+	            {
+	              out.print ("<br/>" + lTacheImprevue.getArtefactImprevueSortie (j).getNom ()) ;
+	            }
 	          }
 	        %>
 	      </td>
@@ -226,6 +263,7 @@
 	      <% if (bouton == 3) 
 	        {
 	      %>
+          <input type=hidden name="<%=CConstante.PAR_RESTEAPASSER%>" value="0">
 	      <td class='caseNiveau3'><%=((Double)lTacheImprevue.getListe("resteAPasser")).intValue()%></td>
 	      <% } %>
 	      <% if (((Integer)lTacheImprevue.getListe("etat")).intValue() == 2)

@@ -77,7 +77,7 @@
       <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("avancementProjetAideDepPRC")%>')" onmouseout="tooltipOff(this, event)">(%)</a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("avancementProjetAideDepH")%>')" onmouseout="tooltipOff(this, event)">(h)</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("avancementProjetAideDepH")%>')" onmouseout="tooltipOff(this, event)">(min)</a>
     </td>
   </tr>
   <!--Affichage des taches du collaborateur-->

@@ -301,7 +301,7 @@ public class CEtat extends CControleurBase{
 	          mTacheImprevue.setListe("dateFinReelle", mTacheImprevue.getDateFinReelle()) ;
 	          
 	          // Transmet les données à la JSP d'affichage.
-	          getRequete ().setAttribute (CConstante.PAR_TACHE, mTacheImprevue) ;
+	          getRequete ().setAttribute (CConstante.PAR_TACHE_IMPREVUE, mTacheImprevue) ;
 	          return "..\\JSP\\Tache\\TValidationRapport.jsp?pIdBoutonClique="+idBoutonClique ;
 	          // cas ou on appuie sur le bouton terminer
 	        case 3 :  
@@ -322,7 +322,7 @@ public class CEtat extends CControleurBase{
 	          mTacheImprevue.setListe("tempsPasse", new Integer(tempsPasse)) ;
 	          
 	          // Transmet les données à la JSP d'affichage.
-	          getRequete ().setAttribute (CConstante.PAR_TACHE, mTacheImprevue) ;
+	          getRequete ().setAttribute (CConstante.PAR_TACHE_IMPREVUE, mTacheImprevue) ;
 	          return "..\\JSP\\Tache\\TValidationRapport.jsp?pIdBoutonClique="+idBoutonClique ;
 	          
 	        default : 

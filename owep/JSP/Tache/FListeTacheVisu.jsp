@@ -94,7 +94,7 @@
     </td>
     <td class="caseNiveau1">
       <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("listeTacheAideDepassementH")%>')" onmouseout="tooltipOff(this, event)">
-        (h)
+        (min)
       </a>
     </td>
   </tr>

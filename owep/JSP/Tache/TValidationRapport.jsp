@@ -20,7 +20,7 @@
   }
   else
   {
-    MTacheImprevue lTacheImprevue  = (MTacheImprevue) request.getAttribute (CConstante.PAR_TACHE) ;
+    MTacheImprevue lTacheImprevue  = (MTacheImprevue) request.getAttribute (CConstante.PAR_TACHE_IMPREVUE) ;
     nomTache = messages.getString("validationRapportTitreTacheImprevue")+lTacheImprevue.getNom() ;
   }
 %>

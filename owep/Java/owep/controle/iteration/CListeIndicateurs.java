@@ -180,7 +180,8 @@ public class CListeIndicateurs extends CControleurBase
   {
   	// Transmet les données à la JSP d'affichage.
     getRequete ().setAttribute (CConstante.PAR_PROJET, mProjet) ;
-    getRequete ().setAttribute (CConstante.PAR_ITERATION, mIteration) ;
+    if(mProjet.getNbIndicateurs()>0)
+      getRequete ().setAttribute (CConstante.PAR_ITERATION, mIteration) ;
     return "/JSP/Iteration/TListeIndicateurs.jsp" ;
   }
 }
