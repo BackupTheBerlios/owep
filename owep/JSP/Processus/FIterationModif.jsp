@@ -11,9 +11,11 @@
 <%@page import="owep.modele.execution.MProjet"%>
 <%@page import="owep.modele.execution.MCollaborateur"%>
 <%@page import="owep.modele.execution.MArtefact"%>
+<%@page import="owep.modele.execution.MCondition"%>
 <%@page import="owep.vue.transfert.VTransfert"%>
 <%@page import="owep.vue.transfert.VTransfertConstante"%>
 <%@page import="owep.vue.transfert.convertor.VDateConvertor"%>
+<%@page import="java.util.ArrayList"%>
 <%@taglib uri='/WEB-INF/tld/transfert.tld' prefix='transfert' %>
 
 
@@ -43,7 +45,7 @@
 <p class="texte"><%= lProjet.getDescription () %></p>
 <br/><br/>
  
-<form action="./IterationModif" method="post" name="formIterationModif">
+<form action="./IterationModif" method="post" name="<%= CConstante.PAR_FORMULAIRE%>">
 
   <transfert:transfertbean scope="Session" type="owep.modele.execution.MIteration" bean="pIteration" idArbre="<%= CConstante.PAR_ARBREITERATION %>">
   <input <transfert:transfertchamp membre="setNumero" type="java.lang.Integer" libelle="Numéro de l\\'itération" convertor="VIntegerConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
@@ -68,12 +70,12 @@
       <td class="caseNiveau3" width="50%">
         Date de début prévue * : <input <transfert:transfertchamp membre="setDateDebutPrevue" type="java.util.Date" libelle="Date de début prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/> 
                                 type="text" size="8" class="niveau2"
-                                value="<%= VDateConvertor.getString(lIteration.getDateDebutPrevue (), true) %>"  maxlength="<%= CConstante.TXT_DATE %>">
+                                value="<%= VDateConvertor.getString (lIteration.getDateDebutPrevue ()) %>"  maxlength="<%= CConstante.TXT_DATE %>">
       </td>
       <td class="caseNiveau3" width="50%">
         Date de fin prévue * : <input <transfert:transfertchamp membre="setDateFinPrevue" type="java.util.Date" libelle="Date de fin prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>  
                               type="text" size="8" class="niveau2"
-                              value="<%= VDateConvertor.getString (lIteration.getDateFinPrevue (), true) %>" 
+                              value="<%= VDateConvertor.getString (lIteration.getDateFinPrevue ()) %>" 
                               maxlength="<%= CConstante.TXT_DATE %>">
       </td>
     </tr>
@@ -114,11 +116,11 @@
         
         <!-- Ajoute le champ "DateDebutPrevu" à la liste -->
         <input <transfert:transfertchamp membre="setDateDebutPrevue" type="" libelle="Date de début prévue de la tâche" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
-         type="hidden" value="<%= VDateConvertor.getString (lTache.getDateDebutPrevue (), true) %>">
+         type="hidden" value="<%= VDateConvertor.getString (lTache.getDateDebutPrevue ()) %>">
         
         <!-- Ajoute le champ "DateFinPrevue" à la liste -->
         <input <transfert:transfertchamp membre="setDateFinPrevue" type="" libelle="Date de fin prévue de la tâche" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
-         type="hidden" value="<%= VDateConvertor.getString (lTache.getDateFinPrevue (), true) %>">
+         type="hidden" value="<%= VDateConvertor.getString (lTache.getDateFinPrevue ()) %>">
         
         
         <!-- Ajoute les champs Disciplines, activités et collaborateurs -->
@@ -148,7 +150,7 @@
       
       <td class="caseNiveau3">
         <select name="<%= CConstante.PAR_LISTETACHES %>" class="niveau2" style="width: 200" size="29"
-         onchange="selectTache (document.formIterationModif.<%= CConstante.PAR_LISTETACHES %>.selectedIndex)">
+         onchange="selectTache (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHES %>.selectedIndex)">
           <%
             for (int lIndiceTache = 0; lIndiceTache < lIteration.getNbTaches (); lIndiceTache ++)
             {
@@ -232,10 +234,10 @@
           <tr>
             <td class="caseNiveau3SansBordure">
               <!-- Activités et collaborateurs -->
-              Discpline * :
-              <select class="niveau2" name="<%= CConstante.PAR_LISTEDISCIPLINES %>" onchange="selectDiscipline (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex) ;
-                                                                                              selectActivite (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex);
-                                                                                              selectProduit (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex);">
+              Discipline * :
+              <select class="niveau2" name="<%= CConstante.PAR_LISTEDISCIPLINES %>" onchange="selectDiscipline (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex) ;
+                                                                                              selectActivite (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex);
+                                                                                              selectProduit (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex);">
               <% 
                  int lDisciplineCourante = 0 ;
                  for (int i = 0; i < lProcessus.getNbComposants (); i++)             
@@ -256,8 +258,8 @@
             <td class="caseNiveau3SansBordure">
               <!-- Données de l'activité. -->
               Activité * :
-              <select class="niveau2" name="<%= CConstante.PAR_LISTEACTIVITES %>" onchange="selectActivite (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex) ;
-                                                                                            selectProduit (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex);">
+              <select class="niveau2" name="<%= CConstante.PAR_LISTEACTIVITES %>" onchange="selectActivite (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex) ;
+                                                                                            selectProduit (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex);">
               <%
                 MDefinitionTravail lDefTravTmp = lProcessus.getComposant(0).getDefinitionTravail(0) ;
                 for (int i = 0 ; i < lDefTravTmp.getNbActivites() ; i++)
@@ -275,10 +277,26 @@
               Collaborateur affecté * :
               <select class="niveau2" name="<%= CConstante.PAR_LISTECOLLABORATEURS %>">
               <%
-                for (int i = 0; i < lProjet.getNbCollaborateurs (); i++) 
+                MActivite lActiviteTmp = lProcessus.getComposant (0).getDefinitionTravail (0).getActivite (0) ;
+                MCollaborateur lCollaborateurAct = null ;
+                ArrayList lListeCollaborateurAct = new ArrayList () ;
+                for (int i = 0; i < lActiviteTmp.getNbRoles (); i++) 
                 {
+                  MRole lRoleTmp = lActiviteTmp.getRole (i) ;
+                  for (int j = 0 ; j < lRoleTmp.getNbCollaborateurs () ; j++)
+                  {
+                    lCollaborateurAct = lRoleTmp.getCollaborateur (j) ;
+                    if (!lListeCollaborateurAct.contains (lCollaborateurAct))
+                    {
+                      lListeCollaborateurAct.add (lCollaborateurAct) ;
+                    }
+                  }
+                }
+                for (int i = 0 ; i < lListeCollaborateurAct.size () ; i++)
+                {
+                  lCollaborateurAct = (MCollaborateur) lListeCollaborateurAct.get (i) ;
               %>
-              <option value="<%= lProjet.getCollaborateur (i).getId () %>"> <%= lProjet.getCollaborateur (i).getNom () %> &nbsp; <%= lProjet.getCollaborateur (i).getPrenom () %> </option>
+              <option value="<%= lCollaborateurAct.getId () %>"> <%= lCollaborateurAct.getNom () %> &nbsp; <%= lCollaborateurAct.getPrenom () %> </option>
               <%
                 }
               %>
@@ -289,7 +307,7 @@
             <td colspan="2"> &nbsp;
             </td>
           </tr>
-            <tr>
+          <tr>
             <td colspan="2"> &nbsp;
             </td>
           </tr>
@@ -317,7 +335,7 @@
               <table width="100%" cellpadding="0" cellspacing="0" valign="top">
                 <tr>       
                   <td colspan="2" align="center">
-                    <select class="niveau2" name="<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>" style="width: 80%" onchange="selectArtefact (document.formIterationModif.<%= CConstante.PAR_LISTETACHES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.selectedIndex)" size="4">
+                    <select class="niveau2" name="<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>" style="width: 80%" onchange="selectArtefact (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.selectedIndex)" size="4">
                     </select>
                   </td>
                 </tr>
@@ -348,7 +366,7 @@
                     Produit * :
                   </td>
                   <td>
-                    <select class="niveau2" name="<%= CConstante.PAR_LISTEPRODUITS %>" onchange="selectProduit (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex)">
+                    <select class="niveau2" name="<%= CConstante.PAR_LISTEPRODUITS %>" onchange="selectProduit (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex)">
                     <%
                       MActivite lActivite = lProcessus.getComposant(0).getDefinitionTravail(0).getActivite (0) ;
                       for (int i = 0 ; i < lActivite.getNbProduitsSorties () ; i++)
@@ -384,13 +402,13 @@
                 <tr>
                   <td colspan="2">        
                     <!-- Barre d'outils d'artefacts -->
-                    <% lCodeValidation = "validerArtefactSortie (document.formIterationModif." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.' ) ;" ; %>
+                    <% lCodeValidation = "validerArtefactSortie (document." + CConstante.PAR_FORMULAIRE +"." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.' ) ;" ; %>
                     <transfert:transfertsubmit libelle="Ajouter"   valeur="<%= CConstante.PAR_SUBMITAJOUTER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"/>
                     
-                    <% lCodeValidation = "validerArtefactSortie (document.formIterationModif." + CConstante.PAR_LISTEARTEFACTSSORTIES + ", 'Attention aucun artefact en sortie n\\'a été sélectionné.') ;" ; %>
+                    <% lCodeValidation = "validerArtefactSortie (document." + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTEARTEFACTSSORTIES + ", 'Attention aucun artefact en sortie n\\'a été sélectionné.') ;" ; %>
                     <transfert:transfertsubmit libelle="Modifier"  valeur="<%= CConstante.PAR_SUBMITMODIFIER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"/>
                     
-                    <% lCodeValidation = "validerArtefactSortieSuppr (document.formIterationModif." + CConstante.PAR_LISTEARTEFACTSSORTIES + ", 'Attention aucun artefact en sortie n\\'a été sélectionné.') ;" ; %>
+                    <% lCodeValidation = "validerArtefactSortieSuppr (document." + CConstante.PAR_FORMULAIRE +"." + CConstante.PAR_LISTEARTEFACTSSORTIES + ", 'Attention aucun artefact en sortie n\\'a été sélectionné.') ;" ; %>
                     <transfert:transfertsubmit libelle="Supprimer" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"/>
                   </td>
                 </tr>
@@ -421,12 +439,62 @@
                 </tr>
                 <tr>
                   <td align="center">
-                    <% lCodeValidation = "validerArtefactEntree (document.formIterationModif." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ", 'Attention aucun artefact en entrée n\\'a été sélectionné.' ) ;" ; %>
+                    <% lCodeValidation = "validerArtefactEntree (document." + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ", 'Attention aucun artefact en entrée n\\'a été sélectionné.' ) ;" ; %>
                     <transfert:transfertsubmit libelle="Ajouter"  valeur="<%= CConstante.PAR_SUBMITAJOUTER_ARTENTREES %>" verification="true" validation="<%= lCodeValidation %>"/>
                   </td>
                   <td align="center">     
-                    <% lCodeValidation = "validerArtefactEntreeSuppr (document.formIterationModif." + CConstante.PAR_LISTEARTEFACTSENTREES + ", 'Attention aucun artefact en entrée n\\'a été sélectionné.' ) ;" ; %>
+                    <% lCodeValidation = "validerArtefactEntreeSuppr (document." + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTEARTEFACTSENTREES + ", 'Attention aucun artefact en entrée n\\'a été sélectionné.' ) ;" ; %>
                     <transfert:transfertsubmit libelle="Supprimer"  valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_ARTENTREES %>" verification="true" validation="<%= lCodeValidation %>"/>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2"> &nbsp;
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p class="titre2">Tâches dépendantes :</p>
+              
+              <!-- Liste des tâches dépendantes -->
+              <table width="100%" height="100%" cellpadding="0" cellspacing="0" valign="top">
+                <tr>
+                  <td align="center">        
+                    <select class="niveau2" name="<%= CConstante.PAR_LISTETACHESDEPENDANTES %>" style="width: 80%" size="4" onchange="selectTacheDependante (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHES%>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHESDEPENDANTES%>.selectedIndex)">
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="caseNiveau3SansBordure">        
+                    Tâches possibles * : <select class="niveau2" name="<%= CConstante.PAR_LISTETACHESPOSSIBLES %>">
+                                           <%
+                                             for (int lIndiceTache = 0; lIndiceTache < lIteration.getNbTaches (); lIndiceTache ++)
+                                             {
+                                           %>
+                                                <option value="<%= lIndiceTache %>"> <%= lIteration.getTache (lIndiceTache).getNom () %> </option>
+                                           <%
+                                             }
+                                           %>
+                                         </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="caseNiveau3SansBordure">
+                    Condition * : <select class="niveau2" name="<%= CConstante.PAR_LISTETACHESCONDITION %>">
+                                    <option value="0"> En cours </option>
+                                    <option value="1"> Terminée </option>
+                                  </select>
+                  </td>
+                  
+                </tr>
+                <tr>
+                  <td align="center">
+                    <% lCodeValidation = "validerTachesDep (document." + CConstante.PAR_FORMULAIRE +"." + CConstante.PAR_LISTETACHES + ", 'cv' ) ;" ; %>
+                    <transfert:transfertsubmit libelle="Ajouter"  valeur="<%= CConstante.PAR_SUBMITAJOUTER_TACDEPEND %>" verification="true" validation="<%= lCodeValidation %>"/> 
+                    <% lCodeValidation = "validerTachesDepSuppr (document." + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTETACHESDEPENDANTES + ", 'Attention aucune tâche  n\\'a été sélectionnée.' ) ;" ; %>   
+                    <transfert:transfertsubmit libelle="Supprimer"  valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_TACDEPEND %>" verification="true" validation="<%= lCodeValidation %>"/>
                   </td>
                 </tr>
               </table>
@@ -441,10 +509,10 @@
         <% lCodeValidation = "validerTacheAjout () ;" ; %>
         <transfert:transfertsubmit libelle="Ajouter" valeur="<%= CConstante.PAR_SUBMITAJOUTER %>" verification="true" validation="<%= lCodeValidation %>"/>
         
-        <% lCodeValidation = "validerTacheModif (document.formIterationModif." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.') ;" ; %>
+        <% lCodeValidation = "validerTacheModif (document." + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.') ;" ; %>
         <transfert:transfertsubmit libelle="Modifier" valeur="<%= CConstante.PAR_SUBMITMODIFIER %>" verification="true" validation="<%= lCodeValidation %>"/>
         
-        <% lCodeValidation = "validerTacheSuppr (document.formIterationModif." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.') ;" ; %>
+        <% lCodeValidation = "validerTacheSuppr (document." + CConstante.PAR_FORMULAIRE +"." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.') ;" ; %>
         <transfert:transfertsubmit libelle="Supprimer" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER %>" verification="true" validation="<%= lCodeValidation %>"/>
       </td>
     </tr>
@@ -514,16 +582,33 @@
     // Recherche le collaborateur correspondant à celui réalisant la tâche courante.
     int lIdCollaborateur = lTache.getCollaborateur ().getId () ;
     lTrouve = false ;
-    for (int lIndiceCollaborateur = 0; (! lTrouve) && (lIndiceCollaborateur < lProjet.getNbCollaborateurs ()); lIndiceCollaborateur ++) 
+    //for (int lIndiceCollaborateur = 0; (! lTrouve) && (lIndiceCollaborateur < lProjet.getNbCollaborateurs ()); lIndiceCollaborateur ++) 
+    //{
+      //if (lProjet.getCollaborateur (lIndiceCollaborateur).getId () == lIdCollaborateur)
+      //{
+    ArrayList list = new ArrayList ();
+    MActivite  act = lTache.getActivite ();
+    for (int l = 0; l < act.getNbRoles(); l++)
     {
-      if (lProjet.getCollaborateur (lIndiceCollaborateur).getId () == lIdCollaborateur)
+      MRole rol = act.getRole(l);
+      for (int p = 0; p < rol.getNbCollaborateurs();p++)
+      {
+        if (!list.contains(rol.getCollaborateur(p)))
+        {
+          list.add(rol.getCollaborateur(p));
+        }
+      }
+    }
+    for (int lIndiceCollaborateur = 0; lIndiceCollaborateur < list.size(); lIndiceCollaborateur++)
+    {
+      if (lIdCollaborateur == ((MCollaborateur)list.get(lIndiceCollaborateur)).getId())
       {
   %>
         <!-- Données de la tâche. -->
         gListeTaches.push (new Array ("<%= lTache.getNom () %>", "<%=lTache.getDescription ()%>", "<%=lTache.getChargeInitiale () %>",
-                                      "<%= VDateConvertor.getString (lTache.getDateDebutPrevue (), true) %>", "<%= VDateConvertor.getString (lTache.getDateFinPrevue (), true) %>",
+                                      "<%= VDateConvertor.getString (lTache.getDateDebutPrevue ()) %>", "<%= VDateConvertor.getString (lTache.getDateFinPrevue ()) %>",
                                       "<%= lIndiceDefTravailAbsolu %>", "<%= lIndiceActivite %>",
-                                      "<%= lIndiceCollaborateur %>", new Array (), new Array())) ;
+                                      "<%= lIndiceCollaborateur %>", new Array (), new Array(), new Array())) ;
   <%
       }
     }
@@ -578,6 +663,25 @@
         }
       }
     }
+    
+    // Parcours des tâches dépendantes
+    for (int lIndiceTacheDep = 0; lIndiceTacheDep < lTache.getNbConditions (); lIndiceTacheDep ++)
+    {
+      MCondition lCondition = lTache.getCondition (lIndiceTacheDep) ;
+      MTache     lTacheDep  = lCondition.getTachePrecedente () ;
+      int lIndiceEtat ;
+      if (lCondition.getEtat () == 1) 
+      {
+        lIndiceEtat = 0 ;
+      }
+      else
+      {
+        lIndiceEtat = 1 ;
+      }
+   %>
+        gListeTaches[<%= lIndiceTache %>][10].push (new Array ("<%= lIndiceTacheDep %>", "<%= lIteration.getListeTaches().indexOf(lTacheDep) %>", "<%= lIndiceEtat %>")) ; 
+   <%   
+    }
   }
   %>
 
@@ -606,9 +710,10 @@
       for (int lIndiceActivite = 0; lIndiceActivite < lDefinitionTravail.getNbActivites (); lIndiceActivite ++)
       {
         MActivite lActivite = lComposant.getDefinitionTravail (lIndiceDefinitionTravail).getActivite(lIndiceActivite) ;
+        ArrayList lListeRoleCollaborateur = new ArrayList () ; // Contient la liste des collaborateur pouvant participer à cette activité
   %>
         <!-- Données de l'activité -->
-        gListeActivites[<%= lDisciplineCourante %>].push (new Array ("<%= lActivite.getId () %>", "<%= lActivite.getNom () %>", new Array (), new Array ())) ;
+        gListeActivites[<%= lDisciplineCourante %>].push (new Array ("<%= lActivite.getId () %>", "<%= lActivite.getNom () %>", new Array (), new Array (), new Array ())) ;
   <%
         // Parcours des produits en sorties de l'activite.
         for (int lIndiceProduitSortie = 0; lIndiceProduitSortie < lActivite.getNbProduitsSorties(); lIndiceProduitSortie ++) 
@@ -644,6 +749,30 @@
   <%
           }
         }
+        
+        // Parcours des rôles pouvant faire cette activité
+        for (int lIndiceRole = 0 ;  lIndiceRole < lActivite.getNbRoles () ; lIndiceRole ++)
+        {
+          MRole lRole = lActivite.getRole (lIndiceRole) ;
+          
+          // Parcours de la liste des collaborateurs ayant ce rôle 
+          for (int lIndiceRoleCollaborateur = 0 ; lIndiceRoleCollaborateur < lRole.getNbCollaborateurs () ; lIndiceRoleCollaborateur ++)
+          {
+            MCollaborateur lCollaborateurTmp = lRole.getCollaborateur (lIndiceRoleCollaborateur) ;
+            if (!lListeRoleCollaborateur.contains (lCollaborateurTmp))
+            {
+              lListeRoleCollaborateur.add (lCollaborateurTmp) ;
+            }
+          }
+        }
+        for (int lIndiceListe = 0 ; lIndiceListe < lListeRoleCollaborateur.size () ; lIndiceListe ++)
+        {
+          MCollaborateur lCollaborateurTmp = (MCollaborateur) lListeRoleCollaborateur.get (lIndiceListe) ;
+  %>
+          <!-- Sauvegarde des collaborateurs pouvant faire la tâche -->
+          gListeActivites[<%= lDisciplineCourante %>][<%= lIndiceActivite %>][4].push (new Array ("<%= lCollaborateurTmp.getId () %>", "<%= lCollaborateurTmp.getNom () %>", "<%= lCollaborateurTmp.getPrenom () %>")) ;
+  <%
+        }
       }
       
       lDisciplineCourante ++ ;
@@ -660,102 +789,122 @@
   function selectTache(pIndice)
   {
     // Efface les ancienne données.
-    document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.length = 0 ;
-    document.formIterationModif.<%= lChampArtefactNom %>.value = '' ;
-    document.formIterationModif.<%= lChampArtefactDescription %>.value = '' ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.length = 0 ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampArtefactNom %>.value = '' ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampArtefactDescription %>.value = '' ;
     
     // Données de la tâche.
-    document.formIterationModif.<%= lChampTacheNom %>.value = gListeTaches[pIndice][0] ;
-    document.formIterationModif.<%= lChampTacheDescription %>.value = gListeTaches[pIndice][1] ;
-    document.formIterationModif.<%= lChampTacheChargeInitiale %>.value = gListeTaches[pIndice][2] ;
-    document.formIterationModif.<%= lChampTacheDateDebutPrevue %>.value = gListeTaches[pIndice][3] ;
-    document.formIterationModif.<%= lChampTacheDateFinPrevue %>.value = gListeTaches[pIndice][4] ;
-    document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex = gListeTaches[pIndice][5] ;
-    selectDiscipline (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex) ;
-    document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex = gListeTaches[pIndice][6] ;
-    document.formIterationModif.<%= CConstante.PAR_LISTECOLLABORATEURS %>.selectedIndex = gListeTaches[pIndice][7] ;
-    selectActivite (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex) ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampTacheNom %>.value = gListeTaches[pIndice][0] ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampTacheDescription %>.value = gListeTaches[pIndice][1] ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampTacheChargeInitiale %>.value = gListeTaches[pIndice][2] ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampTacheDateDebutPrevue %>.value = gListeTaches[pIndice][3] ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampTacheDateFinPrevue %>.value = gListeTaches[pIndice][4] ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex = gListeTaches[pIndice][5] ;
+    selectDiscipline (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex) ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex = gListeTaches[pIndice][6] ;
+    selectActivite (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex) ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTECOLLABORATEURS %>.selectedIndex = gListeTaches[pIndice][7] ;
     
     
     // Initialise la liste des artefacts en sorties.
-    document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.length = 0 ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.length = 0 ;
     for (i = 0 ; i <  gListeTaches[pIndice][8].length ; i ++)
     {
       var option = new Option(gListeTaches [pIndice][8][i][1],gListeTaches [pIndice][8][i][0]) ;
-      document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.options[i] = option ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.options[i] = option ;
     }
     
     // Initialise la liste des artefacts en entrées.
-    document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSENTREES %>.length = 0 ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSENTREES %>.length = 0 ;
     for (i = 0 ; i <  gListeTaches[pIndice][9].length ; i ++)
     {
       var option = new Option(gListeTaches [pIndice][9][i][1],gListeTaches [pIndice][9][i][0]) ;
-      document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSENTREES %>.options[i] = option ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSENTREES %>.options[i] = option ;
     }
     
     // Bloque la sélection d'une activité ou discipline si un artefact en sortie est associé à la tâche.
-    if (document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.length > 0)
+    if (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.length > 0)
     {
       // Initialise la liste des artefacts et désactive les listes disciplines et activités.
-      document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.selectedIndex = 0 ;
-      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = true ;
-      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = true ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.selectedIndex = 0 ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = true ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = true ;
       
-      selectArtefact (document.formIterationModif.<%= CConstante.PAR_LISTETACHES %>.selectedIndex, 0) ;
+      selectArtefact (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHES %>.selectedIndex, 0) ;
     }
     else
     // Bloque la sélection d'une activité ou discipline si un artefact en entrée est associé à la tâche.
-    if (document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSENTREES %>.length > 0)
+    if (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSENTREES %>.length > 0)
     {
       // Désactive les listes disciplines et activités.
-      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = true ;
-      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = true ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = true ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = true ;
     }
     else
     {
       // Active les listes disciplines et activités.
-      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
-      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
     }
+    
+    // Initialise la liste des tâches dépendantes
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHESDEPENDANTES %>.length = 0 ;
+    for (i = 0 ; i < gListeTaches[pIndice][10].length ; i ++)
+    {
+      indice = gListeTaches[pIndice][10][i][1] ;
+      var option = new Option (gListeTaches[indice][0] , gListeTaches[pIndice][10][i][0]) ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHESDEPENDANTES %>.options[i] = option ;
+    }
+    
   }
   
   
   function selectDiscipline (pIndice)
   {
     // Met à jour la liste des activités.
-    document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.length = 0 ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.length = 0 ;
     for (i = 0 ; i <  gListeActivites[pIndice].length ; i++)
     {
       var option = new Option(gListeActivites [pIndice][i][1],gListeActivites [pIndice][i][0]) ;
-      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.options[i] = option ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.options[i] = option ;
     }
   }
   
   
   function selectActivite (pIndiceDiscipline, pIndiceActivite)
   {
-    document.formIterationModif.<%= CConstante.PAR_LISTEPRODUITS %>.length = 0 ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEPRODUITS %>.length = 0 ;
     
     // Met à jour la liste des activités.
     for (lIndiceProduit = 0; lIndiceProduit <  gListeActivites[pIndiceDiscipline][pIndiceActivite][2].length; lIndiceProduit ++)
     {
       var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][2][lIndiceProduit][1],
                               gListeActivites [pIndiceDiscipline][pIndiceActivite][2][lIndiceProduit][0]) ;
-      document.formIterationModif.<%= CConstante.PAR_LISTEPRODUITS %>.options[lIndiceProduit] = option;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEPRODUITS %>.options[lIndiceProduit] = option;
+    }
+    
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTECOLLABORATEURS %>.length = 0 ;
+    // Met à jour la liste des collaborateurs
+    for (lIndiceCollaborateur = 0; lIndiceCollaborateur < gListeActivites[pIndiceDiscipline][pIndiceActivite][4].length; lIndiceCollaborateur++)
+    {
+      var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][4][lIndiceCollaborateur][1] + '   ' +
+                              gListeActivites [pIndiceDiscipline][pIndiceActivite][4][lIndiceCollaborateur][2],
+                              gListeActivites [pIndiceDiscipline][pIndiceActivite][4][lIndiceCollaborateur][0]) ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTECOLLABORATEURS %>.options[lIndiceCollaborateur] = option ;
     }
     
     // Met à jour la liste des artefacts.
-    document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>.length = 0 ;          
-    if (document.formIterationModif.<%= CConstante.PAR_LISTETACHES %>.selectedIndex != -1)
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>.length = 0 ;          
+    if (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHES %>.selectedIndex != -1)
     {
       // Cherche l'artefact dans la liste des artefacts affectés à la tâche.
       for (lIndiceArtefact = 0; lIndiceArtefact < gListeActivites[pIndiceDiscipline][pIndiceActivite][3].length; lIndiceArtefact++)
       {
         var lPresent = 0 ;
         
-        for (lIndiceTache = 0; lIndiceTache <  gListeTaches[document.formIterationModif.<%= CConstante.PAR_LISTETACHES %>.selectedIndex][9].length; lIndiceTache ++)
+        for (lIndiceTache = 0; lIndiceTache <  gListeTaches[document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHES %>.selectedIndex][9].length; lIndiceTache ++)
         {
-          if (gListeActivites [pIndiceDiscipline][pIndiceActivite][3][lIndiceArtefact][0] == gListeTaches[document.formIterationModif.<%= CConstante.PAR_LISTETACHES %>.selectedIndex][9][lIndiceTache][0])
+          if (gListeActivites [pIndiceDiscipline][pIndiceActivite][3][lIndiceArtefact][0] == gListeTaches[document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHES %>.selectedIndex][9][lIndiceTache][0])
           {
              lPresent = 1 ;
           }
@@ -766,7 +915,7 @@
         {
           var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][3][lIndiceArtefact][1],
                                   gListeActivites [pIndiceDiscipline][pIndiceActivite][3][lIndiceArtefact][0]) ; 
-          document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>.options[document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>.length] = option ;
+          document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>.options[document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>.length] = option ;
         }
       }
     }
@@ -776,7 +925,7 @@
       {
         var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][3][lIndiceArtefact][1],
                                 gListeActivites [pIndiceDiscipline][pIndiceActivite][3][lIndiceArtefact][0]) ;
-        document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>.options[document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>.length] = option ;
+        document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>.options[document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>.length] = option ;
       }
     }
   }
@@ -784,29 +933,34 @@
   
   function selectProduit (pIndiceDiscipline, pIndiceActivite, pIndiceProduit)
   {
-    document.formIterationModif.<%= CConstante.PAR_LISTERESPONSABLES %>.length = 0 ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTERESPONSABLES %>.length = 0 ;
     for (lIndiceCollaborateur = 0; lIndiceCollaborateur <  gListeActivites[pIndiceDiscipline][pIndiceActivite][2][pIndiceProduit][2].length; lIndiceCollaborateur ++)
     { 
       var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][2][pIndiceProduit][2][lIndiceCollaborateur][1] + '   ' +
                               gListeActivites [pIndiceDiscipline][pIndiceActivite][2][pIndiceProduit][2][lIndiceCollaborateur][2],
                               gListeActivites [pIndiceDiscipline][pIndiceActivite][2][pIndiceProduit][2][lIndiceCollaborateur][0]) ;
-      document.formIterationModif.<%= CConstante.PAR_LISTERESPONSABLES %>.options[lIndiceCollaborateur] = option ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTERESPONSABLES %>.options[lIndiceCollaborateur] = option ;
     }
   }
   
   
   function selectArtefact(pIndiceTache, pIndiceArtefact)
   {
-    document.formIterationModif.<%= lChampArtefactNom %>.value = gListeTaches[pIndiceTache][8][pIndiceArtefact][1] ;
-    document.formIterationModif.<%= lChampArtefactDescription %>.value = gListeTaches[pIndiceTache][8][pIndiceArtefact][2] ;
-    selectActivite (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex) ;
-    document.formIterationModif.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex = gListeTaches[pIndiceTache][8][pIndiceArtefact][3] ;
-    selectProduit (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex) ;
-    document.formIterationModif.<%= CConstante.PAR_LISTERESPONSABLES %>.selectedIndex = gListeTaches[pIndiceTache][8][pIndiceArtefact][4] ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampArtefactNom %>.value = gListeTaches[pIndiceTache][8][pIndiceArtefact][1] ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampArtefactDescription %>.value = gListeTaches[pIndiceTache][8][pIndiceArtefact][2] ;
+    selectActivite (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex) ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex = gListeTaches[pIndiceTache][8][pIndiceArtefact][3] ;
+    selectProduit (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex) ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTERESPONSABLES %>.selectedIndex = gListeTaches[pIndiceTache][8][pIndiceArtefact][4] ;
   }
   
   
-  
+  function selectTacheDependante(pIndiceTache, pIndiceTacheDep)
+  {
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHESPOSSIBLES %>.selectedIndex = gListeTaches[pIndiceTache][10][pIndiceTacheDep][1] ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHESCONDITION %>.selectedIndex = gListeTaches[pIndiceTache][10][pIndiceTacheDep][2] ;
+    
+  }
   
   <!------------------------------------------->
   <!-- Fonctions de validation du formulaire -->
@@ -827,8 +981,8 @@
     }
     else
     {
-      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
-      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
       <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) %> () ;
       <%= VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES) %> () ;
       validerChamps () ;
@@ -844,9 +998,9 @@
     }
     else
     {
-      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
-      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
-      document.formIterationModif.submit () ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.submit () ;
     }
   }
   
@@ -859,8 +1013,8 @@
     }
     else
     {
-      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
-      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
       <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) %> () ;
       <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREARTEFACTSORTIES) %> () ;
       <%= VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES) %> () ;
@@ -868,7 +1022,7 @@
     }
   }
   
-  
+
   function validerArtefactSortieSuppr (pSelect, pMessage)
   {
     if (pSelect.selectedIndex == -1)
@@ -877,9 +1031,9 @@
     }
     else
     {
-      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
-      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
-      document.formIterationModif.submit () ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.submit () ;
     }
   }
   
@@ -892,8 +1046,8 @@
     }
     else
     {
-      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
-      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
       <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) %> () ;
       <%= VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES) %> () ;
       validerChamps () ;
@@ -909,8 +1063,8 @@
     }
     else
     {
-      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
-      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+      document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
       <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) %> () ;
       <%= VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES) %> () ;
       validerChamps () ;
@@ -920,12 +1074,42 @@
   
   function validerFormulaire ()
   {
-    document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
-    document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
     <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) %> () ;
     <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREARTEFACTSORTIES) %> () ;
     <%= VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES) %> () ;
     validerChamps () ;
   }
+
+
+  function validerTachesDep (pSelect, pMessage)
+  {
+    if (pSelect.selectedIndex == -1)
+    {
+      alert (pMessage) ;
+    }
+    else
+    {
+      <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) %> () ;
+      <%= VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES) %> () ;
+      validerChamps () ;
+    }
+  }
   
+  
+  function validerTachesDepSuppr (pSelect, pMessage)
+  {
+    if (pSelect.selectedIndex == -1)
+    {
+      alert (pMessage) ;
+    }
+    else
+    {
+      <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) %> () ;
+      <%= VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES) %> () ;
+      validerChamps () ;
+    }
+  }
+    
 </script>

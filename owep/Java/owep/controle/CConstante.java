@@ -16,6 +16,7 @@ public class CConstante
   public static final String EXC_TRANSFERT   = "Une erreur est survenue lors d'un transfert de données." ;
   
   // Identifiants des paramètres transmis à la JSP.
+
   public static final String PAR_VIDE                        = "" ;  
   public static final String PAR_MODIFIER                    = "pModifier" ;  
   public static final String PAR_SUBMIT                      = "pSubmit" ;
@@ -31,6 +32,8 @@ public class CConstante
   public static final String PAR_SUBMITSUPPRIMER_TACPROVOQUE = "pSubmitSupprimerTacheProvoque" ;
   public static final String PAR_SUBMITAJOUTER_TACRESOUT     = "pSubmitAjouterTacheResout" ;
   public static final String PAR_SUBMITSUPPRIMER_TACRESOUT   = "pSubmitSupprimerTacheResout" ;
+  public static final String PAR_SUBMITAJOUTER_TACDEPEND    = "pSubmitAjouterTachesDependantes" ;
+  public static final String PAR_SUBMITSUPPRIMER_TACDEPEND  = "pSubmitSupprimerTachesDependantes" ;
   
   public static final String PAR_FORMULAIRE            = "pFormulaire" ;
   public static final String PAR_COLLABORATEUR         = "pCollaborateur" ;
@@ -44,11 +47,14 @@ public class CConstante
   public static final String PAR_ETAT                  = "pEtat" ;
   public static final String PAR_PROJET                = "pProjet" ;
   public static final String PAR_PROBLEME              = "pProbleme" ;
-  
+
   public static final String PAR_ARBREITERATION        = "pArbreIteration" ;
   public static final String PAR_ARBRETACHES           = "pArbreTaches" ;
   public static final String PAR_ARBREARTEFACTSORTIES  = "pArbreArtefactSorties" ;
   public static final String PAR_ARBREPROBLEME         = "pArbreProblemes" ;
+  public static final String PAR_ARBREACTIVITE          = "pArbreActivite" ;
+  public static final String PAR_ARBRETACHESIMPREVUES   = "pArbreTachesImprevues" ;
+  public static final String PAR_ARBREACTIVITEIMPREVUE  = "pArbreActiviteImprevue" ;
 
   public static final String PAR_LISTETACHES             = "pListeTaches" ;
   public static final String PAR_LISTETACHESPROVOQUE     = "pListeTachesProvoque" ;
@@ -61,6 +67,12 @@ public class CConstante
   public static final String PAR_LISTEARTEFACTSPOSSIBLES = "pListeArtefactsPossibles" ;
   public static final String PAR_LISTEARTEFACTSSORTIES   = "pListeArtefactsSorties" ;
   public static final String PAR_LISTEPRODUITS           = "pListeProduits" ;
+
+  public static final String PAR_LISTETACHESPOSSIBLES    = "pListeTachesPossibles" ;
+  public static final String PAR_LISTETACHESDEPENDANTES  = "pListeTachesDependantes" ;
+  public static final String PAR_LISTETACHESCONDITION    = "pListeTachesCondition" ;
+  public static final String PAR_LISTEACTIVITESIMPREVUES = "pListeActivitesImprevues" ;
+  public static final String PAR_LISTETACHESIMPREVUES    = "pListeTachesImprevues" ;
   public static final String PAR_LISTEPROBLEMES          = "pListeProblemes" ;
   
   // Identifiants des paramètres de sessions.

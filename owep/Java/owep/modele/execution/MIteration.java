@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date ;
 import owep.modele.MModeleBase;
+import java.sql.Connection ;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 
 /**
@@ -29,8 +33,9 @@ public class MIteration extends MModeleBase
   private Date      mDateFinReelle ;   // Date de fin réelle de l'itération.
   private MProjet   mProjet ;          // Projet dont l'itération est une étape.
   private ArrayList mTaches ;          // Liste des tâches réalisées durant l'itération.
+  private ArrayList mTachesImprevues ; // Liste des tâches imprévues réalisées durant l'itération.
   private int       mEtat ;            // Etat de l iteration
-  
+
 
   /**
    * Crée une instance vide de MIteration.
@@ -38,7 +43,7 @@ public class MIteration extends MModeleBase
   public MIteration ()
   {
     super () ;
-    
+    mTachesImprevues = new ArrayList () ;
     mTaches = new ArrayList () ;
     mEtat = ETAT_NON_DEMARRE ;
   }
@@ -59,8 +64,8 @@ public class MIteration extends MModeleBase
     mNom             = pNom ;
     mDateDebutPrevue = pDateDebutPrevue ;
     mDateFinPrevue   = pDateFinPrevue ;
-    
-    mTaches = new ArrayList () ;
+    mTaches          = new ArrayList () ;
+    mTachesImprevues = new ArrayList () ;
     mEtat = ETAT_NON_DEMARRE ;
   }
 
@@ -85,11 +90,12 @@ public class MIteration extends MModeleBase
     mDateFinPrevue   = pDateFinPrevue ;
     mDateDebutReelle = pDateDebutReelle ;
     mDateFinReelle   = pDateFinReelle ;
-    
-    mTaches = new ArrayList () ;
+    mTaches          = new ArrayList () ;
+    mTachesImprevues = new ArrayList () ;
     mEtat = ETAT_NON_DEMARRE ;
   }
 
+  
   /**
    * Insertion de l'itération courante dans la base de données.
    * @param pConnection Connexion avec la base de données.
@@ -163,6 +169,7 @@ public class MIteration extends MModeleBase
     Statement lRequest = pConnection.createStatement () ;
     lRequest.executeUpdate (lRequete) ;
   }
+  
   
   /**
    * Récupère la date de début prévue pour l'itération.
@@ -397,6 +404,67 @@ public class MIteration extends MModeleBase
   {
     mTaches.remove (pIndice) ;
   }
+  
+  /**
+   * Récupère la liste des tâches imprévues réalisées durant l'itération.
+   * @return Liste des tâches imprévues réalisées durant l'itération.
+   */
+  public ArrayList getListeTachesImprevues ()
+  {
+    return mTachesImprevues ;
+  }
+
+
+  /**
+   * Initialise la liste des tâches imprévues réalisées durant l'itération.
+   * @param pTachesImprevues Liste des tâches imprévues réalisées durant l'itération.
+   */
+  public void setListeTachesImprevues (ArrayList pTachesImprevues)
+  {
+    mTachesImprevues = pTachesImprevues ;
+  }
+
+
+  /**
+   * Récupère le nombre de tâches imprévue réalisées durant l'itération.
+   * @return Nombre de tâches imprévue réalisées durant l'itération.
+   */
+  public int getNbTachesImprevues ()
+  {
+    return mTachesImprevues.size () ;
+  }
+
+
+  /**
+   * Récupère la tâche imprévue d'indice spécifié réalisée durant l'itération.
+   * @param pIndice Indice de la tâche imprévue dans la liste.
+   * @return Tâche imprévue réalisée durant l'itération.
+   */
+  public MTacheImprevue getTacheImprevue (int pIndice)
+  {
+    return (MTacheImprevue) mTachesImprevues.get (pIndice) ;
+  }
+
+
+  /**
+   * Ajoute la tâche imprévue spécifiée à l'itération.
+   * @param pTacheImprevues Tâche imprévue réalisée durant l'itération.
+   */
+  public void addTacheImprevue (MTacheImprevue pTacheImprevue)
+  {
+    mTachesImprevues.add (pTacheImprevue) ;
+  }
+
+
+  /**
+   * Supprime la tâche imprévue spécifiée de l'itération.
+   * @param pIndice Indice de la tâche imprévue à supprimer.
+   */
+  public void supprimerTacheImprevue (int pIndice)
+  {
+    mTachesImprevues.remove (pIndice) ;
+  }
+  
   
   /**
    * TODO Calcule la charge initiale prévue pour l iteration

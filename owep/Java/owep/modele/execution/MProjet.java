@@ -13,17 +13,18 @@ import owep.modele.processus.MProcessus ;
  */
 public class MProjet extends MModeleBase
 {
-  private int            mId ;              // Identifie le projet de manière unique.
-  private String         mNom ;             // Nom du projet.
-  private String         mDescription ;     // Description du projet.
-  private Date           mDateDebutPrevue ; // Date de début prévue pour le projet.
-  private Date           mDateFinPrevue ;   // Date de fin prévue pour le projet.
-  private ArrayList      mArtefacts ;       // Liste des artefacts réalisés durant le projet.
-  private ArrayList      mCollaborateurs ;  // Liste des collaborateurs travaillant sur le projet.
-  private ArrayList      mIterations ;      // Liste des itérations réalisées durant le projet.
-  private MProcessus     mProcessus ;       // Processus utilisé par le projet.
-  private MCollaborateur mChefProjet ;      // Chef de projet.
-
+  private int               mId ;                 // Identifie le projet de manière unique.
+  private String            mNom ;                // Nom du projet.
+  private String            mDescription ;        // Description du projet.
+  private Date              mDateDebutPrevue ;    // Date de début prévue pour le projet.
+  private Date              mDateFinPrevue ;      // Date de fin prévue pour le projet.
+  private ArrayList         mArtefacts ;          // Liste des artefacts réalisés durant le projet.
+  private ArrayList         mCollaborateurs ;     // Liste des collaborateurs travaillant sur le projet.
+  private ArrayList         mIterations ;         // Liste des itérations réalisées durant le projet.
+  private MProcessus        mProcessus ;          // Processus utilisé par le projet.
+  private MCollaborateur    mChefProjet ;         // Chef de projet.
+  private ArrayList         mActivitesImprevues ; // Listes des activités imprévues de ce projet
+  private ArrayList         mArtefactsImprevues ; // Liste des artefacts imprévues réalisés durant le projet.
 
   /**
    * Crée une instance vide de MProjet.
@@ -32,7 +33,11 @@ public class MProjet extends MModeleBase
   {
     super () ;
     
-    mIterations = new ArrayList () ;
+    mIterations          = new ArrayList () ;
+    mArtefacts           = new ArrayList () ;
+    mCollaborateurs      = new ArrayList () ;
+    mActivitesImprevues  = new ArrayList () ;
+    mArtefactsImprevues  = new ArrayList () ;
   }
 
 
@@ -55,7 +60,11 @@ public class MProjet extends MModeleBase
     mDateDebutPrevue = pDateDebutPrevue ;
     mDateFinPrevue   = pDateFinPrevue ;
     
-    mIterations = new ArrayList () ;
+    mIterations          = new ArrayList () ;
+    mArtefacts           = new ArrayList () ;
+    mCollaborateurs      = new ArrayList () ;
+    mActivitesImprevues  = new ArrayList () ;
+    mArtefactsImprevues  = new ArrayList () ;
   }
 
 
@@ -359,5 +368,137 @@ public class MProjet extends MModeleBase
   public void setProcessus (MProcessus pProcessus)
   {
     mProcessus = pProcessus ;
+  }
+  
+  
+  /**
+   * Récupère la liste des tâches imprévues.
+   * @return mActivitesImprevues la liste des tâches imprévues.
+   */
+  public ArrayList getListeActivitesImprevues ()
+  {
+    return mActivitesImprevues ;
+  }
+  
+  
+  /**
+   * Initialise la liste des tâches imprévues.
+   * @param pActivitesImprevues la liste des tâches imprévues.
+   */
+  public void setListeActivitesImprevues (ArrayList pActivitesImprevues)
+  {
+    mActivitesImprevues = pActivitesImprevues ;
+  }
+  
+  
+  /**
+   * Récupère l'activite imprévue d'indice spécifié nécessaire au projet.
+   * @param pIndice Indice de l'activité imprevue dans la liste.
+   * @return Activité imprévue nécessaire au projet.
+   */
+  public MActiviteImprevue getActiviteImprevue (int pIndice)
+  {
+    return (MActiviteImprevue) mActivitesImprevues.get (pIndice) ;
+  }
+
+
+  /**
+   * Ajoute l'activité imprévue spécifié au projet.
+   * @param pActiviteImprevue Activité imprévue au projet.
+   */
+  public void addActiviteImprevue (MActiviteImprevue pActiviteImprevue)
+  {
+    mActivitesImprevues.add (pActiviteImprevue) ;
+  }
+
+
+  /**
+   * Supprime l'activité imprévue spécifié au projet.
+   * @param pIndice Indice de l'activité imprévue dans la liste.
+   */
+  public void supprimerActiviteImprevue (int pIndice)
+  {
+    mActivitesImprevues.remove (pIndice) ;
+  }
+
+
+  /**
+   * Supprime l'activité imprévue spécifié au projet.
+   * @param pActiviteImprevue Activité imprévue au projet. 
+   */
+  public void supprimerActiviteImprevue (MActiviteImprevue pActiviteImprevue)
+  {
+    mActivitesImprevues.remove (pActiviteImprevue) ;
+  }
+  
+  
+  /**
+   * Récupère le nombre d'activités imprévues du projet.
+   * @return le nombre d'activités imprévues du projet.
+   */
+  public int getNbActivitesImprevues ()
+  {
+    return mActivitesImprevues.size () ;
+  }
+
+  
+  /**
+   * Récupère la liste des artefacts réalisés durant le projet.
+   * @return Liste des artefacts réalisés durant le projet.
+   */
+  public ArrayList getListeArtefactsImprevues ()
+  {
+    return mArtefactsImprevues ;
+  }
+
+
+  /**
+   * Initialise la liste des artefacts réalisés durant le projet.
+   * @param pArtefacts Liste des artefacts réalisés durant le projet.
+   */
+  public void setListeArtefactsImprevues (ArrayList pArtefactsImprevues)
+  {
+    mArtefactsImprevues = pArtefactsImprevues ;
+  }
+
+
+  /**
+   * Récupère le nombre d'artefacts réalisés durant le projet.
+   * @return Nombre d'artefacts réalisées durant le projet.
+   */
+  public int getNbArtefactsImprevues ()
+  {
+    return mArtefactsImprevues.size () ;
+  }
+
+
+  /**
+   * Récupère l'artefact d'indice spécifié réalisée durant le projet.
+   * @param pIndice Indice de l'artefact dans la liste.
+   * @return Artefact réalisé durant le projet.
+   */
+  public MArtefactImprevue getArtefactImprevue (int pIndice)
+  {
+    return (MArtefactImprevue) mArtefactsImprevues.get (pIndice) ;
+  }
+
+
+  /**
+   * Ajoute l'artefact spécifié au projet.
+   * @param pArtefact Artefact réalisé durant le projet.
+   */
+  public void addArtefactImprevue (MArtefactImprevue pArtefactImprevue)
+  {
+    mArtefactsImprevues.add (pArtefactImprevue) ;
+  }
+
+
+  /**
+   * Supprime l'artefact spécifié au projet.
+   * @param pArtefact Artefact réalisé durant le projet.
+   */
+  public void supprimerArtefactImprevue (MArtefactImprevue pArtefactImprevue)
+  {
+    mArtefactsImprevues.remove (pArtefactImprevue) ;
   }
 }

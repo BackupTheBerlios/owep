@@ -127,14 +127,23 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-
       <a class="menuNiveau2" href="../Processus/CreationCollaborateur">Gestion des collaborateurs</a>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      Tâche imprévues
-
+      <a class="menuNiveau2" href="../Processus/ProjetVisu">Gestion des itérations</a>
+    </td>
+  </tr>
+  
+  <tr>
+    <td class="caseMenuNiveau2">
+      <a class="menuNiveau2" href="../Processus/ActiviteImprevue">Activités imprévues</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="caseMenuNiveau2">
+      <a class="menuNiveau2" href="../Processus/TacheImprevue">Gestion des tâches imprévues</a>
     </td>
   </tr>
   <tr>
@@ -153,8 +162,7 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-
-      Modifier son profil
+      <p class="menuNiveau2">Modifier son profil</p>
     </td>
   </tr>
   
@@ -162,7 +170,7 @@
   if (((owep.infrastructure.Session)(request.getSession().getAttribute("SESSION"))).getCollaborateur().getDroit() == 1) {%>  
   <tr>
     <td class="caseMenuNiveau2">
-      Option de l'application
+      <p class="menuNiveau2">Option de l'application</p>
     </td>
   </tr>
   <tr>

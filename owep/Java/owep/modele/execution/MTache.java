@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+
+
 /**
  * Une tâche représente le travail d'une personne sur un ou plusieurs artefact. La tâche contient
  * les estimations et mesures de charges et de dates.
@@ -45,6 +47,7 @@ public class MTache extends MModeleBase
   private ArrayList      mProblemesSorties ; // Liste des problèmes que résout la tâche.
 
 
+
   /**
    * Crée une instance vide de MTache.
    */
@@ -52,10 +55,13 @@ public class MTache extends MModeleBase
   {
     super () ;
     
-    mEtat = ETAT_NON_DEMARRE ;
+    mEtat = ETAT_CREEE ;
     
-    mArtefactsEntrees = new ArrayList () ;
-    mArtefactsSorties = new ArrayList () ;
+    mArtefactsEntrees  = new ArrayList () ;
+    mArtefactsSorties  = new ArrayList () ;
+    mConditions        = new ArrayList () ;
+    mProblemesEntrees  = new ArrayList () ;
+    mProblemesSorties  = new ArrayList () ;
   }
 
 
@@ -76,13 +82,16 @@ public class MTache extends MModeleBase
     mId              = pId ;
     mNom             = pNom ;
     mDescription     = pDescription ;
-    mEtat            = ETAT_NON_DEMARRE ;
+    mEtat            = ETAT_CREEE ;
     mChargeInitiale  = pChargeInitiale ;
     mDateDebutPrevue = pDateDebutPrevue ;
     mDateFinPrevue   = pDateFinPrevue ;
     
-    mArtefactsEntrees = new ArrayList () ;
-    mArtefactsSorties = new ArrayList () ;
+    mArtefactsEntrees  = new ArrayList () ;
+    mArtefactsSorties  = new ArrayList () ;
+    mConditions        = new ArrayList () ;
+    mProblemesEntrees  = new ArrayList () ;
+    mProblemesSorties  = new ArrayList () ;
   }
 
 
@@ -108,7 +117,7 @@ public class MTache extends MModeleBase
     mId              = pId ;
     mNom             = pNom ;
     mDescription     = pDescription ;
-    mEtat            = ETAT_NON_DEMARRE ;
+    mEtat            = ETAT_CREEE ;
     mChargeInitiale  = pChargeInitiale ;
     mTempsPasse      = pTempsPasse ;
     mResteAPasser    = pResteAPasser ;
@@ -117,9 +126,13 @@ public class MTache extends MModeleBase
     mDateFinPrevue   = pDateFinPrevue ;
     mDateFinReelle   = pDateFinReelle ;
     
-    mArtefactsEntrees = new ArrayList () ;
-    mArtefactsSorties = new ArrayList () ;
+    mArtefactsEntrees  = new ArrayList () ;
+    mArtefactsSorties  = new ArrayList () ;
+    mConditions        = new ArrayList () ;
+    mProblemesEntrees  = new ArrayList () ;
+    mProblemesSorties  = new ArrayList () ;
   }
+
 
   /**
    * Insertion de la tâche courante dans la base de données.
@@ -156,26 +169,26 @@ public class MTache extends MModeleBase
     lRequest.executeQuery (lRequete) ;*/
     
     Statement lRequest = pConnection.createStatement (ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE) ;
-    ResultSet curseurArtefact = lRequest.executeQuery ("SELECT * FROM TAC_TACHE") ;
-    curseurArtefact.moveToInsertRow () ;
-    curseurArtefact.updateString (2, getNom ()) ;
-    curseurArtefact.updateString (3, getDescription ()) ;
-    curseurArtefact.updateDouble (4,  getChargeInitiale ()) ;
-    curseurArtefact.updateDouble (5, getTempsPasse ()) ;
-    curseurArtefact.updateDouble (6, getResteAPasser ()) ;
-    curseurArtefact.updateInt (7, getEtat ()) ;
-    curseurArtefact.updateDate (8, new java.sql.Date (getDateDebutPrevue ().getTime())) ;
-    curseurArtefact.updateDate (9, new java.sql.Date (getDateFinPrevue ().getTime ())) ;
+    ResultSet curseurTache = lRequest.executeQuery ("SELECT * FROM TAC_TACHE") ;
+    curseurTache.moveToInsertRow () ;
+    curseurTache.updateString (2, getNom ()) ;
+    curseurTache.updateString (3, getDescription ()) ;
+    curseurTache.updateDouble (4,  getChargeInitiale ()) ;
+    curseurTache.updateDouble (5, getTempsPasse ()) ;
+    curseurTache.updateDouble (6, getResteAPasser ()) ;
+    curseurTache.updateInt (7, getEtat ()) ;
+    curseurTache.updateDate (8, new java.sql.Date (getDateDebutPrevue ().getTime())) ;
+    curseurTache.updateDate (9, new java.sql.Date (getDateFinPrevue ().getTime ())) ;
     //curseurArtefact.updateDate (10, new java.sql.Date (getDateFinPrevue ().getTime ())) ;
     //curseurArtefact.updateDate (11 , new java.sql.Date (getDateFinPrevue ().getTime ())) ;
-    curseurArtefact.updateInt (12, getIteration ().getId ()) ;
-    curseurArtefact.updateInt (13, getCollaborateur ().getId ()) ;
+    curseurTache.updateInt (12, getIteration ().getId ()) ;
+    curseurTache.updateInt (13, getCollaborateur ().getId ()) ;
     if (getActivite () != null)
     {
-      curseurArtefact.updateInt (14, getActivite ().getId ()) ;
+      curseurTache.updateInt (14, getActivite ().getId ()) ;
     }
-    curseurArtefact.insertRow () ;
-    curseurArtefact.close () ;
+    curseurTache.insertRow () ;
+    curseurTache.close () ;
     //pConnection.commit () ;
     
 //  Préparation de la requête permettant d'obtenir l'id de la tâche
@@ -219,6 +232,7 @@ public class MTache extends MModeleBase
     Statement lRequest = pConnection.createStatement () ;
     lRequest.executeUpdate (lRequete) ;
   }
+  
   
   /**
    * Récupère l'activité que la tâche instancie.
@@ -603,6 +617,26 @@ public class MTache extends MModeleBase
   }
 
 
+  /**
+   * Supprime la condition.
+   * @param pIndice Indice de la condition dans la liste.
+   */
+  public void supprimerCondition (int pIndice)
+  {
+    mConditions.remove (pIndice) ;
+  }
+
+
+  /**
+   * Supprime la condition.
+   * @param pCondition Condition de la tâche.
+   */
+  public void supprimerConditions (MCondition pCondition)
+  {
+    mConditions.remove (pCondition) ;
+  }
+  
+  
   /**
    * Récupère l'identifiant de la tâche.
    * @return Identifiant unique de la tâche

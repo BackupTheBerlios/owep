@@ -202,6 +202,12 @@
     <field name="mChefProjet" type="owep.modele.execution.MCollaborateur" get-method="getChefProjet" set-method="setChefProjet" required="true">
       <sql name="PRJ_COL_ID_CHEF"/>
     </field>
+    <field name="mActivitesImprevues" type="owep.modele.execution.MActiviteImprevue" collection="arraylist" get-method="getListeActivitesImprevues" set-method="setListeActivitesImprevues">
+      <sql many-key="AIM_PRJ_ID"/>
+    </field>
+    <field name="mArtefactsImprevues" type="owep.modele.execution.MArtefactImprevue" collection="arraylist" get-method="getListeArtefactsImprevues" set-method="setListeArtefactsImprevues">
+      <sql many-key="ARI_PRJ_ID"/>
+    </field>
   </class>
   
   
@@ -236,6 +242,9 @@
     </field>
     <field name="mTaches" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTaches" set-method="setListeTaches">
       <sql many-key="TAC_ITE_ID"/>
+    </field>
+    <field name="mTachesImprevues" type="owep.modele.execution.MTacheImprevue" collection="arraylist" get-method="getListeTachesImprevues" set-method="setListeTachesImprevues">
+      <sql many-key="TIM_ITE_ID"/>
     </field>
   </class>
 
@@ -292,6 +301,9 @@
     </field>
     <field name="mProjets" type="owep.modele.execution.MProjet" collection="arraylist" get-method="getListeProjets" set-method="setListeProjets">
       <sql name="R05_PRJ_ID" many-table="R05_COL_PRJ" many-key="R05_COL_ID"/>
+    </field>
+    <field name="mTachesImprevues" type="owep.modele.execution.MTacheImprevue" collection="arraylist" get-method="getListeTachesImprevues" set-method="setListeTachesImprevues">
+      <sql many-key="TIM_COL_ID"/>
     </field>
   </class>
   
@@ -409,10 +421,107 @@
     </field>
   </class>
   
+  <class name="owep.modele.execution.MActiviteImprevue" identity="mId">
+    <map-to table="AIM_ACTIVITEIMPREVUE"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+      <sql name="AIM_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
+      <sql name="AIM_NOM" type="char"/>
+    </field>
+    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
+      <sql name="AIM_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet" required="true">
+      <sql name="AIM_PRJ_ID"/>
+    </field>
+    <field name="mTachesImprevues" type="owep.modele.execution.MTacheImprevue" collection="arraylist" get-method="getListeTachesImprevues" set-method="setListeTachesImprevues">
+      <sql many-key="TIM_AIM_ID"/>
+    </field>
+  </class>
   
+  <class name="owep.modele.execution.MTacheImprevue" identity="mId">
+    <map-to table="TIM_TACHEIMPREVUE"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+      <sql name="TIM_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
+      <sql name="TIM_NOM" type="char"/>
+    </field>
+    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
+      <sql name="TIM_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mChargeInitiale" type="double" get-method="getChargeInitiale" set-method="setChargeInitiale" required="true">
+      <sql name="TIM_CHARGEINITIALE" type="float"/>
+    </field>
+    <field name="mTempsPasse" type="double" get-method="getTempsPasse" set-method="setTempsPasse" required="true">
+      <sql name="TIM_TEMPSPASSE" type="float"/>
+    </field>
+    <field name="mResteAPasser" type="double" get-method="getResteAPasser" set-method="setResteAPasser" required="true">
+      <sql name="TIM_RESTEAPASSER" type="float"/>
+    </field>
+    <field name="mEtat" type="integer" get-method="getEtat" set-method="setEtat">
+      <sql name="TIM_ETAT" type="integer"/>
+    </field>
+    <field name="mDateDebutPrevue" type="date" get-method="getDateDebutPrevue" set-method="setDateDebutPrevue" required="true">
+      <sql name="TIM_DATEDEBUTPREVUE" type="date"/>
+    </field>
+    <field name="mDateFinPrevue" type="date" get-method="getDateFinPrevue" set-method="setDateFinPrevue" required="true">
+      <sql name="TIM_DATEFINPREVUE" type="date"/>
+    </field>
+    <field name="mDateDebutReelle" type="date" get-method="getDateDebutReelle" set-method="setDateDebutReelle">
+      <sql name="TIM_DATEDEBUTREELLE" type="date"/>
+    </field>
+    <field name="mDateFinReelle" type="date" get-method="getDateFinReelle" set-method="setDateFinReelle">
+      <sql name="TIM_DATEFINREELLE" type="date"/>
+    </field>
+    <field name="mDateDebutChrono" type="date" get-method="getDateDebutChrono" set-method="setDateDebutChrono">
+      <sql name="TIM_DATEDEBUTCHRONO" type="date"/>
+    </field>
+    <field name="mIteration" type="owep.modele.execution.MIteration" get-method="getIteration" set-method="setIteration" required="true">
+      <sql name="TIM_ITE_ID"/>
+    </field>
+    <field name="mCollaborateur" type="owep.modele.execution.MCollaborateur" get-method="getCollaborateur" set-method="setCollaborateur" required="true">
+      <sql name="TIM_COL_ID"/>
+    </field>
+    <field name="mActiviteImprevue" type="owep.modele.execution.MActiviteImprevue" get-method="getActiviteImprevue" set-method="setActiviteImprevue">
+      <sql name="TIM_AIM_ID"/>
+    </field>
+    <field name="mArtefactsImprevuesEntrees" type="owep.modele.execution.MArtefactImprevue" collection="arraylist" get-method="getListeArtefactsImprevuesEntrees" set-method="setListeArtefactsImprevuesEntrees">
+      <sql many-key="ARI_TIM_ID_ENTREE"/>
+    </field>
+    <field name="mArtefactsImprevuesSorties" type="owep.modele.execution.MArtefactImprevue" collection="arraylist" get-method="getListeArtefactsImprevuesSorties" set-method="setListeArtefactsImprevuesSorties">
+      <sql many-key="ARI_TIM_ID_SORTIE"/>
+    </field>
+  </class>
   
-  
-  
+  <class name="owep.modele.execution.MArtefactImprevue" identity="mId">
+    <map-to table="ARI_ARTEFACTIMPREVUE" xml="artefactimprevue" />
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+      <sql name="ARI_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
+      <sql name="ARI_NOM" type="char"/>
+    </field>
+    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
+      <sql name="ARI_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mNomFichier" type="string" get-method="getNomFichier" set-method="setNomFichier">
+      <sql name="ARI_NOM_FICHIER" type="char"/>
+    </field>
+    <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet" required="true">
+      <sql name="ARI_PRJ_ID"/>
+    </field>
+    <field name="mResponsable" type="owep.modele.execution.MCollaborateur" get-method="getResponsable" set-method="setResponsable" required="true">
+      <sql name="ARI_COL_ID"/>
+    </field>
+    <field name="mTacheImprevueEntree" type="owep.modele.execution.MTacheImprevue" get-method="getTacheImprevueEntree" set-method="setTacheImprevueEntree" required="false">
+      <sql name="ARI_TIM_ID_ENTREE"/>
+    </field>
+    <field name="mTacheImprevueSortie" type="owep.modele.execution.MTacheImprevue" get-method="getTacheImprevueSortie" set-method="setTacheImprevueSortie" required="false">
+      <sql name="ARI_TIM_ID_SORTIE"/>
+    </field>
+  </class>
   
   <!-- Mapping gestion de projet -->
   <class name="owep.modele.execution.MRisque" identity="mId">
@@ -459,19 +568,6 @@
     </field>
     <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet" required="true">
       <sql name="MET_PRJ_ID"/>
-    </field>
-  </class>
-  
-  <class name="owep.modele.execution.MActiviteImprevue" identity="mId">
-    <map-to table="IMP_ACTIVITEIMP"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
-      <sql name="IMP_ID" type="integer"/>
-    </field>
-    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
-      <sql name="IMP_NOM" type="char"/>
-    </field>
-    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
-      <sql name="IMP_DESCRIPTION" type="char"/>
     </field>
   </class>
   

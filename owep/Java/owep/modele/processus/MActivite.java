@@ -34,6 +34,7 @@ public class MActivite extends MModeleBase
     mProduitsEntrees = new ArrayList () ;
     mProduitsSorties = new ArrayList () ;
     mRoles           = new ArrayList () ;
+    mTaches          = new ArrayList () ;
   }
 
 
@@ -57,6 +58,7 @@ public class MActivite extends MModeleBase
     mProduitsEntrees = new ArrayList () ;
     mProduitsSorties = new ArrayList () ;
     mRoles           = new ArrayList () ;
+    mTaches          = new ArrayList () ;
   }
 
 
@@ -266,9 +268,9 @@ public class MActivite extends MModeleBase
    * Récupère le nombre de rôles participant à l'activité.
    * @return Nombre de rôles participant à l'activité.
    */
-  public int getNbRolesSorties ()
+  public int getNbRoles ()
   {
-    return mProduitsEntrees.size () ;
+    return mRoles.size () ;
   }
 
 
@@ -277,9 +279,9 @@ public class MActivite extends MModeleBase
    * @param pIndice Indice du rôle dans la liste.
    * @return Rôle participant à l'activité.
    */
-  public MRole getRoleSortie (int pIndice)
+  public MRole getRole (int pIndice)
   {
-    return (MRole) mProduitsEntrees.get (pIndice) ;
+    return (MRole) mRoles.get (pIndice) ;
   }
 
 
@@ -287,9 +289,9 @@ public class MActivite extends MModeleBase
    * Ajoute le rôle spécifié à l'activité.
    * @param pRole Rôle participant à l'activité.
    */
-  public void addRoleSortie (MRole pRole)
+  public void addRole (MRole pRole)
   {
-    mProduitsEntrees.add (pRole) ;
+    mRoles.add (pRole) ;
   }
 
 

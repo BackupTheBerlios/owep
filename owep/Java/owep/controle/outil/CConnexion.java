@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession ;
 import org.exolab.castor.jdo.Database ;
 import org.exolab.castor.jdo.JDO ;
 import org.exolab.castor.jdo.OQLQuery ;
+import org.exolab.castor.jdo.PersistenceException;
 import org.exolab.castor.jdo.QueryResults ;
 import owep.controle.CConstante ;
 import owep.infrastructure.Session ;
@@ -163,13 +164,23 @@ public class CConnexion extends HttpServlet
         mConfiguration = (MConfiguration) lResultat.next () ;
       }
       getBaseDonnees ().commit () ;
-      
-      getBaseDonnees ().close () ;
     }
     catch (Exception eException)
     {
       eException.printStackTrace () ;
       throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+    }
+    finally
+    {
+      try
+      {
+        getBaseDonnees ().close () ;
+      }
+      catch (PersistenceException eException)
+      {
+        eException.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_DECONNEXION) ;
+      }
     }
   }
 

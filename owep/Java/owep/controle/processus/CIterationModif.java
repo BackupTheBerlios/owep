@@ -13,6 +13,7 @@ import owep.controle.CControleurBase ;
 import owep.infrastructure.Session ;
 import owep.modele.execution.MArtefact ;
 import owep.modele.execution.MCollaborateur ;
+import owep.modele.execution.MCondition;
 import owep.modele.execution.MIteration ;
 import owep.modele.execution.MProjet ;
 import owep.modele.execution.MTache ;
@@ -262,10 +263,64 @@ public class CIterationModif extends CControleurBase
           lArtefactSortie.getProjet ().supprimerArtefact (lArtefactSortie) ;
           lArtefactSortie.setProjet (null) ;
         }
+        // Supprime les dépendance de la tâche
+        for (int i = 0; i < lTache.getNbConditions (); i++)
+        {
+          lTache.supprimerCondition (i) ;
+        }
+        
+        // Suppression de toutes les dépendances qu'il y avait avec cette tâche
+        for (int i = 0; i < mIteration.getNbTaches (); i ++)
+        {
+          MTache lTacheTmp = mIteration.getTache (i) ;
+          for (int j = lTacheTmp.getNbConditions () - 1; j != 0; j --)
+          {
+            MCondition lCondition = lTacheTmp.getCondition (j) ;
+            if (lCondition.getTachePrecedente ().getId () == lTache.getId ())
+            {
+              lTacheTmp.supprimerCondition (j) ;
+            }
+          }
+        }
       }
       
+      // Ajout des dépendances entre tâches
+      if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITAJOUTER_TACDEPEND)) 
+      {
+        MCondition lCondition = new MCondition () ;
+        
+        int lIndiceTache     = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTETACHES)) ;
+        int lIndiceTachePre  = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTETACHESPOSSIBLES)) ;
+        int lIndiceCondition = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTETACHESCONDITION)) ;
+        
+        MTache    lTache    = mIteration.getTache (lIndiceTache) ;
+        MTache    lTachePre = mIteration.getTache (lIndiceTachePre) ;
+
+        
+        lCondition.setTache (lTache) ;
+        lCondition.setTachePrecedente (lTachePre) ;
+        // si l'utilisateur a choisi en cours
+        if (lIndiceCondition == 0)
+        {
+          lCondition.setEtat (1) ;
+        }
+        // sinon il a choisi terminé
+        else
+        {
+          lCondition.setEtat (3) ;
+        }
+        lTache.addCondition (lCondition) ;        
+      }
+      else if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER_TACDEPEND))
+      {
+        int lIndiceTache    = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTETACHES)) ;
+        int lIndiceTacheDep =  Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTETACHESDEPENDANTES)) ;
+        
+        MTache lTache = mIteration.getTache (lIndiceTache) ;
+        lTache.supprimerCondition (lIndiceTacheDep) ;
+      }
       
-      // Ajout d'un artefact.
+      // Ajout d'un artefact en sortie.
       if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITAJOUTER_ARTSORTIES))
       {
         MArtefact lArtefactSortie = new MArtefact () ;
@@ -422,7 +477,7 @@ public class CIterationModif extends CControleurBase
       try
       {
         DriverManager.registerDriver (new Driver ()) ;
-        lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", "root", "root") ;
+        lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", "root", "6431") ;
         lConnection.setAutoCommit(false);
         if (mIteration.getId () == 0)
         {
@@ -449,10 +504,24 @@ public class CIterationModif extends CControleurBase
           }
         }
           
-        // Mise à jour de tous les artefacts en sorties dans la BD.
+        // Mise à jour de tous les artefacts et les conditions dans la BD.
         for (int i = 0; i < mIteration.getNbTaches (); i++)
         {
           MTache lTache = mIteration.getTache (i) ;
+          
+          // Mise à jour des conditions de la tâche
+          for (int j = 0 ; j < lTache.getNbConditions (); j++)
+          {
+            MCondition lCondition = lTache.getCondition (j) ;
+            if (lCondition.getId () == 0)
+            {
+              lCondition.create (lConnection) ;
+            }
+            else
+            {
+              lCondition.update (lConnection) ;
+            }
+          }
           
           // Mise à jour des artefacts en sorties de la tache
           for (int j = 0; j < lTache.getNbArtefactsSorties (); j ++)
@@ -467,6 +536,7 @@ public class CIterationModif extends CControleurBase
               lArtefact.update (lConnection) ;
             }
           }
+
           
           // Mise à jour de tous les artefacts en entrées dans la BD.
           for (int j = 0; j < lTache.getNbArtefactsEntrees (); j ++)
@@ -485,16 +555,21 @@ public class CIterationModif extends CControleurBase
 
         lConnection.commit () ;
         
-        
-        
-        
+                   
+        // modif tmp
+        if (nouvelIt)
+          mProjet.addIteration (mIteration); // Temporaire car sinon on ne voit pas l'itération dans la fene^tre de visuprojet
+
+        // Enregistre le projet à ouvrir dans la session
+        getSession ().ouvrirProjet (mProjet) ;
+
         Session lSession ;
         lSession = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
         mProjet  = lSession.getProjet () ;
         int mIdProjet = mProjet.getId ();
         OQLQuery lRequete ; // Requête à réaliser sur la base
         QueryResults lResultat ; // Résultat de la requête sur la base
-        MProjet lProjet ; // Projet à ouvrir
+        //MProjet lProjet ; // Projet à ouvrir
         getBaseDonnees ().begin () ;
         // Cherche le projet à ouvrir
         lRequete = getBaseDonnees ()
@@ -502,17 +577,17 @@ public class CIterationModif extends CControleurBase
         lRequete.bind (mIdProjet) ;
         lResultat = lRequete.execute () ;
 
-        lProjet = (MProjet) lResultat.next () ;
+        mProjet = (MProjet) lResultat.next () ;
 
         getBaseDonnees ().commit () ;
         
         
         // modif tmp
         if (nouvelIt)
-          lProjet.addIteration (mIteration); // Temporaire car sinon on ne voit pas l'itération dans la fene^tre de visuprojet
+          mProjet.addIteration (mIteration); // Temporaire car sinon on ne voit pas l'itération dans la fene^tre de visuprojet
 
         // Enregistre le projet à ouvrir dans la session
-        getSession ().ouvrirProjet (lProjet) ;
+        getSession ().ouvrirProjet (mProjet) ;
         
         // MODIF YANN : ajout de l'itération au projet en cours et retour sur la page affichant la liste des itérations
         //Session lSession ;
@@ -521,6 +596,7 @@ public class CIterationModif extends CControleurBase
         //mProjet.addIteration(mIteration) ;
         //lSession.setProjet(mProjet) ;
         
+
         return "..\\Processus\\ProjetVisu" ;
       }
       catch (Exception eException)

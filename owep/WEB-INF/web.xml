@@ -158,6 +158,24 @@
     <url-pattern>/Processus/IterationModif</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>CActiviteImprevue</servlet-name>
+    <servlet-class>owep.controle.processus.CActiviteImprevue</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CActiviteImprevue</servlet-name>
+    <url-pattern>/Processus/ActiviteImprevue</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>CTacheImprevue</servlet-name>
+    <servlet-class>owep.controle.processus.CTacheImprevue</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CTacheImprevue</servlet-name>
+    <url-pattern>/Processus/TacheImprevue</url-pattern>
+  </servlet-mapping>
+  
   
   
   <!-- Liste des servlets pour la gestion de projets -->

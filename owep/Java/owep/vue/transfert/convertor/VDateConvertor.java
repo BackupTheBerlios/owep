@@ -67,6 +67,19 @@ public class VDateConvertor
     }
   }
   
+  public static String getString (Date pDate)
+  {
+    if (pDate != null)
+    {
+      SimpleDateFormat lDateFormat = new SimpleDateFormat ("yyyy-MM-dd") ;
+      return lDateFormat.format (pDate) ;
+    }
+    else
+    {
+      return "" ;
+    }
+  }
+  
   
   /**
    * Récupère la fonction javascript permettant de valider ce type. Celle-ci retourne un booléen.

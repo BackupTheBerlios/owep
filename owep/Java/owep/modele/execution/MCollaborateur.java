@@ -11,6 +11,7 @@ import owep.modele.processus.MRole ;
  */
 public class MCollaborateur extends MModeleBase
 {
+
   private int       mId ;           // Identifie le collaborateur de manière unique.
   private String    mPrenom ;       // Prénom du collaborateur.
   private String    mNom ;          // Nom du collaborateur.
@@ -28,15 +29,21 @@ public class MCollaborateur extends MModeleBase
   private ArrayList mProjetsChef ;  // Listes des projets pour lesquels le collaborateur est chef.
   private int       mTacheEnCours ; // identifiant de la tâche en cours de réalisation
   private int       mDroit ;        // Droits du collaborateur (collaborateur = 0 ; chef de projet = 1) 
-  
+  private ArrayList mTachesImprevues ; // Listes des tâches imprévues que doient réaliser le collaborateur.
+  private ArrayList mArtefactsImprevues ;       // Artefacts imprévues dont le collaborateur est responsable.
 
   /**
    * Crée une instance vide de MCollaborateur.
    */
   public MCollaborateur ()
   {
-    mRoles = new ArrayList () ;
-    mTaches = new ArrayList () ;
+    mTaches          = new ArrayList () ;
+    mArtefacts       = new ArrayList () ;
+    mRoles           = new ArrayList () ;
+    mProjets         = new ArrayList () ;
+    mProjetsChef     = new ArrayList () ;
+    mTachesImprevues = new ArrayList () ;
+    mArtefactsImprevues = new ArrayList () ;
     mTacheEnCours = -1 ;
   }
 
@@ -68,9 +75,15 @@ public class MCollaborateur extends MModeleBase
     mUtilisateur  = pUtilisateur;
     mMotDePasse   = pMotDePasse;
     mDroit        = pDroit;
-    mTaches = new ArrayList () ;
+    
+    mTaches          = new ArrayList () ;
+    mArtefacts       = new ArrayList () ;
+    mRoles           = new ArrayList () ;
+    mProjets         = new ArrayList () ;
+    mProjetsChef     = new ArrayList () ;
+    mTachesImprevues = new ArrayList () ;
+    mArtefactsImprevues = new ArrayList () ;
     mTacheEnCours = -1 ;
-    mRoles = new ArrayList () ;
   }
 
 
@@ -587,5 +600,126 @@ public class MCollaborateur extends MModeleBase
   public void setDroit (int pDroit)
   {
     mDroit = pDroit ;
+  }
+  
+  /**
+   * Récupère la liste des tâches imprévues que doit réaliser le collaborateur.
+   * @return Liste des tâches imprévues que doit réaliser le collaborateur.
+   */
+  public ArrayList getListeTachesImprevues ()
+  {
+    return mTachesImprevues ;
+  }
+
+
+  /**
+   * Initialise la liste des tâches imprévues que doit réaliser le collaborateur.
+   * @param pTachesImprevues Liste des tâches imprévues que doit réaliser le collaborateur.
+   */
+  public void setListeTachesImprevues (ArrayList pTachesImprevues)
+  {
+    mTachesImprevues = pTachesImprevues ;
+  }
+
+
+  /**
+   * Récupère le nombre de tâches imprévues que doit réaliser le collaborateur.
+   * @return Nombre de tâches imprévues que doit réaliser le collaborateur.
+   */
+  public int getNbTachesImprevues ()
+  {
+    return mTachesImprevues.size () ;
+  }
+
+
+  /**
+   * Récupère la tâche imprévue d'indice spécifié que doit réaliser le collaborateur.
+   * @param pIndice Indice de la tâche imprévue dans la liste.
+   * @return Tâche imprévue que doit réaliser le collaborateur.
+   */
+  public MTacheImprevue getTacheImprevue (int pIndice)
+  {
+    return (MTacheImprevue) mTachesImprevues.get (pIndice) ;
+  }
+
+
+  /**
+   * Ajoute la tâche imprévue spécifiée au collaborateur.
+   * @param pTacheImprevue Tâche imprévue que doit réaliser le collaborateur.
+   */
+  public void addTacheImprevue (MTacheImprevue pTacheImprevue)
+  {
+    mTachesImprevues.add (pTacheImprevue) ;
+  }
+
+
+  /**
+   * Supprime la tâche imprévue spécifiée assignée au collaborateur.
+   * @param pTacheImprevue Tâche imprévue que doit réaliser le collaborateur.
+   */
+  public void supprimerTacheImprevue (MTacheImprevue pTacheImprevue)
+  {
+    mTachesImprevues.remove (pTacheImprevue) ;
+  }
+  
+  
+  /**
+   * Récupère les artefacts imprévues dont le collaborateur est responsable.
+   * @return Artefacts imprévues dont le collaborateur est responsable.
+   */
+  public ArrayList getListeArtefactsImprevues ()
+  {
+    return mArtefactsImprevues ;
+  }
+
+
+  /**
+   * Initialise les artefacts imprévues dont le collaborateur est responsable.
+   * @param pArtefactsImprevues Artefacts imprévues dont le collaborateur est responsable.
+   */
+  public void setListeArtefactsImprevues (ArrayList pArtefactsImprevues)
+  {
+    mArtefactsImprevues = pArtefactsImprevues ;
+  }
+
+
+  /**
+   * Récupère le nombre d'artefacts imprévues dont le collaborateur est responsable.
+   * @return Nombre d'artefacts imprévues dont le collaborateur est responsable.
+   */
+  public int getNbArtefactsImprevues ()
+  {
+    return mArtefactsImprevues.size () ;
+  }
+
+
+  /**
+   * Récupère l'artefact imprévue d'indice spécifié dont le collaborateur est responsable.
+   * @param pIndice Indice de l'artefact imprévue dont le collaborateur est responsable.
+   * @return Artefact imprévue dont le collaborateur est responsable.
+   */
+  public MArtefactImprevue getArtefactImprevue (int pIndice)
+  {
+    return (MArtefactImprevue) mArtefactsImprevues.get (pIndice) ;
+  }
+
+
+  /**
+   * Ajoute un artefact dont le collaborateur est responsable.
+   * @param pArtefactImprevue Artefact dont le collaborateur est responsable.
+   */
+  public void addArtefactImprevue (MArtefactImprevue pArtefactImprevue)
+  {
+    mArtefactsImprevues.add (pArtefactImprevue) ;
+  }
+
+
+  /**
+   * Supprime un artefact imprévue dont le collaborateur est responsable.
+   * @param pArtefactImprevue Artefact imprévue dont le collaborateur est responsable.
+   */
+  public void supprimerArtefactImprevue (MArtefactImprevue pArtefactImprevue)
+  {
+    mArtefactsImprevues.remove (pArtefactImprevue) ;
   }
 }
