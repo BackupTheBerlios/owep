@@ -19,6 +19,8 @@ public class MCollaborateur extends MModeleBase
   private String    mCommentaires ; // Commentaires du chef de projet sur le collaborateur
   private ArrayList mListeTaches ;  // Listes des tâches que doient réaliser le collaborateur
   
+  private String    mPassword = "p";      // Mot de passe pour accéder au logiciel
+  
   
   /**
    * Crée une instance vide de MArtefact.
@@ -263,5 +265,24 @@ public class MCollaborateur extends MModeleBase
   public void setTelephone (String pTelephone)
   {
     mTelephone = pTelephone ;
+  }
+
+  /**
+   * Récupère le mot de passe du collaborateur.
+   * @return Mot de passe du collaborateur
+   */
+  public String getPassword ()
+  {
+    return mPassword ;
+  }
+  
+  
+  /**
+   * Initialise le mot de passe du collaborateur.
+   * @param pPassword Mot de passe du collaborateur
+   */
+  public void setPassword (String pPassword)
+  {
+    mPassword = pPassword ;
   }
 }

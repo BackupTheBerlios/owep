@@ -28,6 +28,24 @@
     <url-pattern>/Tache/RapportActivite</url-pattern> 
   </servlet-mapping> 
   
+  <servlet> 
+    <servlet-name>CConnexion</servlet-name> 
+    <servlet-class>owep.controle.outil.CConnexion</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CConnexion</servlet-name> 
+    <url-pattern>/Tache/Connexion</url-pattern> 
+  </servlet-mapping> 
+  
+  <servlet> 
+    <servlet-name>CDeconnexion</servlet-name> 
+    <servlet-class>owep.controle.outil.CDeconnexion</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CDeconnexion</servlet-name> 
+    <url-pattern>/Tache/Deconnexion</url-pattern> 
+  </servlet-mapping> 
+  
   <!-- Configuration de la session -->
   <session-config>
 	<session-timeout>30</session-timeout>

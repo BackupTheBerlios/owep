@@ -7,8 +7,12 @@ import javax.servlet.ServletException ;
 import javax.servlet.http.HttpServlet ;
 import javax.servlet.http.HttpServletRequest ;
 import javax.servlet.http.HttpServletResponse ;
+import javax.servlet.http.HttpSession;
+
 import org.exolab.castor.jdo.Database ;
 import org.exolab.castor.jdo.JDO ;
+
+import owep.infrastructure.Session;
 import owep.infrastructure.localisation.LocalisateurIdentifiant;
 
 
@@ -21,6 +25,7 @@ public abstract class CControleurBase extends HttpServlet
   private HttpServletRequest  mRequete ; // Requête HTTP à l'origine de l'appel du controleur
   private HttpServletResponse mReponse ; // Réponse HTTP du controleur à la requête
   private Database mBaseDonnees ;        // Connexion à la base de données
+  private Session mSession ;             // Session associé à la connexion
   
   
   /**
@@ -52,32 +57,45 @@ public abstract class CControleurBase extends HttpServlet
     mRequete = pRequete ;
     mReponse = pReponse ;
     
-    // Initie la connexion à la base de données.
-    try
+    // Vérifie qu'une session a été ouverte
+    HttpSession lSession = mRequete.getSession(true);
+    mSession = (Session) lSession.getAttribute("SESSION");
+    if(mSession == null)
     {
-      JDO.loadConfiguration (LocalisateurIdentifiant.LID_BDCONFIGURATION) ;
-      lJdo = new JDO (LocalisateurIdentifiant.LID_BDNOM) ;
-
-      mBaseDonnees = lJdo.getDatabase () ;
-      mBaseDonnees.setAutoStore (false) ;
-    }
-    catch (Exception eException)
-    {
-      eException.printStackTrace () ;
-      throw new ServletException (CConstante.EXC_CONNEXION) ;
-    }
-    
-    // Appelle la JSP d'affichage retournée par traiter.
-    initialiserBaseDonnees () ;
-    initialiserParametres () ;
-    lRequeteDispatcher = pRequete.getRequestDispatcher (traiter ()) ;
-    if (lRequeteDispatcher == null)
-    {
-      throw new ServletException (CConstante.EXC_FORWARD) ;
+      lSession.invalidate();
+      lRequeteDispatcher = pRequete.getRequestDispatcher ("..\\JSP\\index.jsp") ;
+      lRequeteDispatcher.forward (mRequete, mReponse) ;
     }
     else
     {
-      lRequeteDispatcher.forward (mRequete, mReponse) ;
+    
+      // Initie la connexion à la base de données.
+      try
+      {
+        JDO.loadConfiguration (LocalisateurIdentifiant.LID_BDCONFIGURATION) ;
+        lJdo = new JDO (LocalisateurIdentifiant.LID_BDNOM) ;
+
+	      mBaseDonnees = lJdo.getDatabase () ;
+	      mBaseDonnees.setAutoStore (false) ;
+	  }
+	  catch (Exception eException)
+	  {
+	    eException.printStackTrace () ;
+	    throw new ServletException (CConstante.EXC_CONNEXION) ;
+	  }
+	    
+	  // Appelle la JSP d'affichage retournée par traiter.
+	  initialiserBaseDonnees () ;
+	  initialiserParametres () ;
+	  lRequeteDispatcher = pRequete.getRequestDispatcher (traiter ()) ;
+	  if (lRequeteDispatcher == null)
+	  {
+	    throw new ServletException (CConstante.EXC_FORWARD) ;
+	  }
+	  else
+	  {
+	    lRequeteDispatcher.forward (mRequete, mReponse) ;
+	  }
     }
   }
   

@@ -11,7 +11,7 @@
   </tr>
   <tr>
     <td class="caseMenuConnexion">
-      <a class="menuConnexion" href="">
+      <a class="menuConnexion" href="../Tache/Deconnexion">
         Déconnexion 
       </a>
     </td>

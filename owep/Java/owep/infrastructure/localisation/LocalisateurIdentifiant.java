@@ -7,5 +7,5 @@ package owep.infrastructure.localisation ;
 public class LocalisateurIdentifiant
 {
   public static final String LID_BDNOM           = "owep" ;
-  public static final String LID_BDCONFIGURATION = "D:\\Projet\\OWEP\\Source\\WEB-INF\\Database.xml" ;
+  public static final String LID_BDCONFIGURATION = "D:\\eclipse\\workspace\\owep\\WEB-INF\\Database.xml" ;
 }
