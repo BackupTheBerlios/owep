@@ -59,5 +59,5 @@ Le login et le mot de passe saisi ne sont pas valide<br>
 <script type="text/javascript" language="JavaScript">
 pCodeAide  = "Entrez votre <b>nom d'utilisateur</b> et votre <b>mot de passe</b> pour accéder au logiciel OWEP." ;
 pCodeAide += " Si vous vous connectez pour la première fois, le <b>mot de passe</b> est identique à votre <b>nom d'utilisateur</b>." ;
-pCodeAide += " Veillez donc bien à les modifier dans la section <b>\"Modifier son profil\"</b> accessible depuis le menu." ;
+pCodeAide += " Veillez donc bien à les modifier dans la section <b>\"Modifier son profil\"</b> accéssible depuis le menu." ;
 </script>
