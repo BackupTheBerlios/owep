@@ -32,6 +32,7 @@ public class MCollaborateur
    */
   public MCollaborateur ()
   {
+    mListesTaches = new ArrayList () ;
   }
 
   public MCollaborateur (int pId, String pPrenom, String pNom, String pAdresse, String pTelephone,
@@ -45,6 +46,7 @@ public class MCollaborateur
     mPortable = pPortable ;
     mEmail = pEmail ;
     mCommentaires = pCommentaires ;
+    mListesTaches = new ArrayList () ;
   }
 
   public void ajouterTache (MTache lTache)

@@ -7,10 +7,15 @@
 package owep.controle ;
 
 
+import java.util.Date;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException ;
 
+import owep.modele.execution.MActivite;
+import owep.modele.execution.MArtefact;
 import owep.modele.execution.MCollaborateur;
+import owep.modele.execution.MTache;
 
 
 /**
@@ -24,26 +29,46 @@ public class CConsultationTache extends CControleurBase
    */
   public String traiter () throws ServletException
   {
+    System.out.println ("1") ;
     MCollaborateur lCollaborateur ;        // Collaborateur ayant ouvert la session.
     int lProjetId ;                        // Identifiant du projet consulté. 
     int lIterationNum ;                    // Numéro d'itération dont on liste les tâches.
     RequestDispatcher lRequeteDispatcher ; // Permet d'appeler la JSP d'affichage.
 
     // Récupération des paramètres de la requête.
-    lCollaborateur = (MCollaborateur) getRequete ().getSession ().getAttribute ("pCollaborateur") ;
-    lProjetId      = Integer.parseInt ((String) getRequete ().getAttribute ("pProjetId")) ;
-    if (getRequete ().getAttribute ("pIterationNum") == null)
+   // lCollaborateur = (MCollaborateur) getRequete ().getSession ().getAttribute ("pCollaborateur") ;
+   // lProjetId      = Integer.parseInt ((String) getRequete ().getSession ().getAttribute ("pProjetId")) ;
+    if (getRequete ().getParameter ("pIterationNum") == null)
     {
       // requete recup it en cours
       lIterationNum = 0 ;
     }
     else
     {
-      lIterationNum = Integer.parseInt ((String) getRequete ().getAttribute ("pIterationNum")) ;
+      lIterationNum = Integer.parseInt ((String) getRequete ().getParameter ("pIterationNum")) ;
     }
+    lCollaborateur = new MCollaborateur(1, "prenom1", "nom1", "adresse1", "tel1", "port1", "email1", "comm1");
+    MTache lTache1 = new MTache(1, "tache1", "desc1", 1.0, new Date(), new Date(), new MActivite ());
+    MTache lTache2 = new MTache(2, "tache2", "desc2", 2.0, new Date(), new Date(), new MActivite ());
+    MArtefact lArtefact1 = new MArtefact(1, "artefact1", "description1");
+    MArtefact lArtefact2 = new MArtefact(2, "artefact2", "description2");
+    MArtefact lArtefact3 = new MArtefact(3, "artefact3", "description3");
+    
+    lTache1.ajouterArtefactEntree(lArtefact1);
+    lTache1.ajouterArtefactSortie(lArtefact2);
+    
+    lTache2.ajouterArtefactSortie(lArtefact1);
+    lTache2.ajouterArtefactSortie(lArtefact3);
+    
+    lCollaborateur.ajouterTache(lTache1);
+    lCollaborateur.ajouterTache(lTache2);
+    
+    lIterationNum = 1;
     
     // Appelle la JSP d'affichage.
     getRequete ().setAttribute ("pCollaborateur", lCollaborateur) ;
-    return "\\JSP\\Tache\\TListeTacheVisu.jsp" ;
+    getRequete ().setAttribute ("pNumIteration", new Integer(lIterationNum));
+    System.out.println (getRequete ().getAttribute ("pCollaborateur")) ;
+    return "..\\JSP\\Tache\\TListeTacheVisu.jsp" ;
   }
 }

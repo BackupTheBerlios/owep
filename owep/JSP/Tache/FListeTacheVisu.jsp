@@ -28,21 +28,22 @@
   </tr>
   <jsp:useBean id="pCollaborateur" class="owep.modele.execution.MCollaborateur" scope="page"/>
   <jsp:useBean id="lTache"         class="owep.modele.execution.MTache"         scope="page"/> 
-  <%
-    out.print  ("<tr>") ;
-    out.print ("<td class='Clair' rowspan=" + pCollaborateur.getNbTache () + ">");
+  <% pCollaborateur = (owep.modele.execution.MCollaborateur) request.getAttribute("pCollaborateur");
+    out.print ("<tr>" + pCollaborateur) ;
+    out.print ("<td class='Clair' rowspan=" + pCollaborateur.getNom () + ">");
     for (int i = 0; i < pCollaborateur.getNbTache (); i ++)
     {
       lTache = pCollaborateur.getTache (i) ;
-      out.print ("<td>" + lTache.getNom ()                  + "</td>") ;
+      out.print ("<td>" + lTache.getNom () + "</td>") ;
       
       // Affiche la liste des artefacts
       out.print ("<td>") ;
+      out.print (lTache.getArtefactSortie (lTache.getNbArtefactSortie () - 1).getNom ()) ;
       for (int j = 0; j < lTache.getNbArtefactSortie () - 1; j ++)
       {
         out.print (lTache.getArtefactSortie (j).getNom () + "<br/>") ;
       }
-      out.print (lTache.getArtefactSortie (lTache.getNbArtefactSortie () - 1).getNom () + "<td/>") ;
+      out.print ("<td/>") ;
       
       // Affiche les propriétés de la tâche
       out.print ("<td>" + lTache.getChargeInitiale ()       + "</td>") ;

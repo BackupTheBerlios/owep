@@ -6,6 +6,8 @@
  */
 package owep.vue.template;
 
+import java.io.IOException;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -53,7 +55,7 @@ public class VRegionTag extends TagSupport
         {
           pageContext.getOut ().print (lSection.getContenu ()) ;
         }
-        catch (java.io.IOException lException)
+        catch (IOException lException)
         {
           throw new JspException (lException.getMessage()) ;
         }
@@ -63,6 +65,7 @@ public class VRegionTag extends TagSupport
       {
         try
         {
+//          pageContext.getOut ().print (lSection.getContenu ()) ;
           pageContext.getOut ().flush () ;
           pageContext.include (lSection.getContenu ()) ;
         }

@@ -47,6 +47,9 @@ public class VSectionTag extends TagSupport
     VPileTemplate lPileTemplate = (VPileTemplate) pageContext.getAttribute ("TEMPLATE_PILE", PageContext.REQUEST_SCOPE) ;
     lPileTemplate.ajouterSection (mRegion, mSection) ;
     
+    // Réinitialise le tag
+    mSection = new VSection () ;
+    
     return SKIP_BODY ;
   }
 

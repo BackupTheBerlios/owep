@@ -41,7 +41,8 @@ public abstract class CControleurBase extends HttpServlet
   protected void doGet (HttpServletRequest pRequete, HttpServletResponse pReponse)
       throws ServletException, IOException
   {
-    traiter (pRequete, pReponse) ;
+    System.out.println ("2") ;
+    doPost (pRequete, pReponse) ;
   }
   
   /* (non-Javadoc)
@@ -52,6 +53,7 @@ public abstract class CControleurBase extends HttpServlet
   {
     RequestDispatcher lRequeteDispatcher ;  // Permet d'appeler la JSP d'affichage.
     
+    System.out.println ("3") ;
     // initialise les variables membres
     mRequete = pRequete ;
     mReponse = pReponse ;

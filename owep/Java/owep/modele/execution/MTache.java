@@ -17,25 +17,6 @@ import java.util.Date ;
  */
 public class MTache
 {
-  class MActivite
-  {
-    private String mNom ;
-    /**
-     * @return Returns the nom.
-     */
-    public String getNom ()
-    {
-      return mNom ;
-    }
-    /**
-     * @param pNom The nom to set.
-     */
-    public void setNom (String pNom)
-    {
-      mNom = pNom ;
-    }
-  }
-
   public static final int ETAT_EN_COURS    = 0 ;
   public static final int ETAT_TERMINE     = 1 ;
   public static final int ETAT_NON_DEMARRE = 2 ;
@@ -44,9 +25,9 @@ public class MTache
   private int             mId ;
   private String          mNom ;
   private String          mDescription ;
-  private float           mChargeInitiale ;
-  private float           mTempsPasse ;
-  private float           mResteAPasser ;
+  private double          mChargeInitiale ;
+  private double          mTempsPasse ;
+  private double          mResteAPasser ;
   private Date            mDateDebutPrevue ;
   private Date            mDateDebutReelle ;
   private Date            mDateFinPrevue ;
@@ -61,9 +42,11 @@ public class MTache
    */
   public MTache ()
   {
+    mListArtefactEntree = new ArrayList () ;
+    mListArtefactSortie = new ArrayList () ;
   }
 
-  public MTache (int pId, String pNom, String pDescription, float pChargeInitiale,
+  public MTache (int pId, String pNom, String pDescription, double pChargeInitiale,
       Date pDateDebutPrevue, Date pDateFinPrevue, MActivite pActivite)
   {
     mId = pId ;
@@ -73,10 +56,12 @@ public class MTache
     mDateDebutPrevue = pDateDebutPrevue ;
     mDateFinPrevue = pDateFinPrevue ;
     mActivite = pActivite ;
+    mListArtefactEntree = new ArrayList () ;
+    mListArtefactSortie = new ArrayList () ;
   }
 
-  public MTache (int pId, String pNom, String pDescription, float pChargeInitiale,
-      float pTempsPasse, float pResteAPasser, Date pDateDebutPrevue, Date pDateDebutReelle,
+  public MTache (int pId, String pNom, String pDescription, double pChargeInitiale,
+      double pTempsPasse, double pResteAPasser, Date pDateDebutPrevue, Date pDateDebutReelle,
       Date pDateFinPrevue, Date pDateFinReelle, MActivite pActivite)
   {
     mId = pId ;
@@ -90,6 +75,8 @@ public class MTache
     mDateFinPrevue = pDateFinPrevue ;
     mDateFinReelle = pDateFinReelle ;
     mActivite = pActivite ;
+    mListArtefactEntree = new ArrayList () ;
+    mListArtefactSortie = new ArrayList () ;
   }
 
 
@@ -110,7 +97,7 @@ public class MTache
 
   public void ajouterArtefactSortie (MArtefact pArtefactSortie)
   {
-    mListArtefactEntree.add(pArtefactSortie) ;
+    mListArtefactSortie.add (pArtefactSortie) ;
   }
 
   public MArtefact getArtefactSortie (int pIndice)
@@ -139,22 +126,22 @@ public class MTache
     }
   }
 
-  public float getBudgetConsomme ()
+  public double getBudgetConsomme ()
   {
     return mTempsPasse / mChargeInitiale ;
   }
 
-  public float getHJDepassementCharge ()
+  public double getHJDepassementCharge ()
   {
     return mTempsPasse + mResteAPasser - mChargeInitiale ;
   }
 
-  public float getPrcDepassementCharge ()
+  public double getPrcDepassementCharge ()
   {
     return (mTempsPasse + mResteAPasser) / mChargeInitiale ;
   }
 
-  public float getPrcAvancement ()
+  public double getPrcAvancement ()
   {
     if ((mTempsPasse == 0) && (mResteAPasser == 0))
     {
@@ -169,7 +156,7 @@ public class MTache
   /**
    * @return Returns the mChargeInitiale.
    */
-  public float getChargeInitiale ()
+  public double getChargeInitiale ()
   {
     return mChargeInitiale ;
   }
@@ -177,7 +164,7 @@ public class MTache
   /**
    * @param chargeInitiale The mChargeInitiale to set.
    */
-  public void setChargeInitiale (float chargeInitiale)
+  public void setChargeInitiale (double chargeInitiale)
   {
     mChargeInitiale = chargeInitiale ;
   }
@@ -297,7 +284,7 @@ public class MTache
   /**
    * @return Returns the mResteAPasser.
    */
-  public float getResteAPasser ()
+  public double getResteAPasser ()
   {
     return mResteAPasser ;
   }
@@ -305,7 +292,7 @@ public class MTache
   /**
    * @param resteAPasser The mResteAPasser to set.
    */
-  public void setResteAPasser (float resteAPasser)
+  public void setResteAPasser (double resteAPasser)
   {
     mResteAPasser = resteAPasser ;
   }
@@ -313,7 +300,7 @@ public class MTache
   /**
    * @return Returns the mTempsPasse.
    */
-  public float getTempsPasse ()
+  public double getTempsPasse ()
   {
     return mTempsPasse ;
   }
@@ -321,7 +308,7 @@ public class MTache
   /**
    * @param tempsPasse The mTempsPasse to set.
    */
-  public void setTempsPasse (float tempsPasse)
+  public void setTempsPasse (double tempsPasse)
   {
     mTempsPasse = tempsPasse ;
   }
