@@ -1,10 +1,11 @@
-<form>
-  <select name="numIT" size=1 onChange="chgpage(this.form)">
-    <option selected value="">Itération <%= request.getAttribute ("pNumIteration") %></option>
-  </select>
-</form>
-<br><br><br>
+<%@ page import="java.text.SimpleDateFormat" %> 
+<%@ page import="owep.modele.execution.MCollaborateur" %> 
+
+<jsp:useBean id="pCollaborateur" class="owep.modele.execution.MCollaborateur" scope="page"/>
+<jsp:useBean id="lTache"         class="owep.modele.execution.MTache"         scope="page"/> 
+
 <table class="tableau" border="0" cellpadding="0" cellspacing="0">
+<tbody>
   <tr class='titre'>
     <td class='titre' rowspan=2>Tâches</td>
     <td class='titre' rowspan=2>Artefact</td>
@@ -19,47 +20,79 @@
     <td class='titre' rowspan=2>Description du produit</td>
   </tr>
   <tr class='titre'>
-    <td class='titre'>de début prévue</td>
-    <td class='titre'>de début réelle</td>
-    <td class='titre'>de fin prévue</td>
-    <td class='titre'>de fin réestimée</td>
+    <td class='titre'>début prévue</td>
+    <td class='titre'>début réelle</td>
+    <td class='titre'>fin prévue</td>
+    <td class='titre'>fin réestimée</td>
     <td class='titre'>(%)</td>
-    <td class='titre'>(hommes jour)</td>
+    <td class='titre'>(h x j)</td>
   </tr>
-  <jsp:useBean id="pCollaborateur" class="owep.modele.execution.MCollaborateur" scope="page"/>
-  <jsp:useBean id="lTache"         class="owep.modele.execution.MTache"         scope="page"/> 
-  <% pCollaborateur = (owep.modele.execution.MCollaborateur) request.getAttribute("pCollaborateur");
-    out.print ("<tr>" + pCollaborateur) ;
-    out.print ("<td class='Clair' rowspan=" + pCollaborateur.getNom () + ">");
+  <%
+    pCollaborateur = (MCollaborateur) request.getAttribute ("pCollaborateur") ;
     for (int i = 0; i < pCollaborateur.getNbTache (); i ++)
     {
       lTache = pCollaborateur.getTache (i) ;
-      out.print ("<td>" + lTache.getNom () + "</td>") ;
-      
-      // Affiche la liste des artefacts
-      out.print ("<td>") ;
-      out.print (lTache.getArtefactSortie (lTache.getNbArtefactSortie () - 1).getNom ()) ;
-      for (int j = 0; j < lTache.getNbArtefactSortie () - 1; j ++)
-      {
-        out.print (lTache.getArtefactSortie (j).getNom () + "<br/>") ;
-      }
-      out.print ("<td/>") ;
-      
-      // Affiche les propriétés de la tâche
-      out.print ("<td>" + lTache.getChargeInitiale ()       + "</td>") ;
-      out.print ("<td>" + lTache.getTempsPasse ()           + "</td>") ;
-      out.print ("<td>" + lTache.getResteAPasser ()         + "</td>") ;
-      out.print ("<td>" + lTache.getEtat ()                 + "</td>") ;
-      out.print ("<td>" + lTache.getDateDebutPrevue ()      + "</td>") ;
-      out.print ("<td>" + lTache.getDateDebutReelle ()      + "</td>") ;
-      out.print ("<td>" + lTache.getDateFinPrevue ()        + "</td>") ;
-      out.print ("<td>" + lTache.getDateFinReelle ()        + "</td>") ;
-      out.print ("<td>" + lTache.getPrcAvancement ()        + "</td>") ;
-      out.print ("<td>" + lTache.getBudgetConsomme( )       + "</td>") ;
-      out.print ("<td>" + lTache.getPrcDepassementCharge () + "</td>") ;
-      out.print ("<td>" + lTache.getHJDepassementCharge ()  + "</td>") ;
-      out.print ("<td>" + lTache.getDescription ()          + "</td>") ;
-      out.print ("</tr>") ;
+  %>
+  <tr>
+    <td class='Clair'><%= lTache.getNom ()%></td>
+
+    <!-- Affiche la liste des artefacts -->
+	  <td class='Clair'>
+	    <%
+	      SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
+        out.print (lTache.getArtefactSortie (lTache.getNbArtefactSortie () - 1).getNom ()) ;
+	      for (int j = 0; j < lTache.getNbArtefactSortie () - 1; j ++)
+  	    {
+	        out.print ("<br/>" + lTache.getArtefactSortie (j).getNom ()) ;
+	      }
+	    %>
+	  </td>
+	  
+	  <!-- Affiche les propriétés de la tâche -->
+	  <td class='Clair'><%= lTache.getChargeInitiale ()                       %></td>
+	  <td class='Clair'><%= lTache.getTempsPasse ()                           %></td>
+	  <td class='Clair'><%= lTache.getResteAPasser ()                         %></td>
+	  <td class='Clair'><%= lTache.getEtat ()                                 %></td>
+	  <td class='Clair'><% if (lTache.getDateDebutPrevue () != null)
+	                       {
+	                         out.print (lDateFormat.format (lTache.getDateDebutPrevue ())) ;
+	                       }
+	                       else
+	                       {
+	                         out.print ("X") ;
+	                       } %></td>
+	  <td class='Clair'><% if (lTache.getDateDebutReelle () != null)
+	                       {
+	                         out.print (lDateFormat.format (lTache.getDateDebutReelle ())) ;
+	                       }
+	                       else
+	                       {
+	                         out.print ("X") ;
+	                       } %></td>
+	  <td class='Clair'><% if (lTache.getDateFinPrevue () != null)
+	                       {
+	                         out.print (lDateFormat.format (lTache.getDateFinPrevue ())) ;
+	                       }
+	                       else
+	                       {
+	                         out.print ("X") ;
+	                       } %></td>
+	  <td class='Clair'><% if (lTache.getDateFinReelle () != null)
+	                       {
+	                         out.print (lDateFormat.format (lTache.getDateFinReelle ())) ;
+	                       }
+	                       else
+	                       {
+	                         out.print ("X") ;
+	                       } %></td>
+	  <td class='Clair'><%= lTache.getPrcAvancement ()                        %></td>
+	  <td class='Clair'><%= lTache.getBudgetConsomme ()                       %></td>
+	  <td class='Clair'><%= lTache.getPrcDepassementCharge ()                 %></td>
+	  <td class='Clair'><%= lTache.getHJDepassementCharge ()                  %></td>
+	  <td class='Clair'><%= lTache.getDescription ()                          %></td>
+  </tr>
+  <%
     }
   %>
+</tbody>
 </table>

@@ -4,12 +4,11 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package owep.controle ;
+package owep.controle;
 
 
 import java.util.Date;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException ;
 
 import owep.modele.execution.MActivite;
@@ -22,22 +21,20 @@ import owep.modele.execution.MTache;
  * @author Administrateur TODO To change the template for this generated type comment go to Window -
  *         Preferences - Java - Code Style - Code Templates
  */
-public class CConsultationTache extends CControleurBase
+public class CListeTacheVisu extends CControleurBase
 {
   /* (non-Javadoc)
    * @see owep.controle.CControleurBase#traiter(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
    */
   public String traiter () throws ServletException
   {
-    System.out.println ("1") ;
     MCollaborateur lCollaborateur ;        // Collaborateur ayant ouvert la session.
-    int lProjetId ;                        // Identifiant du projet consulté. 
+    //int lProjetId ;                        // Identifiant du projet consulté. 
     int lIterationNum ;                    // Numéro d'itération dont on liste les tâches.
-    RequestDispatcher lRequeteDispatcher ; // Permet d'appeler la JSP d'affichage.
-
+    
     // Récupération des paramètres de la requête.
-   // lCollaborateur = (MCollaborateur) getRequete ().getSession ().getAttribute ("pCollaborateur") ;
-   // lProjetId      = Integer.parseInt ((String) getRequete ().getSession ().getAttribute ("pProjetId")) ;
+    // lCollaborateur = (MCollaborateur) getRequete ().getSession ().getAttribute ("pCollaborateur") ;
+    // lProjetId      = Integer.parseInt ((String) getRequete ().getSession ().getAttribute ("pProjetId")) ;
     if (getRequete ().getParameter ("pIterationNum") == null)
     {
       // requete recup it en cours
@@ -45,7 +42,7 @@ public class CConsultationTache extends CControleurBase
     }
     else
     {
-      lIterationNum = Integer.parseInt ((String) getRequete ().getParameter ("pIterationNum")) ;
+      lIterationNum = Integer.parseInt (getRequete ().getParameter ("pIterationNum")) ;
     }
     lCollaborateur = new MCollaborateur(1, "prenom1", "nom1", "adresse1", "tel1", "port1", "email1", "comm1");
     MTache lTache1 = new MTache(1, "tache1", "desc1", 1.0, new Date(), new Date(), new MActivite ());
@@ -68,7 +65,6 @@ public class CConsultationTache extends CControleurBase
     // Appelle la JSP d'affichage.
     getRequete ().setAttribute ("pCollaborateur", lCollaborateur) ;
     getRequete ().setAttribute ("pNumIteration", new Integer(lIterationNum));
-    System.out.println (getRequete ().getAttribute ("pCollaborateur")) ;
     return "..\\JSP\\Tache\\TListeTacheVisu.jsp" ;
   }
 }

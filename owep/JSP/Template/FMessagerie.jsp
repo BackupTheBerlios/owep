@@ -1,4 +1,4 @@
-<table class="panneauMessagerie" style="width : 100%; height : 100%" cellpadding="0" cellspacing="0">
+<table class="regionMessagerie" style="width : 100%; height : 100%" cellpadding="0" cellspacing="0">
 <tbody style="text-align : left; vertical-align : top">
 	<tr>
 	  <!-- commandes de la messagerie -->

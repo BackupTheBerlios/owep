@@ -11,11 +11,11 @@
 
   <!-- Liste des Servlets -->
   <servlet> 
-    <servlet-name>CConsultationTache</servlet-name> 
-    <servlet-class>owep.controle.CConsultationTache</servlet-class> 
+    <servlet-name>CListeTacheVisu</servlet-name> 
+    <servlet-class>owep.controle.CListeTacheVisu</servlet-class> 
   </servlet> 
   <servlet-mapping> 
-    <servlet-name>CConsultationTache</servlet-name> 
+    <servlet-name>CListeTacheVisu</servlet-name> 
     <url-pattern>/Tache/FListeTacheVisu</url-pattern> 
   </servlet-mapping> 
 

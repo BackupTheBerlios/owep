@@ -1,6 +1,5 @@
 <%@ page language="java" %>
 <%@ taglib uri='/WEB-INF/tld/template.tld' prefix='template' %>
-<!DOCTYPE HTML PUBLIC "-//w3c//dtd html 4.0 transitional//en">
 
 <!-- en-tête de la page -->
 <html>
@@ -9,7 +8,8 @@
   <meta name="author" content="OWEP Team">
   <meta name="description" content="Outil de Workflow pour une équipe de Projet">
   <title>OWEP</title>
-  <link rel="stylesheet" href="../../CSS/Standard.css" type="text/css">
+  <link rel="stylesheet" href="../CSS/Standard.css" type="text/css">
+  <script language="javascript" src="../JavaScript/<template:region nom="RegionScript"/>"></script>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 
@@ -22,7 +22,7 @@
     
       <!-- colonne de gauche -->
       <td style="width : 170px">
-        <table class="panneauGauche" style="width : 100%; height : 100%" cellpadding="0" cellspacing="0">
+        <table class="regionGauche" style="width : 100%; height : 100%" cellpadding="0" cellspacing="0">
         <tbody>
         
           <!-- logo de l'application -->
@@ -35,7 +35,7 @@
           
           <!-- menu Avancement -->
           <tr>
-            <td class="caseMenuListe">
+            <td>
               <template:region nom="RegionMenu"/>
             </td>
           </tr>
@@ -47,7 +47,7 @@
       
       <!-- colonne principale -->
       <td style="width : 100%">
-        <table class="panneauDroit" style="width : 100%; height : 100%" cellpadding="0" cellspacing="0">
+        <table class="regionDroit" style="width : 100%; height : 100%" cellpadding="0" cellspacing="0">
         <tbody style="text-align : left; vertical-align : top">
                 
           <!-- messagerie -->
@@ -57,16 +57,23 @@
             </td>
           </tr>
           
+          <!-- titre -->
+          <tr>
+            <td class="regionTitre">
+              <template:region nom="RegionTitre"/>
+            </td>
+          </tr>
           
-          <!-- case contenu de la page -->
+          <!-- navigation -->
+          <tr>
+            <td class="regionNavigation">
+              <template:region nom="RegionNavigation"/>
+            </td>
+          </tr>
+          
+          <!-- contenu -->
           <tr style="height: 100%">
-            <td class="panneauPrincipal">
-              <!-- titre de la page -->
-              <center>
-                <font class='titrepage'><template:region nom="RegionTitre"/></font>
-                <br><br><br><br>
-              </center>
-
+            <td class="regionPrincipal">
               <template:region nom="RegionPrincipal"/>
             </td>
           </tr>

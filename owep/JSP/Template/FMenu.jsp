@@ -1,4 +1,8 @@
-<table class="panneauMenu" style="width : 100%; height : 100%" cellpadding="0" cellspacing="0">
+<%@ page import="owep.modele.execution.MCollaborateur" %> 
+
+<jsp:useBean id="pCollaborateur" class="owep.modele.execution.MCollaborateur" scope="page"/>
+
+<table class="regionMenu" style="width : 100%; height : 100%" cellpadding="0" cellspacing="0">
 <tbody>
   <!-- menu Avancement -->
   <tr>
@@ -10,7 +14,9 @@
   </tr>
   <tr>
     <td class="caseMenuConnexion">
-      <a class="menuConnexion" href="">Déconnexion</a>
+      <a class="menuConnexion" href="">
+        Déconnexion (<%= ((MCollaborateur) request.getAttribute ("pCollaborateur")).getPrenom () %>)
+      </a>
     </td>
   </tr>
   <tr>
@@ -74,7 +80,7 @@
   <!-- menu configuration -->
   <tr>
     <td class="caseMenuSeparation">
-      <font class="menuNiveauSeparation">&nbsp;
+      <font class="menuNiveauSeparation">&nbsp;</font>
     </td>
   </tr>
   <tr>

@@ -53,10 +53,11 @@ public class VRegionTag extends TagSupport
         // Affiche le texte
         try
         {
-          pageContext.getOut ().print (lSection.getContenu ()) ;
+          pageContext.getOut ().flush () ;
+          pageContext.include (lSection.getContenu ()) ;
         }
-        catch (IOException lException)
-        {
+        catch(Exception lException)
+        { 
           throw new JspException (lException.getMessage()) ;
         }
       }
@@ -65,12 +66,11 @@ public class VRegionTag extends TagSupport
       {
         try
         {
-//          pageContext.getOut ().print (lSection.getContenu ()) ;
+          pageContext.getOut ().print (lSection.getContenu ()) ;
           pageContext.getOut ().flush () ;
-          pageContext.include (lSection.getContenu ()) ;
         }
-        catch(Exception lException)
-        { 
+        catch (IOException lException)
+        {
           throw new JspException (lException.getMessage()) ;
         }
       }

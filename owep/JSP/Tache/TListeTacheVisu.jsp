@@ -3,7 +3,9 @@
 <!DOCTYPE HTML PUBLIC "-//w3c//dtd html 4.0 transitional//en">
 
 <template:template nom="/JSP/Template/FTemplate.jsp">
+  <template:section region="RegionScript"     contenu="NavigationIteration.js"         typePage="false"/>
   <template:section region="RegionTitre"      contenu="Liste des tâches"               typePage="false"/>
+  <template:section region="RegionNavigation" contenu="/JSP/Navigation/FIteration.jsp" typePage="true"/>
   <template:section region="RegionPrincipal"  contenu="/JSP/Tache/FListeTacheVisu.jsp" typePage="true"/>
   <template:section region="RegionLogo"       contenu="/JSP/Template/FLogo.jsp"        typePage="true"/>
   <template:section region="RegionMenu"       contenu="/JSP/Template/FMenu.jsp"        typePage="true"/>

@@ -59,7 +59,7 @@ public class VSectionTag extends TagSupport
    */
   public void setTypePage (String pTypePage)
   {
-    mSection.setTypePage (Boolean.getBoolean (pTypePage)) ;
+    mSection.setTypePage (pTypePage.equals ("true")) ;
   }
   
   /**
@@ -77,11 +77,4 @@ public class VSectionTag extends TagSupport
   {
     mSection.setContenu (pContenu) ;
   }
-
-/*  private VTemplateTag getTemplateTag ()
-    throws JspException
-  {
-    // Récupère la balise "template" dans laquelle est incluse la balise "section" courante.
-    return (VTemplateTag) findAncestorWithClass (this, VTemplateTag.class);
-  }*/
 }
