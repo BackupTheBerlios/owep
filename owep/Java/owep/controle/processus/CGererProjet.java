@@ -210,8 +210,8 @@ public class CGererProjet extends CControleurBase
     if (mNouveau != null && mNouveau.equals ("1"))
     {
       MProcessus lProcessus ;
-      if (mProcessus == 0)
-      {
+//      if (mProcessus == 0)
+//      {
         // Nouveau processus
         // Création du répertoire
         (new File (getServletContext ().getRealPath ("/") + "/Processus/Import")).mkdirs () ;
@@ -314,7 +314,7 @@ public class CGererProjet extends CControleurBase
         }
 
         mProcessus = maxIdProcessus ;
-      }
+//      }
 
       try
       {
