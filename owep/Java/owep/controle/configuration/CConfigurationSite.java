@@ -98,6 +98,8 @@ public class CConfigurationSite extends CControleurBase
           File nouveauBundel = new File(getServletContext().getRealPath("/")+"/"+"Ressources/", "MessagesBundle_"+mLangue+".properties");
           File ancienBundel = new File(getServletContext().getRealPath("/")+"/"+"WEB-INF/classes/", "MessagesBundle.properties");
           copier(nouveauBundel, ancienBundel);
+          ancienBundel = new File(getServletContext().getRealPath("/")+"/"+"Java/", "MessagesBundle.properties");
+          copier(nouveauBundel, ancienBundel);
           
           File nouvelleCSS = new File(getServletContext().getRealPath("/")+"/"+"CSS/", mApparence);
           File ancienneCSS = new File(getServletContext().getRealPath("/")+"/"+"CSS/", "Apparence.css");

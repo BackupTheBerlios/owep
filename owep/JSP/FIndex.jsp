@@ -6,14 +6,8 @@
   String mProbleme = (String) request.getAttribute("mProbleme"); // Probleme rencontré lors de l'enregistrement du collaborateur
 
   //localisation
-  String langue = new String("fr");
-  String pays = new String("FR");
-  
-  java.util.Locale currentLocale;
   java.util.ResourceBundle messages;
-  currentLocale = new java.util.Locale(langue, pays);
-
-  messages = java.util.ResourceBundle.getBundle("MessagesBundle", currentLocale);
+  messages = java.util.ResourceBundle.getBundle("MessagesBundle");
 
   // Si l'attribut mProbleme existe alors un probleme est survenu lors de l'dentification
   if(mProbleme != null)

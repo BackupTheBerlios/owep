@@ -3,14 +3,8 @@
 
 <% 
   //localisation
-  String langue = new String ("fr") ;
-  String pays = new String ("FR") ;
-  
-  java.util.Locale currentLocale ;
   java.util.ResourceBundle messages ;
-  currentLocale = new java.util.Locale (langue, pays) ;
-
-  messages = java.util.ResourceBundle.getBundle("MessagesBundle", currentLocale);
+  messages = java.util.ResourceBundle.getBundle("MessagesBundle");
   String titre = messages.getString ("identificationTitre") ;
 %>  
 

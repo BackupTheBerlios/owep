@@ -276,7 +276,7 @@
   </tr>
   
 <%//Test si l'utilisateur connecté a les droits de l'administrateur
-  if (mProjetOuvert && mEstAdmin) {%>   
+  if (mEstAdmin) {%>   
   <tr>
     <td class="caseMenuNiveau2">
       <a class="menuNiveau2" href="../Configuration/ConfigurationSite">Option de l'application</a><br>
@@ -284,14 +284,7 @@
   </tr>
 <%}%>  
   
-<%//Test si l'utilisateur connecté est le chef de projet
-  if (mProjetOuvert && mEstChefProjet) {%>  
-  <tr>
-    <td class="caseMenuNiveau2">
-      <p class="menuNiveau2">Option de projet</p>
-    </td>
-  </tr>
-<%}}catch (Exception lException) {%><%=lProjet%><%=lSession.getProjet().getChefProjet()%><%}%>  
+<%}catch (Exception lException) {%><%=lProjet%><%=lSession.getProjet().getChefProjet()%><%}%>  
   <tr>
     <td height="100%" class="caseMenuSeparation2">
       &nbsp;
