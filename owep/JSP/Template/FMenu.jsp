@@ -46,11 +46,11 @@
 
   <!-- menu Avancement -->
   <tr>
-    <td class="caseMenuListe">
+    <td class="caseMenuProjet">
     
     <form name="changerProjet" action="../Projet/OuvrirProjet" method="post">
       <!-- Le formulaire ayant pour nom changerProjet est envoyé dés qu'un changement sur la sélection de la liste a été constaté -->
-      <select class="menuListe" name="mIdProjet" size ="1" onchange="changerProjet.submit()">
+      <select class="menuProjet" name="mIdProjet" size ="1" onchange="changerProjet.submit()">
 <%
   // Affichage de la liste des projets possibles
   // Le projet ouvert est sélectionné par défaut
