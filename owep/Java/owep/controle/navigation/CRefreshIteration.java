@@ -8,6 +8,7 @@ import org.exolab.castor.jdo.PersistenceException ;
 import org.exolab.castor.jdo.QueryResults ;
 import owep.controle.CConstante ;
 import owep.controle.CControleurLight ;
+import owep.infrastructure.Session;
 import owep.modele.execution.MProjet ;
 
 
@@ -27,15 +28,20 @@ public class CRefreshIteration extends CControleurLight
    */
   public void initialiserBaseDonnees () throws ServletException
   {
+    Session          lSession ;  // Session actuelle de l'utilisateur.
     OQLQuery lRequete ;      // Requête à réaliser sur la base.
     QueryResults lResultat ; // Résultat de la requête sur la base.
+    
+    
+    lSession = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
+    int lIdProjet  = lSession.getIdProjet () ;
     
     try
     {
       getBaseDonnees ().begin () ;
       
       lRequete = getBaseDonnees ().getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
-      lRequete.bind (1) ;
+      lRequete.bind (lIdProjet) ;
       lResultat = lRequete.execute () ;
       
       MProjet lProjet = (MProjet) lResultat.next () ;
