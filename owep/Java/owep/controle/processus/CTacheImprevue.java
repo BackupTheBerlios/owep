@@ -11,19 +11,11 @@ import owep.controle.CConstante;
 import owep.controle.CControleurBase;
 import owep.infrastructure.Session;
 import owep.modele.execution.MActiviteImprevue;
-import owep.modele.execution.MArtefact;
 import owep.modele.execution.MArtefactImprevue;
 import owep.modele.execution.MCollaborateur;
-import owep.modele.execution.MCondition;
 import owep.modele.execution.MIteration;
 import owep.modele.execution.MProjet;
-import owep.modele.execution.MTache;
 import owep.modele.execution.MTacheImprevue;
-import owep.modele.processus.MActivite;
-import owep.modele.processus.MComposant;
-import owep.modele.processus.MDefinitionTravail;
-import owep.modele.processus.MProcessus;
-import owep.modele.processus.MProduit;
 import owep.vue.transfert.VTransfert;
 
 
@@ -362,7 +354,7 @@ public class CTacheImprevue extends CControleurBase
     try
     {
       DriverManager.registerDriver (new Driver ()) ;
-      lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", "root", "kata12guruma") ;
+      lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", "root", "owep2005") ;
       lConnection.setAutoCommit(false);
       
         mIteration.update (lConnection) ;

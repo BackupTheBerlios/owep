@@ -32,8 +32,9 @@ public class CConstante
   public static final String PAR_SUBMITSUPPRIMER_TACPROVOQUE = "pSubmitSupprimerTacheProvoque" ;
   public static final String PAR_SUBMITAJOUTER_TACRESOUT     = "pSubmitAjouterTacheResout" ;
   public static final String PAR_SUBMITSUPPRIMER_TACRESOUT   = "pSubmitSupprimerTacheResout" ;
-  public static final String PAR_SUBMITAJOUTER_TACDEPEND    = "pSubmitAjouterTachesDependantes" ;
-  public static final String PAR_SUBMITSUPPRIMER_TACDEPEND  = "pSubmitSupprimerTachesDependantes" ;
+  public static final String PAR_SUBMITAJOUTER_TACDEPEND     = "pSubmitAjouterTachesDependantes" ;
+  public static final String PAR_SUBMITSUPPRIMER_TACDEPEND   = "pSubmitSupprimerTachesDependantes" ;
+  public static final String PAR_TYPEINDICATEUR              = "pTypeIndicateur" ;
   
   public static final String PAR_MESSAGE               = "pMessage" ;
   public static final String PAR_FORMULAIRE            = "pFormulaire" ;
@@ -44,6 +45,8 @@ public class CConstante
   public static final String PAR_DATEDEBUTREELLE       = "pDateDebutReel" ;
   public static final String PAR_DATEFINREELLE         = "pDateFinReestimee" ;
   public static final String PAR_ITERATION             = "pIteration" ;
+  public static final String PAR_VALEURMESURE          = "pValeurMesure" ;
+  public static final String PAR_COMMENTAIREMESURE     = "pCommentaireMesure" ;
   public static final String PAR_TACHE                 = "pTache" ;
   public static final String PAR_ETAT                  = "pEtat" ;
   public static final String PAR_PROJET                = "pProjet" ;
@@ -82,13 +85,15 @@ public class CConstante
   public static final String SES_TACHE     = "pSessionTache" ;
   
   // Longueur des champs dans le formulaire.
-  public static final int LNG_CHARGE  = 5 ;
-  public static final int LNG_DATE    = 7 ;
-  public static final int LNG_PETIT   = 35 ;
-  public static final int LNG_MOYEN   = 53 ;
-  public static final int LNG_LARGE   = 60 ;
-  public static final int LNG_LOGIN   = 15 ;
-  public static final int LNG_FICHIER = 75 ;
+  public static final int LNG_CHARGE       = 5 ;
+  public static final int LNG_DATE         = 7 ;
+  public static final int LNG_PETIT        = 35 ;
+  public static final int LNG_MOYEN        = 53 ;
+  public static final int LNG_LARGE        = 60 ;
+  public static final int LNG_LOGIN        = 15 ;
+  public static final int LNG_FICHIER      = 75 ;
+  public static final int LNG_VALEUR       = 5 ;
+  public static final int LNG_COLSCOMMENTAIRE  = 25 ;
   
   // Taille des champs dans la base de données.
   public static final int TXT_CHARGE  = 5 ;

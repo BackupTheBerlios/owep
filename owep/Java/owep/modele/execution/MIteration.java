@@ -8,10 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date ;
 import owep.modele.MModeleBase;
-import java.sql.Connection ;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 
 /**
@@ -34,6 +30,7 @@ public class MIteration extends MModeleBase
   private MProjet   mProjet ;          // Projet dont l'itération est une étape.
   private ArrayList mTaches ;          // Liste des tâches réalisées durant l'itération.
   private ArrayList mTachesImprevues ; // Liste des tâches imprévues réalisées durant l'itération.
+  private ArrayList mMesures ;         // Liste des mesures réalisées durant l'itération.
   private int       mEtat ;            // Etat de l iteration
 
 
@@ -66,6 +63,7 @@ public class MIteration extends MModeleBase
     mDateFinPrevue   = pDateFinPrevue ;
     mTaches          = new ArrayList () ;
     mTachesImprevues = new ArrayList () ;
+    mMesures         = new ArrayList () ;
     mEtat = ETAT_NON_DEMARRE ;
   }
 
@@ -92,6 +90,7 @@ public class MIteration extends MModeleBase
     mDateFinReelle   = pDateFinReelle ;
     mTaches          = new ArrayList () ;
     mTachesImprevues = new ArrayList () ;
+    mMesures         = new ArrayList () ;
     mEtat = ETAT_NON_DEMARRE ;
   }
 
@@ -405,6 +404,23 @@ public class MIteration extends MModeleBase
     mTaches.remove (pIndice) ;
   }
   
+  
+  /**
+   * TODO Récupère mMesures.
+   * @return mMesures.
+   */
+  public ArrayList getListeMesures ()
+  {
+    return mMesures ;
+  }
+  /**
+   * TODO Initialise mMesures.
+   * @param mesures mMesures.
+   */
+  public void setListeMesures (ArrayList pMesures)
+  {
+    mMesures = pMesures ;
+  }
   /**
    * Récupère la liste des tâches imprévues réalisées durant l'itération.
    * @return Liste des tâches imprévues réalisées durant l'itération.

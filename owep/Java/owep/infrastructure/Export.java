@@ -1,18 +1,13 @@
 package owep.infrastructure ;
 
 
-import java.io.BufferedReader ;
 import java.io.BufferedWriter ;
-import java.io.DataInputStream ;
 import java.io.File ;
 import java.io.FileInputStream ;
-import java.io.FileReader ;
 import java.io.FileWriter ;
 import java.io.IOException ;
 import java.io.InputStreamReader ;
-import java.text.DateFormat ;
 import java.util.ArrayList ;
-import java.util.Date ;
 import java.util.Iterator ;
 
 import org.exolab.castor.jdo.Database ;
@@ -154,39 +149,51 @@ public class Export
     out.newLine () ;
     out.write ("\t\t</projet>") ;
     out.newLine () ;
-
-    // Metrique
-    out.write ("\t\t<listeMetriques>") ;
+    
+    // Indicateur
+    out.write ("\t\t<listeIndicateurs>") ;
     out.newLine () ;
-    try
+    liste = mProjet.getListeIndicateurs() ;
+    it = liste.iterator () ;
+    while (it.hasNext ())
     {
-      mBaseDonnees.begin () ;
-      lRequete = mBaseDonnees
-        .getOQLQuery ("select METRIQUE from owep.modele.execution.MMetrique METRIQUE where mProjet = $1") ;
-      lRequete.bind (mProjet.getId ()) ;
-      lResultat = lRequete.execute () ;
-
-      while (lResultat.hasMore ())
-      {
-        MMetrique lMetrique = (MMetrique) lResultat.next () ;
-        out.write ("\t\t\t<eltMetrique>\n") ;
-        out.write ("\t\t\t\t<id>" + lMetrique.getId () + "</id>\n") ;
-        out.write ("\t\t\t\t<nom>" + lMetrique.getNom () + "</nom>\n") ;
-        out.write ("\t\t\t\t<description>" + lMetrique.getDescription () + "</description>\n") ;
-        out.write ("\t\t\t\t<valeur>" + lMetrique.getValeur () + "</valeur>\n") ;
-        out.write ("\t\t\t\t<type>" + lMetrique.getType () + "</type>") ;
-        out.write ("\t\t\t</eltMetrique>\n") ;
-      }
-
-      mBaseDonnees.commit () ;
+      MIndicateur lIndicateur = (MIndicateur) it.next () ;
+      out.write ("\t\t\t<eltIndicateur>\n") ;
+      out.write ("\t\t\t\t<id>" + lIndicateur.getId () + "</id>\n") ;
+      out.write ("\t\t\t\t<nom>" + lIndicateur.getNom() + "</nom>\n") ;
+      out.write ("\t\t\t\t<description>" + lIndicateur.getDescription()
+                 + "</description>\n") ;
+      out.write ("\t\t\t\t<unite>" + lIndicateur.getUnite()
+                 + "</unite>\n") ;
+      out.write ("\t\t\t</eltIndicateur>\n") ;
     }
-    catch (PersistenceException e)
-    {
-      e.printStackTrace () ;
-    }
-    out.write ("\t\t</listeMetriques>") ;
+    out.write ("\t\t</listeIndicateurs>") ;
     out.newLine () ;
-
+    
+    // MesureIndicateur
+    out.write ("\t\t<listeMesures>") ;
+    out.newLine () ;
+    liste = mProjet.getListeIndicateurs() ;
+    it = liste.iterator () ;
+    ArrayList listeMesure = new ArrayList () ;
+    while (it.hasNext ())
+    {
+      MIndicateur lIndicateur = (MIndicateur) it.next () ;
+      listeMesure.addAll (lIndicateur.getListeMesures()) ;
+    }
+    it = listeMesure.iterator () ;
+    while (it.hasNext ())
+    {
+      MMesureIndicateur lMesureIndicateur = (MMesureIndicateur) it.next () ;
+      out.write ("\t\t\t<eltMesure>\n") ;
+      out.write ("\t\t\t\t<id>" + lMesureIndicateur.getId () + "</id>\n") ;
+      out.write ("\t\t\t\t<valeur>" + lMesureIndicateur.getValeur() + "</valeur>\n") ;
+      out.write ("\t\t\t\t<commentaire>" + lMesureIndicateur.getCommentaire() + "</commentaire>\n") ;
+      out.write ("\t\t\t</eltMesure>\n") ;
+    }
+    out.write ("\t\t</listeMesures>") ;
+    out.newLine () ;
+    
     // Risque
     out.write ("\t\t<listeRisques>") ;
     out.newLine () ;
@@ -426,40 +433,6 @@ public class Export
       out.write ("\t\t\t</ProjetIteration>\n") ;
     }
     out.write ("\t\t</listeProjetIteration>") ;
-    out.newLine () ;
-
-    // Projet / Metrique
-    out.write ("\t\t<listeProjetMetrique>") ;
-    out.newLine () ;
-    try
-    {
-      mBaseDonnees.begin () ;
-      lRequete = mBaseDonnees
-        .getOQLQuery ("select METRIQUE from owep.modele.execution.MMetrique METRIQUE where mProjet = $1") ;
-      lRequete.bind (mProjet.getId ()) ;
-      lResultat = lRequete.execute () ;
-
-      if (lResultat.size () > 0)
-      {
-        out.write ("\t\t\t<ProjetMetrique>\n") ;
-        out.write ("\t\t\t\t<idProjet>" + mProjet.getId () + "</idProjet>\n") ;
-        out.write ("\t\t\t\t<listeIdMetrique>\n") ;
-        while (lResultat.hasMore ())
-        {
-          MMetrique lMetrique = (MMetrique) lResultat.next () ;
-          out.write ("\t\t\t\t<id>" + lMetrique.getId () + "</id>\n") ;
-        }
-        out.write ("\t\t\t\t</listeIdMetrique>\n") ;
-        out.write ("\t\t\t</ProjetMetrique>\n") ;
-
-      }
-      mBaseDonnees.commit () ;
-    }
-    catch (PersistenceException e)
-    {
-      e.printStackTrace () ;
-    }
-    out.write ("\t\t</listeProjetMetrique>") ;
     out.newLine () ;
 
     // Projet / Risque

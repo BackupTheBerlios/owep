@@ -31,6 +31,7 @@ public class MCollaborateur extends MModeleBase
   private int       mDroit ;        // Droits du collaborateur (collaborateur = 0 ; chef de projet = 1) 
   private ArrayList mTachesImprevues ; // Listes des tâches imprévues que doient réaliser le collaborateur.
   private ArrayList mArtefactsImprevues ;       // Artefacts imprévues dont le collaborateur est responsable.
+  private ArrayList  mMesures ;     // Liste des mesures associées au collaborateur.
 
   /**
    * Crée une instance vide de MCollaborateur.
@@ -44,6 +45,7 @@ public class MCollaborateur extends MModeleBase
     mProjetsChef     = new ArrayList () ;
     mTachesImprevues = new ArrayList () ;
     mArtefactsImprevues = new ArrayList () ;
+    mMesures = new ArrayList () ;
     mTacheEnCours = -1 ;
   }
 
@@ -83,6 +85,7 @@ public class MCollaborateur extends MModeleBase
     mProjetsChef     = new ArrayList () ;
     mTachesImprevues = new ArrayList () ;
     mArtefactsImprevues = new ArrayList () ;
+    mMesures = new ArrayList () ;
     mTacheEnCours = -1 ;
   }
 
@@ -721,5 +724,24 @@ public class MCollaborateur extends MModeleBase
   public void supprimerArtefactImprevue (MArtefactImprevue pArtefactImprevue)
   {
     mArtefactsImprevues.remove (pArtefactImprevue) ;
+  }
+  
+  /**
+   * Récupère la liste des mesures associées au collaborateur.
+   * @return Liste des mesures associées au collaborateur.
+   */
+  public ArrayList getListeMesures ()
+  {
+    return mMesures ;
+  }
+
+
+  /**
+   * Initialise la liste des mesures associées au collaborateur.
+   * @param pArtefacts Liste des mesures associées au collaborateur.
+   */
+  public void setListeMesures (ArrayList pMesures)
+  {
+    mMesures = pMesures ;
   }
 }

@@ -187,6 +187,9 @@
     <field name="mDateFinPrevue" type="date" get-method="getDateFinPrevue" set-method="setDateFinPrevue">
       <sql name="PRJ_DATEFINPREVUE" type="date"/>
     </field>
+    <field name="mBudget" type="double" get-method="getBudget" set-method="setBudget">
+      <sql name="PRJ_BUDGET" type="float"/> 
+    </field>
     <field name="mProcessus" type="owep.modele.processus.MProcessus" get-method="getProcessus" set-method="setProcessus" required="true">
       <sql name="PRJ_PRC_ID"/>
     </field>
@@ -207,6 +210,9 @@
     </field>
     <field name="mArtefactsImprevues" type="owep.modele.execution.MArtefactImprevue" collection="arraylist" get-method="getListeArtefactsImprevues" set-method="setListeArtefactsImprevues">
       <sql many-key="ARI_PRJ_ID"/>
+    </field>
+    <field name="mIndicateurs" type="owep.modele.execution.MIndicateur" collection="arraylist" get-method="getListeIndicateurs" set-method="setListeIndicateurs">
+      <sql many-key="IND_PRJ_ID"/>
     </field>
   </class>
   
@@ -245,6 +251,9 @@
     </field>
     <field name="mTachesImprevues" type="owep.modele.execution.MTacheImprevue" collection="arraylist" get-method="getListeTachesImprevues" set-method="setListeTachesImprevues">
       <sql many-key="TIM_ITE_ID"/>
+    </field>
+    <field name="mMesures" type="owep.modele.execution.MMesureIndicateur" collection="arraylist" get-method="getListeMesures" set-method="setListeMesures">
+      <sql many-key="MSI_ITE_ID"/>
     </field>
   </class>
 
@@ -304,6 +313,9 @@
     </field>
     <field name="mTachesImprevues" type="owep.modele.execution.MTacheImprevue" collection="arraylist" get-method="getListeTachesImprevues" set-method="setListeTachesImprevues">
       <sql many-key="TIM_COL_ID"/>
+    </field>
+    <field name="mMesures" type="owep.modele.execution.MMesureIndicateur" collection="arraylist" get-method="getListeMesures" set-method="setListeMesures">
+      <sql many-key="MSI_COL_ID"/>
     </field>
   </class>
   
@@ -549,27 +561,50 @@
     </field>
   </class>
   
-  <class name="owep.modele.execution.MMetrique" identity="mId">
-    <map-to table="MET_METRIQUE"/>
+  <class name="owep.modele.execution.MIndicateur" identity="mId">
+    <map-to table="IND_INDICATEUR"/>
     <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
-      <sql name="MET_ID" type="integer"/>
+      <sql name="IND_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
-      <sql name="MET_NOM" type="char"/>
-    </field>
-    <field name="mType" type="integer" get-method="getType" set-method="setType" required="true">
-      <sql name="MET_TYPE" type="integer"/>
-    </field>
-    <field name="mValeur" type="integer" get-method="getValeur" set-method="setValeur" required="true">
-      <sql name="MET_VALEUR" type="integer"/>
+      <sql name="IND_NOM" type="char"/>
     </field>
     <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
-      <sql name="MET_DESCRIPTION" type="char"/>
+      <sql name="IND_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mUnite" type="string" get-method="getUnite" set-method="setUnite">
+      <sql name="IND_UNITE" type="char"/>
     </field>
     <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet" required="true">
-      <sql name="MET_PRJ_ID"/>
+      <sql name="IND_PRJ_ID"/>
+    </field>
+    <field name="mMesures" type="owep.modele.execution.MMesureIndicateur" collection="arraylist" get-method="getListeMesures" set-method="setListeMesures">
+      <sql many-key="MSI_IND_ID"/>
     </field>
   </class>
+  
+  <class name="owep.modele.execution.MMesureIndicateur" identity="mId">
+    <map-to table="MSI_MESUREINDICATEUR"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+      <sql name="MSI_ID" type="integer"/>
+    </field>
+    <field name="mValeur" type="double" get-method="getValeur" set-method="setValeur">
+      <sql name="MSI_VALEUR" type="float"/>
+    </field>
+    <field name="mCommentaire" type="string" get-method="getCommentaire" set-method="setCommentaire">
+      <sql name="MSI_COMMENTAIRE" type="char"/>
+    </field>
+    <field name="mIndicateur" type="owep.modele.execution.MIndicateur" get-method="getIndicateur" set-method="setIndicateur" required="true">
+      <sql name="MSI_IND_ID"/>
+    </field>
+    <field name="mCollaborateur" type="owep.modele.execution.MCollaborateur" get-method="getCollaborateur" set-method="setCollaborateur" required="true">
+      <sql name="MSI_COL_ID"/>
+    </field>
+    <field name="mIteration" type="owep.modele.execution.MIteration" get-method="getIteration" set-method="setIteration" required="true">
+      <sql name="MSI_ITE_ID"/>
+    </field>
+  </class>
+  
   
   <class name="owep.modele.execution.MProbleme" identity="mId">
     <map-to table="PRB_PROBLEME"/>

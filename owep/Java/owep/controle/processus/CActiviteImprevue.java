@@ -98,7 +98,9 @@ public class CActiviteImprevue extends CControleurBase
         mActiviteImprevue.setProjet (mProjet);
         
         DriverManager.registerDriver (new Driver ()) ;
-        lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", "root", "root") ;
+
+        lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", "root", "owep2005") ;
+
         lConnection.setAutoCommit(false);
         mActiviteImprevue.create (lConnection) ;
         lConnection.commit () ;

@@ -3,6 +3,7 @@ package owep.controle.avancement;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 import org.exolab.castor.jdo.OQLQuery;
+import org.exolab.castor.jdo.PersistenceException;
 import org.exolab.castor.jdo.QueryResults;
 import owep.controle.CConstante;
 import owep.controle.CControleurBase;
@@ -128,6 +129,19 @@ public class CAvancementCollaborateur extends CControleurBase{
         eException.printStackTrace () ;
         throw new ServletException (CConstante.EXC_TRAITEMENT) ;
       }
+      // Ferme la connexion à la base de données.
+      finally
+      {
+        try
+        {
+          getBaseDonnees ().close () ;
+        }
+        catch (PersistenceException eException)
+        {
+          eException.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_DECONNEXION) ;
+        }
+      }
     }
     
     /**
@@ -137,16 +151,7 @@ public class CAvancementCollaborateur extends CControleurBase{
      */
     public void initialiserParametres () throws ServletException
     {
-      
-      try
-      {
 
-      }
-      catch (Exception eException)
-      {
-        eException.printStackTrace () ;
-        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-      }
     }
     
     

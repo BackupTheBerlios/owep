@@ -206,6 +206,26 @@
   
   
   
+   <!-- Liste des servlets pour les iterations -->
+  <servlet> 
+    <servlet-name>CListeIndicateurs</servlet-name> 
+    <servlet-class>owep.controle.iteration.CListeIndicateurs</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CListeIndicateurs</servlet-name> 
+    <url-pattern>/Iteration/ListeIndicateurs</url-pattern> 
+  </servlet-mapping> 
+  <servlet> 
+    <servlet-name>CValidationIndicateurs</servlet-name> 
+    <servlet-class>owep.controle.iteration.CValidationIndicateurs</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CValidationIndicateurs</servlet-name> 
+    <url-pattern>/Iteration/ValidationIndicateurs</url-pattern> 
+  </servlet-mapping>
+  
+  
+  
   <!-- Navigation -->
   <servlet>
     <servlet-name>CNavigationIteration</servlet-name>

@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import owep.modele.MModeleBase;
-import owep.modele.processus.MProduit;
 
 
 /**

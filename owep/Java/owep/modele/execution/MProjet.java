@@ -3,7 +3,7 @@ package owep.modele.execution ;
 
 import java.util.Date ;
 import java.util.ArrayList ;
-import owep.modele.MModeleBase;
+import owep.modele.MModeleBase ;
 import owep.modele.processus.MProcessus ;
 
 
@@ -13,18 +13,22 @@ import owep.modele.processus.MProcessus ;
  */
 public class MProjet extends MModeleBase
 {
-  private int               mId ;                 // Identifie le projet de manière unique.
-  private String            mNom ;                // Nom du projet.
-  private String            mDescription ;        // Description du projet.
-  private Date              mDateDebutPrevue ;    // Date de début prévue pour le projet.
-  private Date              mDateFinPrevue ;      // Date de fin prévue pour le projet.
-  private ArrayList         mArtefacts ;          // Liste des artefacts réalisés durant le projet.
-  private ArrayList         mCollaborateurs ;     // Liste des collaborateurs travaillant sur le projet.
-  private ArrayList         mIterations ;         // Liste des itérations réalisées durant le projet.
-  private MProcessus        mProcessus ;          // Processus utilisé par le projet.
-  private MCollaborateur    mChefProjet ;         // Chef de projet.
-  private ArrayList         mActivitesImprevues ; // Listes des activités imprévues de ce projet
-  private ArrayList         mArtefactsImprevues ; // Liste des artefacts imprévues réalisés durant le projet.
+  private int            mId ;                // Identifie le projet de manière unique.
+  private String         mNom ;               // Nom du projet.
+  private String         mDescription ;       // Description du projet.
+  private Date           mDateDebutPrevue ;   // Date de début prévue pour le projet.
+  private Date           mDateFinPrevue ;     // Date de fin prévue pour le projet.
+  private double         mBudget ;            // Budget alloué au projet
+  private ArrayList      mArtefacts ;         // Liste des artefacts réalisés durant le projet.
+  private ArrayList      mCollaborateurs ;    // Liste des collaborateurs travaillant sur le projet.
+  private ArrayList      mIterations ;        // Liste des itérations réalisées durant le projet.
+  private MProcessus     mProcessus ;         // Processus utilisé par le projet.
+  private MCollaborateur mChefProjet ;        // Chef de projet.
+  private ArrayList      mActivitesImprevues ; // Listes des activités imprévues de ce projet
+  private ArrayList      mArtefactsImprevues ; // Liste des artefacts imprévues réalisés durant le
+                                               // projet.
+  private ArrayList      mIndicateurs ;       // Liste des indicateurs associés au projet.
+
 
   /**
    * Crée une instance vide de MProjet.
@@ -32,12 +36,12 @@ public class MProjet extends MModeleBase
   public MProjet ()
   {
     super () ;
-    
-    mIterations          = new ArrayList () ;
-    mArtefacts           = new ArrayList () ;
-    mCollaborateurs      = new ArrayList () ;
-    mActivitesImprevues  = new ArrayList () ;
-    mArtefactsImprevues  = new ArrayList () ;
+    mIterations = new ArrayList () ;
+    mArtefacts = new ArrayList () ;
+    mCollaborateurs = new ArrayList () ;
+    mActivitesImprevues = new ArrayList () ;
+    mArtefactsImprevues = new ArrayList () ;
+    mIndicateurs = new ArrayList () ;
   }
 
 
@@ -53,18 +57,17 @@ public class MProjet extends MModeleBase
                   Date pDateFinPrevue)
   {
     super () ;
-    
-    mId              = pId ;
-    mNom             = pNom ;
-    mDescription     = pDescription ;
+    mId = pId ;
+    mNom = pNom ;
+    mDescription = pDescription ;
     mDateDebutPrevue = pDateDebutPrevue ;
-    mDateFinPrevue   = pDateFinPrevue ;
-    
-    mIterations          = new ArrayList () ;
-    mArtefacts           = new ArrayList () ;
-    mCollaborateurs      = new ArrayList () ;
-    mActivitesImprevues  = new ArrayList () ;
-    mArtefactsImprevues  = new ArrayList () ;
+    mDateFinPrevue = pDateFinPrevue ;
+    mIterations = new ArrayList () ;
+    mArtefacts = new ArrayList () ;
+    mCollaborateurs = new ArrayList () ;
+    mActivitesImprevues = new ArrayList () ;
+    mArtefactsImprevues = new ArrayList () ;
+    mIndicateurs = new ArrayList () ;
   }
 
 
@@ -241,6 +244,26 @@ public class MProjet extends MModeleBase
 
 
   /**
+   * TODO Récupère mBudget.
+   * @return mBudget.
+   */
+  public double getBudget ()
+  {
+    return mBudget ;
+  }
+
+
+  /**
+   * TODO Initialise mBudget.
+   * @param budget mBudget.
+   */
+  public void setBudget (double pBudget)
+  {
+    mBudget = pBudget ;
+  }
+
+
+  /**
    * Récupère la description du projet.
    * @return Description du projet.
    */
@@ -369,8 +392,8 @@ public class MProjet extends MModeleBase
   {
     mProcessus = pProcessus ;
   }
-  
-  
+
+
   /**
    * Récupère la liste des tâches imprévues.
    * @return mActivitesImprevues la liste des tâches imprévues.
@@ -379,8 +402,8 @@ public class MProjet extends MModeleBase
   {
     return mActivitesImprevues ;
   }
-  
-  
+
+
   /**
    * Initialise la liste des tâches imprévues.
    * @param pActivitesImprevues la liste des tâches imprévues.
@@ -389,8 +412,8 @@ public class MProjet extends MModeleBase
   {
     mActivitesImprevues = pActivitesImprevues ;
   }
-  
-  
+
+
   /**
    * Récupère l'activite imprévue d'indice spécifié nécessaire au projet.
    * @param pIndice Indice de l'activité imprevue dans la liste.
@@ -424,14 +447,14 @@ public class MProjet extends MModeleBase
 
   /**
    * Supprime l'activité imprévue spécifié au projet.
-   * @param pActiviteImprevue Activité imprévue au projet. 
+   * @param pActiviteImprevue Activité imprévue au projet.
    */
   public void supprimerActiviteImprevue (MActiviteImprevue pActiviteImprevue)
   {
     mActivitesImprevues.remove (pActiviteImprevue) ;
   }
-  
-  
+
+
   /**
    * Récupère le nombre d'activités imprévues du projet.
    * @return le nombre d'activités imprévues du projet.
@@ -441,7 +464,7 @@ public class MProjet extends MModeleBase
     return mActivitesImprevues.size () ;
   }
 
-  
+
   /**
    * Récupère la liste des artefacts réalisés durant le projet.
    * @return Liste des artefacts réalisés durant le projet.
@@ -500,5 +523,46 @@ public class MProjet extends MModeleBase
   public void supprimerArtefactImprevue (MArtefactImprevue pArtefactImprevue)
   {
     mArtefactsImprevues.remove (pArtefactImprevue) ;
+  }
+
+
+  /**
+   * Récupère la liste des indicateurs associés au projet.
+   * @return Liste des indicateurs associés au projet.
+   */
+  public ArrayList getListeIndicateurs ()
+  {
+    return mIndicateurs ;
+  }
+
+
+  /**
+   * Initialise la liste des indicateurs associés au projet.
+   * @param pArtefacts Liste des indicateurs associés au projet.
+   */
+  public void setListeIndicateurs (ArrayList pIndicateurs)
+  {
+    mIndicateurs = pIndicateurs ;
+  }
+
+
+  /**
+   * Récupère le nombre d'indicateurs sur le projet.
+   * @return Nombre d'indicateurs sur le projet.
+   */
+  public int getNbIndicateurs ()
+  {
+    return mIndicateurs.size () ;
+  }
+
+
+  /**
+   * Récupère l'indicateur d'indice spécifié pour le projet.
+   * @param pIndice Indice de l'indicateur dans la liste.
+   * @return Indicateur du projet.
+   */
+  public MIndicateur getIndicateur (int pIndice)
+  {
+    return (MIndicateur) mIndicateurs.get (pIndice) ;
   }
 }
