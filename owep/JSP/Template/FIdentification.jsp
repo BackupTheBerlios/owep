@@ -1,14 +1,21 @@
-<%@ page language="java" %>
-<%@ taglib uri='/WEB-INF/tld/template.tld' prefix='template' %>
+<%@page language="java" %>
+<%@page import="java.util.ResourceBundle"%>
+<%@page import="java.util.ResourceBundle"%>
 <%@page import="owep.controle.CConstante"%>
+<%@taglib uri='/WEB-INF/tld/template.tld' prefix='template' %>
 
+
+<%
+  //Récupération du ressource bundle.
+  ResourceBundle messages = ResourceBundle.getBundle ("MessagesBundle") ;
+%>
 
 <!-- en-tête de la page -->
 <html>
 <head>
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
   <meta name="author" content="OWEP Team">
-  <meta name="description" content="Outil de Workflow pour une équipe de Projet">
+  <meta name="description" content="<%= messages.getString("titre") %>">
   <title>OWEP</title>
   <link rel="stylesheet" href="/owep/CSS/Apparence.css" type="text/css">
   <script language="javascript" src="/owep/JavaScript/VerificationChamp.js"></script>
@@ -59,7 +66,7 @@
                   <td>
                     <a onclick="afficherAide (pCodeAide)">
                       <img src="/owep/Image/Vide.gif" class="iconeAide" onmouseout="tooltipOff(this, event)"
-                       onmouseover="tooltipTitreOn(this, event, 'Aide en ligne', 'Cliquez pour afficher de l\'aide sur cette page.')"/>
+                       onmouseover="tooltipTitreOn(this, event, '<%= messages.getString("aide") %>', '<%= messages.getString("aideAide") %>')"/>
                     </a>
                   </td>
                 </tr>

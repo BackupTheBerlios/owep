@@ -1,8 +1,14 @@
 <%@ page language="java" %>
+<%@page import="java.util.ResourceBundle"%>
 <%@ taglib uri="/WEB-INF/tld/template.tld" prefix="template" %>
 
+<%
+  //Récupération du ressource bundle.
+  ResourceBundle messages = ResourceBundle.getBundle ("MessagesBundle") ;
+%>
+
 <template:template nom="/JSP/Template/FTemplate.jsp">
-  <template:section region="RegionTitre"      contenu="Détail du risque"              typePage="false"/>
+  <template:section region="RegionTitre"      contenu="<%= messages.getString("risqueModifTitre") %>" typePage="false"/>
   <template:section region="RegionPrincipal"  contenu="/JSP/Gestion/FRisqueModif.jsp" typePage="true"/>
   <template:section region="RegionLogo"       contenu="/JSP/Template/FLogo.jsp"       typePage="true"/>
   <template:section region="RegionMenu"       contenu="/JSP/Template/FMenu.jsp"       typePage="true"/>

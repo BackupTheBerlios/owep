@@ -1,16 +1,11 @@
 <%@page language="java" %>
 <%@page import="java.util.ResourceBundle"%>
-<%@page import="owep.infrastructure.Session"%>
 <%@ taglib uri='/WEB-INF/tld/template.tld' prefix='template' %>
 
 
 <%
-  // Récuperation de la session.
-  HttpSession httpSession = request.getSession(true);
-  Session lSession = (Session) httpSession.getAttribute ("SESSION") ;
-  
   //Récupération du ressource bundle.
-  ResourceBundle messages = lSession.getMessages () ;
+  ResourceBundle messages = ResourceBundle.getBundle ("MessagesBundle") ;
 %>
 
 <!-- en-tête de la page -->
