@@ -210,7 +210,7 @@
   <p class="texteObligatoire">Les champs marqué d'un * sont obligatoires.</p>
   <p class="texteSubmit">
     <input name="<%= CConstante.PAR_LISTETACHESPROVOQUE %>" type="hidden" value=""/>
-    <input name="<%= CConstante.PAR_LISTETACHESRESOUT %>" type="hidden" value=""/>
+    <input name="<%= CConstante.PAR_LISTETACHESRESOUT %>"   type="hidden" value=""/>
     
     <% lCodeValidation = VTransfertConstante.getVerification (CConstante.PAR_ARBREPROBLEME)+ " () ;" ; %>
     <% lCodeValidation += "isSelectVide (document." + CConstante.PAR_FORMULAIRE + ".pSelectTachesProvoque, 'liste des tâches à l\\'origine du problème') ;" ; %>

@@ -6,7 +6,7 @@
 <jsp:useBean id="lSession" class="owep.infrastructure.Session" scope="page"/>
 <jsp:useBean id="lProjet" class="owep.modele.execution.MProjet" scope="page"/>
 
-<%
+<%try{
   // Recuperation de la session
   HttpSession httpSession = request.getSession(true);
   lSession = (Session) httpSession.getAttribute("SESSION");
@@ -55,7 +55,8 @@
   <tr>
     <td class="caseMenuProjet">
       <!-- Le formulaire ayant pour nom changerProjet est envoyé dés qu'un changement sur la sélection de la liste a été constaté -->
-      <select class="menuProjet" name="mIdProjet" size ="1" onchange="changerProjet.submit()">
+      <select class="menuProjet" name="mIdProjet" size ="1" onchange="changerProjet.submit()"
+       onmouseover="tooltipTitreOn(this, event, 'Selecteur de projet', 'Choisissez le porjet que vous voulez visualiser.')" onmouseout="tooltipOff(this, event)">
 <%
   // Affichage de la liste des projets possibles
   // Le projet ouvert est sélectionné par défaut
@@ -76,7 +77,10 @@
   
   <tr>
     <td class="caseMenuConnexion">
-      <a class="menuConnexion" href="../Outil/Deconnexion"><%=messages.getString("menuDeconnexion")%></a>
+      <a class="menuConnexion" href="../Outil/Deconnexion"
+       onmouseover="tooltipOn(this, event, 'Déconnectez vous de l\'application <b>OWEP</b>.')" onmouseout="tooltipOff(this, event)">
+        <%=messages.getString("menuDeconnexion")%>
+      </a>
     </td>
   </tr>
   <tr>
@@ -119,22 +123,34 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Avancement/AvancementProjet?menu=clique">Projet</a>
+      <a class="menuNiveau2" href="../Avancement/AvancementProjet?menu=clique"
+       onmouseover="tooltipOn(this, event, 'Détail de l\'avancement pour le projet ouvert et chacune des itérations.')" onmouseout="tooltipOff(this, event)">
+        Projet
+      </a>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Avancement/AvancementCollaborateur?menu=clique">Collaborateurs</a>
+      <a class="menuNiveau2" href="../Avancement/AvancementCollaborateur?menu=clique"
+       onmouseover="tooltipOn(this, event, 'Détail de l\'avancement pour chacun des collaborateurs sur le projet ouvert.')" onmouseout="tooltipOff(this, event)">
+        Collaborateurs
+      </a>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <p class="menuNiveau2">Risques</p>
+      <p class="menuNiveau2"
+       onmouseover="tooltipOn(this, event, 'Liste des risques suceptibles de survenir et action pour leur gestion.')" onmouseout="tooltipOff(this, event)">
+        Risques
+      </p>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Gestion/ListeProblemeVisu">Problèmes</a>
+      <a class="menuNiveau2" href="../Gestion/ListeProblemeVisu"
+       onmouseover="tooltipOn(this, event, 'Listes des problèmes survenus sur le projet et tâches pour les résoudre.')" onmouseout="tooltipOff(this, event)">
+        Problèmes
+      </a>
     </td>
   </tr>
   <tr>
@@ -151,22 +167,34 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Processus/ProjetVisu">Itérations</a>
+      <a class="menuNiveau2" href="../Processus/ProjetVisu"
+       onmouseover="tooltipOn(this, event, 'Ajout et modification des itérations pour le projet.')" onmouseout="tooltipOff(this, event)">
+        Projet
+      </a>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Processus/CreationCollaborateur">Collaborateurs</a>
+      <a class="menuNiveau2" href="../Processus/CreationCollaborateur"
+       onmouseover="tooltipOn(this, event, 'Ajout de nouveaux collaborateur sur le projet.')" onmouseout="tooltipOff(this, event)">
+        Collaborateurs
+      </a>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Processus/ActiviteImprevue">Activités imprévues</a>
+      <a class="menuNiveau2" href="../Processus/ActiviteImprevue"
+       onmouseover="tooltipOn(this, event, 'Ajout et modification d\'activité non prévues dans le processus.')" onmouseout="tooltipOff(this, event)">
+        Activités imprévues
+      </a>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Processus/TacheImprevue">Tâches imprévues</a>
+      <a class="menuNiveau2" href="../Processus/TacheImprevue"
+       onmouseover="tooltipOn(this, event, 'Ajout et modification de tâches non prévues dans le processus.')" onmouseout="tooltipOff(this, event)">
+        Tâches imprévues
+      </a>
     </td>
   </tr>
 <%
@@ -176,7 +204,10 @@
 %>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Processus/GererProjet">Création d'un projet</a><br>
+      <a class="menuNiveau2" href="../Processus/GererProjet"
+       onmouseover="tooltipOn(this, event, 'Exporte les données du projet au format <b>.XML</b>.')" onmouseout="tooltipOff(this, event)">
+        Création d'un projet
+      </a>
     </td>
   </tr>
 <%
@@ -244,7 +275,7 @@
       <p class="menuNiveau2">Option de projet</p>
     </td>
   </tr>
-<%}%>  
+<%}}catch (Exception lException) {%><%=lProjet%><%=lSession.getProjet().getChefProjet()%><%}%>  
   <tr>
     <td height="100%" class="caseMenuSeparation2">
       &nbsp;

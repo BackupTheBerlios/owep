@@ -200,7 +200,7 @@
           <tr>
             <td class="caseNiveau3SansBordure">
               <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Description de ce qui doit être fait au cours de la tâche.')" onmouseout="tooltipOff(this, event)">
-              Description :
+                Description :
               </a>
             </td>
             <td>
@@ -371,7 +371,9 @@
               <table width="100%" cellpadding="0" cellspacing="0" valign="top">
                 <tr>       
                   <td colspan="2" align="center">
-                    <select class="niveau2" name="<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>" style="width: 80%" onchange="selectArtefact (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.selectedIndex)" size="4">
+                    <select class="niveau2" name="<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>" style="width: 80%"
+                     onchange="selectArtefact (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.selectedIndex)" size="4"
+                     onmouseout="tooltipOff(this, event)" onmouseover="tooltipOn(this, event, 'Listes des artefacts en sorties déjà disponible pour la tâche.')">
                     </select>
                   </td>
                 </tr>
@@ -492,7 +494,7 @@
                   <td align="center">
                     <% lCodeValidation = "validerArtefactEntree (document." + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ", 'Attention aucun artefact en entrée n\\'a été sélectionné.' ) ;" ; %>
                     <transfert:transfertsubmit libelle="Ajouter"  valeur="<%= CConstante.PAR_SUBMITAJOUTER_ARTENTREES %>" verification="true" validation="<%= lCodeValidation %>"
-                     additionnel="onmouseover=\"tooltipOn(this, event, 'Ajoute l'\\artefact en entrée de la tâche.')\" onmouseout=\"tooltipOff(this, event)\""/>
+                     additionnel="onmouseover=\"tooltipOn(this, event, 'Ajoute l\\'artefact en entrée de la tâche.')\" onmouseout=\"tooltipOff(this, event)\""/>
                   </td>
                   <td align="center">     
                     <% lCodeValidation = "validerArtefactEntreeSuppr (document." + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTEARTEFACTSENTREES + ", 'Attention aucun artefact en entrée n\\'a été sélectionné.' ) ;" ; %>
@@ -585,11 +587,10 @@
     </tr>
   </tbody>
   </table>
-  
   </transfert:transfertbean>
 
-  <br>
-  <p class="paragrapheSubmit">
+  <p class="texteObligatoire">Les champs marqué d'un * sont obligatoires.</p>
+  <p class="texteSubmit">
     <transfert:transfertsubmit libelle="Valider" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="validerFormulaire () ;"
      additionnel="onmouseover=\"tooltipOn(this, event, 'Valide toutes les données de l\\'itération.')\" onmouseout=\"tooltipOff(this, event)\""/>
   </p>

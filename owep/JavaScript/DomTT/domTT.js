@@ -1,4 +1,4 @@
-/** $Id: domTT.js,v 1.1 2005/02/20 12:19:58 ratamovic Exp $ */
+/** $Id: domTT.js,v 1.2 2005/02/23 10:46:45 ratamovic Exp $ */
 // {{{ docs <-- this is a VIM (text editor) text fold
 
 /**
@@ -72,7 +72,7 @@ var domTT_direction = 'southeast';
 var domTT_mouseHeight = 20;
 var domTT_closeLink = 'X';
 var domTT_screenEdgePadding = 5;
-var domTT_activateDelay = 500;
+var domTT_activateDelay = 2000;
 var domTT_maxWidth = 300;
 var domTT_useGlobalMousePosition = true;
 var domTT_classPrefix = 'domTT';
