@@ -3,21 +3,22 @@ package owep.modele.execution ;
 
 import java.util.ArrayList ;
 import java.util.Date ;
+import owep.modele.MModeleBase;
 
 
 /**
  * Une itération est une étape d'un projet. Elle se caractérise par un ensemble de tâches et de
  * participant qui utilisent et réalisent des artefacts.
  */
-public class MIteration
+public class MIteration extends MModeleBase
 {
   private int       mId ;              // Identifie l'itération de manière unique.
   private int       mNumero ;          // Numéro de l'itération.
+  private String    mNom ;             // Nom désignant l'itération.
   private Date      mDateDebutPrevue ; // Date de début prévue pour l'itération.
   private Date      mDateFinPrevue ;   // Date de fin prévue pour l'itération.
   private Date      mDateDebutReelle ; // Date de début réelle de l'itération.
   private Date      mDateFinReelle ;   // Date de fin réelle de l'itération.
-  private int       mEtat ;            // Numéro de l'état. 
   private MProjet   mProjet ;          // Projet dont l'itération est une étape.
   private ArrayList mTaches ;          // Liste des tâches réalisées durant l'itération.
 
@@ -36,17 +37,18 @@ public class MIteration
   /**
    * Crée une instance initialisée de MIteration.
    * @param pNumero Numéro de l'itération.
+   * @param pNom Nom désignant l'itération.
    * @param pDateDebutPrevue Date de début prévue de l'itération.
    * @param pDateFinPrevue Date de fin prévue de l'itération.
    */
-  public MIteration (int pNumero, Date pDateDebutPrevue, Date pDateFinPrevue)
+  public MIteration (int pNumero, String pNom, Date pDateDebutPrevue, Date pDateFinPrevue)
   {
     super () ;
     
     mNumero          = pNumero ;
+    mNom             = pNom ;
     mDateDebutPrevue = pDateDebutPrevue ;
     mDateFinPrevue   = pDateFinPrevue ;
-    mEtat = 0;
     
     mTaches = new ArrayList () ;
   }
@@ -55,22 +57,23 @@ public class MIteration
   /**
    * Crée une instance de MIteration
    * @param pNumero Numéro de l'itération.
+   * @param pNom Nom désignant l'itération.
    * @param pDateDebutPrevue Date de début prévue de l'itération.
    * @param pDateFinPrevue Date de fin prévue de l'itération.
    * @param pDateDebutReelle Date de début réelle de l'itération.
    * @param pDateFinReelle Date de fin réelle de l'itération.
    */
-  public MIteration (int pNumero, Date pDateDebutPrevue, Date pDateFinPrevue,
+  public MIteration (int pNumero, String pNom, Date pDateDebutPrevue, Date pDateFinPrevue,
                      Date pDateDebutReelle, Date pDateFinReelle)
   {
     super () ;
     
     mNumero          = pNumero ;
+    mNom             = pNom ;
     mDateDebutPrevue = pDateDebutPrevue ;
     mDateFinPrevue   = pDateFinPrevue ;
     mDateDebutReelle = pDateDebutReelle ;
     mDateFinReelle   = pDateFinReelle ;
-    mEtat = 0;
     
     mTaches = new ArrayList () ;
   }
@@ -177,6 +180,26 @@ public class MIteration
 
 
   /**
+   * Récupère le nom de l'itération.
+   * @return Nom désignant l'itération.
+   */
+  public String getNom ()
+  {
+    return mNom ;
+  }
+
+
+  /**
+   * Initialise le nom de l'itération.
+   * @param pNom Nom désignant l'itération.
+   */
+  public void setNom (String pNom)
+  {
+    mNom = pNom ;
+  }
+
+
+  /**
    * Récupère le numéro de l'itération.
    * @return Numéro de l'itération.
    */
@@ -195,24 +218,7 @@ public class MIteration
     mNumero = pNumero ;
   }
 
-  /**
-   * Récupère le état de l'itération.
-   * @return état de l'itération.
-   */
-  public int getEtat ()
-  {
-    return mEtat ;
-  }
 
-  /**
-   * Initialise le état de l'itération.
-   * @param pEtat état de l'itération.
-   */
-  public void setEtat (int pEtat)
-  {
-    mEtat = pEtat ;
-  }
-  
   /**
    * Récupère le projet dont l'itération est une étape.
    * @return Projet dont l'itération est une étape.
@@ -281,5 +287,15 @@ public class MIteration
   public void addTache (MTache pTache)
   {
     mTaches.add (pTache) ;
+  }
+
+
+  /**
+   * Supprime la tâche spécifiée de l'itération.
+   * @param pIndice Indice de la tâche à supprimer.
+   */
+  public void supprimerTache (int pIndice)
+  {
+    mTaches.remove (pIndice) ;
   }
 }

@@ -101,7 +101,7 @@ public class MProcessus extends MModeleBase
    * Ajoute le composant spécifié au processus.
    * @param pComposant Composant définissant le processus.
    */
-  public void addActivite (MComposant pComposant)
+  public void addComposant (MComposant pComposant)
   {
     mComposants.add (pComposant) ;
   }

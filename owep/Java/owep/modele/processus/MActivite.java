@@ -217,7 +217,7 @@ public class MActivite extends MModeleBase
    */
   public int getNbProduitsSorties ()
   {
-    return mProduitsEntrees.size () ;
+    return mProduitsSorties.size () ;
   }
 
 
@@ -228,7 +228,7 @@ public class MActivite extends MModeleBase
    */
   public MProduit getProduitSortie (int pIndice)
   {
-    return (MProduit) mProduitsEntrees.get (pIndice) ;
+    return (MProduit) mProduitsSorties.get (pIndice) ;
   }
 
 
@@ -341,5 +341,15 @@ public class MActivite extends MModeleBase
   public void addTache (MTache pTache)
   {
     mTaches.add (pTache) ;
+  }
+  
+  
+  /**
+   * Supprime la tâche spécifiée qui instancie l'activité.
+   * @param pTache Tâche qui instancie l'activité.
+   */
+  public void supprimerTache (MTache pTache)
+  {
+    mTaches.remove (pTache) ;
   }
 }

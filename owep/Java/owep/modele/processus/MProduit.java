@@ -289,6 +289,16 @@ public class MProduit extends MModeleBase
 
 
   /**
+   * Supprime l'artefact spécifié qui instancie le produit.
+   * @param pArtefact Artefact qui instancie le produit.
+   */
+  public void supprimerArtefact (MArtefact pArtefact)
+  {
+    mArtefacts.remove (pArtefact) ;
+  }
+
+
+  /**
    * Récupère le rôle responsable du produit.
    * @return Rôle responsable du produit.
    */

@@ -10,6 +10,8 @@ import owep.modele.processus.MProduit;
  */
 public class MArtefact extends MModeleBase
 {
+  public String PATH_ARTEFACT = "Artefacts/"; //Variable global avec le path vers les artefacts (à mettre dans un fichier avec des variables globales)
+
   private int            mId ;            // Identifie l'artefact de manière unique.
   private String         mNom ;           // Nom de l'artefact.
   private String         mDescription ;   // Description de l'artefact.
@@ -17,11 +19,10 @@ public class MArtefact extends MModeleBase
   private MTache         mTacheEntree ;   // Tâche dont est issu l'artefact.
   private MTache         mTacheSortie ;   // Tâche qui nécessite l'artefact.
   private MProduit       mProduit ;       // Produit que l'artefact instancie.
-  private MCollaborateur mCollaborateur ; // Collaborateur responsable de l'artefact.
+  private MCollaborateur mResponsable ;   // Collaborateur responsable de l'artefact.
   private MProjet        mProjet ;        // Projet pour lequel est réalisé l'artefact.
 
-  public String PATH_ARTEFACT = "Artefacts/"; //Variable global avec le path vers les artefacts (à mettre dans un fichier avec des variables globales)
-  
+
   /**
    * Crée une instance vide de MArtefact.
    */
@@ -36,13 +37,11 @@ public class MArtefact extends MModeleBase
    * @param pNom Nom de l'artefact.
    * @param pDescription Description de l'artefact.
    */
-  public MArtefact (int pId, String pNom, String pDescription, String pNomFichier)
+  public MArtefact (int pId, String pNom, String pDescription)
   {
     mId          = pId ;
     mNom         = pNom ;
     mDescription = pDescription ;
-    mNomFichier  = pNomFichier ; 
-
   }
 
 
@@ -50,19 +49,19 @@ public class MArtefact extends MModeleBase
    * Récupère le collaborateur responsable de l'artefact.
    * @return Collaborateur responsable de l'artefact.
    */
-  public MCollaborateur getCollaborateur ()
+  public MCollaborateur getResponsable ()
   {
-    return mCollaborateur ;
+    return mResponsable ;
   }
 
 
   /**
    * Associe le collaborateur responsable de l'artefact.
-   * @param pCollaborateur Collaborateur responsable de l'artefact.
+   * @param pResponsable Collaborateur responsable de l'artefact.
    */
-  public void setCollaborateur (MCollaborateur pCollaborateur)
+  public void setResponsable (MCollaborateur pResponsable)
   {
-    mCollaborateur = pCollaborateur ;
+    mResponsable = pResponsable ;
   }
 
 
@@ -125,6 +124,7 @@ public class MArtefact extends MModeleBase
     mNom = pNom ;
   }
 
+
   /**
    * Récupère le nom du fichier de l'artefact.
    * @return Nom du fichier de l'artefact.
@@ -143,6 +143,7 @@ public class MArtefact extends MModeleBase
   {
     mNomFichier = pNomFichier ;
   }
+
 
   /**
    * Récupère le produit que l'artefact instancie.
@@ -222,7 +223,8 @@ public class MArtefact extends MModeleBase
   {
     mTacheSortie = pTacheSortie ;
   }
-  
+
+
   /**
    * Récupère le lien vers le fichier correspondant à l'artefact.
    * @return le lien vers le fichier correspondant à l'artefact si il existe.
@@ -238,5 +240,4 @@ public class MArtefact extends MModeleBase
       return "Non disponible";
     }
   }
- 
 }

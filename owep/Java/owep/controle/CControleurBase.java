@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse ;
 import javax.servlet.http.HttpSession;
 import org.exolab.castor.jdo.Database ;
 import org.exolab.castor.jdo.JDO ;
-import owep.infrastructure.Session;
-import owep.infrastructure.localisation.LocalisateurIdentifiant;
+import owep.infrastructure.Session ;
+import owep.infrastructure.localisation.LocalisateurIdentifiant ;
 
 
 /**
@@ -60,8 +60,8 @@ public abstract class CControleurBase extends HttpServlet
     mReponse = pReponse ;
     
     // Vérifie qu'une session a été ouverte
-    HttpSession lSession = mRequete.getSession(true);
-    mSession = (Session) lSession.getAttribute("SESSION");
+    HttpSession lSession = mRequete.getSession (true) ;
+    mSession = (Session) lSession.getAttribute (CConstante.SES_SESSION) ;
     if(mSession == null)
     {
       lSession.invalidate();
@@ -97,7 +97,7 @@ public abstract class CControleurBase extends HttpServlet
     else
     {
       // mis à jour de la session
-      lSession.setAttribute("SESSION",mSession);
+      lSession.setAttribute ("SESSION", mSession) ;
       
       // redirection vers la page convenue
       lRequeteDispatcher.forward (mRequete, mReponse) ;
@@ -135,6 +135,7 @@ public abstract class CControleurBase extends HttpServlet
     return mRequete ;
   }
   
+  
   /**
    * Récupère la session ouverte.
    * @return Session ouverte.
@@ -143,6 +144,7 @@ public abstract class CControleurBase extends HttpServlet
   {
     return mSession;
   }
+  
   
   /**
    * Récupère les données nécessaire au controleur dans la base de données. 

@@ -6,7 +6,7 @@
   <!-- Mapping modèle Processus -->
   <class name="owep.modele.processus.MProcessus" identity="mId">
     <map-to table="PRC_PROCESSUS"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="PRC_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -32,7 +32,7 @@
   
   <class name="owep.modele.processus.MComposant" identity="mId">
     <map-to table="COM_COMPOSANT"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="COM_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -64,7 +64,7 @@
   
   <class name="owep.modele.processus.MDefinitionTravail" identity="mId">
     <map-to table="DFT_DEFINITIONTRAVAIL"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="DFT_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -84,7 +84,7 @@
   
   <class name="owep.modele.processus.MActivite" identity="mId">
     <map-to table="ACT_ACTIVITE"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="ACT_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -113,7 +113,7 @@
   
   <class name="owep.modele.processus.MRole" identity="mId">
     <map-to table="ROL_ROLE"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="ROL_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -138,7 +138,7 @@
   
   <class name="owep.modele.processus.MProduit" identity="mId">
     <map-to table="PRD_PRODUIT"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="PRD_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -172,7 +172,7 @@
   <!-- Mapping modèle Exécution -->
   <class name="owep.modele.execution.MProjet" identity="mId">
     <map-to table="PRJ_PROJET"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="PRJ_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -199,16 +199,22 @@
     <field name="mIterations" type="owep.modele.execution.MIteration" collection="arraylist" get-method="getListeIterations" set-method="setListeIterations">
       <sql many-key="ITE_PRJ_ID"/>
     </field>
+    <field name="mChefProjet" type="owep.modele.execution.MCollaborateur" get-method="getChefProjet" set-method="setChefProjet" required="true">
+      <sql name="PRJ_COL_ID_CHEF"/>
+    </field>
   </class>
   
   
   <class name="owep.modele.execution.MIteration" identity="mId">
     <map-to table="ITE_ITERATION"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="ITE_ID" type="integer"/>
     </field>
     <field name="mNumero" type="integer" get-method="getNumero" set-method="setNumero" required="true">
       <sql name="ITE_NUMERO" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
+      <sql name="ITE_NOM" type="char"/>
     </field>
     <field name="mDateDebutPrevue" type="date" get-method="getDateDebutPrevue" set-method="setDateDebutPrevue" required="true">
       <sql name="ITE_DATEDEBUTPREVUE" type="date"/>
@@ -236,7 +242,7 @@
 
   <class name="owep.modele.execution.MCollaborateur" identity="mId">
     <map-to table="COL_COLLABORATEUR"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="COL_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -275,15 +281,21 @@
     <field name="mTaches" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTaches" set-method="setListeTaches">
       <sql many-key="TAC_COL_ID"/>
     </field>
-    <!--field name="mRoles" type="owep.modele.processus.MRole" collection="arraylist" get-method="getListeRoles" set-method="setListeRoles">
+    <field name="mProjetsChef" type="owep.modele.execution.MProjet" collection="arraylist" get-method="getListeProjetsChef" set-method="setListeProjetsChef">
+      <sql many-key="PRJ_COL_ID_CHEF"/>
+    </field>
+    <field name="mRoles" type="owep.modele.processus.MRole" collection="arraylist" get-method="getListeRoles" set-method="setListeRoles">
       <sql name="R04_ROL_ID" many-table="R04_COL_ROL" many-key="R04_COL_ID"/>
-    </field!-->
+    </field>
+    <field name="mProjets" type="owep.modele.execution.MProjet" collection="arraylist" get-method="getListeProjets" set-method="setListeProjets">
+      <sql name="R05_PRJ_ID" many-table="R05_COL_PRJ" many-key="R05_COL_ID"/>
+    </field>
   </class>
   
   
   <class name="owep.modele.execution.MTache" identity="mId">
     <map-to table="TAC_TACHE"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="TAC_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -342,7 +354,7 @@
   
   <class name="owep.modele.execution.MArtefact" identity="mId">
     <map-to table="ART_ARTEFACT" xml="artefact" />
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="ART_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -354,19 +366,19 @@
     <field name="mNomFichier" type="string" get-method="getNomFichier" set-method="setNomFichier">
       <sql name="ART_NOM_FICHIER" type="char"/>
     </field>
-    <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet">
+    <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet" required="true">
       <sql name="ART_PRJ_ID"/>
     </field>
-    <field name="mCollaborateur" type="owep.modele.execution.MCollaborateur" get-method="getCollaborateur" set-method="setCollaborateur" required="true">
+    <field name="mResponsable" type="owep.modele.execution.MCollaborateur" get-method="getResponsable" set-method="setResponsable" required="true">
       <sql name="ART_COL_ID"/>
     </field>
     <field name="mProduit" type="owep.modele.processus.MProduit" get-method="getProduit" set-method="setProduit" required="true">
       <sql name="ART_PRD_ID"/>
     </field>
-    <field name="mTacheEntree" type="owep.modele.execution.MTache" get-method="getTacheEntree" set-method="setTacheEntree" required="true">
+    <field name="mTacheEntree" type="owep.modele.execution.MTache" get-method="getTacheEntree" set-method="setTacheEntree" required="false">
       <sql name="ART_TAC_ID_ENTREE"/>
     </field>
-    <field name="mTacheSortie" type="owep.modele.execution.MTache" get-method="getTacheSortie" set-method="setTacheSortie" required="true">
+    <field name="mTacheSortie" type="owep.modele.execution.MTache" get-method="getTacheSortie" set-method="setTacheSortie" required="false">
       <sql name="ART_TAC_ID_SORTIE"/>
     </field>
   </class>
@@ -377,7 +389,7 @@
     <field name="mId" type="integer" get-method="getId" set-method="setId">
       <sql name="CND_ID" type="integer"/>
     </field>
-    <field name="mTache" type="owep.modele.execution.MTache" get-method="getTache" set-method="setTache">
+    <field name="mTache" type="owep.modele.execution.MTache" get-method="getTache" set-method="setTache" required="true">
       <sql name="CND_TAC_ID"/>
     </field>
     <field name="mTachePrecedente" type="owep.modele.execution.MTache" get-method="getTachePrecedente" set-method="setTachePrecedente" required="true">

@@ -3,6 +3,7 @@ package owep.modele.execution ;
 
 import java.util.Date ;
 import java.util.ArrayList ;
+import owep.modele.MModeleBase;
 import owep.modele.processus.MProcessus ;
 
 
@@ -10,17 +11,18 @@ import owep.modele.processus.MProcessus ;
  * Un projet est constitué d'un ensemble de tâches, de produits et de collaborateurs. MProjet est la
  * classe centrale du paquetage execution.
  */
-public class MProjet
+public class MProjet extends MModeleBase
 {
-  private int        mId ;              // Identifie le projet de manière unique.
-  private String     mNom ;             // Nom du projet.
-  private String     mDescription ;     // Description du projet.
-  private Date       mDateDebutPrevue ; // Date de début prévue pour le projet.
-  private Date       mDateFinPrevue ;   // Date de fin prévue pour le projet.
-  private ArrayList  mArtefacts ;       // Liste des artefacts réalisés durant le projet.
-  private ArrayList  mCollaborateurs ;  // Liste des collaborateurs travaillant sur le projet.
-  private ArrayList  mIterations ;      // Liste des itérations réalisées durant le projet.
-  private MProcessus mProcessus ;       // Processus utilisé par le projet.
+  private int            mId ;              // Identifie le projet de manière unique.
+  private String         mNom ;             // Nom du projet.
+  private String         mDescription ;     // Description du projet.
+  private Date           mDateDebutPrevue ; // Date de début prévue pour le projet.
+  private Date           mDateFinPrevue ;   // Date de fin prévue pour le projet.
+  private ArrayList      mArtefacts ;       // Liste des artefacts réalisés durant le projet.
+  private ArrayList      mCollaborateurs ;  // Liste des collaborateurs travaillant sur le projet.
+  private ArrayList      mIterations ;      // Liste des itérations réalisées durant le projet.
+  private MProcessus     mProcessus ;       // Processus utilisé par le projet.
+  private MCollaborateur mChefProjet ;      // Chef de projet.
 
 
   /**
@@ -83,7 +85,7 @@ public class MProjet
    */
   public int getNbArtefacts ()
   {
-    return mIterations.size () ;
+    return mArtefacts.size () ;
   }
 
 
@@ -94,7 +96,7 @@ public class MProjet
    */
   public MArtefact getArtefact (int pIndice)
   {
-    return (MArtefact) mIterations.get (pIndice) ;
+    return (MArtefact) mArtefacts.get (pIndice) ;
   }
 
 
@@ -104,7 +106,37 @@ public class MProjet
    */
   public void addArtefact (MArtefact pArtefact)
   {
-    mIterations.add (pArtefact) ;
+    mArtefacts.add (pArtefact) ;
+  }
+
+
+  /**
+   * Supprime l'artefact spécifié au projet.
+   * @param pArtefact Artefact réalisé durant le projet.
+   */
+  public void supprimerArtefact (MArtefact pArtefact)
+  {
+    mArtefacts.remove (pArtefact) ;
+  }
+
+
+  /**
+   * Récupère le chef de projet.
+   * @return Chef de projet.
+   */
+  public MCollaborateur getChefProjet ()
+  {
+    return mChefProjet ;
+  }
+
+
+  /**
+   * Initialise le chef de projet.
+   * @param pChefProjet Chef de projet.
+   */
+  public void setChefProjet (MCollaborateur pChefProjet)
+  {
+    mChefProjet = pChefProjet ;
   }
 
 
@@ -134,7 +166,7 @@ public class MProjet
    */
   public int getNbCollaborateurs ()
   {
-    return mIterations.size () ;
+    return mCollaborateurs.size () ;
   }
 
 
@@ -145,7 +177,7 @@ public class MProjet
    */
   public MCollaborateur getCollaborateur (int pIndice)
   {
-    return (MCollaborateur) mIterations.get (pIndice) ;
+    return (MCollaborateur) mCollaborateurs.get (pIndice) ;
   }
 
 
@@ -155,7 +187,7 @@ public class MProjet
    */
   public void addCollaborateur (MCollaborateur pCollaborateur)
   {
-    mIterations.add (pCollaborateur) ;
+    mCollaborateurs.add (pCollaborateur) ;
   }
 
 

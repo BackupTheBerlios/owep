@@ -138,9 +138,9 @@ public class MRole extends MModeleBase
    * Récupère le collaborateur d'indice spécifié qui tient le rôle.
    * @param pIndice Indice du collaborateur dans la liste.
    */
-  public void getCollaborateur (int pIndice)
+  public MCollaborateur getCollaborateur (int pIndice)
   {
-    mCollaborateurs.get (pIndice) ;
+    return (MCollaborateur) mCollaborateurs.get (pIndice) ;
   }
 
 
