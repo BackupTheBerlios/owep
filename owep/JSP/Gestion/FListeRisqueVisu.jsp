@@ -18,6 +18,24 @@
   
   // Récupération des paramètres.
   MProjet pProjet = (MProjet) request.getAttribute (CConstante.PAR_PROJET) ;
+  
+  // Trie les risques.
+  ArrayList lRisquesTmp = new ArrayList (pProjet.getListeRisques ()) ;
+  ArrayList lRisques = new ArrayList () ;
+  for (int lIndiceRisque = 0; lIndiceRisque < pProjet.getNbRisques (); lIndiceRisque ++)
+  {
+    // Cherche le risque de priorité la plus basse.
+    int lPrioriteMax = 0 ;
+    for (int i = 1; i < lRisquesTmp.size (); i ++)
+    {
+      if (((MRisque) lRisquesTmp.get (i)).getPriorite () < ((MRisque) lRisquesTmp.get (lPrioriteMax)).getPriorite ())
+      {
+        lPrioriteMax = i ;
+      }
+    }
+    lRisques.add (lRisquesTmp.get (lPrioriteMax)) ;
+    lRisquesTmp.remove (lPrioriteMax) ;
+  }
 %>
 
 <center>
@@ -49,9 +67,9 @@
   
   
   <%
-  for (int lIndiceRisque = 0; lIndiceRisque < pProjet.getNbRisques (); lIndiceRisque ++)
+  for (int lIndiceRisque = 0; lIndiceRisque < lRisques.size (); lIndiceRisque ++)
   {
-    MRisque lRisque = pProjet.getRisque (lIndiceRisque) ;
+    MRisque lRisque = (MRisque) lRisques.get (lIndiceRisque) ;
   %>
     </tr>
      <td style="text-align: center" class="caseNiveau2">
