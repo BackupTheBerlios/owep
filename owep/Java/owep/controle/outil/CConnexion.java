@@ -180,6 +180,7 @@ public class CConnexion extends HttpServlet
   {
     mLogin = getRequete ().getParameter ("login") ;
     mPassword = getRequete ().getParameter ("pwd") ;
+    mPassword = MCollaborateur.encode(mPassword);
   }
 
   /**

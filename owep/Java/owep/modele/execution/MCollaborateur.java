@@ -763,11 +763,13 @@ public class MCollaborateur extends MModeleBase
    */
   public static String encode (String pMdp)
   {
-    /*
-     * String code = ""; for(int i = 0 ; i <pMdp.length() ; i++){ int j = pMdp.charAt(i); code += j; }
-     * return code;
-     */
-    return pMdp ;
+    String code = ""; 
+    for(int i = 0 ; i < pMdp.length() ; i++)
+    {
+      int j = pMdp.charAt(i)+10;
+      code += j;
+    }
+    return code;
   }
 
   /**
