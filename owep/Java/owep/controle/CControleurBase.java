@@ -94,6 +94,10 @@ public abstract class CControleurBase extends HttpServlet
 	  }
 	  else
 	  {
+	    // mis à jour de la session
+	    lSession.setAttribute("SESSION",mSession);
+	    
+	    // redirection vers la page convenue
 	    lRequeteDispatcher.forward (mRequete, mReponse) ;
 	  }
     }
