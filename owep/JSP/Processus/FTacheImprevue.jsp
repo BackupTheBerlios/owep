@@ -40,6 +40,8 @@
 <p class="texte"><%= lProjet.getDescription () %></p>
 <br/><br/>
  
+<p class="texte"><b>Itération en cours : <i><%= lIteration.getNom () %></i></b></p>
+ 
 <form action="./TacheImprevue" method="post" name="<%= CConstante.PAR_FORMULAIRE%>">
 
   <transfert:transfertbean scope="Session" type="owep.modele.execution.MIteration" bean="pIteration" idArbre="<%= CConstante.PAR_ARBREITERATION %>">
