@@ -54,7 +54,8 @@ public class CCloturerIteration extends CControleurBase
       QueryResults lResultat ;    // Résultat de la requête sur la base.
       
       lSession     = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
-      mProjet      = lSession.getProjet () ;
+      //mProjet      = lSession.getProjet () ;
+      int idProjet = lSession.getIdProjet();
       
       
       try
@@ -63,7 +64,7 @@ public class CCloturerIteration extends CControleurBase
         
         // Récupère le projet actuellement ouvert.
         lRequete = getBaseDonnees ().getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
-        lRequete.bind (mProjet.getId ()) ;
+        lRequete.bind (idProjet) ;
         lResultat = lRequete.execute () ;
         // Si on récupère correctement le projet dans la base,
         if (lResultat.hasMore ())
@@ -150,7 +151,23 @@ public class CCloturerIteration extends CControleurBase
           QueryResults lResultat ;    // Résultat de la requête sur la base.
           
           lSession     = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
-          mProjet      = lSession.getProjet () ;
+          //mProjet      = lSession.getProjet () ;
+          int idProjet = lSession.getIdProjet();
+          
+          // Récupère le projet actuellement ouvert.
+          lRequete = getBaseDonnees ().getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
+          lRequete.bind (idProjet) ;
+          lResultat = lRequete.execute () ;
+          // Si on récupère correctement le projet dans la base,
+          if (lResultat.hasMore ())
+          {
+            mProjet = (MProjet) lResultat.next () ;
+          }
+          // Si le projet n'existe pas,
+          else
+          {
+            throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+          }
           
           /*************** Modification de l'itération en cours ************/
          
