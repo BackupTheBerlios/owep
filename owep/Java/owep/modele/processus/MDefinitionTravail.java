@@ -18,7 +18,7 @@ public class MDefinitionTravail extends MModeleBase
   private String     mDescription ; // Description de la définition de travail.
   private ArrayList  mActivites ;  // Liste des activités composant la définition de travail.
   private MComposant mComposant ;  // Composant incluant la définition de travail.
-  private String     mIdDpe ;      // Identifiant du dpe
+  private String     mIdDpe = "" ;      // Identifiant du dpe
 
 
   /**

@@ -8,6 +8,7 @@ import java.io.FileWriter ;
 import java.io.IOException ;
 import java.io.InputStream ;
 import java.io.InputStreamReader ;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList ;
 import java.util.Iterator ;
 import java.util.zip.ZipEntry ;
@@ -137,6 +138,7 @@ public class Export
   {
     ArrayList liste ;
     Iterator it ;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     out.write ("\t<elementProjet>") ;
     out.newLine () ;
@@ -144,7 +146,6 @@ public class Export
     // Condition definition travail
     out.write ("\t\t<listeConditionDefTravail>") ;
     out.newLine () ;
-    // TODO a faire
     out.write ("\t\t</listeConditionDefTravail>") ;
     out.newLine () ;
 
@@ -157,9 +158,9 @@ public class Export
     out.newLine () ;
     out.write ("\t\t\t<description>" + mProjet.getDescription () + "</description>") ;
     out.newLine () ;
-    out.write ("\t\t\t<dateDebut>" + mProjet.getDateDebutPrevue () + "</dateDebut>") ;
+    out.write ("\t\t\t<dateDebut>" + dateFormat.format(mProjet.getDateDebutPrevue ()) + "</dateDebut>") ;
     out.newLine () ;
-    out.write ("\t\t\t<dateFin>" + mProjet.getDateFinPrevue () + "</dateFin>") ;
+    out.write ("\t\t\t<dateFin>" + dateFormat.format(mProjet.getDateFinPrevue())+ "</dateFin>") ;
     out.newLine () ;
     out.write ("\t\t\t<budget>" + mProjet.getBudget () + "</budget>") ;
     out.newLine () ;
@@ -167,61 +168,35 @@ public class Export
     out.newLine () ;
 
     // Metrique
-    // TODO
-    /*
-     * <listeMetriques> <eltMetrique> <id> </id> <nom> </nom> <description> </description> <valeur>
-     * </valeur> <type> </type> </eltMetrique> </listeMetriques>
-     */
-
-    /**/
-
-    // Indicateur
-    out.write ("\t\t<listeIndicateurs>") ;
-    out.newLine () ;
-    liste = mProjet.getListeIndicateurs () ;
-    if (liste != null)
-    {
-      it = liste.iterator () ;
-      while (it.hasNext ())
-      {
-        MIndicateur lIndicateur = (MIndicateur) it.next () ;
-        out.write ("\t\t\t<eltIndicateur>\n") ;
-        out.write ("\t\t\t\t<id>" + lIndicateur.getId () + "</id>\n") ;
-        out.write ("\t\t\t\t<nom>" + lIndicateur.getNom () + "</nom>\n") ;
-        out.write ("\t\t\t\t<description>" + lIndicateur.getDescription () + "</description>\n") ;
-        out.write ("\t\t\t\t<unite>" + lIndicateur.getUnite () + "</unite>\n") ;
-        out.write ("\t\t\t</eltIndicateur>\n") ;
-      }
-    }
-    out.write ("\t\t</listeIndicateurs>") ;
-    out.newLine () ;
-
-    // MesureIndicateur
-    out.write ("\t\t<listeMesures>") ;
-    out.newLine () ;
+    out.write ("\t\t<listeMetriques>\n") ;
     liste = mProjet.getListeIndicateurs () ;
     if (liste == null)
       liste = new ArrayList () ;
-    it = liste.iterator () ;
     ArrayList listeMesure = new ArrayList () ;
+    Iterator itMesure ;
+    it = liste.iterator () ;
     while (it.hasNext ())
     {
       MIndicateur lIndicateur = (MIndicateur) it.next () ;
-      listeMesure.addAll (lIndicateur.getListeMesures ()) ;
+      listeMesure = lIndicateur.getListeMesures () ;
+      if (listeMesure == null)
+        listeMesure = new ArrayList () ;
+      itMesure = listeMesure.iterator () ;
+      while (itMesure.hasNext ())
+      {
+        MMesureIndicateur mesure = (MMesureIndicateur) itMesure.next () ;
+        out.write ("\t\t\t<eltMetriques>\n") ;
+        out.write ("\t\t\t\t<id>" + mesure.getId () + "</id>\n") ;
+        out.write ("\t\t\t\t<nom>" + lIndicateur.getNom () + "</nom>\n") ;
+        out.write ("\t\t\t\t<description>" + lIndicateur.getDescription () + "</description>\n") ;
+        out.write ("\t\t\t\t<unite>" + lIndicateur.getUnite () + "</unite>\n") ;
+        out.write ("\t\t\t\t<valeur>" + mesure.getValeur () + "</valeur>\n") ;
+        out.write ("\t\t\t\t<commentaire>" + mesure.getCommentaire () + "</commentaire>\n") ;
+        out.write ("\t\t\t\t<idMembre>" + mesure.getCollaborateur ().getId () + "</idMembre>\n") ;
+        out.write ("\t\t\t</eltMetriques>\n") ;
+      }
     }
-    it = listeMesure.iterator () ;
-    while (it.hasNext ())
-    {
-      MMesureIndicateur lMesureIndicateur = (MMesureIndicateur) it.next () ;
-      out.write ("\t\t\t<eltMesure>\n") ;
-      out.write ("\t\t\t\t<id>" + lMesureIndicateur.getId () + "</id>\n") ;
-      out.write ("\t\t\t\t<valeur>" + lMesureIndicateur.getValeur () + "</valeur>\n") ;
-      out
-        .write ("\t\t\t\t<commentaire>" + lMesureIndicateur.getCommentaire () + "</commentaire>\n") ;
-      out.write ("\t\t\t</eltMesure>\n") ;
-    }
-    out.write ("\t\t</listeMesures>") ;
-    out.newLine () ;
+    out.write ("\t\t</listeMetriques>\n") ;
 
     // Risque
     out.write ("\t\t<listeRisques>") ;
@@ -292,12 +267,22 @@ public class Export
       out.write ("\t\t\t<eltIteration>\n") ;
       out.write ("\t\t\t\t<id>" + lIteration.getId () + "</id>\n") ;
       out.write ("\t\t\t\t<numero>" + lIteration.getNumero () + "</numero>\n") ;
-      out.write ("\t\t\t\t<dateDebutPrevue>" + lIteration.getDateDebutPrevue ()
-                 + "</dateDebutPrevue>\n") ;
-      out.write ("\t\t\t\t<dateDebutReelle>" + lIteration.getDateDebutReelle ()
-                 + "</dateDebutReelle>\n") ;
-      out.write ("\t\t\t\t<dateFinPrevue>" + lIteration.getDateFinPrevue () + "</dateFinPrevue>\n") ;
-      out.write ("\t\t\t\t<dateFinReelle>" + lIteration.getDateFinReelle () + "</dateFinReelle>\n") ;
+      out.write ("\t\t\t\t<dateDebutPrevue>");
+      if(lIteration.getDateDebutPrevue() != null)
+      out.write(dateFormat.format(lIteration.getDateDebutPrevue ()));
+      out.write("</dateDebutPrevue>\n") ;
+      out.write ("\t\t\t\t<dateDebutReelle>");
+      if(lIteration.getDateDebutReelle() != null)
+        out.write(dateFormat.format(lIteration.getDateDebutReelle()));
+      out.write("</dateDebutReelle>\n") ;
+      out.write ("\t\t\t\t<dateFinPrevue>");
+      if(lIteration.getDateFinPrevue() != null)
+        out.write(dateFormat.format(lIteration.getDateFinPrevue ()));
+      out.write("</dateFinPrevue>\n") ;
+      out.write ("\t\t\t\t<dateFinReelle>");
+      if(lIteration.getDateFinReelle() != null)
+        out.write(dateFormat.format(lIteration.getDateFinReelle()));
+      out.write("</dateFinReelle>\n") ;
       out.write ("\t\t\t</eltIteration>\n") ;
     }
     out.write ("\t\t</listeIterations>") ;
@@ -306,20 +291,25 @@ public class Export
     // Tache
     out.write ("\t\t<listeTaches>") ;
     out.newLine () ;
+    int maxIdTache = 0;
     liste = mProjet.getListeIterations () ;
     if (liste == null)
       liste = new ArrayList () ;
     it = liste.iterator () ;
     ArrayList listeTache = new ArrayList () ;
+    ArrayList listeTImprevue = new ArrayList();
     while (it.hasNext ())
     {
       MIteration lIteration = (MIteration) it.next () ;
       listeTache.addAll (lIteration.getListeTaches ()) ;
+      listeTImprevue.addAll(lIteration.getListeTachesImprevues());
     }
     it = listeTache.iterator () ;
     while (it.hasNext ())
     {
       MTache lTache = (MTache) it.next () ;
+      if(maxIdTache < lTache.getId())
+        maxIdTache = lTache.getId();
       out.write ("\t\t\t<eltTache>\n") ;
       out.write ("\t\t\t\t<id>" + lTache.getId () + "</id>\n") ;
       out.write ("\t\t\t\t<nom>" + lTache.getNom () + "</nom>\n") ;
@@ -348,12 +338,74 @@ public class Export
       out.write ("\t\t\t\t<chargePrevue>" + lTache.getChargeInitiale () + "</chargePrevue>\n") ;
       out.write ("\t\t\t\t<tempsPasse>" + lTache.getTempsPasse () + "</tempsPasse>\n") ;
       out.write ("\t\t\t\t<resteAPasser>" + lTache.getResteAPasser () + "</resteAPasser>\n") ;
-      out.write ("\t\t\t\t<dateDebutPrevue>" + lTache.getDateDebutPrevue ()
-                 + "</dateDebutPrevue>\n") ;
-      out.write ("\t\t\t\t<dateDebutReelle>" + lTache.getDateDebutReelle ()
-                 + "</dateDebutReelle>\n") ;
-      out.write ("\t\t\t\t<dateFinPrevue>" + lTache.getDateFinPrevue () + "</dateFinPrevue>\n") ;
-      out.write ("\t\t\t\t<dateFinReelle>" + lTache.getDateFinReelle () + "</dateFinReelle>\n") ;
+      out.write ("\t\t\t\t<dateDebutPrevue>");
+      if(lTache.getDateDebutPrevue() != null)
+        out.write(dateFormat.format(lTache.getDateDebutPrevue ()));
+      out.write("</dateDebutPrevue>\n") ;
+      out.write ("\t\t\t\t<dateDebutReelle>");
+      if(lTache.getDateDebutReelle() != null)
+        out.write(dateFormat.format(lTache.getDateDebutReelle()));
+      out.write("</dateDebutReelle>\n") ;
+      out.write ("\t\t\t\t<dateFinPrevue>");
+      if(lTache.getDateFinPrevue() != null)
+        out.write(dateFormat.format(lTache.getDateFinPrevue ()));
+      out.write("</dateFinPrevue>\n") ;
+      out.write ("\t\t\t\t<dateFinReelle>");
+      if(lTache.getDateFinReelle() != null)
+        out.write(dateFormat.format(lTache.getDateFinReelle()));
+      out.write("</dateFinReelle>\n") ;
+      out.write ("\t\t\t</eltTache>\n") ;
+    }
+    it = listeTImprevue.iterator () ;
+    while (it.hasNext ())
+    {
+      MTacheImprevue lTache = (MTacheImprevue) it.next () ;
+      if(maxIdTache < lTache.getId())
+        maxIdTache = lTache.getId();
+      out.write ("\t\t\t<eltTache>\n") ;
+      out.write ("\t\t\t\t<id>" + (lTache.getId ()+maxIdTache) + "</id>\n") ;
+      out.write ("\t\t\t\t<nom>" + lTache.getNom () + "</nom>\n") ;
+      out.write ("\t\t\t\t<description>" + lTache.getDescription () + "</description>\n") ;
+      out.write ("\t\t\t\t<etat>") ;
+      // etat : <!-- prete - commence - arrete -->
+      switch (lTache.getEtat ())
+      {
+        case MTache.ETAT_CREEE :
+          out.write ("CREEE") ;
+          break ;
+        case MTache.ETAT_EN_COURS :
+          out.write ("EN_COURS") ;
+          break ;
+        case MTache.ETAT_NON_DEMARRE :
+          out.write ("NON_DEMARRE") ;
+          break ;
+        case MTache.ETAT_SUSPENDU :
+          out.write ("SUSPENDU") ;
+          break ;
+        case MTache.ETAT_TERMINE :
+          out.write ("TERMINE") ;
+          break ;
+      }
+      out.write ("</etat>\n") ;
+      out.write ("\t\t\t\t<chargePrevue>" + lTache.getChargeInitiale () + "</chargePrevue>\n") ;
+      out.write ("\t\t\t\t<tempsPasse>" + lTache.getTempsPasse () + "</tempsPasse>\n") ;
+      out.write ("\t\t\t\t<resteAPasser>" + lTache.getResteAPasser () + "</resteAPasser>\n") ;
+      out.write ("\t\t\t\t<dateDebutPrevue>");
+      if(lTache.getDateDebutPrevue() != null)
+        out.write(dateFormat.format(lTache.getDateDebutPrevue ()));
+      out.write("</dateDebutPrevue>\n") ;
+      out.write ("\t\t\t\t<dateDebutReelle>");
+      if(lTache.getDateDebutReelle() != null)
+        out.write(dateFormat.format(lTache.getDateDebutReelle ()));
+      out.write("</dateDebutReelle>\n") ;
+      out.write ("\t\t\t\t<dateFinPrevue>");
+      if(lTache.getDateFinPrevue() != null)
+        out.write(dateFormat.format(lTache.getDateFinPrevue ()));
+      out.write("</dateFinPrevue>\n") ;
+      out.write ("\t\t\t\t<dateFinReelle>");
+      if(lTache.getDateFinReelle() != null)
+        out.write(dateFormat.format(lTache.getDateFinReelle ()));
+      out.write("</dateFinReelle>\n") ;
       out.write ("\t\t\t</eltTache>\n") ;
     }
     out.write ("\t\t</listeTaches>") ;
@@ -373,8 +425,16 @@ public class Export
         MCondition lCondition = (MCondition) itCondition.next () ;
         out.write ("\t\t\t<eltCondition>\n") ;
         out.write ("\t\t\t\t<id>" + lCondition.getId () + "</id>\n") ;
-        out.write ("\t\t\t\t<type>" + lCondition.getEtat () + "</type>\n") ;
-        // TODO type : <!-- fini - commence -->
+        out.write ("\t\t\t\t<type>");
+        switch(lCondition.getEtat()){
+          case MTache.ETAT_EN_COURS :
+            out.write("commence");
+          break;
+          case MTache.ETAT_TERMINE :
+            out.write("fini");
+          break;
+        }
+        out.write("</type>\n") ;
         out.write ("\t\t\t</eltCondition>\n") ;
       }
     }
@@ -384,7 +444,6 @@ public class Export
     // Tache collaborative
     out.write ("\t\t<listeTacheCollaboratives>") ;
     out.newLine () ;
-    // TODO a faire
     out.write ("\t\t</listeTacheCollaboratives>") ;
     out.newLine () ;
 
@@ -438,8 +497,14 @@ public class Export
       out.write ("\t\t\t\t<id>" + lProbleme.getId () + "</id>\n") ;
       out.write ("\t\t\t\t<nom>" + lProbleme.getNom () + "</nom>\n") ;
       out.write ("\t\t\t\t<cause>" + lProbleme.getDescription () + "</cause>\n") ;
-      out.write ("\t\t\t\t<dateDebut>" + lProbleme.getDateIdentification () + "</dateDebut>") ;
-      out.write ("\t\t\t\t<dateFin>" + lProbleme.getDateCloture () + "</dateFin>") ;
+      out.write ("\t\t\t\t<dateDebut>");
+      if(lProbleme.getDateIdentification() != null)
+        out.write(dateFormat.format(lProbleme.getDateIdentification ()));
+      out.write("</dateDebut>") ;
+      out.write ("\t\t\t\t<dateFin>");
+      if(lProbleme.getDateCloture() != null)
+        out.write(dateFormat.format(lProbleme.getDateCloture ()));
+      out.write("</dateFin>") ;
       out.write ("\t\t\t</eltProbleme>\n") ;
     }
     out.write ("\t\t</listeProblemes>") ;
@@ -460,14 +525,12 @@ public class Export
     // Definition travail / Condition definition travail / porte sur
     out.write ("\t\t<listeDefTravailconditionDefTravail_debuteSi>") ;
     out.newLine () ;
-    // TODO a faire
     out.write ("\t\t</listeDefTravailconditionDefTravail_debuteSi>") ;
     out.newLine () ;
 
     // Definition travail / Condition definition travail / debute si
     out.write ("\t\t<listeDefTravailconditionDefTravail_porteSur>") ;
     out.newLine () ;
-    // TODO a faire
     out.write ("\t\t</listeDefTravailconditionDefTravail_porteSur>") ;
     out.newLine () ;
 
@@ -495,11 +558,29 @@ public class Export
     out.newLine () ;
 
     // Projet / Metrique
-    // TODO
-    /*
-     * <listeProjetMetrique> <ProjetMetrique> <idProjet> </idProjet> <listeIdMetrique> <id> </id>
-     * <id> </id> </listeIdMetrique> </ProjetMetrique> </listeProjetMetrique>
-     */
+    out.write ("\t\t<listeIterationMetrique>\n") ;
+    liste = mProjet.getListeIterations () ;
+    it = liste.iterator () ;
+    while (it.hasNext ())
+    {
+      MIteration ite = (MIteration) it.next () ;
+      if (ite.getListeMesures ().size () > 0)
+      {
+        out.write ("\t\t\t<IterationMetrique>\n") ;
+        out.write ("\t\t\t\t<idIteration>" + ite.getId () + "</idIteration>\n") ;
+        out.write ("\t\t\t\t<listeIdMetrique>\n") ;
+        ArrayList listeMesure = ite.getListeMesures () ;
+        Iterator itmes = listeMesure.iterator () ;
+        while (itmes.hasNext ())
+        {
+          MMesureIndicateur mes = (MMesureIndicateur) itmes.next () ;
+          out.write ("\t\t\t\t\t<id>" + mes.getId () + "</id>\n") ;
+        }
+        out.write ("\t\t\t\t</listeIdMetrique>\n") ;
+        out.write ("\t\t\t</IterationMetrique>\n") ;
+      }
+    }
+    out.write ("\t\t</listeIterationMetrique>\n") ;
 
     // Projet / Risque
     out.write ("\t\t<listeProjetRisque>") ;
@@ -567,7 +648,6 @@ public class Export
     // Iteration / Tache collaborative
     out.write ("\t\t<listeIterationTacheCol>") ;
     out.newLine () ;
-    // TODO a faire
     out.write ("\t\t</listeIterationTacheCol>") ;
     out.newLine () ;
 
@@ -683,35 +763,30 @@ public class Export
     // Condition / Porte sur / Tache
     out.write ("\t\t<listeCondition_PorteSur_Tache>") ;
     out.newLine () ;
-    // TODO a faire
     out.write ("\t\t</listeCondition_PorteSur_Tache>") ;
     out.newLine () ;
 
     // Tache collaborative / Debute si / Condition
     out.write ("\t\t<listeTacheCol_DebuteSi_Condition>") ;
     out.newLine () ;
-    // TODO a faire
     out.write ("\t\t</listeTacheCol_DebuteSi_Condition>") ;
     out.newLine () ;
 
     // Condition / Porte sur / Tache collaborative
     out.write ("\t\t<listeCondition_PorteSur_TacheCol>") ;
     out.newLine () ;
-    // TODO a faire
     out.write ("\t\t</listeCondition_PorteSur_TacheCol>") ;
     out.newLine () ;
 
     // Tache collaborative / Artefact / Entree
     out.write ("\t\t<listeTacheColArtefact_Entree>") ;
     out.newLine () ;
-    // TODO a faire
     out.write ("\t\t</listeTacheColArtefact_Entree>") ;
     out.newLine () ;
 
     // Tache collaborative / Artefact / Sortie
     out.write ("\t\t<listeTacheColArtefact_Sortie>") ;
     out.newLine () ;
-    // TODO a faire
     out.write ("\t\t</listeTacheColArtefact_Sortie>") ;
     out.newLine () ;
 
@@ -770,19 +845,17 @@ public class Export
     // Membre / Tache collaborative / Responsable
     out.write ("\t\t<listeMembreTacheCollaborative_Responsable>") ;
     out.newLine () ;
-    // TODO a faire
     out.write ("\t\t</listeMembreTacheCollaborative_Responsable>") ;
     out.newLine () ;
 
     // Membre / Tache collaborative / Realise
     out.write ("\t\t<MembreTacheCollaborative_Realise>") ;
     out.newLine () ;
-    // TODO a faire
     out.write ("\t\t</MembreTacheCollaborative_Realise>") ;
     out.newLine () ;
 
     // Tache / Provoque / Probleme
-    out.write ("\t\t<Tache_Provoque_Probleme>\n<listeTache>") ;
+    out.write ("\t\t<Tache_Provoque_Probleme>") ;
     out.newLine () ;
     it = listTaches.iterator () ;
     ArrayList listProblemes = new ArrayList () ;
@@ -807,11 +880,11 @@ public class Export
         out.write ("\t\t\t</Tache>\n") ;
       }
     }
-    out.write ("\t\t</listeTache>\n</Tache_Provoque_Probleme>") ;
+    out.write ("\t\t</Tache_Provoque_Probleme>") ;
     out.newLine () ;
 
     // Probleme / Resout / Tache
-    out.write ("\t\t<Probleme_Resoud_Tache>\n<listeProbleme>") ;
+    out.write ("\t\t<Probleme_Resoud_Tache>") ;
     out.newLine () ;
     it = listProblemes.iterator () ;
     while (it.hasNext ())
@@ -833,20 +906,18 @@ public class Export
         out.write ("\t\t\t</Probleme>\n") ;
       }
     }
-    out.write ("\t\t</listeProbleme>\n</Probleme_Resoud_Tache>") ;
+    out.write ("\t\t</Probleme_Resoud_Tache>") ;
     out.newLine () ;
 
     // Tache collaborative / Provoque / Probleme
     out.write ("\t\t<TacheCol_Provoque_Probleme>") ;
     out.newLine () ;
-    // TODO a faire
     out.write ("\t\t</TacheCol_Provoque_Probleme>") ;
     out.newLine () ;
 
     // Probleme / Resout / Tache collaborative
     out.write ("\t\t<Probleme_Resoud_TacheCol>") ;
     out.newLine () ;
-    // TODO a faire
     out.write ("\t\t</Probleme_Resoud_TacheCol>") ;
     out.newLine () ;
 
@@ -867,11 +938,26 @@ public class Export
     it = liste.iterator () ;
     ArrayList listeProduit = new ArrayList () ;
     ArrayList listeDefinitionTravail = new ArrayList () ;
+    ArrayList listeRoleProcessus = new ArrayList();
     while (it.hasNext ())
     {
       MComposant lComposant = (MComposant) it.next () ;
       listeProduit.addAll (lComposant.getListeProduits ()) ;
       listeDefinitionTravail.addAll (lComposant.getListeDefinitionsTravail ()) ;
+      
+      ArrayList listeRoleP = lComposant.getListeRoles();
+      Iterator itRoleP = listeRoleP.iterator();
+      while(itRoleP.hasNext()){
+        MRole roleP = (MRole) itRoleP.next();
+        if(listeRoleProcessus.size() == 0){
+          listeRoleProcessus.addAll(listeRoleP);
+          System.out.println(listeRoleP.size());
+        }
+        else{
+          if(!listeRoleProcessus.contains(roleP))
+            listeRoleProcessus.add(roleP);
+        }
+      }
     }
     ArrayList listeActivite = new ArrayList () ;
     it = listeDefinitionTravail.iterator () ;
@@ -880,6 +966,7 @@ public class Export
       MDefinitionTravail lDefinitionTravail = (MDefinitionTravail) it.next () ;
       listeActivite.addAll (lDefinitionTravail.getListeActivites ()) ;
     }
+    
 
     out.write ("\t<lienProjetProcessus>") ;
     out.newLine () ;
@@ -943,7 +1030,7 @@ public class Export
     out.write ("\t\t</listeActiviteTache>\n") ;
 
     // Membre / Role
-    out.write ("\t\t<MembreRole>\n\t\t\t<listeMembre>\n") ;
+    out.write ("\t\t<MembreRole>\n") ;
     liste = mProjet.getListeCollaborateurs () ;
     if (liste == null)
       liste = new ArrayList () ;
@@ -963,23 +1050,27 @@ public class Export
         while (itRole.hasNext ())
         {
           MRole lRole = (MRole) itRole.next () ;
-          out.write ("\t\t\t\t\t<id>" + lRole.getIdDpe () + "</id>\n") ;
+          //role app au processus
+          Iterator itRoleP = listeRoleProcessus.iterator();
+          while(itRoleP.hasNext()){
+            MRole rolep = (MRole) itRoleP.next();
+            if(lRole.getId() == rolep.getId())
+              out.write ("\t\t\t\t\t<id>" + lRole.getIdDpe () + "</id>\n") ;
+          }
         }
         out.write ("\t\t\t\t</listeRole>\n") ;
         out.write ("\t\t\t</Membre>\n") ;
       }
     }
-    out.write ("\t\t\t</listeMembre>\n\t\t</MembreRole>\n") ;
+    out.write ("\t\t</MembreRole>\n") ;
 
     // Composant / Iteration
-    out.write ("\t\t\t<ComposantIteration>\n\t\t<listeIteration>\n") ;
-    // TODO a voir
-    out.write ("\t\t\t</listeIteration>\n\t\t</ComposantIteration>\n") ;
+    out.write ("\t\t\t<ComposantIteration>\n") ;
+    out.write ("\t\t</ComposantIteration>\n") ;
 
     // Condition definition travail / Iteration
     out.write ("\t\t<listCondDefTravailIteration>") ;
     out.newLine () ;
-    // TODO a faire
     out.write ("\t\t</listCondDefTravailIteration>") ;
     out.newLine () ;
 

@@ -2,6 +2,7 @@ package owep.modele.execution ;
 
 
 import java.util.ArrayList ;
+import java.util.Iterator;
 import java.sql.Connection ;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -445,6 +446,12 @@ public class MIteration extends MModeleBase
   public void setListeMesures (ArrayList pMesures)
   {
     mMesures = pMesures ;
+    Iterator it = pMesures.iterator();
+    while(it.hasNext()){
+      MMesureIndicateur mes = (MMesureIndicateur) it.next();
+      if(mes.getIteration() != this)
+        mes.setIteration(this);
+    }
   }
   
   /**
@@ -453,7 +460,10 @@ public class MIteration extends MModeleBase
    */
   public void addMesure (MMesureIndicateur pMesure)
   {
-    mMesures.add (pMesure) ;
+    if(!mMesures.contains(pMesure))
+      mMesures.add (pMesure) ;
+    if(pMesure.getIteration() != this)
+      pMesure.setIteration(this);
   }
   
   /**

@@ -674,6 +674,9 @@ public class MProjet extends MModeleBase
    */
   public void addIndicateur (MIndicateur pIndicateur)
   {
-    mIndicateurs.add (pIndicateur) ;
+    if(!mIndicateurs.contains(pIndicateur))
+      mIndicateurs.add (pIndicateur) ;
+    if(pIndicateur.getProjet() != this)
+      pIndicateur.setProjet(this);
   }
 }

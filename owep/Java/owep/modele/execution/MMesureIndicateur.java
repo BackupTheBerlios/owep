@@ -112,7 +112,10 @@ public class MMesureIndicateur extends MModeleBase
    */
   public void setIndicateur (MIndicateur pIndicateur)
   {
+    if(mIndicateur != pIndicateur)
     mIndicateur = pIndicateur ;
+    if(!pIndicateur.getListeMesures().contains(this))
+      pIndicateur.addMesure(this);
   }
   
   /**
@@ -123,12 +126,17 @@ public class MMesureIndicateur extends MModeleBase
   {
     return mIteration ;
   }
+  
   /**
    * TODO Initialise mIteration.
    * @param iteration mIteration.
    */
   public void setIteration (MIteration pIteration)
   {
+    if(mIteration != pIteration)
     mIteration = pIteration ;
+    if(pIteration.getListeMesures() != null && !pIteration.getListeMesures().contains(this)){
+      pIteration.addMesure(this);
+    }
   }
 }

@@ -224,9 +224,17 @@
   </tr>
   <%
   }
+  if(!lIterationExiste)
+  {
   %>
-  
-<%//Test si l'utilisateur connecté a les droits de l'administrateur
+  <tr>
+    <td class="caseMenuNiveau2">
+      <a class="menuNiveau2" href="../Outil/DemarrerProjet">Demarrer le projet</a>
+    </td>
+  </tr>
+<%
+  }
+  //Test si l'utilisateur connecté a les droits de l'administrateur
   if (mProjetOuvert && mEstAdmin) {%>
   <tr>
     <td class="caseMenuNiveau2">

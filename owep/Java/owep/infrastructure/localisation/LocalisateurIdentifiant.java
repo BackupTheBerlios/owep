@@ -8,5 +8,5 @@ package owep.infrastructure.localisation ;
 public class LocalisateurIdentifiant
 {
   public static final String LID_BDNOM           = "owep" ;
-  public static final String LID_BDCONFIGURATION = "WEB-INF\\Database.xml" ;
+  public static final String LID_BDCONFIGURATION = "WEB-INF/Database.xml" ;
 }

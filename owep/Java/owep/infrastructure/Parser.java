@@ -2,7 +2,7 @@ package owep.infrastructure ;
 
 
 import java.util.ArrayList ;
-import java.util.Enumeration;
+import java.util.Enumeration ;
 import java.util.Hashtable ;
 
 import org.exolab.castor.jdo.Database ;
@@ -26,7 +26,7 @@ public class Parser implements ContentHandler
 {
   private ArrayList          mBalise                  = new ArrayList () ;   // liste des balises
   private Database           mBaseDonnees             = null ;               // Connexion à la base
-                                                                             // de données
+  // de données
 
   private Hashtable          mObjet                   = new Hashtable () ;   // liste des objets
   private Hashtable          mLienObjet               = new Hashtable () ;
@@ -68,6 +68,8 @@ public class Parser implements ContentHandler
   private MActivite          mActivite ;
   private MRole              mRole ;
   private MProduit           mProduit ;
+
+  private String             memoire                  = "" ;
 
 
   /**
@@ -242,7 +244,8 @@ public class Parser implements ContentHandler
   }
 
   /**
-   * Enregistre les nouveaux objets de la base de données. 
+   * Enregistre les nouveaux objets de la base de données.
+   * 
    * @see org.xml.sax.ContentHandler#endDocument()
    */
   public void endDocument () throws SAXException
@@ -452,8 +455,8 @@ public class Parser implements ContentHandler
     {
       try
       {
-      	mBaseDonnees.commit () ;
-      	mBaseDonnees.close () ;
+        mBaseDonnees.commit () ;
+        mBaseDonnees.close () ;
       }
       catch (PersistenceException e1)
       {
@@ -668,6 +671,7 @@ public class Parser implements ContentHandler
       {
         if (mBalise.contains ("id"))
         {
+          lAttribut = mDefinitionTravail.getIdDpe () + lAttribut ;
           mIdObjet.put (OBJET_DEFINITIONTRAVAIL + nbDefinitionTravail, lAttribut) ;
           mDefinitionTravail.setIdDpe (lAttribut) ;
         }
@@ -679,11 +683,12 @@ public class Parser implements ContentHandler
 
         if (mBalise.contains ("agregatComposant"))
         {
-          Enumeration enum = mIddpeObjet.keys();
-          while(enum.hasMoreElements()){
-            String key = (String) enum.nextElement();
-            if(key.startsWith(lAttribut))
-              lAttribut = key;
+          Enumeration enum = mIddpeObjet.keys () ;
+          while (enum.hasMoreElements ())
+          {
+            String key = (String) enum.nextElement () ;
+            if (key.startsWith (lAttribut))
+              lAttribut = key ;
           }
           MComposant lComposant = (MComposant) mIddpeObjet.get (lAttribut) ;
           mDefinitionTravail.setComposant (lComposant) ;
@@ -707,7 +712,18 @@ public class Parser implements ContentHandler
         if (mBalise.contains ("agregatDefinitionTravail"))
         {
           MDefinitionTravail lDefinitionTravail = (MDefinitionTravail) mIddpeObjet.get (lAttribut) ;
-          mActivite.setDefinitionsTravail (lDefinitionTravail) ;
+          if (lDefinitionTravail == null)
+          {
+            if (memoire.equals (""))
+              memoire = lAttribut ;
+            else
+            {
+              lDefinitionTravail = (MDefinitionTravail) mIddpeObjet.get (memoire + lAttribut) ;
+              memoire = "" ;
+            }
+          }
+          if(lDefinitionTravail != null)
+            mActivite.setDefinitionsTravail (lDefinitionTravail) ;
         }
 
         if (mBalise.contains ("entreeProduit"))

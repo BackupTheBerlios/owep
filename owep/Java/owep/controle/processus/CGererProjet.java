@@ -6,7 +6,10 @@ import java.io.FileOutputStream ;
 import java.io.InputStream ;
 import java.io.InputStreamReader ;
 import java.io.OutputStreamWriter ;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList ;
+import java.util.Date;
 import java.util.Iterator ;
 import java.util.List ;
 import java.util.ResourceBundle ;
@@ -352,8 +355,21 @@ public class CGererProjet extends CControleurBase
         // Création du projet
         lProjet = new MProjet (maxIdProjet) ;
         lProjet.setNom (mNom) ;
-        lProjet.setDateDebutPrevue (java.sql.Date.valueOf (mDateDebut)) ;
-        lProjet.setDateFinPrevue (java.sql.Date.valueOf (mDateFin)) ;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date d = null;
+        Date d2 = null;
+        try
+        {
+          d = dateFormat.parse(mDateDebut) ;
+          d2 = dateFormat.parse(mDateFin) ;
+        }
+        catch (ParseException e)
+        {
+          e.printStackTrace();
+        }
+        SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
+        lProjet.setDateDebutPrevue (java.sql.Date.valueOf (dateFormat2.format(d))) ;
+        lProjet.setDateFinPrevue (java.sql.Date.valueOf (dateFormat2.format(d2))) ;
         lProjet.setDescription (mDescription) ;
         lProjet.setBudget (mBudget) ;
         lProjet.setProcessus (lProcessus) ;

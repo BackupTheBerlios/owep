@@ -21,6 +21,9 @@ public class Session
   private MConfigurationSite mConfiguration = null; // Tous les éléments de configuration
   private String URLPagePrecedente = null ; //conserve l'URL de la page précédente pour pouvoire y retourner
   private int idCollabAVisualiser ; // identifiant du collaborateur dont on veut visualiser la liste des taches
+  private int mIdCollaborateur = 0;
+  private int mIdProjet = 0;
+  private int mIdIteration = 0;
   
   /**
    * TODO Récupère idCollabAVisualiser.
@@ -37,9 +40,9 @@ public class Session
    * 
    * @param idCollabAVisualiser idCollabAVisualiser.
    */
-  public void setIdCollabAVisualiser (int idCollabAVisualiser)
+  public void setIdCollabAVisualiser (int mIdCollabAVisualiser)
   {
-    this.idCollabAVisualiser = idCollabAVisualiser ;
+    this.idCollabAVisualiser = mIdCollabAVisualiser ;
   }
 
   /**
@@ -50,6 +53,7 @@ public class Session
   public void ouvertureSession (MCollaborateur pCollaborateur)
   {
     mCollaborateur = pCollaborateur ;
+    mIdCollaborateur = pCollaborateur.getId();
 
     if (mListeProjetPossible == null)
       mListeProjetPossible = new ArrayList () ;
@@ -83,6 +87,7 @@ public class Session
   public void ouvrirProjet (MProjet pProjet)
   {
     mProjet = pProjet ;
+    mIdProjet = pProjet.getId();
   }
 
   /**
@@ -91,11 +96,13 @@ public class Session
   public void fermerProjet ()
   {
     mProjet = null ;
+    mIdProjet = 0;
   }
 
   public void setProjet (MProjet pProjet)
   {
     mProjet = pProjet ;
+    mIdProjet = pProjet.getId();
   }
 
   /**
@@ -126,6 +133,8 @@ public class Session
   public void setIteration (MIteration pIteration)
   {
     mIteration = pIteration ;
+    if(pIteration != null)
+    mIdIteration = pIteration.getId();
   }
 
   /**
@@ -174,5 +183,53 @@ public class Session
   public void setURLPagePrecedente (String pPagePrecedente)
   {
     URLPagePrecedente = pPagePrecedente ;
+  }
+  
+  /**
+   * @return Retourne la valeur de l'attribut idCollaborateur.
+   */
+  public int getIdCollaborateur ()
+  {
+    return mIdCollaborateur ;
+  }
+  
+  /**
+   * @param initialse idCollaborateur avec pIdCollaborateur.
+   */
+  public void setIdCollaborateur (int pIdCollaborateur)
+  {
+    mIdCollaborateur = pIdCollaborateur ;
+  }
+  
+  /**
+   * @return Retourne la valeur de l'attribut idIteration.
+   */
+  public int getIdIteration ()
+  {
+    return mIdIteration ;
+  }
+  
+  /**
+   * @param initialse idIteration avec pIdIteration.
+   */
+  public void setIdIteration (int pIdIteration)
+  {
+    mIdIteration = pIdIteration ;
+  }
+  
+  /**
+   * @return Retourne la valeur de l'attribut idProjet.
+   */
+  public int getIdProjet ()
+  {
+    return mIdProjet ;
+  }
+  
+  /**
+   * @param initialse idProjet avec pIdProjet.
+   */
+  public void setIdProjet (int pIdProjet)
+  {
+    mIdProjet = pIdProjet ;
   }
 }
