@@ -49,7 +49,7 @@ public class MTacheImprevue extends MModeleBase
   {
     super () ;
     
-    mEtat = ETAT_CREEE ;
+    mEtat = ETAT_NON_DEMARRE ;
     
     mArtefactsImprevuesEntrees  = new ArrayList () ;
     mArtefactsImprevuesSorties  = new ArrayList () ;
@@ -76,7 +76,7 @@ public class MTacheImprevue extends MModeleBase
     mId              = pId ;
     mNom             = pNom ;
     mDescription     = pDescription ;
-    mEtat            = ETAT_CREEE ;
+    mEtat            = ETAT_NON_DEMARRE ;
     mChargeInitiale  = pChargeInitiale ;
     mDateDebutPrevue = pDateDebutPrevue ;
     mDateFinPrevue   = pDateFinPrevue ;
@@ -111,7 +111,7 @@ public class MTacheImprevue extends MModeleBase
     mId              = pId ;
     mNom             = pNom ;
     mDescription     = pDescription ;
-    mEtat            = ETAT_CREEE ;
+    mEtat            = ETAT_NON_DEMARRE ;
     mChargeInitiale  = pChargeInitiale ;
     mTempsPasse      = pTempsPasse ;
     mResteAPasser    = pResteAPasser ;

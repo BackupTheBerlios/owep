@@ -420,6 +420,15 @@ public class MIteration extends MModeleBase
     mTaches.remove (pIndice) ;
   }
   
+  /**
+   * Supprime la tâche spécifiée de l'itération.
+   * @param pTache Tâche à supprimer.
+   */
+  public void supprimerTache (MTache pTache)
+  {
+    mTaches.remove (pTache) ;
+  }
+
   
   /**
    * TODO Récupère mMesures.
@@ -507,6 +516,16 @@ public class MIteration extends MModeleBase
     mTachesImprevues.remove (pIndice) ;
   }
   
+  
+  /**
+   * Supprime la tâche imprévue spécifiée de l'itération.
+   * @param pTacheImprevue Tâche imprévue à supprimer.
+   */
+  public void supprimerTacheImprevue (MTacheImprevue pTacheImprevue)
+  {
+    mTachesImprevues.remove (pTacheImprevue) ;
+  }
+
   
   /**
    * TODO Calcule la charge initiale prévue pour l iteration

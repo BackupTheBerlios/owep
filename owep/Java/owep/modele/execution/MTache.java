@@ -644,7 +644,7 @@ public class MTache extends MModeleBase
    * Supprime la condition.
    * @param pCondition Condition de la tâche.
    */
-  public void supprimerConditions (MCondition pCondition)
+  public void supprimerCondition (MCondition pCondition)
   {
     mConditions.remove (pCondition) ;
   }
