@@ -145,10 +145,6 @@ public class Session
     // TODO suppr
     return mListeProjetPossible ;
   }
-  public HashMap getListeProjetPossible()
-  {
-    return mListeIdNomProjetPossible;
-  }
 
   /**
    * Initialise la liste des projets pouvant être ouvert par le collaborateur.
@@ -159,10 +155,6 @@ public class Session
   {
     // TODO suppr
     mListeProjetPossible = pListProjetPossible ;
-  }
-  public void setListeProjetPossible (HashMap pListeProjetPossible)
-  {
-    mListeIdNomProjetPossible = pListeProjetPossible;
   }
 
   public MIteration getIteration ()
