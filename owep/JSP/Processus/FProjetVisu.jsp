@@ -3,7 +3,7 @@
 <%@page import="owep.controle.CConstante"%>
 <%@taglib uri='/WEB-INF/tld/transfert.tld' prefix='transfert' %>
 
-<form action="../Processus/IterationModif">
+<form name="projetVisu" action="../Processus/IterationModif">
   <input type="hidden" name="<%= CConstante.PAR_ITERATION %>" value="">
 <%
   Session lSession = (Session) session.getAttribute (CConstante.SES_SESSION) ;
@@ -14,7 +14,7 @@
   %>
     Iteration <%= lProjet.getIteration (i).getNumero () %>&nbsp;&nbsp;
     <input class="bouton" type="submit" name="<%= CConstante.PAR_MODIFIER %>" value="Modifier"
-     onclick="document.forms[0].<%= CConstante.PAR_ITERATION %>.value = <%= lProjet.getIteration (i).getId () %>"><br/>
+     onclick="document.projetVisu.<%= CConstante.PAR_ITERATION %>.value = <%= lProjet.getIteration (i).getId () %>"><br/>
   <%
   }
 %>
