@@ -4,7 +4,7 @@
 body
 {
   background-color        : rgb(255,255,255) ;
-  scrollbar-base-color    : rgb(180,50,15) ;
+  scrollbar-base-color    : rgb(80,123,184) ;
   scrollbar-3dlight-color : rgb(255,255,255) ;
   scrollbar-arrow-color   : rgb(255,255,255) ;
 }
@@ -17,29 +17,29 @@ a
 }
 a:link
 {
-  color           : rgb(128,0,0) ;
+  color           : rgb(57,101,198) ;
   font-family     : arial ;
   font-size       : 12px ;
   text-decoration : none ;
 }
 a:hover
 {
-  color           : rgb(128,0,0) ;
+  color           : rgb(57,101,198) ;
   font-family     : arial ;
   font-size       : 12px ;
   text-decoration : underline ;
 }
 a:visited
 {
-  color           : rgb(128,0,0) ;
+  color           : rgb(57,101,198) ;
   font-family     : arial ;
   font-size       : 12px ;
   text-decoration : none ;
 }
 input.bouton
 {
-  background-color : rgb(180,50,15) ;
-  border           : solid rgb(128,0,0) ;
+  background-color : rgb(80,123,184) ;
+  border           : solid rgb(57,101,198) ;
   border-width     : 1px 1px 1px 1px ;
   color            : rgb(255,255,255) ;
   font-family      : arial ;
@@ -51,8 +51,8 @@ input.bouton
 }
 input.niveau1
 {
-  background-color : rgb(180,50,15) ;
-  border           : solid rgb(128,0,0) ;
+  background-color : rgb(80,123,184) ;
+  border           : solid rgb(57,101,198) ;
   border-width     : 1px 1px 1px 1px ;
   color            : rgb(255,255,255) ;
   font-family      : arial ;
@@ -64,8 +64,8 @@ input.niveau1
 }
 input.niveau2
 {
-  background-color : rgb(255,204,153) ;
-  border           : solid rgb(128,0,0) ;
+  background-color : rgb(171,221,229) ;
+  border           : solid rgb(57,101,198) ;
   border-width     : 1px 1px 1px 1px ;
   color            : rgb(51,85,165) ;
   font-family      : arial ;
@@ -77,8 +77,8 @@ input.niveau2
 }
 textarea.niveau2
 {
-  background-color : rgb(255,204,153) ;
-  border           : solid rgb(128,0,0) ;
+  background-color : rgb(171,221,229) ;
+  border           : solid rgb(57,101,198) ;
   border-width     : 1px 1px 1px 1px ;
   color            : rgb(51,85,165) ;
   font-family      : arial ;
@@ -90,8 +90,8 @@ textarea.niveau2
 }
 select.niveau1
 {
-  background-color : rgb(180,50,15) ;
-  border           : solid rgb(128,0,0) ;
+  background-color : rgb(80,123,184) ;
+  border           : solid rgb(57,101,198) ;
   border-width     : 1px 1px 1px 1px ;
   color            : rgb(255,255,255) ;
   font-family      : arial ;
@@ -101,8 +101,8 @@ select.niveau1
 }
 select.niveau2
 {
-  background-color : rgb(255,204,153) ;
-  border           : solid rgb(128,0,0) ;
+  background-color : rgb(171,221,229) ;
+  border           : solid rgb(57,101,198) ;
   border-width     : 1px 1px 1px 1px ;
   color            : rgb(51,85,165) ;
   font-family      : arial ;
@@ -171,14 +171,14 @@ p.texteSubmit
 }
 table.tableau
 {
-  border       : solid rgb(128,0,0) ;
+  border       : solid rgb(57,101,198) ;
   border-width : 2px 2px 1px 1px ;
   font-family  : arial ;
 }
 td.caseNiveau1
 {
-  background-color : rgb(180,50,15) ;
-  border           : solid rgb(128,0,0) ;
+  background-color : rgb(80,123,184) ;
+  border           : solid rgb(57,101,198) ;
   border-width     : 0px 0px 1px 1px ;
   color            : rgb(255,255,255) ;
   font-family      : arial ;
@@ -192,10 +192,10 @@ td.caseNiveau1
 }
 td.caseNiveau2
 {
-  background-color : rgb(255,204,153) ;
-  border           : solid rgb(128,0,0) ;
+  background-color : rgb(171,221,229) ;
+  border           : solid rgb(57,101,198) ;
   border-width     : 0px 0px 1px 1px ;
-  color            : rgb(128,0,0) ;
+  color            : rgb(57,101,198) ;
   font-family      : arial ;
   font-size        : 12px ;
   font-weight      : bold ;
@@ -208,7 +208,7 @@ td.caseNiveau2
 td.caseNiveau3
 {
   background-color : rgb(255,255,255) ;
-  border           : solid rgb(128,0,0) ;
+  border           : solid rgb(57,101,198) ;
   border-width     : 0px 0px 1px 1px ;
   color            : black ;
   font-family      : arial ;
@@ -222,7 +222,7 @@ td.caseNiveau3
 td.caseNiveau2SansBordure
 {
   background-color : rgb(255,255,255) ;
-  color            : rgb(128,0,0) ;
+  color            : rgb(57,101,198) ;
   font-family      : arial ;
   font-size        : 14px ;
   font-weight      : bold ;
@@ -235,7 +235,7 @@ td.caseNiveau2SansBordure
 td.caseNiveau3Lien
 {
   background-color : rgb(255,255,255) ;
-  border           : solid rgb(128,0,0) ;
+  border           : solid rgb(57,101,198) ;
   border-width     : 0px 0px 1px 1px ;
   color            : black ;
   font-family      : arial ;
@@ -284,21 +284,21 @@ a.niveau1:hover
  **************************************************************************************************/
 table.regionGauche
 {
-  border       : solid rgb(128,0,0) ;
+  border       : solid rgb(57,101,198) ;
   border-width : 2px 0px 0px 2px ;
   width        : 170px ;
   height       : 100% ;
 }
 table.regionDroite
 {
-  border       : solid rgb(128,0,0) ;
+  border       : solid rgb(57,101,198) ;
   border-width : 2px 2px 0px 0px ;
   height       : 100% ;
   width        : 100% ;
 }
 td.regionPrincipal
 {
-  border         : solid rgb(128,0,0) ;
+  border         : solid rgb(57,101,198) ;
   border-width   : 1px 0px 0px 1px ;
   height         : 100% ;
   padding-bottom : 16px ;
@@ -350,7 +350,7 @@ td.caseMenuConnexion
 }
 td.caseMenuNiveau1
 {
-  background-color : rgb(180,50,15) ;
+  background-color : rgb(80,123,184) ;
   background-image : url(/owep/Image/Red/caseMenuNiveau1.png) ;
   height           : 27px ;
   padding-bottom   : 2px ;
@@ -377,7 +377,7 @@ td.caseMenuSeparation2
 }
 select.menuProjet
 {
-  background-color : rgb(180,50,15) ;
+  background-color : rgb(80,123,184) ;
   color            : rgb(255,255,255) ;
   font-family      : arial ;
   font-size        : 13px ;
@@ -439,7 +439,7 @@ a.menuNiveau2:hover
  **************************************************************************************************/
 td.regionMessagerie
 {
-  background-color : rgb(255,204,153) ;
+  background-color : rgb(171,221,229) ;
 }
 td.caseMessageCommande
 {
@@ -537,9 +537,9 @@ p.message
  **************************************************************************************************/
 td.regionPied
 {
-  background-color : rgb(180,50,15) ;
+  background-color : rgb(80,123,184) ;
   background-image : url(/owep/Image/Red/regionPied.png) ;
-  border           : solid rgb(128,0,0) ;
+  border           : solid rgb(57,101,198) ;
   border-width     : 0px 2px 2px 2px ;
   height           : 18px ;
   text-align       : center ;
@@ -578,8 +578,8 @@ img.iconeCaseAide
 }
 div.domTT
 {
-  border           : 1px solid rgb(128,0,0) ;
-  background-color : rgb(180,50,15) ;
+  border           : 1px solid rgb(57,101,198) ;
+  background-color : rgb(80,123,184) ;
 }
 div.domTTCaption
 {
@@ -594,5 +594,5 @@ div.domTTContent
   font-size        : 12px ;
   font-family      : sans-serif ;
   padding          : 3px 2px ;
-  background-color : rgb(255,204,153) ;
+  background-color : rgb(171,221,229) ;
 }
