@@ -404,6 +404,95 @@
   </class>
   
   
+  <class name="owep.modele.execution.MRisque" identity="mId">
+    <map-to table="RIS_RISQUE"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId">
+      <sql name="RIS_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom">
+      <sql name="RIS_NOM" type="char"/>
+    </field>
+    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
+      <sql name="RIS_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mPriorite" type="integer" get-method="getPriorite" set-method="setPriorite">
+      <sql name="RIS_PRIORITE" type="integer"/>
+    </field>
+    <field name="mImpact" type="string" get-method="getImpact" set-method="setImpact">
+      <sql name="RIS_IMPACT" type="char"/>
+    </field>
+    <field name="mEtat" type="string" get-method="getEtat" set-method="setEtat">
+      <sql name="RIS_ETAT" type="char"/>
+    </field>
+    <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet" required="true">
+      <sql name="RIS_PRJ_ID"/>
+    </field>
+  </class>
+  
+  <class name="owep.modele.execution.MMetrique" identity="mId">
+    <map-to table="MET_METRIQUE"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId">
+      <sql name="MET_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom">
+      <sql name="MET_NOM" type="char"/>
+    </field>
+    <field name="mType" type="integer" get-method="getType" set-method="setType">
+      <sql name="MET_TYPE" type="integer"/>
+    </field>
+    <field name="mValeur" type="integer" get-method="getValeur" set-method="setValeur">
+      <sql name="MET_VALEUR" type="integer"/>
+    </field>
+    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
+      <sql name="MET_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet" required="true">
+      <sql name="MET_PRJ_ID"/>
+    </field>
+  </class>
+  
+  <class name="owep.modele.execution.MActiviteImprevue" identity="mId">
+    <map-to table="IMP_ACTIVITEIMP"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId">
+      <sql name="IMP_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom">
+      <sql name="IMP_NOM" type="char"/>
+    </field>
+    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
+      <sql name="IMP_DESCRIPTION" type="char"/>
+    </field>
+  </class>
+  
+  <class name="owep.modele.execution.MProbleme" identity="mId">
+    <map-to table="PRB_PROBLEME/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId">
+      <sql name="PRB_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom">
+      <sql name="PRB_NOM" type="char"/>
+    </field>
+    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
+      <sql name="PRB_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mEtat" type="string" get-method="getEtat" set-method="setEtat">
+      <sql name="PRB_ETAT" type="char"/>
+    </field>
+    <field name="mDateIdentification" type="date" get-method="getDateIdentification" set-method="setDateIdentification">
+      <sql name="PRB_DATEIDENTIFICATION" type="date"/>
+    </field>
+    <field name="mDateCloture" type="date" get-method="getDateCloture" set-method="setDateCloture">
+      <sql name="PRB_DATECLOTURE" type="date"/>
+    </field>
+    <field name="mTacheResout" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTacheResout" set-method="setListeTacheResout">
+      <sql name="R07_TAC_ID" many-table="R07_TAC_PRB_RESOUT" many-key="R07_PRB_ID"/>
+    </field>
+    <field name="mTacheProvoque" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTacheProvoque" set-method="setListeTacheProvoque">
+      <sql name="R08_TAC_ID" many-table="R08_TAC_PRB_PROVOQUE" many-key="R08_PRB_ID"/>
+    </field>
+  </class>
+  
+  
   <class name="owep.modele.configuration.MConfiguration" identity="mId">
     <map-to table="CON_CONFIGURATION"/>
     <field name="mId" type="integer" get-method="getId" set-method="setId">
