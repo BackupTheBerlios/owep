@@ -54,7 +54,7 @@ function isSelectVide (pListe, pLibelle)
  */
 function isDate (pDate, pLibelle)
 {
-  var lRegExpression = /^\d{1}\d{1}\d{1}\d{1}\-\d{1}\d{1}\-\d{1}\d{1}$/ ;
+  var lRegExpression = /^\d{1}\d{1}\/\d{1}\d{1}\/\d{1}\d{1}\d{1}\d{1}$/ ;
   
   if ((pDate.length != 0) && (! lRegExpression.test (pDate)))
   {
