@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.exolab.castor.jdo.Database ;
 import org.exolab.castor.jdo.JDO ;
 import org.exolab.castor.jdo.OQLQuery ;
+import org.exolab.castor.jdo.PersistenceException;
 import org.exolab.castor.jdo.QueryResults ;
 import owep.infrastructure.Session ;
 import owep.infrastructure.localisation.LocalisateurIdentifiant ;
@@ -123,6 +124,19 @@ public abstract class CControleurBase extends HttpServlet
       {
         // mis à jour de la session
         lSession.setAttribute ("SESSION", mSession) ;
+        
+        // fermeture de connexion a DB si encore une ouverte
+        if(getBaseDonnees().isActive())
+        {
+          try
+          {
+            getBaseDonnees().close();
+          }
+          catch (PersistenceException e)
+          {
+            e.printStackTrace();
+          }
+        }
         
         // redirection vers la page convenue
         lRequeteDispatcher.forward (mRequete, mReponse) ;
