@@ -3,7 +3,6 @@
 <!DOCTYPE HTML PUBLIC "-//w3c//dtd html 4.0 transitional//en">
 
 <template:template nom="/JSP/Template/FTemplate.jsp">
-  <template:section region="RegionScript"     contenu="NavigationIteration.js"         typePage="false"/>  
   <template:section region="RegionTitre"      contenu="Suivi d'avancement des collaborateurs" typePage="false"/>
   <template:section region="RegionNavigation" contenu="/JSP/Navigation/FIteration.jsp" typePage="true"/>  
   <template:section region="RegionPrincipal"  contenu="/JSP/Avancement/FAvancementTachesCollabs.jsp" typePage="true"/>

@@ -10,7 +10,6 @@
 %>
 
 <template:template nom="/JSP/Template/FTemplate.jsp">
-  <template:section region="RegionScript"     contenu="NavigationIteration.js"         typePage="false"/>  
   <template:section region="RegionTitre"      contenu="<%=nomCollab%>" typePage="false"/>
   <template:section region="RegionNavigation" contenu="/JSP/Navigation/FIteration.jsp" typePage="true"/>  
   <template:section region="RegionPrincipal"  contenu="/JSP/Avancement/FDetailAvancementCollab.jsp" typePage="true"/>

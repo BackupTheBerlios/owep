@@ -10,7 +10,6 @@
   <meta name="description" content="Outil de Workflow pour une équipe de Projet">
   <title>OWEP</title>
   <link rel="stylesheet" href="../CSS/Red.css" type="text/css">
-  <script language="javascript" src="<template:region nom="RegionScript"/>"></script>
   <script language="javascript" src="/owep/JavaScript/VerificationChamp.js"></script>
   <script language="javascript" src="/owep/JavaScript/AideEnLigne.js"></script>
   <script language="javascript" src="/owep/JavaScript/DomTT/domLib.js"></script>

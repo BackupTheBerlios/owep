@@ -56,7 +56,7 @@
     <td class="caseMenuProjet">
       <!-- Le formulaire ayant pour nom changerProjet est envoyé dés qu'un changement sur la sélection de la liste a été constaté -->
       <select class="menuProjet" name="mIdProjet" size ="1" onchange="changerProjet.submit()"
-       onmouseover="tooltipTitreOn(this, event, 'Selecteur de projet', 'Choisissez le porjet que vous voulez visualiser.')" onmouseout="tooltipOff(this, event)">
+       onmouseover="tooltipTitreOn(this, event, 'Selecteur de projet', 'Choisissez le projet que vous voulez visualiser.')" onmouseout="tooltipOff(this, event)">
 <%
   // Affichage de la liste des projets possibles
   // Le projet ouvert est sélectionné par défaut
