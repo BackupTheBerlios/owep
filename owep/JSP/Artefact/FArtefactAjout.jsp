@@ -1,16 +1,13 @@
 <%@page import="owep.controle.CConstante"%>
 <%@page import="owep.modele.execution.MArtefact"%>
+<%@page import="owep.infrastructure.Session"%>
 
 <jsp:useBean id="lArtefact" class="owep.modele.execution.MArtefact" scope="page"/>
+<jsp:useBean id="lSession"  class="owep.infrastructure.Session"     scope="page"/> 
 
 <%
     lArtefact = (MArtefact) request.getAttribute (CConstante.PAR_ARTEFACT) ;
 %>
-
-<html>
-<head>
-<title>Ajout d'un artefact</title>
-</head>
 
 <body>
 <table width="100%">
@@ -57,6 +54,4 @@
 </td>
 </tr>
 </table>
-
 </body>
-</html>

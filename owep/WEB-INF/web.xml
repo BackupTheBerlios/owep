@@ -110,6 +110,16 @@
     <servlet-name>CProjetVisu</servlet-name>
     <url-pattern>/Processus/ProjetVisu</url-pattern>
   </servlet-mapping>
+    
+    <!-- Navigation -->
+  <servlet>
+    <servlet-name>CNavigationIteration</servlet-name>
+    <servlet-class>owep.controle.navigation.CNavigationIteration</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CNavigationIteration</servlet-name>
+    <url-pattern>/Navigation/NavigationIteration</url-pattern>
+  </servlet-mapping>
   
   <servlet>
     <servlet-name>CIterationModif</servlet-name>
@@ -120,10 +130,10 @@
     <url-pattern>/Processus/IterationModif</url-pattern>
   </servlet-mapping>
   
-  
   <!-- Configuration de la session -->
   <session-config>
 	<session-timeout>30</session-timeout>
   </session-config>
+
 
 </web-app>

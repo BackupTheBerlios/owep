@@ -3,6 +3,10 @@ package owep.modele.execution ;
 
 import owep.modele.MModeleBase ;
 import owep.modele.processus.MProduit;
+import java.sql.Connection ;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 
 /**
@@ -10,8 +14,6 @@ import owep.modele.processus.MProduit;
  */
 public class MArtefact extends MModeleBase
 {
-  public String PATH_ARTEFACT = "Artefacts/"; //Variable global avec le path vers les artefacts (à mettre dans un fichier avec des variables globales)
-
   private int            mId ;            // Identifie l'artefact de manière unique.
   private String         mNom ;           // Nom de l'artefact.
   private String         mDescription ;   // Description de l'artefact.
@@ -44,7 +46,108 @@ public class MArtefact extends MModeleBase
     mDescription = pDescription ;
   }
 
-
+  /**
+   * Insertion de l'artefact courant dans la base de données.
+   * @param pConnection Connexion avec la base de données.
+   * @throws SQLException si une erreur survient durant l'insetion dans la bd.
+   */
+  public void create (Connection pConnection) throws SQLException 
+  {
+    assert getProjet () != null ;
+    assert getTacheEntree () != null ;
+    assert getTacheSortie () != null ;
+    assert getProduit () != null ;
+    
+    // Prépaation de la requête
+   /* String lRequete = "INSERT INTO ART_ARTEFACT (ART_NOM, ART_DESCRIPTION, ART_NOM_FICHIER, ART_PRJ_ID, ART_COL_ID, ART_TAC_ID_ENTREE, ART_TAC_ID_SORTIE, ART_PRD_ID) VALUES ('" ;
+    lRequete += getNom () + "', '" ;
+    lRequete += getDescription () + "', '" ;
+    lRequete += getNomFichier () + "', '" ;
+    lRequete += getProjet ().getId () + "', '" ;
+    lRequete += getResponsable ().getId () + "', '" ;
+    lRequete += getTacheEntree ().getId () + "', '" ;
+    lRequete += getTacheSortie ().getId () + "', '" ;
+    lRequete += getProduit ().getId () + "') " ;
+    
+    Statement lRequest = pConnection.createStatement () ;
+    lRequest.executeQuery (lRequete) ;
+    */
+    
+    Statement lRequest = pConnection.createStatement (ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE) ;
+    ResultSet curseurArtefact = lRequest.executeQuery ("SELECT * FROM ART_ARTEFACT") ;
+    curseurArtefact.moveToInsertRow () ;
+    curseurArtefact.updateString (2, getNom ()) ;
+    curseurArtefact.updateString (3, getDescription ()) ;
+    curseurArtefact.updateString (4, getNomFichier ()) ;
+    curseurArtefact.updateInt (5, getProjet ().getId ()) ;
+    curseurArtefact.updateInt (6, getResponsable ().getId ()) ;
+    if (getTacheEntree () != null)
+    {
+      curseurArtefact.updateInt (7, getTacheEntree ().getId ()) ;
+    }
+    if (getTacheSortie () != null)
+    {
+      curseurArtefact.updateInt (8, getTacheSortie ().getId ()) ;
+    }
+    curseurArtefact.updateInt (9, getProduit ().getId ()) ;
+    curseurArtefact.insertRow () ;
+    curseurArtefact.close () ;
+    //pConnection.commit () ;
+    
+    // Préparation de la requête permettant d'obtenir l'id de l'artefact
+    String lRequete = "SELECT MAX(ART_ID) FROM ART_ARTEFACT" ;
+    ResultSet result = lRequest.executeQuery (lRequete) ;
+    if (result.next ())
+    {
+      setId (result.getInt (1)) ;
+    }
+    result.close () ;
+  }
+  
+  
+  /**
+   * Mise à jour de l'artefact courant dans la base de données.
+   * @param pConnection Connexion avec la base de données.
+   * @throws SQLException si une erreur survient durant la mise à jour de la bd.
+   */
+  public void update (Connection pConnection) throws SQLException
+  {
+    assert getProjet () != null ;
+    assert getTacheSortie () != null ;
+    
+    int lId = getId () ;
+    
+    // Préparation de la requête.
+    String lRequete = "UPDATE ART_ARTEFACT SET " ;
+    lRequete += "ART_NOM = '" + getNom () + "', " ;
+    lRequete += "ART_DESCRIPTION = '" + getDescription () + "', " ;
+    lRequete += "ART_NOM_FICHIER = '" + getNomFichier () + "', " ;
+    lRequete += "ART_PRJ_ID = " + getProjet ().getId () + ", " ;
+    lRequete += "ART_COL_ID = " + getResponsable ().getId () + ", " ;
+    if (getTacheEntree () != null) 
+    {
+      lRequete += "ART_TAC_ID_ENTREE = " + getTacheEntree ().getId () + ", " ;
+    }
+    else
+    {
+      lRequete += "ART_TAC_ID_ENTREE = NULL , " ;
+    }
+    lRequete += "ART_TAC_ID_SORTIE = " + getTacheSortie ().getId () + ", " ;
+    if (getProduit () != null)
+    {
+      lRequete += "ART_PRD_ID = " + getProduit ().getId () + " " ;
+    }
+    else
+    {
+      lRequete += "ART_PRD_ID = NULL " ;
+    }
+    lRequete += "WHERE ART_ID = " + lId ;
+    
+    
+    Statement lRequest = pConnection.createStatement () ;
+    lRequest.executeUpdate (lRequete) ;
+  }
+  
   /**
    * Récupère le collaborateur responsable de l'artefact.
    * @return Collaborateur responsable de l'artefact.
@@ -233,7 +336,7 @@ public class MArtefact extends MModeleBase
   {
     if (mNomFichier!=null)
     {
-      return PATH_ARTEFACT+mProjet.getNom()+"/"+mTacheEntree.getIteration().getNumero()+"/"+mProduit.getNom()+"/" ;
+      return mProjet.getNom()+"/"+mTacheSortie.getIteration().getNumero()+"/"+mProduit.getNom()+"/" ;
     }
     else
     {

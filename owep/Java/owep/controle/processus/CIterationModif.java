@@ -1,10 +1,16 @@
 package owep.controle.processus ;
 
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.servlet.ServletException ;
 import org.exolab.castor.jdo.OQLQuery ;
 import org.exolab.castor.jdo.PersistenceException;
 import org.exolab.castor.jdo.QueryResults ;
+import com.mysql.jdbc.Driver;
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
 import owep.infrastructure.Session ;
@@ -330,14 +336,16 @@ public class CIterationModif extends CControleurBase
         int lIndiceTache     = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTETACHES)) ;
         int lIndiceArtSortie = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEARTEFACTSSORTIES)) ;
         
-        mIteration.getTache (lIndiceTache).supprimerArtefactSortie (lIndiceArtSortie) ;
         MArtefact lArtefactSortie = mIteration.getTache (lIndiceTache).getArtefactSortie (lIndiceArtSortie) ;
         
         // Mise à jour du modèle.
         lArtefactSortie.getTacheSortie ().supprimerArtefactSortie (lArtefactSortie) ;
         lArtefactSortie.setTacheSortie (null) ;
-        lArtefactSortie.getTacheEntree ().supprimerArtefactEntree (lArtefactSortie) ;
-        lArtefactSortie.setTacheEntree (null) ;
+        if (lArtefactSortie.getTacheEntree () != null)
+        {
+          lArtefactSortie.getTacheEntree ().supprimerArtefactEntree (lArtefactSortie) ;
+          lArtefactSortie.setTacheEntree (null) ;
+        }
         lArtefactSortie.getProduit ().supprimerArtefact (lArtefactSortie) ;
         lArtefactSortie.setProduit (null) ;
         lArtefactSortie.getResponsable ().supprimerArtefact (lArtefactSortie) ;
@@ -412,80 +420,39 @@ public class CIterationModif extends CControleurBase
     }
     else
     {
+      boolean nouvelIt = false ; // modif tmp
+      Connection lConnection = null ;
       try
-      {     
-        // Met à jour la base de données avec les informations fournies par le collaborateur.
-        getBaseDonnees ().begin () ;
+      {
+        DriverManager.registerDriver (new Driver ()) ;
+        lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", "root", "6431") ;
+        lConnection.setAutoCommit(false);
         if (mIteration.getId () == 0)
         {
-//          OQLQuery lRequete      = getBaseDonnees ().getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
-//          OQLQuery lRequete      = getBaseDonnees ().getOQLQuery ("CALL SQL select max(TAC_ID) + 1 from TAC_TACHE AS owep.infrastructure.outil.IdentifiantBD ;") ;
-//          QueryResults lResultat = lRequete.execute () ;
-/*          OQLQuery lRequete      = getBaseDonnees ().getOQLQuery ("select TACHE from owep.modele.execution.MTache TACHE") ;
-          QueryResults lResultat = lRequete.execute () ;
-          MTache lTache = null ;
-          while (lResultat.hasMoreElements())
-          {
-            lTache = (MTache) lResultat.next () ;
-          }
-          
-          lTache.setId(((MTache)lResultat.next ()).getId()) ;*/
-          OQLQuery lRequete      = getBaseDonnees ().getOQLQuery ("select ITERATION from owep.modele.execution.MIteration ITERATION") ;
-          QueryResults lResultat = lRequete.execute () ;
-          MIteration lIteration = null ;
-          while (lResultat.hasMoreElements())
-          {
-            lIteration = (MIteration) lResultat.next () ;
-          }
-          mIteration.setId (lIteration.getId () + 2) ;
-          getBaseDonnees ().update (mIteration) ;          
-          getBaseDonnees ().commit () ;
-          getBaseDonnees ().begin () ;
+          mIteration.create (lConnection) ;
+          nouvelIt = true; // modif tmp
         }
         else
         {
-          getBaseDonnees ().update (mIteration) ;
-          getBaseDonnees ().commit () ;
-          getBaseDonnees ().begin () ;
+          mIteration.update (lConnection) ;
         }
+        
         // Mise à jour de toutes les tâches dans la BD.
-        OQLQuery lRequete      = getBaseDonnees ().getOQLQuery ("select TACHE from owep.modele.execution.MTache TACHE") ;
-        QueryResults lResultat = lRequete.execute () ;
-        MTache lTacheTmp = null ;
-        while (lResultat.hasMoreElements())
-        {
-          lTacheTmp = (MTache) lResultat.next () ;
-        }
-        int lIndiceMaxTache = lTacheTmp.getId () ;
         for (int i = 0; i < mIteration.getNbTaches (); i++)
         {
           MTache lTache = mIteration.getTache (i) ;
-          lIndiceMaxTache = lIndiceMaxTache + 1 ;
           
           if (lTache.getId () == 0)
           {
-            lTache.setId (lIndiceMaxTache) ;
-            getBaseDonnees ().update (lTache) ;
-            getBaseDonnees ().commit () ;
-            getBaseDonnees ().begin () ;
+            lTache.create (lConnection) ;
           }
           else
           {
-            getBaseDonnees ().update (lTache) ;
-            getBaseDonnees ().commit () ;
-            getBaseDonnees ().begin () ;
+            lTache.update (lConnection) ;
           }
         }
           
         // Mise à jour de tous les artefacts en sorties dans la BD.
-        lRequete      = getBaseDonnees ().getOQLQuery ("select ARTEFACT from owep.modele.execution.MArtefact ARTEFACT") ;
-        lResultat = lRequete.execute () ;
-        MArtefact lArtefactTmp = null ;
-        while (lResultat.hasMoreElements())
-        {
-          lArtefactTmp = (MArtefact) lResultat.next () ;
-        }
-        int lIndiceMaxArtSort = lArtefactTmp.getId () ;
         for (int i = 0; i < mIteration.getNbTaches (); i++)
         {
           MTache lTache = mIteration.getTache (i) ;
@@ -496,150 +463,67 @@ public class CIterationModif extends CControleurBase
             MArtefact lArtefact = lTache.getArtefactSortie (j) ;
             if (lArtefact.getId () == 0)
             {
-              lIndiceMaxArtSort = lIndiceMaxArtSort + 1 ;
-              lArtefact.setId (lIndiceMaxArtSort) ;
-              
-              getBaseDonnees ().update (lArtefact) ;
-              getBaseDonnees ().commit () ;
-              getBaseDonnees ().begin () ;
+              lArtefact.create (lConnection) ;
             }
             else
             {
-              getBaseDonnees ().update (lArtefact) ;
-              getBaseDonnees ().commit () ;
-              getBaseDonnees ().begin () ;
+              lArtefact.update (lConnection) ;
             }
           }
-        }
-        
-        // Mise à jour de tous les artefacts en entrées dans la BD.
-/*        lRequete      = getBaseDonnees ().getOQLQuery ("select ARTEFACT from owep.modele.execution.MArtefact ARTEFACT") ;
-        lResultat = lRequete.execute () ;
-        lArtefactTmp = null ;
-        while (lResultat.hasMoreElements())
-        {
-          lArtefactTmp = (MArtefact) lResultat.next () ;
-        }
-        int lIndiceMaxArtEntr = lArtefactTmp.getId () ;*/
-        lIndiceMaxArtSort = lIndiceMaxArtSort + 5 ;
-        for (int i = 0; i < mIteration.getNbTaches (); i++)
-        {
-          MTache lTache = mIteration.getTache (i) ;
           
-          // Mise à jour des artefacts en entrées de la tache
+          // Mise à jour de tous les artefacts en entrées dans la BD.
           for (int j = 0; j < lTache.getNbArtefactsEntrees (); j ++)
           {
             MArtefact lArtefact = lTache.getArtefactEntree (j) ;
             if (lArtefact.getId () == 0)
             {
-              lIndiceMaxArtSort = lIndiceMaxArtSort + 1 ;
-              lArtefact.setId (lIndiceMaxArtSort) ;
-              
-              getBaseDonnees ().update (lArtefact) ;
-              getBaseDonnees ().commit () ;
-              getBaseDonnees ().begin () ;
+              lArtefact.create (lConnection) ;
             }
             else
             {
-              //getBaseDonnees ().update (lArtefact) ;
-              getBaseDonnees ().commit () ;
-              getBaseDonnees ().begin () ;
+              lArtefact.update (lConnection) ;
             }
           }
         }
+
+        lConnection.commit () ;
         
-        /*for (int i = 0; i < mIteration.getProjet ().getNbArtefacts (); i++)
-        {
-          MArtefact lArtefact = mIteration.getProjet ().getArtefact (i) ;
-          
-          if (lArtefact.getId () == 0)
-          {
-            OQLQuery lRequete      = getBaseDonnees ().getOQLQuery ("select ARTEFACT from owep.modele.execution.MArtefact ARTEFACT") ;
-            QueryResults lResultat = lRequete.execute () ;
-            MArtefact lArtefactTmp = null ;
-            while (lResultat.hasMoreElements())
-            {
-              lArtefactTmp = (MArtefact) lResultat.next () ;
-            }
-            lArtefact.setId (lArtefactTmp.getId () + 1) ;
-            
-            getBaseDonnees ().update (lArtefact) ;
-          }
-          else
-          {
-            // TODO supprimé car cause des bugs (vérifier si certains objets non en double
-            getBaseDonnees ().update (lArtefact) ;
-          }
-        }*/
-/*        for (int i = 0; i < mIteration.getNbTaches (); i++)
-        {
-          MTache lTache = mIteration.getTache (i) ;
-          
-          // Mise à jour des artefacts en sorties de la tache
-          for (int j = 0; j < lTache.getNbArtefactsSorties (); j ++)
-          {
-            MArtefact lArtefact = lTache.getArtefactSortie (j) ;
-            if (lArtefact.getId () == 0)
-            {
-              OQLQuery lRequete      = getBaseDonnees ().getOQLQuery ("select ARTEFACT from owep.modele.execution.MArtefact ARTEFACT") ;
-              QueryResults lResultat = lRequete.execute () ;
-              MArtefact lArtefactTmp = null ;
-              while (lResultat.hasMoreElements())
-              {
-                lArtefactTmp = (MArtefact) lResultat.next () ;
-              }
-              lArtefact.setId (lArtefactTmp.getId () + 1) ;
-              
-              getBaseDonnees ().update (lArtefact) ;
-            }
-            else
-            {
-              getBaseDonnees ().update (lArtefact) ;
-            }
-          }
-        }
         
-        getBaseDonnees ().commit () ;
-        getBaseDonnees ().begin () ;
         
-        // Mise à jour de tous les artefacts en entrées dans la BD.
-        for (int i = 0; i < mIteration.getNbTaches (); i++)
-        {
-          MTache lTache = mIteration.getTache (i) ;
-          
-          // Mise à jour des artefacts en entrées de la tache
-          for (int j = 0; j < lTache.getNbArtefactsEntrees (); j ++)
-          {
-            MArtefact lArtefact = lTache.getArtefactEntree (j) ;
-            if (lArtefact.getId () == 0)
-            {
-              OQLQuery lRequete      = getBaseDonnees ().getOQLQuery ("select ARTEFACT from owep.modele.execution.MArtefact ARTEFACT") ;
-              QueryResults lResultat = lRequete.execute () ;
-              MArtefact lArtefactTmp = null ;
-              while (lResultat.hasMoreElements())
-              {
-                lArtefactTmp = (MArtefact) lResultat.next () ;
-              }
-              lArtefact.setId (lArtefactTmp.getId () + 1) ;
-              
-              getBaseDonnees ().create (lArtefact) ;
-            }
-            else
-            {
-              getBaseDonnees ().update (lArtefact) ;
-            }
-          }
-        }*/
         
-        getBaseDonnees ().commit () ;
-        
-        // MODIF YANN : ajout de l'itération au projet en cours et retour sur la page affichant la liste des itérations
         Session lSession ;
         lSession = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
         mProjet  = lSession.getProjet () ;
-        mProjet.addIteration(mIteration) ;
-        lSession.setProjet(mProjet) ;
-        //return "..\\Tache\\ListeTacheVisu" ;
+        int mIdProjet = mProjet.getId ();
+        OQLQuery lRequete ; // Requête à réaliser sur la base
+        QueryResults lResultat ; // Résultat de la requête sur la base
+        MProjet lProjet ; // Projet à ouvrir
+        getBaseDonnees ().begin () ;
+        // Cherche le projet à ouvrir
+        lRequete = getBaseDonnees ()
+          .getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
+        lRequete.bind (mIdProjet) ;
+        lResultat = lRequete.execute () ;
+
+        lProjet = (MProjet) lResultat.next () ;
+
+        getBaseDonnees ().commit () ;
+        
+        
+        // modif tmp
+        if (nouvelIt)
+          lProjet.addIteration (mIteration); // Temporaire car sinon on ne voit pas l'itération dans la fene^tre de visuprojet
+
+        // Enregistre le projet à ouvrir dans la session
+        getSession ().ouvrirProjet (lProjet) ;
+        
+        // MODIF YANN : ajout de l'itération au projet en cours et retour sur la page affichant la liste des itérations
+        //Session lSession ;
+        //lSession = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
+        //mProjet  = lSession.getProjet () ;
+        //mProjet.addIteration(mIteration) ;
+        //lSession.setProjet(mProjet) ;
+        
         return "..\\Processus\\ProjetVisu" ;
       }
       catch (Exception eException)
@@ -649,16 +533,16 @@ public class CIterationModif extends CControleurBase
       }
       // Ferme la connexion à la base de données.
       finally
-      {
+      {        
         try
         {
-          getBaseDonnees ().close () ;
+          lConnection.close () ;
         }
-        catch (PersistenceException eException)
+        catch (SQLException eException)
         {
           eException.printStackTrace () ;
           throw new ServletException (CConstante.EXC_DECONNEXION) ;
-        }
+        } 
       }
     }
   }

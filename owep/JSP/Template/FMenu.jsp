@@ -1,6 +1,14 @@
+
 <%@page import="java.util.ArrayList"%>
 <%@page import="owep.infrastructure.Session"%>
 <%@page import="owep.modele.execution.MProjet"%>
+<%@page import="java.util.ResourceBundle"%>
+
+<%//Récupération du ressource bundle%>
+<%
+  Session getSession = (Session)(request.getSession().getAttribute("SESSION"));
+  ResourceBundle messages = getSession.getMessages();
+%>  
 
 <jsp:useBean id="lSession" class="owep.infrastructure.Session" scope="page"/>
 <jsp:useBean id="lProjet" class="owep.modele.execution.MProjet" scope="page"/>
@@ -63,7 +71,7 @@
   </tr>
   <tr>
     <td class="caseMenuConnexion">
-      <a class="menuConnexion" href="../Outil/Deconnexion">Déconnexion</a>
+      <a class="menuConnexion" href="../Outil/Deconnexion"><%=messages.getString("menuDeconnexion")%></a>
     </td>
   </tr>
   <tr>

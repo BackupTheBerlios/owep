@@ -1,15 +1,20 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="owep.controle.CConstante"%>
 <%@page import="owep.modele.execution.MTache"%>
+<%@page import="owep.infrastructure.Session"%>
 
 <jsp:useBean id="lArtefact" class="owep.modele.execution.MArtefact" scope="page"/>
 <jsp:useBean id="lTache"    class="owep.modele.execution.MTache"    scope="page"/> 
+<jsp:useBean id="lSession"  class="owep.infrastructure.Session"     scope="page"/> 
 
 <%
     SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
     lTache = (MTache) request.getAttribute (CConstante.PAR_TACHE) ;
+    lSession = (Session) request.getAttribute (CConstante.SES_SESSION) ;
     
     String [] tabEtat = {"Créée", "Prète", "Commencée", "Suspendue", "Terminée"};
+
+	String PATH_ARTEFACT = lSession.getConfiguration().getPathArtefact();
 %>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -20,7 +25,7 @@
   </tr>
   <tr>
     <td width="20%">Etat : </td>
-    <td align="left"><%= tabEtat[lTache.getEtat()]%></td>
+    <td align="left"><%= tabEtat[lTache.getEtat()+1]%></td>
   </tr>
   <tr>
     <td width="20%">Description : </td>
@@ -138,7 +143,7 @@
 	    <tr>
 	      <td class='caseNiveau2'><%= lArtefact.getNom()%></td>
 	      <%if (lArtefact.getNomFichier() != null){%>
-	        <td class='caseNiveau2'><a href=<%= "../"+lArtefact.getPathFichier()+lArtefact.getNomFichier()%>><%= lArtefact.getNomFichier()%></a></td>
+	        <td class='caseNiveau2'><a href=<%= "/owep/"+PATH_ARTEFACT+lArtefact.getPathFichier()+lArtefact.getNomFichier()%>><%= lArtefact.getNomFichier()%></a></td>
 	      <%}else{%>
             <td class='caseNiveau2'>Nom disponible</td>
           <%}%>
@@ -167,11 +172,11 @@
 	    <tr>
 	      <td class='caseNiveau2'><%= lArtefact.getNom()%></td>
 	      <%if (lArtefact.getNomFichier() != null){%>
-	        <td class='caseNiveau2'><a href=<%= "../"+lArtefact.getPathFichier()+lArtefact.getNomFichier()%>><%= lArtefact.getNomFichier()%></a></td>
+	        <td class='caseNiveau2'><a href=<%= "/owep/"+PATH_ARTEFACT+lArtefact.getPathFichier()+lArtefact.getNomFichier()%>><%= lArtefact.getNomFichier()%></a></td>
 	      <%}else{%>
             <td class='caseNiveau2'>Nom disponible</td>
           <%}%>
-	        <td class='caseNiveau2'><a href=<%= "../Artefact/ArtefactAjout?pArtefact="+ Integer.toString(lArtefact.getId())+"&pTacheAVisualiser="+lTache.getId()%>><%= "Ajouter"%></a></td>
+	        <td class='caseNiveau2'><a href=<%= "/owep/Artefact/ArtefactAjout?pArtefact="+ Integer.toString(lArtefact.getId())+"&pTacheAVisualiser="+lTache.getId()%>><%= "Ajouter"%></a></td>
 	    </tr>
 	  <%}%>
 	</tbody>

@@ -1,21 +1,28 @@
 <%@page import="owep.controle.CConstante"%>
+<%@page import="owep.infrastructure.Session"%>
+<%@page import="owep.modele.execution.MIteration"%>
+<%@page import="java.util.ArrayList"%>
+
 
 <center>
-	<form id="navigation">
+	<form action="../Navigation/NavigationIteration" id="navigation">
     Choisissez l'itération : 	    
-    
-       <select name="pNumIteration" size=1 onChange="navigationIteration (this.form.pNumIteration)">   
+       <select name="<%=CConstante.PAR_ITERATION%>" size=1 onChange="forms[0].submit();">   
       <%
+      	MIteration iteration;
+      	Session getSession = (Session)(request.getSession().getAttribute("SESSION"));
+      
       	//récupération de la liste des itérations à partir du projet sélectionné dans la session
-        java.util.ArrayList listeIteration = ((owep.infrastructure.Session)(request.getSession().getAttribute("SESSION"))).getProjet().getListeIterations(); 
+        ArrayList listeIteration = getSession.getProjet().getListeIterations(); 
         for(int i=0; i<listeIteration.size(); i++)
         {
+          iteration = (MIteration)listeIteration.get(i);
       %>
         <option
-          <%if (((owep.modele.execution.MIteration)listeIteration.get(i)).equals(((owep.infrastructure.Session)(request.getSession().getAttribute("SESSION"))).getIteration())){%>
+          <%if (iteration.getId() == getSession.getIteration().getId()){%>
             selected
           <%}%>
-          value="<%=((owep.modele.execution.MIteration)listeIteration.get(i)).getId()%>">Itération <%=((owep.modele.execution.MIteration)listeIteration.get(i)).getNumero()%>
+          value="<%=iteration.getId()%>">Itération <%=iteration.getNumero()%>
         </option>
 	  <%}%>  
 	    </select>

@@ -403,4 +403,28 @@
     </field>
   </class>
   
+  
+  <class name="owep.modele.configuration.MConfiguration" identity="mId">
+    <map-to table="CON_CONFIGURATION"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId">
+      <sql name="CON_ID" type="integer"/>
+    </field>
+    <field name="mLangue" type="string" get-method="getLangue" set-method="setLangue">
+      <sql name="CON_LANGUE" type="char"/>
+    </field>
+    <field name="mPays" type="string" get-method="getPays" set-method="setPays">
+      <sql name="CON_PAYS" type="char"/>
+    </field>
+    <field name="mApparence" type="string" get-method="getApparence" set-method="setApparence">
+      <sql name="CON_APPARENCE" type="char"/>
+    </field>
+    <field name="mPathArtefact" type="string" get-method="getPathArtefact" set-method="setPathArtefact">
+      <sql name="CON_PATH_ARTEFACT" type="char"/>
+    </field>
+    <field name="mPathSauvegarde" type="string" get-method="getPathSauvegarde" set-method="setPathSauvegarde">
+      <sql name="CON_PATH_SAUVEGARDE" type="char"/>
+    </field>
+  </class>
+  
+  
 </mapping>

@@ -2,6 +2,9 @@ package owep.controle.outil ;
 
 
 import java.io.IOException ;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.servlet.RequestDispatcher ;
 import javax.servlet.ServletException ;
 import javax.servlet.http.HttpServlet ;
@@ -15,6 +18,7 @@ import org.exolab.castor.jdo.QueryResults ;
 import owep.controle.CConstante ;
 import owep.infrastructure.Session ;
 import owep.infrastructure.localisation.LocalisateurIdentifiant ;
+import owep.modele.configuration.MConfiguration;
 import owep.modele.execution.MCollaborateur ;
 
 
@@ -30,7 +34,8 @@ public class CConnexion extends HttpServlet
   // passe
   private String mLogin = null ; // Login saisi
   private String mPassword = null ; // mot de passe saisi
-
+  // configuration
+  private MConfiguration mConfiguration = null ; //éléments de configuration
 
   /**
    * Appellé lors d'une requête d'un client. Redirige le client vers la page retourné par la méthode
@@ -133,7 +138,7 @@ public class CConnexion extends HttpServlet
     {
       getBaseDonnees ().begin () ;
 
-      // Récupère la liste des tâches du collaborateur.
+      // Récupère le collaborateur connecté.
       lRequete = getBaseDonnees ()
         .getOQLQuery (
                       "select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mUtilisateur = $1") ;
@@ -145,7 +150,20 @@ public class CConnexion extends HttpServlet
         // On suppose que le nom est unique
         mCollaborateur = (MCollaborateur) lResultat.next () ;
       }
+      
+      // Récupère les éléments de configuration
+      lRequete = getBaseDonnees ()
+        .getOQLQuery (
+                      "select CONFIGURATION from owep.modele.configuration.MConfiguration CONFIGURATION where mId = $1") ;
+      lRequete.bind (1) ;
+      lResultat = lRequete.execute () ;
+
+      if (lResultat.size () > 0)
+      {
+        mConfiguration = (MConfiguration) lResultat.next () ;
+      }
       getBaseDonnees ().commit () ;
+      
       getBaseDonnees ().close () ;
     }
     catch (Exception eException)
@@ -171,7 +189,7 @@ public class CConnexion extends HttpServlet
    * @return URL de la page vers laquelle doit être redirigé le client.
    */
   public String traiter ()
-  {
+  {    
     if (mLogin == null)
     {
       return "..\\JSP\\index.jsp" ;
@@ -189,10 +207,29 @@ public class CConnexion extends HttpServlet
       Session mSession = new Session () ;
       mSession.ouvertureSession (mCollaborateur) ;
 
+      
+      //traitement de la localisation
+        //Sélection de la langue dans la BD
+        String langue = new String(mConfiguration.getLangue());
+        String pays = new String(mConfiguration.getPays());
+      
+        //Création du ressource bundle
+        Locale currentLocale;
+        ResourceBundle messages;
+        currentLocale = new Locale(langue, pays);
+        messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);
+     
+        //ajout dans la session du resource bundle
+        mSession.setMessages(messages);
+        
+        //ajout en session de l'objet configuration
+        mSession.setConfiguration(mConfiguration);
+      
+      
       // Création de la session HTTP
       HttpSession session = getRequete ().getSession (true) ;
       session.setAttribute ("SESSION", mSession) ;
-      //return "..\\Tache\\ListeTacheVisu" ;
+      
       return "..\\Projet\\OuvrirProjet";
     }
     else

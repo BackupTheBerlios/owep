@@ -20,662 +20,431 @@
 <!-- Déclaration des variables locales -->
 <%
   boolean lModif = request.getParameter (CConstante.PAR_SUBMIT) != null ;
-  Session lSession      = (Session) session.getAttribute (CConstante.SES_SESSION) ;
+  Session    lSession   = (Session) session.getAttribute (CConstante.SES_SESSION) ;
   MIteration lIteration = (MIteration) session.getAttribute (CConstante.SES_ITERATION) ;
-  MProjet lProjet       = lIteration.getProjet () ;
+  MProjet    lProjet    = lIteration.getProjet () ;
   MProcessus lProcessus = lProjet.getProcessus () ;
+  String lCodeValidation ;
 
-  // Code javascript permettant de gérer la liste de tâche
-  String lCodeScript          = "<script type=\"text/javascript\" language=\"JavaScript\">\n" ;
-  String lCodeScriptActivite  = "<script type=\"text/javascript\" language=\"JavaScript\">\n" ;
-  String lCodeScriptArtefact  = "<script type=\"text/javascript\" language=\"JavaScript\">\n" ;
-  String lCodeScriptProduit   = "<script type=\"text/javascript\" language=\"JavaScript\">\n" ;
-  String lCodeScriptArtEntree = "<script type=\"text/javascript\" language=\"JavaScript\">\n" ;
-  String lCodeValidation = "" ;
+  // Liste des champs transférés.
+  String lChampTacheNom             = "" ;
+  String lChampTacheDescription     = "" ;
+  String lChampTacheChargeInitiale  = "" ;
+  String lChampTacheDateDebutPrevue = "" ;
+  String lChampTacheDateFinPrevue   = "" ;
+  String lChampArtefactNom          = "" ;
+  String lChampArtefactDescription  = "" ;
 %>
+
+
 
 
 <p class="titre1">PROJET : <%= lProjet.getNom () %></p>
 <p class="texte"><%= lProjet.getDescription () %></p>
 <br/><br/>
  
-<form action="./IterationModif" method="post">
+<form action="./IterationModif" method="post" name="formIterationModif">
 
   <transfert:transfertbean scope="Session" type="owep.modele.execution.MIteration" bean="pIteration" idArbre="<%= CConstante.PAR_ARBREITERATION %>">
-    <input <transfert:transfertchamp membre="setNumero" type="java.lang.Integer" libelle="Numéro de l\\'itération" convertor="VIntegerConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
-     type="hidden" value="<%= lIteration.getNumero () %>" maxlength="<%= CConstante.TXT_MOYEN %>">
-
+  <input <transfert:transfertchamp membre="setNumero" type="java.lang.Integer" libelle="Numéro de l\\'itération" convertor="VIntegerConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
+   type="hidden" value="<%= lIteration.getNumero () %>" maxlength="<%= CConstante.TXT_MOYEN %>">
+  
+  
   <table class="tableau" width="100%" cellpadding="0" cellspacing="0">
   <tbody>
+  
+    <!-- Champs de l'itération -->
     <tr> 
       <td class="caseNiveau1" colspan="2">Itération <%= lIteration.getNumero () %> :</td>
     </tr>
-    <tr> 
+    <tr>
       <td class="caseNiveau3" colspan="2">
-        Nom de l'itération : <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom de l\\'itération" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
+        Nom de l'itération * : <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom de l\\'itération" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
                               type="text" size="48" class="niveau2"
                               value="<%= lIteration.getNom () %>" maxlength="<%= CConstante.TXT_MOYEN %>">
       </td>
     </tr>
     <tr> 
       <td class="caseNiveau3" width="50%">
-        Date de début prévue : <input <transfert:transfertchamp membre="setDateDebutPrevue" type="java.util.Date" libelle="Date de début prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/> 
+        Date de début prévue * : <input <transfert:transfertchamp membre="setDateDebutPrevue" type="java.util.Date" libelle="Date de début prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/> 
                                 type="text" size="8" class="niveau2"
                                 value="<%= VDateConvertor.getString (lIteration.getDateDebutPrevue ()) %>"  maxlength="<%= CConstante.TXT_DATE %>">
       </td>
       <td class="caseNiveau3" width="50%">
-        Date de fin prévue : <input <transfert:transfertchamp membre="setDateFinPrevue" type="java.util.Date" libelle="Date de fin prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>  
+        Date de fin prévue * : <input <transfert:transfertchamp membre="setDateFinPrevue" type="java.util.Date" libelle="Date de fin prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>  
                               type="text" size="8" class="niveau2"
                               value="<%= VDateConvertor.getString (lIteration.getDateFinPrevue ()) %>" 
                               maxlength="<%= CConstante.TXT_DATE %>">
       </td>
     </tr>
-    <tr> 
-      <td class="caseNiveau3" width="50%">
-        Date de début réelle : <input <transfert:transfertchamp membre="setDateDebutReelle" type="java.util.Date" libelle="Date de début réelle" convertor="VDateConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>  
-                                type="text" size="8"  class="niveau2"
-                                value="<%= VDateConvertor.getString (lIteration.getDateDebutReelle ()) %>" 
-                                maxlength="<%= CConstante.TXT_DATE %>">
-      </td>
-      <td class="caseNiveau3" width="50%">
-        Date de fin réelle : <input <transfert:transfertchamp membre="setDateFinReelle" type="java.util.Date" libelle="Date de fin réelle" convertor="VDateConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>  
-                              type="text" size="8" class="niveau2"
-                              value="<%= VDateConvertor.getString (lIteration.getDateFinReelle ()) %>" 
-                              maxlength="<%= CConstante.TXT_DATE %>">
-      </td>
-    </tr>
   </tbody>
   </table>
-
+  
   <br/><br/><br/>
-
+  
   <table class="tableau" width="100%" cellpadding="0" cellspacing="0">
   <tbody>
-    <tr> 
-      <td class="caseNiveau1" colspan="2">Liste des tâches à réaliser :</td>
+  
+    <!-- Liste des tâches -->
+    <tr>
+      <td class="caseNiveau1" colspan="2">
+        Liste des tâches à réaliser :
+      </td>
     </tr>
     <tr> 
-      
       
       <!-- Liste des champs cachés contenant les données des tâches -->
       <%
-        lCodeScript += "var gListeTaches = new Array () ;\n" ;
-        
-        for (int i = 0; i < lIteration.getNbTaches (); i++)
+        for (int lIndiceTache = 0; lIndiceTache < lIteration.getNbTaches (); lIndiceTache ++)
         {
-          MTache lTache = lIteration.getTache (i) ;
+          MTache lTache = lIteration.getTache (lIndiceTache) ;
       %>
         <transfert:transfertbean scope="Session" type="owep.modele.execution.MTache" bean="getTache" idArbre="<%= CConstante.PAR_ARBREITERATION %>">
         <!-- Ajoute le champ "Nom" à la liste -->
         <input <transfert:transfertchamp membre="setNom" type="" libelle="Nom de la tâche" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
          type="hidden" value="<%= lTache.getNom () %>">
-        <%
-          lCodeScript += "gListeTaches.push (new Array (\"" + lTache.getNom () + "\", " ;
-        %>
         
         <!-- Ajoute le champ "Description" à la liste -->
         <input <transfert:transfertchamp membre="setDescription" type="" libelle="Description de la tâche" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
          type="hidden" value="<%= lTache.getDescription () %>">
-        <%
-          lCodeScript += "\"" + lTache.getDescription () + "\", " ;
-        %>
         
         <!-- Ajoute le champ "ChargeInitiale" à la liste -->
         <input <transfert:transfertchamp membre="setChargeInitiale" type="" libelle="Charge initiale de la tâche" convertor="VDoubleConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
          type="hidden" value="<%= lTache.getChargeInitiale () %>">
-        <%
-          lCodeScript += "\"" + lTache.getChargeInitiale () + "\", " ;
-        %>
         
         <!-- Ajoute le champ "DateDebutPrevu" à la liste -->
         <input <transfert:transfertchamp membre="setDateDebutPrevue" type="" libelle="Date de début prévue de la tâche" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
          type="hidden" value="<%= VDateConvertor.getString (lTache.getDateDebutPrevue ()) %>">
-        <%
-          lCodeScript += "\"" + VDateConvertor.getString (lTache.getDateDebutPrevue ()) + "\", " ;
-        %>
         
         <!-- Ajoute le champ "DateFinPrevue" à la liste -->
         <input <transfert:transfertchamp membre="setDateFinPrevue" type="" libelle="Date de fin prévue de la tâche" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
          type="hidden" value="<%= VDateConvertor.getString (lTache.getDateFinPrevue ()) %>">
-        <%
-          lCodeScript += "\"" + VDateConvertor.getString (lTache.getDateFinPrevue ()) + "\", " ;
-        %>
+        
         
         <!-- Ajoute les champs Disciplines, activités et collaborateurs -->
         <!-- TODO A optimiser en utilisant une méthode générale de recherche (cf. TODO controleur) -->
         <% 
-           MActivite lActTmp = null ;
-           int lIndiceDefTravail = 0 ;
-           for (int l = 0; (lActTmp == null) && (l < lProcessus.getNbComposants ()); l ++)             
-           {
-             MComposant lComposant ;
-             lComposant = lProcessus.getComposant (l) ;
-             
-             /* Recherche la position de la définition de travail dans la liste si présente */
-             for (int j = 0; (lActTmp == null) && (j < lComposant.getNbDefinitionsTravail ()); j ++)
-             {
-               /* Recherche la position de l'activité dans la liste si présente */
-               for (int k = 0; (lActTmp == null) && (k < lComposant.getDefinitionTravail (j).getNbActivites ()); k ++) 
-               {
-                 /* On a trouvé l'activité dans la liste, on sort des boucles */
-                 if (lComposant.getDefinitionTravail (j).getActivite (k).getId () == lTache.getActivite ().getId ())
-                 {
-                   lActTmp = lComposant.getDefinitionTravail (j).getActivite (k) ;
-                   lCodeScript += "\"" + lIndiceDefTravail + "\", " ;
-                   lCodeScript += "\"" + k + "\", " ;
-                 }
-               }
-               
-               lIndiceDefTravail ++ ;
-             } 
-          }
-          
-          /* Cherche l'indice du collaborateur dans la liste */
-          for (int l = 0; l < lProjet.getNbCollaborateurs (); l ++) 
-          {
-            if (lProjet.getCollaborateur (l).getId () == lTache.getCollaborateur ().getId ())
-            {
-              lCodeScript += "\"" + l + "\", new Array (), new Array())) ;\n" ;
-              break ;
-            }
-          }
-          
-          for (int a = 0; a < lTache.getNbArtefactsEntrees (); a ++)
-          {
-            MArtefact lArtEntree = lTache.getArtefactEntree (a) ;
-            lCodeScript += "gListeTaches[" + i + "][9].push (new Array (\"" + lTache.getArtefactEntree (a).getId () + "\", \"" + lTache.getArtefactEntree (a).getNom () + "\")) ;\n" ;
-          }
-          
-          
           /* Liste des champs cachés contenant les données des artefacts en sorties */ 
-          for (int ai = 0 ; ai < lTache.getNbArtefactsSorties () ; ai ++)
+          for (int lIndiceArtefactSortie = 0 ; lIndiceArtefactSortie < lTache.getNbArtefactsSorties () ; lIndiceArtefactSortie ++)
           {
-          %>
+        %>
             <transfert:transfertbean scope="Session" type="owep.modele.execution.MArtefact" bean="getArtefactSortie" idArbre="<%= CConstante.PAR_ARBREITERATION %>">
-            <!-- Ajoute le champ "Nom" à la liste -->
+
             <input <transfert:transfertchamp membre="setNom" type="" libelle="Nom de l\\'artefact en sortie" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
-             type="hidden" value="<%= lTache.getArtefactSortie (ai).getNom () %>">
-            <!-- Ajoute le champ "Description" à la liste -->
+             type="hidden" value="<%= lTache.getArtefactSortie (lIndiceArtefactSortie).getNom () %>">
+             
             <input <transfert:transfertchamp membre="setDescription" type="" libelle="Description de l\\'artefact en sortie" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
-             type="hidden" value="<%= lTache.getArtefactSortie (ai).getDescription () %>">
+             type="hidden" value="<%= lTache.getArtefactSortie (lIndiceArtefactSortie).getDescription () %>">
+             
             </transfert:transfertbean>
-            <%
-              for (int w  = 0; w < lTache.getActivite ().getNbProduitsSorties (); w ++) 
-              {
-                MProduit lProduitTmp = lTache.getActivite ().getProduitSortie (w) ;
-                if (lProduitTmp.getId () == lTache.getArtefactSortie (ai).getProduit ().getId ()) 
-                {
-                  lCodeScript += "gListeTaches[" + i + "][8].push (new Array (\"" + ai + "\", \"" + lTache.getArtefactSortie (ai).getNom () +
-                             "\", \"" + lTache.getArtefactSortie (ai).getDescription () + "\", \"" +
-                             w + "\"" ;
-boolean passe = false ; // MODIF YANN
-                  for (int x = 0; x < lProduitTmp.getResponsable ().getNbCollaborateurs (); x ++)
-                  {
-                    MCollaborateur lRespTmp = lProduitTmp.getResponsable ().getCollaborateur (x) ;
-                    if (lRespTmp.getId ()  == lTache.getArtefactSortie (ai).getResponsable ().getId ()) 
-                    {
-                      lCodeScript += ", " + x + ")) ;\n" ;
-passe = true ;
-                    }
-                  }
-if (! passe) {
-  lCodeScript += ")) ;\n" ;
-}
-                }
-              }
-              
-            %>
         <%
           }
         %>
-        
-      <!-- Fin boucle for -->
       </transfert:transfertbean>
-      <%    
+      <%
         }
       %>
       
       
-      <!-- Liste des tâches -->
       <td class="caseNiveau3">
-        <select name="<%= CConstante.PAR_LISTETACHES %>" class="niveau2" style="width: 200" size="15"
-         onchange="selectTache (document.forms[0].<%= CConstante.PAR_LISTETACHES %>.selectedIndex)">
+        <select name="<%= CConstante.PAR_LISTETACHES %>" class="niveau2" style="width: 200" size="29"
+         onchange="selectTache (document.formIterationModif.<%= CConstante.PAR_LISTETACHES %>.selectedIndex)">
           <%
-            for (int i = 0; i < lIteration.getNbTaches (); i++)
+            for (int lIndiceTache = 0; lIndiceTache < lIteration.getNbTaches (); lIndiceTache ++)
             {
           %>
-          <option value="<%= i %>"> <%= lIteration.getTache (i).getNom () %> </option>
+          <option value="<%= lIndiceTache %>"> <%= lIteration.getTache (lIndiceTache).getNom () %> </option>
           <%    
-            } 
+            }
           %>
         </select>
       </td>
       
       
-     
-          <!-- Détail de la tâche -->
-          <transfert:transfertbean scope="Session" type="owep.modele.execution.MTache" bean="getTache" idArbre="<%= CConstante.PAR_ARBRETACHES %>">
-        <%
-          /* Créé la fonction javascript qui permet de choisir et afficher le détail d'une tâche. */
-          lCodeScript += "function selectTache(pIndice) {" ;
-        %>
-
+      
+      <!-- Détail de la tâche -->
+      <transfert:transfertbean scope="Session" type="owep.modele.execution.MTache" bean="getTache" idArbre="<%= CConstante.PAR_ARBRETACHES %>">
       <td class="caseNiveau3" valign="top" align="left" width="100%" rowspan="2">
-<table width="100%" cellpadding="0" cellspacing="0" valign="top">
-<tr>
- <td colspan="2">
-        <p class="titre2">Détail de la tâche :</p>
-</td>        
-</tr>
-<tr>
-    <td width="50%" class="caseNiveau3SansBordure">    
-        Nom : </td><td><input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
-               type="text" size="8" class="niveau2" value=""
-               maxlength="<%= CConstante.TXT_MOYEN %>"><br/>
-        <% lCodeScript += "document.forms[0]." + VTransfert.getDernierChamp () + ".value = gListeTaches[pIndice][0] ;\n" ; %>
-        </td></tr><tr><td class="caseNiveau3SansBordure">
-        Description : </td><td><input <transfert:transfertchamp membre="setDescription" type="java.lang.String" libelle="Description" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
-                       type="text" size="8" class="niveau2" value="" maxlength="<%= CConstante.TXT_LARGE %>"><br/>
-        <% lCodeScript += "document.forms[0]." + VTransfert.getDernierChamp () + ".value = gListeTaches[pIndice][1] ;\n" ; %>
-        
-        </td></tr><tr><td class="caseNiveau3SansBordure">
-        Charge initiale : </td><td><input <transfert:transfertchamp membre="setChargeInitiale" type="java.lang.Double" libelle="Charge initiale" convertor="VDoubleConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
-                           type="text" size="8" class="niveau2" value="" maxlength="<%= CConstante.TXT_CHARGE %>"><br/>
-        <% lCodeScript += "document.forms[0]." + VTransfert.getDernierChamp () + ".value = gListeTaches[pIndice][2] ;\n" ; %>
-        
-        </td></tr><tr><td class="caseNiveau3SansBordure">
-        Date de début prévue : </td><td><input <transfert:transfertchamp membre="setDateDebutPrevue" type="java.util.Date" libelle="Date de début prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
-                             type="text" size="8" class="niveau2" value="" maxlength="<%= CConstante.TXT_DATE %>"><br/>
-        <% lCodeScript += "document.forms[0]." + VTransfert.getDernierChamp () + ".value = gListeTaches[pIndice][3] ;\n" ; %>
-        
-        </td></tr><tr><td class="caseNiveau3SansBordure">
-        Date de fin prévue : </td><td><input <transfert:transfertchamp membre="setDateFinPrevue" type="java.lang.Date" libelle="Date de fin prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
-                           type="text" size="8" class="niveau2" value="" maxlength="<%= CConstante.TXT_DATE %>"><br/>
-        <% lCodeScript += "document.forms[0]." + VTransfert.getDernierChamp () + ".value = gListeTaches[pIndice][4] ;\n" ; %>
+        <table width="100%" cellpadding="0" cellspacing="0" valign="top">
+          <tr>
+            <td colspan="2">
+              <p class="titre2">Détail de la tâche :</p>
+            </td>        
+          </tr>
+          <tr>
+            <td width="50%" class="caseNiveau3SansBordure">    
+              Nom * :
+            </td>
+            <td>
+              <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
+               type="text" size="8" class="niveau2" value="" maxlength="<%= CConstante.TXT_MOYEN %>"><br/>
+              <% lChampTacheNom = VTransfert.getDernierChamp () ; %>
+            </td>
+          </tr>
+          <tr>
+            <td class="caseNiveau3SansBordure">
+              Description :
+            </td>
+            <td>
+              <input <transfert:transfertchamp membre="setDescription" type="java.lang.String" libelle="Description" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
+               type="text" size="8" class="niveau2" value="" maxlength="<%= CConstante.TXT_LARGE %>"><br/>
+              <% lChampTacheDescription = VTransfert.getDernierChamp () ; %>
+            </td>
+          </tr>
+          <tr>
+            <td class="caseNiveau3SansBordure">
+              Charge initiale * :
+            </td>
+            <td>
+              <input <transfert:transfertchamp membre="setChargeInitiale" type="java.lang.Double" libelle="Charge initiale" convertor="VDoubleConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
+               type="text" size="8" class="niveau2" value="" maxlength="<%= CConstante.TXT_CHARGE %>"><br/>
+              <% lChampTacheChargeInitiale = VTransfert.getDernierChamp () ; %>
+            </td>
+          </tr>
+          <tr>
+            <td class="caseNiveau3SansBordure">
+              Date de début prévue * :
+            </td>
+            <td>
+              <input <transfert:transfertchamp membre="setDateDebutPrevue" type="java.util.Date" libelle="Date de début prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
+               type="text" size="8" class="niveau2" value="" maxlength="<%= CConstante.TXT_DATE %>"><br/>
+              <% lChampTacheDateDebutPrevue = VTransfert.getDernierChamp () ; %>
+            </td>
+          </tr>
+          <tr>
+            <td class="caseNiveau3SansBordure">
+              Date de fin prévue * :
+            </td>
+            <td>
+              <input <transfert:transfertchamp membre="setDateFinPrevue" type="java.lang.Date" libelle="Date de fin prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
+               type="text" size="8" class="niveau2" value="" maxlength="<%= CConstante.TXT_DATE %>"><br/>
+              <% lChampTacheDateFinPrevue = VTransfert.getDernierChamp () ; %>
+            </td>
+          </tr>
+          </transfert:transfertbean>
 
-        <% lCodeScript += "document.forms[0]." + CConstante.PAR_LISTEDISCIPLINES    + ".selectedIndex = gListeTaches[pIndice][5] ;\n" ; %>
-        <% lCodeScript += "selectDiscipline (document.forms[0]." + CConstante.PAR_LISTEDISCIPLINES + ".selectedIndex) ;\n" ; %>
-        <% lCodeScript += "document.forms[0]." + CConstante.PAR_LISTEACTIVITES      + ".selectedIndex = gListeTaches[pIndice][6] ;\n" ; %>
-        <% lCodeScript += "document.forms[0]." + CConstante.PAR_LISTECOLLABORATEURS + ".selectedIndex = gListeTaches[pIndice][7] ;\n" ; %>
-        <% lCodeScript += "document.forms[0]." + CConstante.PAR_LISTEARTEFACTSSORTIES + ".length = 0 ;\n" ; %>
-
-      </transfert:transfertbean>
-        </td></tr>
-        <tr>
-          <td colspan="2"> &nbsp;
-          </td>
-        </tr>
-        <br/>
-        <tr>
-          <td class="caseNiveau3SansBordure">
-        <!-- Activités et collaborateurs -->
-        Discpline :
-        <select class="niveau2" name="<%= CConstante.PAR_LISTEDISCIPLINES %>" onchange="selectDiscipline (document.forms[0].<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex) ;
-                                                                                        selectActivite (document.forms[0].<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.forms[0].<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex);
-                                                                                        selectProduit (document.forms[0].<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.forms[0].<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.forms[0].<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex);">
-          <% 
-             lCodeScriptActivite += "var gListeActivites = new Array () ; \n" ;
-             MComposant lComposant ;
-             int lDisciplineCourante = 0 ;
-             for (int i = 0; i < lProcessus.getNbComposants (); i++)             
-             {
-               lComposant = lProcessus.getComposant(i);
-               
-               for (int j = 0; j < lComposant.getNbDefinitionsTravail (); j++)
-               {
-                 lCodeScriptActivite += "gListeActivites.push (new Array ()) ; \n" ;
-                 for (int k = 0; k < lComposant.getDefinitionTravail (j).getNbActivites(); k++) 
+          <tr>
+            <td colspan="2">
+              &nbsp;
+            </td>
+          </tr>
+        
+          <tr>
+            <td class="caseNiveau3SansBordure">
+              <!-- Activités et collaborateurs -->
+              Discpline * :
+              <select class="niveau2" name="<%= CConstante.PAR_LISTEDISCIPLINES %>" onchange="selectDiscipline (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex) ;
+                                                                                              selectActivite (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex);
+                                                                                              selectProduit (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex);">
+              <% 
+                 int lDisciplineCourante = 0 ;
+                 for (int i = 0; i < lProcessus.getNbComposants (); i++)             
                  {
-                   MActivite lActTmp = lComposant.getDefinitionTravail (j).getActivite(k) ;
-                   lCodeScriptActivite += "gListeActivites[" + lDisciplineCourante + "].push (new Array ( \"" + lActTmp.getId () + "\", \"" + lActTmp.getNom () + "\", new Array (), new Array ())) ; \n" ;
-                   /* Sauvegarde des produits de sorties de l'activite */
-                   for (int pl = 0 ; pl < lActTmp.getNbProduitsSorties() ; pl++) 
+                   MComposant lComposant = lProcessus.getComposant(i);
+                   
+                   for (int j = 0; j < lComposant.getNbDefinitionsTravail (); j++)
                    {
-                     MProduit lProdTmp = lActTmp.getProduitSortie(pl) ;
-                     lCodeScriptActivite += "gListeActivites[" + lDisciplineCourante + "][" + k + "][2].push (new Array ( \"" + pl + "\", \"" + lProdTmp.getNom () + "\", new Array ())) ; \n" ;
-                     /* Sauvegarde des collaborateurs suceptible d'être responsables du produits*/
-                     MRole lRole = lProdTmp.getResponsable () ;
-                     for (int m = 0 ; m < lRole.getNbCollaborateurs () ; m++)
-                     {
-                       MCollaborateur lCollaborateurTmp = lRole.getCollaborateur (m) ;
-                       lCodeScriptActivite += "gListeActivites[" + lDisciplineCourante + "][" + k + "][2][" + pl +"][2].push (new Array ( \"" + m + "\", \"" + lCollaborateurTmp.getNom () + "\", \"" + lCollaborateurTmp.getPrenom () + "\")) ; \n" ;
-                     }
-                   }
-                   for (int pk = 0 ; pk < lActTmp.getNbProduitsEntrees (); pk ++)
-                   {
-                     MProduit lProdEntTmp = lActTmp.getProduitEntree (pk) ;
-                     for (int ll = 0 ; ll < lProdEntTmp.getNbArtefacts (); ll ++)
-                     {
-                       MArtefact lArtEntreeTmp = lProdEntTmp.getArtefact (ll) ;
-                       lCodeScriptActivite += "gListeActivites[" + lDisciplineCourante + "][" + k + "][3].push (new Array ( \"" + lArtEntreeTmp.getId () + "\", \"" + lArtEntreeTmp.getNom () + "\")) ; \n" ;
-                     }
-                     
-                   }
-                 }
-          %> <option value="<%= lDisciplineCourante ++ %>"> <%= lComposant.getDefinitionTravail (j).getNom () %> </option>
-          <%   
-               } 
-            }
-          %>
-        </select>
-        </td>
-        <td class="caseNiveau3SansBordure">
-        <%
-          lCodeScriptActivite += "function selectDiscipline (pIndice) { \n" ;
-          lCodeScriptActivite += "document.forms[0]." + CConstante.PAR_LISTEACTIVITES + ".length = 0 ;" ;
-          lCodeScriptActivite += "for (i = 0 ; i <  gListeActivites[pIndice].length ; i++) { \n" ; 
-          lCodeScriptActivite += "var option = new Option(gListeActivites [pIndice][i][1],gListeActivites [pIndice][i][0]); \n" ; 
-          lCodeScriptActivite += "document.forms[0]." + CConstante.PAR_LISTEACTIVITES + ".options[i] = option; " ;
-          lCodeScriptActivite += "} } \n" ;
+              %>
+                <option value="<%= lDisciplineCourante ++ %>"> <%= lComposant.getDefinitionTravail (j).getNom () %> </option>
+              <%   
+                   } 
+                }
+              %>
+              </select>
+            </td>
+            
+            <td class="caseNiveau3SansBordure">
+              <!-- Données de l'activité. -->
+              Activité * :
+              <select class="niveau2" name="<%= CConstante.PAR_LISTEACTIVITES %>" onchange="selectActivite (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex) ;
+                                                                                            selectProduit (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex);">
+              <%
+                MDefinitionTravail lDefTravTmp = lProcessus.getComposant(0).getDefinitionTravail(0) ;
+                for (int i = 0 ; i < lDefTravTmp.getNbActivites() ; i++)
+                {
+              %> 
+                <option value="<%= lDefTravTmp.getActivite(i).getId() %>"> <%= lDefTravTmp.getActivite(i).getNom () %> </option>
+              <%
+                }
+              %>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="caseNiveau3SansBordure">
+              Collaborateur affecté * :
+              <select class="niveau2" name="<%= CConstante.PAR_LISTECOLLABORATEURS %>">
+              <%
+                for (int i = 0; i < lProjet.getNbCollaborateurs (); i++) 
+                {
+              %>
+              <option value="<%= lProjet.getCollaborateur (i).getId () %>"> <%= lProjet.getCollaborateur (i).getNom () %> &nbsp; <%= lProjet.getCollaborateur (i).getPrenom () %> </option>
+              <%
+                }
+              %>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2"> &nbsp;
+            </td>
+          </tr>
+            <tr>
+            <td colspan="2"> &nbsp;
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2"> &nbsp;
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2"> &nbsp;
+            </td>
+          </tr>
           
-          
-          
-        %>
-        Activité :
-        <select class="niveau2" name="<%= CConstante.PAR_LISTEACTIVITES %>" onchange="selectActivite (document.forms[0].<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.forms[0].<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex) ;
-                                                                                      selectProduit (document.forms[0].<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.forms[0].<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.forms[0].<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex);">
-          <%
-            MDefinitionTravail lDefTravTmp = lProcessus.getComposant(0).getDefinitionTravail(0) ;
-            for (int i = 0 ; i < lDefTravTmp.getNbActivites() ; i++)
-            {
-          %> 
-            <option value="<%= lDefTravTmp.getActivite(i).getId() %>"> <%= lDefTravTmp.getActivite(i).getNom () %> </option>
-          <%
-            }
-          %>
-        </select>
-        </td>
-        </tr>
-        <tr>
-        <td colspan="2" class="caseNiveau3SansBordure">
-        Collaborateur affecté :
-        <select class="niveau2" name="<%= CConstante.PAR_LISTECOLLABORATEURS %>">
-          <%
-            for (int i = 0; i < lProjet.getNbCollaborateurs (); i++) 
-            {
-          %>
-          <option value="<%= lProjet.getCollaborateur (i).getId () %>"> <%= lProjet.getCollaborateur (i).getNom () %> &nbsp; <%= lProjet.getCollaborateur (i).getPrenom () %> </option>
-          <%
-            }
-          %>
-        </select>
-        </td>
-        </tr>
-        <br/><br/><br/><br/>
-        </td>
-      </tr>
-      <tr>
-          <td colspan="2"> &nbsp;
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2"> &nbsp;
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2"> &nbsp;
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2"> &nbsp;
-          </td>
-        </tr>
-        
-      <tr>
-        <td>
-        <!-- Liste des artefacts en sorties -->
-        <transfert:transfertbean scope="Session" type="owep.modele.execution.MArtefact" bean="getArtefactSortie" idArbre="<%= CConstante.PAR_ARBREARTEFACTSORTIES %>">
-        <%
-          /* Créé la fonction javascript qui permet de choisir et afficher le détail d'une tâche. */
-          lCodeScriptArtefact += "function selectArtefact(pIndiceTache, pIndiceArtefact) {" ;
-        %>
-        
-        <p class="titre2">Artefacts en Sorties :</p>
-       </td>
-       <td>
-       <p class="titre2">Artefacts en Entrées :</p>
-       </td>
-       <tr>
-       <td>
-<table width="100%" cellpadding="0" cellspacing="0" valign="top">
-<tr>       
-<td colspan="2" align="center">
-        <select class="niveau2" name="<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>" style="width: 80%" onchange="selectArtefact (document.forms[0].<%= CConstante.PAR_LISTETACHES %>.selectedIndex, document.forms[0].<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.selectedIndex)" size="4">
-        </select>
-</td>
-<tr>
-<td width="50%" class="caseNiveau3SansBordure">     
-        Nom : </td><td><input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREARTEFACTSORTIES %>"/>
-               type="text" size="8" class="niveau2" value=""
-               maxlength="<%= CConstante.TXT_MOYEN %>"><br/>
-        <% lCodeScriptArtefact += "document.forms[0]." + VTransfert.getDernierChamp () + ".value = gListeTaches[pIndiceTache][8][pIndiceArtefact][1] ;\n" ; %>
-        <% lCodeScript += "document.forms[0]." + VTransfert.getDernierChamp () + ".value = '' ;\n" ; %>
-        
-</td>
-<tr>
-<td class="caseNiveau3SansBordure">
-        Description : </td><td><input <transfert:transfertchamp membre="setDescription" type="java.lang.String" libelle="Description" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBREARTEFACTSORTIES %>"/>
-                       type="text" size="8" class="niveau2" value="" maxlength="<%= CConstante.TXT_LARGE %>"><br/>
-        <% lCodeScript += "document.forms[0]." + VTransfert.getDernierChamp () + ".value = '' ;\n" ; %>
-        <% lCodeScript += "selectActivite (document.forms[0]." + CConstante.PAR_LISTEDISCIPLINES + ".selectedIndex, document.forms[0]." + CConstante.PAR_LISTEACTIVITES + ".selectedIndex) ;\n" ; %>
-        <%
-          lCodeScript += "document.forms[0]." + CConstante.PAR_LISTEARTEFACTSSORTIES + ".length = 0 ; " ; 
-          lCodeScript += "for (i = 0 ; i <  gListeTaches[pIndice][8].length ; i++) { \n" ; 
-          lCodeScript += "var option = new Option(gListeTaches [pIndice][8][i][1],gListeTaches [pIndice][8][i][0]); " ; 
-          lCodeScript += "document.forms[0]." + CConstante.PAR_LISTEARTEFACTSSORTIES + ".options[i] = option; " ;
-          lCodeScript += "} \n" ;
-        %>
-        <%
-          lCodeScript += "document.forms[0]." + CConstante.PAR_LISTEARTEFACTSENTREES + ".length = 0 ; " ; 
-          lCodeScript += "for (i = 0 ; i <  gListeTaches[pIndice][9].length ; i++) { \n" ; 
-          lCodeScript += "var option = new Option(gListeTaches [pIndice][9][i][1],gListeTaches [pIndice][9][i][0]); " ; 
-          lCodeScript += "document.forms[0]." + CConstante.PAR_LISTEARTEFACTSENTREES + ".options[i] = option; " ;
-          lCodeScript += "} \n" ;
-        %>
-
-        <% lCodeScript += "alert(" + CConstante.PAR_LISTEDISCIPLINES + ".disabled) ;\n" ; %>
-        <% lCodeScript += "if (document.forms[0]." + CConstante.PAR_LISTEARTEFACTSSORTIES + ".length > 0) {\n" ; %>
-        <% lCodeScript += "document.forms[0]." + CConstante.PAR_LISTEARTEFACTSSORTIES + ".selectedIndex = 0 ;\n" ; %>
-        <% lCodeScript += "document.forms[0]." + CConstante.PAR_LISTEDISCIPLINES + ".disabled = true ;\n" ; %>
-        <% lCodeScript += "document.forms[0]." + CConstante.PAR_LISTEACTIVITES + ".disabled = true ;\n" ; %>
-        <% lCodeScript += "selectArtefact (document.forms[0]." + CConstante.PAR_LISTETACHES + ".selectedIndex, 0) ; } else {\n" ; %>
-        <% lCodeScript += "document.forms[0]." + CConstante.PAR_LISTEDISCIPLINES + ".disabled = false ;\n" ; %>
-        <% lCodeScript += "document.forms[0]." + CConstante.PAR_LISTEACTIVITES + ".disabled = false ; } }\n" ; %>
-        
-
-        <% lCodeScriptArtefact += "document.forms[0]." + VTransfert.getDernierChamp () + ".value = gListeTaches[pIndiceTache][8][pIndiceArtefact][2] ;\n" ; %>
-        <% lCodeScriptArtefact += "selectActivite (document.forms[0]." + CConstante.PAR_LISTEDISCIPLINES + ".selectedIndex, document.forms[0]." + CConstante.PAR_LISTEACTIVITES + ".selectedIndex) ;\n" ; %>
-        <% lCodeScriptArtefact += "document.forms[0]." + CConstante.PAR_LISTEPRODUITS     + ".selectedIndex = gListeTaches[pIndiceTache][8][pIndiceArtefact][3] ;\n" ; %>
-        <% lCodeScriptArtefact += "selectProduit (document.forms[0]." + CConstante.PAR_LISTEDISCIPLINES + ".selectedIndex, document.forms[0]." + CConstante.PAR_LISTEACTIVITES + ".selectedIndex, document.forms[0]." + CConstante.PAR_LISTEPRODUITS + ".selectedIndex) ;\n" ; %>
-        <% lCodeScriptArtefact += "document.forms[0]." + CConstante.PAR_LISTERESPONSABLES + ".selectedIndex = gListeTaches[pIndiceTache][8][pIndiceArtefact][4] ;\n" ; %>
-        <% lCodeScriptArtefact += "}\n" ; %>
-</td>
-<tr>
-<td class="caseNiveau3SansBordure">
-        Produit :</td><td>
-        <select class="niveau2" name="<%= CConstante.PAR_LISTEPRODUITS %>" onchange="selectProduit (document.forms[0].<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.forms[0].<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.forms[0].<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex)">
-          <%
-            MActivite lActivite = lProcessus.getComposant(0).getDefinitionTravail(0).getActivite (0) ;
-            for (int i = 0 ; i < lActivite.getNbProduitsSorties () ; i++)
-            {
-          %> 
-            <option value="<%= i %>"> <%= lActivite.getProduitSortie (i).getNom () %> </option>
-          <%
-            }
-          %>
-        </select><br/>
-        <%
-          lCodeScriptActivite += "function selectActivite (pIndiceDiscipline, pIndiceActivite) \n" ;
-          lCodeScriptActivite += "{ \n " ;
-          lCodeScriptActivite += "  document.forms[0]." + CConstante.PAR_LISTEPRODUITS + ".length = 0 ; \n" ;
-          lCodeScriptActivite += "  for (i = 0 ; i <  gListeActivites[pIndiceDiscipline][pIndiceActivite][2].length ; i++) \n" ; 
-          lCodeScriptActivite += "  { \n" ;
-          lCodeScriptActivite += "    var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][2][i][1],gListeActivites [pIndiceDiscipline][pIndiceActivite][2][i][0]) ; \n" ; 
-          lCodeScriptActivite += "    document.forms[0]." + CConstante.PAR_LISTEPRODUITS + ".options[i] = option; \n" ;
-          lCodeScriptActivite += "  } \n";
-          lCodeScriptActivite += "  document.forms[0]." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ".length = 0 ; \n" ;          
-          lCodeScriptActivite += "  if (document.forms[0]." + CConstante.PAR_LISTETACHES + ".selectedIndex != -1) \n" ;
-          lCodeScriptActivite += "  { \n" ;
-          lCodeScriptActivite += "    var present ;\n" ;
-          lCodeScriptActivite += "    for (j = 0 ; j < gListeActivites[pIndiceDiscipline][pIndiceActivite][3].length ; j++) \n" ;
-          lCodeScriptActivite += "    { \n" ;
-          lCodeScriptActivite += "      present = 0 ; \n" ;
-          lCodeScriptActivite += "      for (a = 0 ; a <  gListeTaches[document.forms[0]." + CConstante.PAR_LISTETACHES + ".selectedIndex][9].length ; a++) \n" ;
-          lCodeScriptActivite += "      { \n" ;
-          lCodeScriptActivite += "        if (gListeActivites [pIndiceDiscipline][pIndiceActivite][3][j][0] == gListeTaches[document.forms[0]." + CConstante.PAR_LISTETACHES + ".selectedIndex][9][a][0] ) \n" ;
-          lCodeScriptActivite += "        { \n" ;
-          lCodeScriptActivite += "           present = 1 ; \n" ;
-          lCodeScriptActivite += "        } \n";
-          lCodeScriptActivite += "      } \n" ;
-          lCodeScriptActivite += "      if (present == 0) {\n" ;
-          lCodeScriptActivite += "      var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][3][j][1],gListeActivites [pIndiceDiscipline][pIndiceActivite][3][j][0]) ; \n" ; 
-          lCodeScriptActivite += "      document.forms[0]." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ".options[document.forms[0]." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ".length] = option; \n" ;
-          lCodeScriptActivite += "      }\n";
-          lCodeScriptActivite += "    } \n" ;
-          lCodeScriptActivite += "  } \n" ;
-          lCodeScriptActivite += "  else \n" ;
-          lCodeScriptActivite += "  { \n" ;
-          lCodeScriptActivite += "    for (j = 0 ; j < gListeActivites[pIndiceDiscipline][pIndiceActivite][3].length ; j++)  { \n" ;
-          lCodeScriptActivite += "      var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][3][j][1],gListeActivites [pIndiceDiscipline][pIndiceActivite][3][j][0]) ; \n" ; 
-          lCodeScriptActivite += "      document.forms[0]." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ".options[document.forms[0]." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ".length] = option; \n" ;
-          lCodeScriptActivite += "    } \n" ;
-          lCodeScriptActivite += "  } \n" ;
-          lCodeScriptActivite += "} \n" ;
-        %>
-</td>
-<tr>
-<td class="caseNiveau3SansBordure">
-        Responsable :</td><td>
-        <select class="niveau2" name="<%= CConstante.PAR_LISTERESPONSABLES %>">
-          <%
-            MRole lRole = lProcessus.getComposant(0).getDefinitionTravail(0).getActivite (0).getProduitSortie (0).getResponsable () ;
-            for (int i = 0 ; i < lRole.getNbCollaborateurs () ; i++)
-            {
-          %> 
-            <option value="<%= i %>"> <%= lRole.getCollaborateur (i).getNom () + " &nbsp; " + lRole.getCollaborateur (i).getPrenom () %> </option>
-          <%
-            }
-          %>
-        </select><br/>
-        
-        <%
-          lCodeScriptActivite += "function selectProduit (pIndiceDiscipline, pIndiceActivite, pIndiceProduit) { \n" ;
-          lCodeScriptActivite += "document.forms[0]." + CConstante.PAR_LISTERESPONSABLES + ".length = 0 ;" ;
-          lCodeScriptActivite += "for (i = 0 ; i <  gListeActivites[pIndiceDiscipline][pIndiceActivite][2][pIndiceProduit][2].length ; i++) { \n" ; 
-          lCodeScriptActivite += "var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][2][pIndiceProduit][2][i][1] + ' ' + gListeActivites [pIndiceDiscipline][pIndiceActivite][2][pIndiceProduit][2][i][2], gListeActivites [pIndiceDiscipline][pIndiceActivite][2][pIndiceProduit][2][i][0]) ; \n" ; 
-          lCodeScriptActivite += "document.forms[0]." + CConstante.PAR_LISTERESPONSABLES + ".options[i] = option; " ;
-          lCodeScriptActivite += "}\n} \n" ;
-        %>
-</td>
-<tr>
-<td colspan="2">        
-        <!-- Barre d'outils d'artefacts -->
-        <% lCodeValidation  = "function validerSelect (pSelect, pMessage)\n" ;
-           lCodeValidation += "{ if (pSelect.selectedIndex == -1)\n" ;
-           lCodeValidation += "{ alert (pMessage) ;\n" ;
-           lCodeValidation += "} else {\n" ;
-           lCodeValidation += VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) + " () ;\n" ;
-           lCodeValidation += VTransfertConstante.getVerification (CConstante.PAR_ARBREARTEFACTSORTIES) + " () ;\n" ;
-           lCodeValidation += VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES)     + " () ; validerChamps () ;} }\n" ;
-           lCodeValidation += "validerSelect (document.forms[0]." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.' ) ;" ; %>
-        <transfert:transfertsubmit libelle="Ajouter"   valeur="<%= CConstante.PAR_SUBMITAJOUTER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"/>
-        <% lCodeValidation  = "function validerSelect (pSelect, pMessage)\n" ;
-           lCodeValidation += "{ if (pSelect.selectedIndex == -1)\n" ;
-           lCodeValidation += "{ alert (pMessage) ;\n" ;
-           lCodeValidation += "} else {\n" ;
-           lCodeValidation += VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) + " () ;\n" ;
-           lCodeValidation += VTransfertConstante.getVerification (CConstante.PAR_ARBREARTEFACTSORTIES) + " () ;\n" ;
-           lCodeValidation += VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES)     + " () ; validerChamps () ;} }\n" ;
-           lCodeValidation += "validerSelect (document.forms[0]." + CConstante.PAR_LISTEARTEFACTSSORTIES + ", 'Attention aucun artefact en sortie n\\'a été sélectionné.' ) ;" ; %>
-        <transfert:transfertsubmit libelle="Modifier"  valeur="<%= CConstante.PAR_SUBMITMODIFIER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"/>
-        <!-- FIXME Le code de la fonction javascript a été placé ici car elle n'été pas trouvé par le navigateur dans le script -->
-        <%
-          lCodeValidation  = "function validerSelect (pSelect, pMessage)\n" ;
-          lCodeValidation += "{ if (pSelect.selectedIndex == -1)\n" ;
-          lCodeValidation += "{ alert (pMessage) ;\n" ;
-          lCodeValidation += "} else {\n" ;
-          lCodeValidation += "document.forms[0].submit () ; } }\n" ;
-          lCodeValidation += "validerSelect (document.forms[0]." + CConstante.PAR_LISTEARTEFACTSSORTIES + ", 'Attention aucun artefact en sortie n\\'a été sélectionné.' ) ;" ; %>
-        <transfert:transfertsubmit libelle="Supprimer" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"/>
-
-</td>
-</tr>
-</table>    
-        </transfert:transfertbean>
-      
-        </td>
-        <td>
-        
-        <!-- Liste des artefacts en entrées -->
-<table width="100%" cellpadding="0" cellspacing="0" valign="top">
-<tr>
-  <td width="50%" align="center">        
-        <select class="niveau2" name="<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>" style="width: 90%" size="4">
-        </select>
-  </td>
-  <td align="center">       
-        <select class="niveau2" name="<%= CConstante.PAR_LISTEARTEFACTSENTREES %>" style="width: 90%" size="4">
-        </select>
-    </td>
- <tr>
-    <td align="center">
-        <%
-          lCodeValidation  = "function validerSelect (pSelect, pMessage)\n" ;
-          lCodeValidation += "{ if (pSelect.selectedIndex == -1)\n" ;
-          lCodeValidation += "{ alert (pMessage) ;\n" ;
-          lCodeValidation += "} else {\n" ;
-          lCodeValidation += VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) + " () ;\n" ;
-          lCodeValidation += VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES) + " () ;\n" ; 
-          lCodeValidation += "validerChamps () ; } }\n" ; 
-          lCodeValidation += "validerSelect (document.forms[0]." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ", 'Attention aucun artefact en entrée n\\'a été sélectionné.' ) ;" ; %>
-        <transfert:transfertsubmit libelle="Ajouter"  valeur="<%= CConstante.PAR_SUBMITAJOUTER_ARTENTREES %>" verification="true" validation="<%= lCodeValidation %>"/>
-   </td>
-
-   <td align="center">     
-       <%
-          lCodeValidation  = "function validerSelect (pSelect, pMessage)\n" ;
-          lCodeValidation += "{ if (pSelect.selectedIndex == -1)\n" ;
-          lCodeValidation += "{ alert (pMessage) ;\n" ;
-          lCodeValidation += "} else {\n" ;
-          lCodeValidation += VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) + " () ;\n" ;
-          lCodeValidation += VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES) + " () ;\n" ; 
-          lCodeValidation += "validerChamps () ; } }\n" ; 
-          lCodeValidation += "validerSelect (document.forms[0]." + CConstante.PAR_LISTEARTEFACTSENTREES + ", 'Attention aucun artefact en entrée n\\'a été sélectionné.' ) ;" ; %>
-        <transfert:transfertsubmit libelle="Supprimer"  valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_ARTENTREES %>" verification="true" validation="<%= lCodeValidation %>"/>
-   </td>
- </tr>
-</table>
+          <tr>
+            <td>
+              <!-- Liste des artefacts en sorties -->
+              <transfert:transfertbean scope="Session" type="owep.modele.execution.MArtefact" bean="getArtefactSortie" idArbre="<%= CConstante.PAR_ARBREARTEFACTSORTIES %>">
+              <p class="titre2">Artefacts en Sorties :</p>
+            </td>
+            <td>
+              <p class="titre2">Artefacts en Entrées :</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <table width="100%" cellpadding="0" cellspacing="0" valign="top">
+                <tr>       
+                  <td colspan="2" align="center">
+                    <select class="niveau2" name="<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>" style="width: 80%" onchange="selectArtefact (document.formIterationModif.<%= CConstante.PAR_LISTETACHES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.selectedIndex)" size="4">
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="50%" class="caseNiveau3SansBordure">     
+                    Nom * :
+                  </td>
+                  <td>
+                    <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREARTEFACTSORTIES %>"/>
+                     type="text" size="8" class="niveau2" value="" maxlength="<%= CConstante.TXT_MOYEN %>">
+                    <br/>
+                    <% lChampArtefactNom = VTransfert.getDernierChamp () ; %>
+                  </td>
+                </tr>
+                  <td class="caseNiveau3SansBordure">
+                    Description :
+                  </td>
+                  <td>
+                    <input <transfert:transfertchamp membre="setDescription" type="java.lang.String" libelle="Description" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBREARTEFACTSORTIES %>"/>
+                     type="text" size="8" class="niveau2" value="" maxlength="<%= CConstante.TXT_LARGE %>">
+                    <br/>
+                    <% lChampArtefactDescription = VTransfert.getDernierChamp () ; %>
+                  </td>
+                </tr>
+              </transfert:transfertbean>
+                <tr>
+                  <td class="caseNiveau3SansBordure">
+                    Produit * :
+                  </td>
+                  <td>
+                    <select class="niveau2" name="<%= CConstante.PAR_LISTEPRODUITS %>" onchange="selectProduit (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex)">
+                    <%
+                      MActivite lActivite = lProcessus.getComposant(0).getDefinitionTravail(0).getActivite (0) ;
+                      for (int i = 0 ; i < lActivite.getNbProduitsSorties () ; i++)
+                      {
+                    %> 
+                      <option value="<%= i %>"> <%= lActivite.getProduitSortie (i).getNom () %> </option>
+                    <%
+                      }
+                    %>
+                    </select>
+                    <br/>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="caseNiveau3SansBordure">
+                    Responsable * :
+                  </td>
+                  <td>
+                    <select class="niveau2" name="<%= CConstante.PAR_LISTERESPONSABLES %>">
+                    <%
+                      MRole lRole = lProcessus.getComposant(0).getDefinitionTravail(0).getActivite (0).getProduitSortie (0).getResponsable () ;
+                      for (int i = 0 ; i < lRole.getNbCollaborateurs () ; i++)
+                      {
+                    %> 
+                      <option value="<%= i %>"> <%= lRole.getCollaborateur (i).getNom () + " &nbsp; " + lRole.getCollaborateur (i).getPrenom () %> </option>
+                    <%
+                      }
+                    %>
+                    </select>
+                    <br/>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">        
+                    <!-- Barre d'outils d'artefacts -->
+                    <% lCodeValidation = "validerArtefactSortie (document.formIterationModif." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.' ) ;" ; %>
+                    <transfert:transfertsubmit libelle="Ajouter"   valeur="<%= CConstante.PAR_SUBMITAJOUTER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"/>
+                    
+                    <% lCodeValidation = "validerArtefactSortie (document.formIterationModif." + CConstante.PAR_LISTEARTEFACTSSORTIES + ", 'Attention aucun artefact en sortie n\\'a été sélectionné.') ;" ; %>
+                    <transfert:transfertsubmit libelle="Modifier"  valeur="<%= CConstante.PAR_SUBMITMODIFIER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"/>
+                    
+                    <% lCodeValidation = "validerArtefactSortieSuppr (document.formIterationModif." + CConstante.PAR_LISTEARTEFACTSSORTIES + ", 'Attention aucun artefact en sortie n\\'a été sélectionné.') ;" ; %>
+                    <transfert:transfertsubmit libelle="Supprimer" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"/>
+                  </td>
+                </tr>
+              </table>    
+              
+            </td>
+            <td>
+            
+              <!-- Liste des artefacts en entrées -->
+              <table width="100%" height="100%" cellpadding="0" cellspacing="0" valign="top">
+                <tr>
+                  <td class="caseNiveau3SansBordure" width="50%">        
+                    <p class="">Possibles :</p>
+                  </td>
+                  <td class="caseNiveau3SansBordure">       
+                    Effectifs :
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center">        
+                    <select class="niveau2" name="<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>" style="width: 90%" size="9">
+                    </select>
+                  </td>
+                  <td align="center">       
+                    <select class="niveau2" name="<%= CConstante.PAR_LISTEARTEFACTSENTREES %>" style="width: 90%" size="9">
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center">
+                    <% lCodeValidation = "validerArtefactEntree (document.formIterationModif." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ", 'Attention aucun artefact en entrée n\\'a été sélectionné.' ) ;" ; %>
+                    <transfert:transfertsubmit libelle="Ajouter"  valeur="<%= CConstante.PAR_SUBMITAJOUTER_ARTENTREES %>" verification="true" validation="<%= lCodeValidation %>"/>
+                  </td>
+                  <td align="center">     
+                    <% lCodeValidation = "validerArtefactEntreeSuppr (document.formIterationModif." + CConstante.PAR_LISTEARTEFACTSENTREES + ", 'Attention aucun artefact en entrée n\\'a été sélectionné.' ) ;" ; %>
+                    <transfert:transfertsubmit libelle="Supprimer"  valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_ARTENTREES %>" verification="true" validation="<%= lCodeValidation %>"/>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
       </td>
-      </tr>
-      </table>
-      
-      
-      </td>
-        
-      
     </tr>
     <tr> 
       <!-- Barre d'outils de tâches -->
       <td class="caseNiveau3">
-        <% lCodeValidation  = VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) + " () ;\n" ;
-           lCodeValidation += VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES)     + " () ; validerChamps () ;" ; %>
+        <% lCodeValidation = "validerTacheAjout () ;" ; %>
         <transfert:transfertsubmit libelle="Ajouter" valeur="<%= CConstante.PAR_SUBMITAJOUTER %>" verification="true" validation="<%= lCodeValidation %>"/>
-        <% lCodeValidation  = "function validerSelect (pSelect, pMessage)\n" ;
-           lCodeValidation += "{ if (pSelect.selectedIndex == -1)\n" ;
-           lCodeValidation += "{ alert (pMessage) ;\n" ;
-           lCodeValidation += "} else {\n" ;
-           lCodeValidation += VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) + " () ;\n" ;
-           lCodeValidation += VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES)     + " () ; validerChamps () ; } }\n" ;
-           lCodeValidation += "validerSelect (document.forms[0]." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.' ) ;" ; %>
+        
+        <% lCodeValidation = "validerTacheModif (document.formIterationModif." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.') ;" ; %>
         <transfert:transfertsubmit libelle="Modifier" valeur="<%= CConstante.PAR_SUBMITMODIFIER %>" verification="true" validation="<%= lCodeValidation %>"/>
-        <!-- FIXME Le code de la fonction javascript a été placé ici car elle n'été pas trouvé par le navigateur dans le script -->
-        <%
-          lCodeValidation  = "function validerSelect (pSelect, pMessage)\n" ;
-          lCodeValidation += "{ if (pSelect.selectedIndex == -1)\n" ;
-          lCodeValidation += "{ alert (pMessage) ;\n" ;
-          lCodeValidation += "} else {\n" ;
-          lCodeValidation += "document.forms[0].submit () ; } }\n" ;
-          lCodeValidation += "validerSelect (document.forms[0]." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.' ) ;" ; %>
+        
+        <% lCodeValidation = "validerTacheSuppr (document.formIterationModif." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.') ;" ; %>
         <transfert:transfertsubmit libelle="Supprimer" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER %>" verification="true" validation="<%= lCodeValidation %>"/>
       </td>
     </tr>
@@ -686,22 +455,477 @@ if (! passe) {
 
   <br>
   <p class="paragrapheSubmit">
-    <% lCodeValidation = VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) + " () ; validerChamps () ;\n" ; %>
-    <transfert:transfertsubmit libelle="Valider" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="<%= lCodeValidation %>"/>
+    <transfert:transfertsubmit libelle="Valider" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="validerFormulaire () ;"/>
   </p>
   
 </form>
 
-<!-- Insertion du code javascript -->
-<%    
-  lCodeScript += "</script>\n" ;
-  lCodeScriptActivite  += "</script>\n" ;
-  lCodeScriptArtefact  += "</script>\n" ;
-  lCodeScriptProduit   += "</script>\n" ;
-  lCodeScriptArtEntree += "</script>\n" ;
-%>
-<%= lCodeScript %>
-<%= lCodeScriptActivite %>
-<%= lCodeScriptArtefact %>
-<%= lCodeScriptProduit %>
-<%= lCodeScriptArtEntree %>
+
+
+
+<!-- Code javascript -->
+<script type="text/javascript" language="JavaScript">
+
+  <!----------------------------------------->
+  <!-- Ensemble des données de l'itération -->
+  <!----------------------------------------->
+  var gListeTaches = new Array () ;
+  <%
+  // Parcours la liste des tâches.
+  for (int lIndiceTache = 0; lIndiceTache < lIteration.getNbTaches (); lIndiceTache ++)
+  {
+    MTache    lTache         = lIteration.getTache (lIndiceTache) ;
+    MActivite lTacheActivite = lTache.getActivite () ;
+    int lIdActivite             = lTacheActivite.getId () ;
+    int lIndiceDefTravailAbsolu = 0 ;
+    int lIndiceActivite = 0 ;
+    
+    // Recherche l'activité correspondant à celle instanciée par la tâche courante.
+    boolean lTrouve     = false ;
+    for (int lIndiceComposant = 0; (! lTrouve) && (lIndiceComposant < lProcessus.getNbComposants ()); lIndiceComposant ++)             
+    {
+      MComposant lComposant = lProcessus.getComposant (lIndiceComposant) ;
+    
+      // Parcours la liste des définitions de travail.
+      for (int lIndiceDefTravail = 0; (! lTrouve) && (lIndiceDefTravail < lComposant.getNbDefinitionsTravail ()); lIndiceDefTravail ++)
+      {
+        MDefinitionTravail lDefinitionTravail = lComposant.getDefinitionTravail (lIndiceDefTravail) ;
+        
+        // Parcours la liste des activités.
+        for (lIndiceActivite = 0; (! lTrouve) && (lIndiceActivite < lDefinitionTravail.getNbActivites ()); lIndiceActivite ++) 
+        {
+          MActivite lActivite = lDefinitionTravail.getActivite (lIndiceActivite) ;
+          
+          // Si on trouve l'activité liée à la tâche est trouvée dans la définition de travail, on met leurs indices dans le tableau.
+          if (lActivite.getId () == lIdActivite)
+          {
+            lTrouve = true ;
+          }
+        }
+        
+        lIndiceDefTravailAbsolu ++ ;
+      }
+    }
+    
+    // Rectifie les indices.
+    lIndiceDefTravailAbsolu -- ;
+    lIndiceActivite -- ;
+    
+    // Recherche le collaborateur correspondant à celui réalisant la tâche courante.
+    int lIdCollaborateur = lTache.getCollaborateur ().getId () ;
+    lTrouve = false ;
+    for (int lIndiceCollaborateur = 0; (! lTrouve) && (lIndiceCollaborateur < lProjet.getNbCollaborateurs ()); lIndiceCollaborateur ++) 
+    {
+      if (lProjet.getCollaborateur (lIndiceCollaborateur).getId () == lIdCollaborateur)
+      {
+  %>
+        <!-- Données de la tâche. -->
+        gListeTaches.push (new Array ("<%= lTache.getNom () %>", "<%=lTache.getDescription ()%>", "<%=lTache.getChargeInitiale () %>",
+                                      "<%= VDateConvertor.getString (lTache.getDateDebutPrevue ()) %>", "<%= VDateConvertor.getString (lTache.getDateFinPrevue ()) %>",
+                                      "<%= lIndiceDefTravailAbsolu %>", "<%= lIndiceActivite %>",
+                                      "<%= lIndiceCollaborateur %>", new Array (), new Array())) ;
+  <%
+      }
+    }
+    
+    
+    // Parcours la liste des artefacts en entrées.
+    for (int lIndiceArtefactEntree = 0; lIndiceArtefactEntree < lTache.getNbArtefactsEntrees (); lIndiceArtefactEntree ++)
+    {
+      MArtefact lArtefactEntree = lTache.getArtefactEntree (lIndiceArtefactEntree) ;
+  %>
+      <!-- Données de l'artefact en entrée -->
+      gListeTaches[<%= lIndiceTache %>][9].push (new Array ("<%= lTache.getArtefactEntree (lIndiceArtefactEntree).getId () %>", "<%= lTache.getArtefactEntree (lIndiceArtefactEntree).getNom () %>")) ;
+  <%
+    }
+    
+    // Parcours la liste des artefacts en sorties.
+    for (int lIndiceArtefactSortie = 0; lIndiceArtefactSortie < lTache.getNbArtefactsSorties (); lIndiceArtefactSortie ++)
+    {
+      MArtefact      lArtefactSortie = lTache.getArtefactSortie (lIndiceArtefactSortie) ;
+      MCollaborateur lResponsable    = lArtefactSortie.getResponsable () ;
+      lTrouve = false ;
+      
+      // Parcours la liste des produits en sorties.
+      for (int lIndiceProduitSortie  = 0; (! lTrouve) && (lIndiceProduitSortie < lTacheActivite.getNbProduitsSorties ()); lIndiceProduitSortie ++) 
+      {
+        MProduit lProduit         = lTacheActivite.getProduitSortie (lIndiceProduitSortie) ;
+        MRole    lRoleResponsable = lProduit.getResponsable () ;
+        int      lIndiceResponsable ;
+        
+        // Si on a trouvé le produit contenant l'artefact courant,
+        if (lProduit.getId () == lArtefactSortie.getProduit ().getId ()) 
+        {
+          // Parcour l'ensemble des collaborateurs tenant le rôle responsable de l'artefact.
+          for (lIndiceResponsable = 0; (! lTrouve) && (lIndiceResponsable < lRoleResponsable.getNbCollaborateurs ()); lIndiceResponsable ++)
+          {
+            MCollaborateur lCollaborateur = lRoleResponsable.getCollaborateur (lIndiceResponsable) ;
+            
+            if (lCollaborateur.getId () == lResponsable.getId ()) 
+            {
+              lTrouve = true ;
+            }
+          }
+          
+          // Rectifie les indices.
+          lIndiceResponsable -- ;
+  %>
+          <!-- Données de l'artefact en sortie -->
+          gListeTaches[<%= lIndiceTache %>][8].push (new Array ("<%= lIndiceArtefactSortie %>", "<%= lArtefactSortie.getNom () %>",
+                                                                "<%= lArtefactSortie.getDescription () %>", "<%= lIndiceProduitSortie %>",
+                                                                "<%= lIndiceResponsable %>")) ;
+  <%
+        }
+      }
+    }
+  }
+  %>
+
+
+
+
+  <!--------------------------------------->
+  <!-- Ensemble des données du processus -->
+  <!--------------------------------------->
+  var gListeActivites = new Array () ;
+  <%
+  MComposant lComposant ;
+  // Parcours la liste des composants.
+  int lDisciplineCourante = 0 ;
+  for (int lIndiceComposant = 0; lIndiceComposant < lProcessus.getNbComposants (); lIndiceComposant ++)
+  {
+    lComposant = lProcessus.getComposant(lIndiceComposant);
+    
+    // Parcours la liste des définition de travail.
+    for (int lIndiceDefinitionTravail = 0; lIndiceDefinitionTravail < lComposant.getNbDefinitionsTravail (); lIndiceDefinitionTravail ++)
+    {
+      MDefinitionTravail lDefinitionTravail = lComposant.getDefinitionTravail (lIndiceDefinitionTravail) ;
+  %>
+      gListeActivites.push (new Array ()) ;
+  <%
+      for (int lIndiceActivite = 0; lIndiceActivite < lDefinitionTravail.getNbActivites (); lIndiceActivite ++)
+      {
+        MActivite lActivite = lComposant.getDefinitionTravail (lIndiceDefinitionTravail).getActivite(lIndiceActivite) ;
+  %>
+        <!-- Données de l'activité -->
+        gListeActivites[<%= lDisciplineCourante %>].push (new Array ("<%= lActivite.getId () %>", "<%= lActivite.getNom () %>", new Array (), new Array ())) ;
+  <%
+        // Parcours des produits en sorties de l'activite.
+        for (int lIndiceProduitSortie = 0; lIndiceProduitSortie < lActivite.getNbProduitsSorties(); lIndiceProduitSortie ++) 
+        {
+          MProduit lProduit = lActivite.getProduitSortie(lIndiceProduitSortie) ;
+          MRole lRole = lProduit.getResponsable () ;
+  %>
+          <!-- Données du produit -->
+          gListeActivites[<%= lDisciplineCourante %>][<%= lIndiceActivite %>][2].push (new Array ("<%= lIndiceProduitSortie %>", "<%= lProduit.getNom () %>", new Array ())) ;
+  <%
+          // Sauvegarde des collaborateurs suceptible d'être responsables du produits.
+          for (int lIndiceCollaborateur = 0; lIndiceCollaborateur < lRole.getNbCollaborateurs (); lIndiceCollaborateur ++)
+          {
+            MCollaborateur lCollaborateur = lRole.getCollaborateur (lIndiceCollaborateur) ;
+  %>
+            <!-- Données du collaborateur -->
+            gListeActivites[<%= lDisciplineCourante %>][<%= + lIndiceActivite %>][2][<%= lIndiceProduitSortie %>][2].push (new Array ("<%= lIndiceCollaborateur %>", "<%= lCollaborateur.getNom () %>", "<%= lCollaborateur.getPrenom () %>")) ;
+  <%
+          }
+        }
+        
+        // Parcours la liste des artefact en entrées.
+        for (int lIndiceProduitSortie = 0 ; lIndiceProduitSortie < lActivite.getNbProduitsEntrees (); lIndiceProduitSortie ++)
+        {
+          MProduit lProduitEntree = lActivite.getProduitEntree (lIndiceProduitSortie) ;
+          
+          for (int ll = 0 ; ll < lProduitEntree.getNbArtefacts (); ll ++)
+          {
+            MArtefact lArtEntreeTmp = lProduitEntree.getArtefact (ll) ;
+  %>
+            <!-- Données de l'artefact -->
+            gListeActivites[<%= lDisciplineCourante %>][<%= lIndiceActivite %>][3].push (new Array ("<%= + lArtEntreeTmp.getId () %>", "<%= lArtEntreeTmp.getNom () %>")) ;
+  <%
+          }
+        }
+      }
+      
+      lDisciplineCourante ++ ;
+    }
+  }
+  %>
+  
+  
+  
+  
+  <!------------------------------------------------------->
+  <!-- Fonctions de gestion des composants du formulaire -->
+  <!------------------------------------------------------->
+  function selectTache(pIndice)
+  {
+    // Efface les ancienne données.
+    document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.length = 0 ;
+    document.formIterationModif.<%= lChampArtefactNom %>.value = '' ;
+    document.formIterationModif.<%= lChampArtefactDescription %>.value = '' ;
+    
+    // Données de la tâche.
+    document.formIterationModif.<%= lChampTacheNom %>.value = gListeTaches[pIndice][0] ;
+    document.formIterationModif.<%= lChampTacheDescription %>.value = gListeTaches[pIndice][1] ;
+    document.formIterationModif.<%= lChampTacheChargeInitiale %>.value = gListeTaches[pIndice][2] ;
+    document.formIterationModif.<%= lChampTacheDateDebutPrevue %>.value = gListeTaches[pIndice][3] ;
+    document.formIterationModif.<%= lChampTacheDateFinPrevue %>.value = gListeTaches[pIndice][4] ;
+    document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex = gListeTaches[pIndice][5] ;
+    selectDiscipline (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex) ;
+    document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex = gListeTaches[pIndice][6] ;
+    document.formIterationModif.<%= CConstante.PAR_LISTECOLLABORATEURS %>.selectedIndex = gListeTaches[pIndice][7] ;
+    selectActivite (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex) ;
+    
+    
+    // Initialise la liste des artefacts en sorties.
+    document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.length = 0 ;
+    for (i = 0 ; i <  gListeTaches[pIndice][8].length ; i ++)
+    {
+      var option = new Option(gListeTaches [pIndice][8][i][1],gListeTaches [pIndice][8][i][0]) ;
+      document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.options[i] = option ;
+    }
+    
+    // Initialise la liste des artefacts en entrées.
+    document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSENTREES %>.length = 0 ;
+    for (i = 0 ; i <  gListeTaches[pIndice][9].length ; i ++)
+    {
+      var option = new Option(gListeTaches [pIndice][9][i][1],gListeTaches [pIndice][9][i][0]) ;
+      document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSENTREES %>.options[i] = option ;
+    }
+    
+    // Bloque la sélection d'une activité ou discipline si un artefact en sortie est associé à la tâche.
+    if (document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.length > 0)
+    {
+      // Initialise la liste des artefacts et désactive les listes disciplines et activités.
+      document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.selectedIndex = 0 ;
+      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = true ;
+      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = true ;
+      
+      selectArtefact (document.formIterationModif.<%= CConstante.PAR_LISTETACHES %>.selectedIndex, 0) ;
+    }
+    else
+    // Bloque la sélection d'une activité ou discipline si un artefact en entrée est associé à la tâche.
+    if (document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSENTREES %>.length > 0)
+    {
+      // Désactive les listes disciplines et activités.
+      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = true ;
+      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = true ;
+    }
+    else
+    {
+      // Active les listes disciplines et activités.
+      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+    }
+  }
+  
+  
+  function selectDiscipline (pIndice)
+  {
+    // Met à jour la liste des activités.
+    document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.length = 0 ;
+    for (i = 0 ; i <  gListeActivites[pIndice].length ; i++)
+    {
+      var option = new Option(gListeActivites [pIndice][i][1],gListeActivites [pIndice][i][0]) ;
+      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.options[i] = option ;
+    }
+  }
+  
+  
+  function selectActivite (pIndiceDiscipline, pIndiceActivite)
+  {
+    document.formIterationModif.<%= CConstante.PAR_LISTEPRODUITS %>.length = 0 ;
+    
+    // Met à jour la liste des activités.
+    for (lIndiceProduit = 0; lIndiceProduit <  gListeActivites[pIndiceDiscipline][pIndiceActivite][2].length; lIndiceProduit ++)
+    {
+      var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][2][lIndiceProduit][1],
+                              gListeActivites [pIndiceDiscipline][pIndiceActivite][2][lIndiceProduit][0]) ;
+      document.formIterationModif.<%= CConstante.PAR_LISTEPRODUITS %>.options[lIndiceProduit] = option;
+    }
+    
+    // Met à jour la liste des artefacts.
+    document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>.length = 0 ;          
+    if (document.formIterationModif.<%= CConstante.PAR_LISTETACHES %>.selectedIndex != -1)
+    {
+      // Cherche l'artefact dans la liste des artefacts affectés à la tâche.
+      for (lIndiceArtefact = 0; lIndiceArtefact < gListeActivites[pIndiceDiscipline][pIndiceActivite][3].length; lIndiceArtefact++)
+      {
+        var lPresent = 0 ;
+        
+        for (lIndiceTache = 0; lIndiceTache <  gListeTaches[document.formIterationModif.<%= CConstante.PAR_LISTETACHES %>.selectedIndex][9].length; lIndiceTache ++)
+        {
+          if (gListeActivites [pIndiceDiscipline][pIndiceActivite][3][lIndiceArtefact][0] == gListeTaches[document.formIterationModif.<%= CConstante.PAR_LISTETACHES %>.selectedIndex][9][lIndiceTache][0])
+          {
+             lPresent = 1 ;
+          }
+        }
+        
+        // Ajoute l'artefact à la liste des artefacts possible s'il n'est pas associé à la tâche.
+        if (lPresent == 0)
+        {
+          var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][3][lIndiceArtefact][1],
+                                  gListeActivites [pIndiceDiscipline][pIndiceActivite][3][lIndiceArtefact][0]) ; 
+          document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>.options[document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>.length] = option ;
+        }
+      }
+    }
+    else
+    {
+      for (lIndiceArtefact = 0; lIndiceArtefact < gListeActivites[pIndiceDiscipline][pIndiceActivite][3].length; lIndiceArtefact ++)
+      {
+        var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][3][lIndiceArtefact][1],
+                                gListeActivites [pIndiceDiscipline][pIndiceActivite][3][lIndiceArtefact][0]) ;
+        document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>.options[document.formIterationModif.<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>.length] = option ;
+      }
+    }
+  }
+  
+  
+  function selectProduit (pIndiceDiscipline, pIndiceActivite, pIndiceProduit)
+  {
+    document.formIterationModif.<%= CConstante.PAR_LISTERESPONSABLES %>.length = 0 ;
+    for (lIndiceCollaborateur = 0; lIndiceCollaborateur <  gListeActivites[pIndiceDiscipline][pIndiceActivite][2][pIndiceProduit][2].length; lIndiceCollaborateur ++)
+    { 
+      var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][2][pIndiceProduit][2][lIndiceCollaborateur][1] + '   ' +
+                              gListeActivites [pIndiceDiscipline][pIndiceActivite][2][pIndiceProduit][2][lIndiceCollaborateur][2],
+                              gListeActivites [pIndiceDiscipline][pIndiceActivite][2][pIndiceProduit][2][lIndiceCollaborateur][0]) ;
+      document.formIterationModif.<%= CConstante.PAR_LISTERESPONSABLES %>.options[lIndiceCollaborateur] = option ;
+    }
+  }
+  
+  
+  function selectArtefact(pIndiceTache, pIndiceArtefact)
+  {
+    document.formIterationModif.<%= lChampArtefactNom %>.value = gListeTaches[pIndiceTache][8][pIndiceArtefact][1] ;
+    document.formIterationModif.<%= lChampArtefactDescription %>.value = gListeTaches[pIndiceTache][8][pIndiceArtefact][2] ;
+    selectActivite (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex) ;
+    document.formIterationModif.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex = gListeTaches[pIndiceTache][8][pIndiceArtefact][3] ;
+    selectProduit (document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.formIterationModif.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex) ;
+    document.formIterationModif.<%= CConstante.PAR_LISTERESPONSABLES %>.selectedIndex = gListeTaches[pIndiceTache][8][pIndiceArtefact][4] ;
+  }
+  
+  
+  
+  
+  <!------------------------------------------->
+  <!-- Fonctions de validation du formulaire -->
+  <!------------------------------------------->
+  function validerTacheAjout ()
+  {
+    <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) %> () ;
+    <%= VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES) %> () ;
+    validerChamps () ;  
+  }
+  
+  
+  function validerTacheModif (pSelect, pMessage)
+  {
+    if (pSelect.selectedIndex == -1)
+    {
+      alert (pMessage) ;
+    }
+    else
+    {
+      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+      <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) %> () ;
+      <%= VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES) %> () ;
+      validerChamps () ;
+    }
+  }
+  
+  
+  function validerTacheSuppr (pSelect, pMessage)
+  {
+    if (pSelect.selectedIndex == -1)
+    {
+      alert (pMessage) ;
+    }
+    else
+    {
+      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+      document.formIterationModif.submit () ;
+    }
+  }
+  
+  
+  function validerArtefactSortie (pSelect, pMessage)
+  {
+    if (pSelect.selectedIndex == -1)
+    {
+      alert (pMessage) ;
+    }
+    else
+    {
+      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+      <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) %> () ;
+      <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREARTEFACTSORTIES) %> () ;
+      <%= VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES) %> () ;
+      validerChamps () ;
+    }
+  }
+  
+  
+  function validerArtefactSortieSuppr (pSelect, pMessage)
+  {
+    if (pSelect.selectedIndex == -1)
+    {
+      alert (pMessage) ;
+    }
+    else
+    {
+      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+      document.formIterationModif.submit () ;
+    }
+  }
+  
+  
+  function validerArtefactEntree (pSelect, pMessage)
+  {
+    if (pSelect.selectedIndex == -1)
+    {
+      alert (pMessage) ;
+    }
+    else
+    {
+      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+      <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) %> () ;
+      <%= VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES) %> () ;
+      validerChamps () ;
+    }
+  }
+  
+  
+  function validerArtefactEntreeSuppr (pSelect, pMessage)
+  {
+    if (pSelect.selectedIndex == -1)
+    {
+      alert (pMessage) ;
+    }
+    else
+    {
+      document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+      document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+      <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) %> () ;
+      <%= VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES) %> () ;
+      validerChamps () ;
+    }
+  }
+  
+  
+  function validerFormulaire ()
+  {
+    document.formIterationModif.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+    document.formIterationModif.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+    <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREITERATION) %> () ;
+    <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREARTEFACTSORTIES) %> () ;
+    <%= VTransfertConstante.getVerification (CConstante.PAR_ARBRETACHES) %> () ;
+    validerChamps () ;
+  }
+  
+</script>

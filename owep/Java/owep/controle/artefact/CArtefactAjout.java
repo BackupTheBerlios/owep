@@ -33,6 +33,7 @@ import owep.modele.execution.MArtefact;
 public class CArtefactAjout extends CControleurBase
 {
   private MArtefact mArtefact ; // Données de l'artefact
+  String PATH_ARTEFACT;
   private int idArtefact = -1;
   
   /**
@@ -82,7 +83,7 @@ public class CArtefactAjout extends CControleurBase
    */
   public void initialiserParametres () throws ServletException
   {
-    //assert mArtefact != null ; 
+    PATH_ARTEFACT = getSession().getConfiguration().getPathArtefact(); 
   }
   
   /**
@@ -150,9 +151,9 @@ public class CArtefactAjout extends CControleurBase
           mArtefact.setNomFichier(fullFile.getName());  
           
           //Création du répertoire ou on télécharge le fichier si il n'existe pas
-          (new File(getServletContext().getRealPath("/")+mArtefact.getPathFichier())).mkdirs();
+          (new File(getServletContext().getRealPath("/")+PATH_ARTEFACT+mArtefact.getPathFichier())).mkdirs();
           //création du fichier 
-          File savedFile = new File(getServletContext().getRealPath("/")+mArtefact.getPathFichier(), fullFile.getName());
+          File savedFile = new File(getServletContext().getRealPath("/")+"/"+PATH_ARTEFACT+mArtefact.getPathFichier(), fullFile.getName());
           try
           {
             //Sauvegarde du fichier 
@@ -176,6 +177,8 @@ public class CArtefactAjout extends CControleurBase
       {
         // Affiche le formulaire d'ajout d'artefact.
         getRequete ().setAttribute (CConstante.PAR_ARTEFACT, mArtefact) ;
+        getRequete ().setAttribute (CConstante.SES_SESSION, getSession()) ;
+        
         return "..\\JSP\\Artefact\\TArtefactAjout.jsp"  ;
       }
     }

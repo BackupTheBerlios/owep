@@ -2,7 +2,6 @@
 <%@ taglib uri="/WEB-INF/tld/template.tld" prefix="template" %>
 
 <template:template nom="/JSP/Template/FTemplate.jsp">
-  <template:section region="RegionScript"     contenu="NavigationIteration.js"         typePage="false"/>
   <template:section region="RegionTitre"      contenu="Détail de la tâche"             typePage="false"/>
   <template:section region="RegionPrincipal"  contenu="/JSP/Tache/FTacheVisu.jsp"      typePage="true"/>
   <template:section region="RegionLogo"       contenu="/JSP/Template/FLogo.jsp"        typePage="true"/>

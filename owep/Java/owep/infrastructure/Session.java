@@ -1,7 +1,9 @@
 package owep.infrastructure;
 
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
+import owep.modele.configuration.MConfiguration;
 import owep.modele.execution.MCollaborateur;
 import owep.modele.execution.MIteration;
 import owep.modele.execution.MProjet;
@@ -15,6 +17,8 @@ public class Session
   private MProjet mProjet = null; // Projet ouvert par le collaborateur connecté
   private ArrayList mListeProjetPossible; // Liste des projets concernant l'utilisateur connecté
   private MIteration mIteration = null; // itération ouvert par le collaborateur connecté
+  private ResourceBundle messages = null; // resource bundle
+  private MConfiguration mConfiguration = null; // resource bundle
   
   /**
    * Ouvre la session pour le collaborateur passé en paramètre et initialise les variables.
@@ -95,4 +99,32 @@ public class Session
     mIteration = pIteration;
   }  
   
+  /**
+   * @return Retourne la valeur de l'attribut messages.
+   */
+  public ResourceBundle getMessages ()
+  {
+    return messages ;
+  }
+  /**
+   * @param initialse messages avec pMessages.
+   */
+  public void setMessages (ResourceBundle pMessages)
+  {
+    messages = pMessages ;
+  }
+  /**
+   * @return Retourne la valeur de l'attribut cofiguration.
+   */
+  public MConfiguration getConfiguration ()
+  {
+    return mConfiguration ;
+  }
+  /**
+   * @param initialse cofiguration avec pCofiguration.
+   */
+  public void setConfiguration (MConfiguration pCofiguration)
+  {
+    mConfiguration = pCofiguration ;
+  }
 }

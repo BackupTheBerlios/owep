@@ -2,6 +2,10 @@ package owep.modele.execution ;
 
 
 import java.util.ArrayList ;
+import java.sql.Connection ;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date ;
 import owep.modele.MModeleBase;
 
@@ -78,7 +82,80 @@ public class MIteration extends MModeleBase
     mTaches = new ArrayList () ;
   }
 
+  /**
+   * Insertion de l'itération courante dans la base de données.
+   * @param pConnection Connexion avec la base de données.
+   * @throws SQLException si une erreur survient durant l'insetion dans la BD.
+   */
+  public void create (Connection pConnection) throws SQLException 
+  {
+    assert getProjet () != null ;
+    
+    // Préparation de la requête
+    /*String lRequete = "INSERT INTO ITE_ITERATION (ITE_NUMERO, ITE_NOM, ITE_DATEDEBUTPREVUE, ITE_DATEFINPREVUE, ITE_DATEDEBUTREELLE, ITE_DATEFINREELLE, ITE_ETAT, ITE_PRJ_ID) VALUES (" ;
+    lRequete += getNumero() + ", '" ;
+    lRequete += getNom () + "', '" ;
+    lRequete += getDateDebutPrevue () + "', '" ;
+    lRequete += getDateFinPrevue () + "', '" ;
+    lRequete += getDateDebutReelle () + "', '" ;
+    lRequete += getDateFinReelle () + "', " ;
+    lRequete += 0 + ", " ;
+    lRequete += getProjet ().getId () + ") " ;
+    
+    Statement lRequest = pConnection.createStatement () ;
+    lRequest.executeQuery (lRequete) ;*/
+    Statement lRequest = pConnection.createStatement (ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE) ;
+    
+    ResultSet curseurIteration = lRequest.executeQuery ("SELECT * FROM ITE_ITERATION") ;
+    curseurIteration.moveToInsertRow () ;
+    curseurIteration.updateInt (2, getNumero ()) ;
+    curseurIteration.updateString (3, getNom ()) ;
+    curseurIteration.updateDate (4, new java.sql.Date (getDateDebutPrevue ().getTime ())) ;
+    curseurIteration.updateDate (5, new java.sql.Date (getDateFinPrevue ().getTime ())) ;
+    //curseurIteration.updateDate(6, new java.sql.Date(getDateDebutReelle().getTime()));
+    //curseurIteration.updateDate(7, new java.sql.Date(getDateFinReelle().getTime()));
+    curseurIteration.updateInt (8, 0) ;
+    curseurIteration.updateInt (9, getProjet ().getId ()) ;
+    curseurIteration.insertRow () ;
+    curseurIteration.close () ;
+    //pConnection.commit () ;
+    
+//  Préparation de la requête permettant d'obtenir l'id de l'itération    
+    String lRequete = "SELECT MAX(ITE_ID) FROM ITE_ITERATION" ;
+    ResultSet result = lRequest.executeQuery (lRequete) ;
+    if (result.next () )
+      setId (result.getInt (1)) ;
+    result.close ();
+  }
 
+  
+  /**
+   * Permet demettre à jour l'itération courante dans la base de données.
+   * @param pConnection Connexion avec la base de données.
+   * @throws SQLException si une erreur survient durant la mise à jour.
+   */
+  public void update (Connection pConnection) throws SQLException
+  {
+    assert getProjet () != null ;
+    
+    int lId = getId () ;
+    
+    // Préparation de la requête
+    String lRequete = "UPDATE ITE_ITERATION SET " ;
+    lRequete += "ITE_NUMERO = " + getNumero () + ", " ;
+    lRequete += "ITE_NOM = '" + getNom () + "', " ;
+    lRequete += "ITE_DATEDEBUTPREVUE = '" + getDateDebutPrevue () + "', " ;
+    lRequete += "ITE_DATEFINPREVUE = '" + getDateFinPrevue () + "', " ;
+    lRequete += "ITE_DATEDEBUTREELLE = '" + getDateDebutReelle () + "', " ;
+    lRequete += "ITE_DATEFINREELLE = '" + getDateFinReelle () + "', " ;
+    lRequete += "ITE_ETAT = " + 0 + ", " ;
+    lRequete += "ITE_PRJ_ID = " + getProjet ().getId () + " " ;
+    lRequete += "WHERE ITE_ID = " + lId ;
+    
+    Statement lRequest = pConnection.createStatement () ;
+    lRequest.executeUpdate (lRequete) ;
+  }
+  
   /**
    * Récupère la date de début prévue pour l'itération.
    * @return Date de début prévue pour l'itération.

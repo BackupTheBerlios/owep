@@ -78,16 +78,6 @@ public class CTacheVisu extends CControleurBase{
      */
     public void initialiserParametres () throws ServletException
     {
-      /*// Récupère le numéro d'itération.
-      if (getRequete ().getParameter (CConstante.PAR_ITERATION) == null)
-      {
-        // TODO Requête recup it en cours.
-      }
-      else
-      {
-        mIterationNum = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_ITERATION)) ;
-      }
-      mIterationNum = 1 ;*/
     }
     
     
@@ -101,6 +91,8 @@ public class CTacheVisu extends CControleurBase{
     {
       // Transmet les données à la JSP d'affichage.
       getRequete ().setAttribute (CConstante.PAR_TACHE, mTache) ;
+      
+      getRequete ().setAttribute (CConstante.SES_SESSION, getSession()) ;
       
       return "..\\JSP\\Tache\\TTacheVisu.jsp" ;
     }
