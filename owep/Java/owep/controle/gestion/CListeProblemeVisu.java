@@ -8,6 +8,7 @@ import org.exolab.castor.jdo.QueryResults ;
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
 import owep.infrastructure.Session ;
+import owep.modele.execution.MProbleme;
 import owep.modele.execution.MProjet ;
 
 
@@ -39,15 +40,20 @@ public class CListeProblemeVisu extends CControleurBase
       getBaseDonnees ().begin () ;
       
       // Exécute la requête de récupération des problèmes.
-      lRequete = getBaseDonnees ().getOQLQuery ("select distinct PROBLEME from owep.modele.execution.MProbleme PROBLEME where mTacheProvoque.mIteration.mProjet.mId = $1") ;
-      lRequete.bind (lProjet.getId ()) ;
+      // TODO : Filtrer sur les itérations directement dans la requête.
+      lRequete = getBaseDonnees ().getOQLQuery ("select PROBLEME from owep.modele.execution.MProbleme PROBLEME") ;
       lResultat = lRequete.execute () ;
       
       // Parcours le résultat de la requête et ajoute chaque problème à la liste.
       mListeProblemes = new ArrayList () ;
       while (lResultat.hasMore ())
       {
-        mListeProblemes.add (lResultat.next ()) ;
+        MProbleme lProbleme = (MProbleme) lResultat.next () ;
+        // Prend en compte le problème que s'il appartient au projet ouvert.
+        if (lProbleme.getTacheProvoque (0).getIteration ().getProjet ().getId () == lProjet.getId ())
+        {
+          mListeProblemes.add (lProbleme) ;
+        }
       }
       
       getBaseDonnees ().commit () ;

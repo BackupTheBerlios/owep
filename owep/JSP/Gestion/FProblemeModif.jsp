@@ -26,10 +26,10 @@
   <table class="tableau" border="0" cellpadding="0" cellspacing="0">
   <tbody>
     <tr>
-      <td class="caseNiveau1">
+      <td class="caseNiveau1" width="20%">
         Nom *
       </td>
-      <td class="caseNiveau3" colspan="3">
+      <td class="caseNiveau3" width="80%" colspan="3">
         <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom du problème" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREPROBLEME %>"/>
          class="niveau2" type="text" value="<%= pProbleme.getNom () %>" size="<%= CConstante.LNG_MOYEN %>" maxlength="<%= CConstante.TXT_MOYEN %>">
       </td>
@@ -76,7 +76,7 @@
       </td>
       <td class="caseNiveau3">
         <font class="titre3">Tâches choisies :</font><br/>
-        <select name="<%= CConstante.PAR_LISTETACHESPROVOQUE %>" class="niveau2" style="width: 250" size="6" multiple>
+        <select name="<%= CConstante.PAR_LISTETACHESPROVOQUE %>" class="niveau2" style="width: 250" size="6">
         <%
         for (int lIndiceTache = 0; lIndiceTache < pProbleme.getNbTachesProvoque (); lIndiceTache ++)
         {
@@ -96,7 +96,7 @@
       </td>
       <td class="caseNiveau3" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">Tâches possibles :</font><br/>
-        <select class="niveau2" style="width: 250" size="6" multiple>
+        <select class="niveau2" style="width: 250" size="6">
         </select>
       </td>
     </tr>
@@ -106,7 +106,7 @@
       </td>
       <td class="caseNiveau3">
         <font class="titre3">Tâches choisies :</font><br/>
-        <select name="<%= CConstante.PAR_LISTETACHESRESOUT %>" class="niveau2" style="width: 250" size="6" multiple>
+        <select name="<%= CConstante.PAR_LISTETACHESRESOUT %>" class="niveau2" style="width: 250" size="6">
         <%
         for (int lIndiceTache = 0; lIndiceTache < pProbleme.getNbTachesResout (); lIndiceTache ++)
         {
@@ -123,10 +123,14 @@
         <input type="button" value="    < Ajouter    " class="bouton" onclick=""/><br/>
         <br/>
         <input type="button" value="Supprimer >" class="bouton" onclick=""/>
+        <% String lCodeValidation  = "if (document." + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTETACHESRESOUT + ".selectedIndex != -1)" ; %>
+        <% lCodeValidation        += VTransfertConstante.getVerification (CConstante.PAR_ARBREPROBLEME)+ " () ;" ; %>
+        <% lCodeValidation        += "validerChamps () ;" ; %>
+        <transfert:transfertsubmit libelle="Valider" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="<%= lCodeValidation %>"/>
       </td>
       <td class="caseNiveau3" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">Tâches possibles :</font><br/>
-        <select class="niveau2" style="width: 250" size="6" multiple>
+        <select class="niveau2" style="width: 250" size="6">
         </select>
       </td>
     </tr>
@@ -144,3 +148,27 @@
 
 </form>
 </center>
+
+
+
+
+<!-- Code javascript -->
+<script type="text/javascript" language="JavaScript">
+
+  <!--------------------------------------------------------------------->
+  <!-- Fonctions de validation du bouton d'ajout/suppression de tâches -->
+  <!--------------------------------------------------------------------->
+  function validerSupprimerTache (pSelect, pIndice, pMessage)
+  {
+    if (document.<%= CConstante.PAR_FORMULAIRE %>.<%= CConstante.PAR_LISTETACHESRESOUT %>.selectedIndex != -1)
+    {
+      <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREPROBLEME) %> () ;
+      validerChamps () ;
+    }
+    else
+    {
+      alert (pMessage) ;
+    }
+  }
+  
+</script>

@@ -3,6 +3,7 @@
 <%@page import="owep.modele.execution.MProbleme" %>
 <%@page import="owep.modele.execution.MTache" %>
 <%@page import="owep.vue.transfert.convertor.VDateConvertor" %>
+<%@page import="owep.vue.transfert.convertor.VStringConvertor" %>
 
 
 <%
@@ -19,6 +20,9 @@
     </td>
     <td class="caseNiveau1">
       Etat
+    </td>
+    <td class="caseNiveau1">
+      Description
     </td>
     <td class="caseNiveau1">
       Date</br>d'identification
@@ -62,7 +66,10 @@
         <a href="/owep/Gestion/ProblemeModif?<%= CConstante.PAR_PROBLEME %>=<%= lProbleme.getId () %>"><%= lProbleme.getNom () %></a>
       </td>
       <td class="caseNiveau3">
-        <%= lProbleme.getEtat () %>
+        <%= VStringConvertor.getString (lProbleme.getEtat ()) %>
+      </td>
+      <td class="caseNiveau3">
+        <%= VStringConvertor.getString (lProbleme.getDescription ()) %>
       </td>
       <td class="caseNiveau3">
         <%= VDateConvertor.getString (lProbleme.getDateIdentification (), false) %>
@@ -116,7 +123,7 @@
         %>
       </td>
       <td class="caseNiveau3">
-        &nbsp;
+        <input type="button" value="Modifier" class="bouton" onclick="window.location.href = '/owep/Gestion/ProblemeModif?<%= CConstante.PAR_PROBLEME %>=<%= lProbleme.getId () %>' ;"/>
       </td>
     </tr>
   <%

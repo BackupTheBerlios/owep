@@ -36,7 +36,7 @@ public class VStringConvertor
    */
   public static String getString (String pChaine)
   {
-    if (pChaine != null)
+    if (pChaine != null && (! pChaine.trim ().equals ("")))
     {
       return pChaine ;
     }

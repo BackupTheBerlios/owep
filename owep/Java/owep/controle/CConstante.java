@@ -10,6 +10,7 @@ public class CConstante
   public static final String EXC_CONNEXION   = "Erreur lors de la connexion à la base de données." ;
   public static final String EXC_DECONNEXION = "Erreur lors de la déconnexion de la base de données." ;
   public static final String EXC_TRAITEMENT  = "Une erreur est survenue lors du traîtement." ;
+  public static final String EXC_PARAMETRE   = "Les paramètres transmis à la page sont incorrects." ;
   public static final String EXC_FORWARD     = "La page n'a pu être trouvée." ;
   public static final String EXC_UTILISATEUR = "Utilisateur inconnu";
   public static final String EXC_TRANSFERT   = "Une erreur est survenue lors d'un transfert de données." ;
