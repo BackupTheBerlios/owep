@@ -1,20 +1,31 @@
-<%@ page language="java" %>
+<%@page language="java" %>
+<%@page import="java.util.ResourceBundle"%>
+<%@page import="owep.infrastructure.Session"%>
 <%@page import="owep.modele.execution.MProjet"%>
 <%@page import="owep.controle.CConstante"%>
-<%@ taglib uri='/WEB-INF/tld/template.tld' prefix='template' %>
-<%@page import="owep.controle.CConstante"%>
+<%@taglib uri='/WEB-INF/tld/template.tld' prefix='template' %>
 
+
+<%
+  // Récuperation de la session.
+  HttpSession httpSession = request.getSession(true);
+  Session lSession = (Session) httpSession.getAttribute ("SESSION") ;
+  
+  //Récupération du ressource bundle.
+  ResourceBundle messages = lSession.getMessages () ;
+%>
 
 <!-- en-tête de la page -->
 <html>
 <head>
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
   <meta name="author" content="OWEP Team">
-  <meta name="description" content="Outil de Workflow pour une équipe de Projet">
+  <meta name="description" content="<%= messages.getString("titre") %>">
   <title>OWEP</title>
   <link rel="stylesheet" href="../CSS/Apparence.css" type="text/css">
   <script language="javascript" src="/owep/JavaScript/VerificationChamp.js"></script>
   <script language="javascript" src="/owep/JavaScript/AideEnLigne.js"></script>
+  <script language="javascript" src="/owep/JavaScript/Horloge.js"></script>
   <script language="javascript" src="/owep/JavaScript/DomTT/domLib.js"></script>
   <script language="javascript" src="/owep/JavaScript/DomTT/alphaAPI.js"></script>
   <script language="javascript" src="/owep/JavaScript/DomTT/domTT.js"></script>
@@ -74,7 +85,7 @@
                   <td>
                     <a onclick="afficherAide (pCodeAide)">
                       <img src="/owep/Image/Vide.gif" class="iconeAide" onmouseout="tooltipOff(this, event)"
-                       onmouseover="tooltipTitreOn(this, event, 'Aide en ligne', 'Cliquez pour afficher de l\'aide sur cette page.')"/>
+                       onmouseover="tooltipTitreOn(this, event, '<%= messages.getString("aide") %>', '<%= messages.getString("aideAide") %>')"/>
                     </a>
                   </td>
                 </tr>

@@ -1,12 +1,24 @@
-<%@ page language="java" %>
+<%@page language="java" %>
+<%@page import="java.util.ResourceBundle"%>
+<%@page import="owep.infrastructure.Session"%>
 <%@ taglib uri='/WEB-INF/tld/template.tld' prefix='template' %>
+
+
+<%
+  // Récuperation de la session.
+  HttpSession httpSession = request.getSession(true);
+  Session lSession = (Session) httpSession.getAttribute ("SESSION") ;
+  
+  //Récupération du ressource bundle.
+  ResourceBundle messages = lSession.getMessages () ;
+%>
 
 <!-- en-tête de la page -->
 <html>
 <head>
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
   <meta name="author" content="OWEP Team">
-  <meta name="description" content="Outil de Workflow pour une équipe de Projet">
+  <meta name="description" content="<%= messages.getString("titre") %>">
   <title>OWEP</title>
   <link rel="stylesheet" href="/owep/CSS/Red.css" type="text/css">
   <script language="javascript" src="/owep/JavaScript/AideEnLigne.js"></script>

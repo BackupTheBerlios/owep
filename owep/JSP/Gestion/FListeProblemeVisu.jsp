@@ -1,3 +1,5 @@
+<%@page import="java.util.ResourceBundle"%>
+<%@page import="owep.infrastructure.Session"%>
 <%@page import="java.util.ArrayList" %>
 <%@page import="owep.controle.CConstante" %>
 <%@page import="owep.modele.execution.MProbleme" %>
@@ -8,6 +10,13 @@
 
 
 <%
+  // Récuperation de la session.
+  HttpSession httpSession = request.getSession(true);
+  Session lSession = (Session) httpSession.getAttribute("SESSION");
+  
+  //Récupération du ressource bundle.
+  ResourceBundle messages = lSession.getMessages () ;
+  
   // Récupération des paramètres.
   ArrayList pListeProblemes = (ArrayList) request.getAttribute (CConstante.PAR_LISTEPROBLEMES) ;
 %>
@@ -16,25 +25,25 @@
 <tbody>
   <tr>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Libellé du problème.')" onmouseout="tooltipOff(this, event)">Nom</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%= messages.getString("listeProblemeVisuAideLibelle") %>')" onmouseout="tooltipOff(this, event)"><%= messages.getString("listeProblemeVisuLibelle") %></a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Degré de résolution du problème (Entamé, Résolu, etc.).')" onmouseout="tooltipOff(this, event)">Etat</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%= messages.getString("listeProblemeVisuAideEtat") %>')" onmouseout="tooltipOff(this, event)"><%= messages.getString("listeProblemeVisuEtat") %></a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Description des causes et impacts du problème.')" onmouseout="tooltipOff(this, event)">Description</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%= messages.getString("listeProblemeVisuAideDescription") %>')" onmouseout="tooltipOff(this, event)"><%= messages.getString("listeProblemeVisuDescription") %></a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le problème a été détecté.')" onmouseout="tooltipOff(this, event)">Date</br>d'identification</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%= messages.getString("listeProblemeVisuAideDateIdentification") %>')" onmouseout="tooltipOff(this, event)"><%= messages.getString("listeProblemeVisuDateIdentification") %></a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le problème a été résolu.')" onmouseout="tooltipOff(this, event)">Date de clôture</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%= messages.getString("listeProblemeVisuAideDateCloture") %>')" onmouseout="tooltipOff(this, event)"><%= messages.getString("listeProblemeVisuDateCloture") %></a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Tâches au cours desquelles est apparu le problème.')" onmouseout="tooltipOff(this, event)">Tâches à l'origine</br>du problème</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%= messages.getString("listeProblemeVisuAideTacheOrigine") %>')" onmouseout="tooltipOff(this, event)"><%= messages.getString("listeProblemeVisuTacheOrigine") %></a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Tâches au cours desquelles sera résolu le problème.')" onmouseout="tooltipOff(this, event)">Tâches de résolution</br>du problème</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%= messages.getString("listeProblemeVisuAideTacheResolution") %>')" onmouseout="tooltipOff(this, event)"><%= messages.getString("listeProblemeVisuTacheResolution") %></a>
     </td>
     <td class="caseNiveau1">
       &nbsp;
@@ -148,10 +157,10 @@
       
       
       <td style="text-align: center" class="caseNiveau3" width="1px">
-        <input type="button" value="Modifier"  class="bouton" onclick="window.location.href = '/owep/Gestion/ProblemeModif?<%= CConstante.PAR_PROBLEME %>=<%= lProbleme.getId () %>' ;"
-         onmouseover="tooltipOn (this, event, 'Actualiser les données du problème.')" onmouseout="tooltipOff(this, event)"/>
-        <input type="button" value="Supprimer" class="bouton" onclick="window.location.href = '/owep/Gestion/ProblemeSuppr?<%= CConstante.PAR_PROBLEME %>=<%= lProbleme.getId () %>' ;"
-         onmouseover="tooltipOn (this, event, 'Supprimer le problème de la liste.')" onmouseout="tooltipOff(this, event)"/>
+        <input type="button" value="<%= messages.getString("listeProblemeVisuBtnModfier") %>"  class="bouton" onclick="window.location.href = '/owep/Gestion/ProblemeModif?<%= CConstante.PAR_PROBLEME %>=<%= lProbleme.getId () %>' ;"
+         onmouseover="tooltipOn (this, event, '<%= messages.getString("listeProblemeVisuAideBtnModfier") %>')" onmouseout="tooltipOff(this, event)"/>
+        <input type="button" value="<%= messages.getString("listeProblemeVisuBtnSupprimer") %>" class="bouton" onclick="window.location.href = '/owep/Gestion/ProblemeSuppr?<%= CConstante.PAR_PROBLEME %>=<%= lProbleme.getId () %>' ;"
+         onmouseover="tooltipOn (this, event, '<%= messages.getString("listeProblemeVisuAideBtnSupprimer") %>')" onmouseout="tooltipOff(this, event)"/>
       </td>
     </tr>
   <%
@@ -160,7 +169,7 @@
 
   </tr>
     <td class="caseNiveau3Lien" colspan="8">
-      <a href="/owep/Gestion/ProblemeModif" onmouseover="tooltipOn(this, event, 'Ajoute un nouveau problème survenu sur le projet.')" onmouseout="tooltipOff(this, event)">Ajouter un problème...</a>
+      <a href="/owep/Gestion/ProblemeModif" onmouseover="tooltipOn(this, event, '<%= messages.getString("listeProblemeVisuAideBtnAjouter") %>')" onmouseout="tooltipOff(this, event)"><%= messages.getString("listeProblemeVisuBtnAjouter") %></a>
     </td>
   </tr>
   
@@ -170,7 +179,5 @@
 
 <!-- Aide en ligne -->
 <script type="text/javascript" language="JavaScript">
-pCodeAide  = "La page de <b>gestion de problèmes</b> permet de visualiser tout les problèmes qui sont <b>survenus</b> sur votre projet." ;
-pCodeAide += " Chaque problème est relié aux tâches qui l'ont <b>engendré</b>" ;
-pCodeAide += " et éventuellement au tâches durant lesquelles le problème sera <b>résolu</b>." ;
+pCodeAide  = "<%= messages.getString("listeProblemeVisuAide") %>" ;
 </script>

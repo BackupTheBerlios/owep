@@ -1,3 +1,5 @@
+<%@page import="java.util.ResourceBundle"%>
+<%@page import="owep.infrastructure.Session"%>
 <%@page import="java.util.ArrayList" %>
 <%@page import="owep.controle.CConstante" %>
 <%@page import="owep.modele.execution.MRisque" %>
@@ -7,6 +9,13 @@
 
 
 <%
+  // Récuperation de la session.
+  HttpSession httpSession = request.getSession(true);
+  Session lSession = (Session) httpSession.getAttribute("SESSION");
+  
+  //Récupération du ressource bundle.
+  ResourceBundle messages = lSession.getMessages () ;
+  
   // Récupération des paramètres.
   MProjet pProjet = (MProjet) request.getAttribute (CConstante.PAR_PROJET) ;
 %>
@@ -16,22 +25,22 @@
 <tbody>
   <tr>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Libellé du risque.')" onmouseout="tooltipOff(this, event)">Nom</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%= messages.getString("listeRisqueVisuAideLibelle") %>')" onmouseout="tooltipOff(this, event)"><%= messages.getString("listeRisqueVisuLibelle") %></a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Niveau de gestion du risque (Entamé, Résolu, etc.).')" onmouseout="tooltipOff(this, event)">Etat</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%= messages.getString("listeRisqueVisuAideEtat") %>')" onmouseout="tooltipOff(this, event)"><%= messages.getString("listeRisqueVisuEtat") %></a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Description générale du risque.')" onmouseout="tooltipOff(this, event)">Description</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%= messages.getString("listeRisqueVisuAideDescription") %>')" onmouseout="tooltipOff(this, event)"><%= messages.getString("listeRisqueVisuDescription") %></a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Description de l\'impact possible du risque sur le projet.')" onmouseout="tooltipOff(this, event)">Impact</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%= messages.getString("listeRisqueVisuAideImpact") %>')" onmouseout="tooltipOff(this, event)"><%= messages.getString("listeRisqueVisuImpact") %></a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Description des actions à mener pour gérer le risque.')" onmouseout="tooltipOff(this, event)">Actions</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%= messages.getString("listeRisqueVisuAideActions") %>')" onmouseout="tooltipOff(this, event)"><%= messages.getString("listeRisqueVisuActions") %></a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Degré d\'importance du risque.')" onmouseout="tooltipOff(this, event)">Priorité</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%= messages.getString("listeRisqueVisuAidePriorite") %>')" onmouseout="tooltipOff(this, event)"><%= messages.getString("listeRisqueVisuPriorite") %></a>
     </td>
     <td class="caseNiveau1">
       &nbsp;
@@ -66,10 +75,10 @@
       
             
       <td style="text-align: center" class="caseNiveau3" width="1px">
-        <input type="button" value="Modifier"  class="bouton" onclick="window.location.href = '/owep/Gestion/RisqueModif?<%= CConstante.PAR_RISQUE %>=<%= lRisque.getId () %>' ;"
-         onmouseover="tooltipOn (this, event, 'Actualiser les données du problème.')" onmouseout="tooltipOff(this, event)"/>
-        <input type="button" value="Supprimer" class="bouton" onclick="window.location.href = '/owep/Gestion/RisqueSuppr?<%= CConstante.PAR_RISQUE %>=<%= lRisque.getId () %>' ;"
-         onmouseover="tooltipOn (this, event, 'Supprimer le problème de la liste.')" onmouseout="tooltipOff(this, event)"/>
+        <input type="button" value="<%= messages.getString("listeRisqueVisuBtnModifier") %>"  class="bouton" onclick="window.location.href = '/owep/Gestion/RisqueModif?<%= CConstante.PAR_RISQUE %>=<%= lRisque.getId () %>' ;"
+         onmouseover="tooltipOn (this, event, '<%= messages.getString("listeRisqueVisuAideBtnModifier") %>')" onmouseout="tooltipOff(this, event)"/>
+        <input type="button" value="<%= messages.getString("listeRisqueVisuBtnSupprimer") %>" class="bouton" onclick="window.location.href = '/owep/Gestion/RisqueSuppr?<%= CConstante.PAR_RISQUE %>=<%= lRisque.getId () %>' ;"
+         onmouseover="tooltipOn (this, event, '<%= messages.getString("listeRisqueVisuAideBtnSupprimer") %>')" onmouseout="tooltipOff(this, event)"/>
       </td>
     </tr>
   <%
@@ -78,7 +87,7 @@
 
   </tr>
     <td class="caseNiveau3Lien" colspan="8">
-      <a href="/owep/Gestion/RisqueModif" onmouseover="tooltipOn(this, event, 'Ajoute un nouveau risque survenu sur le projet.')" onmouseout="tooltipOff(this, event)">Ajouter un risque...</a>
+      <a href="/owep/Gestion/RisqueModif" onmouseover="tooltipOn(this, event, '<%= messages.getString("listeRisqueVisuAideBtnAjouter") %>')" onmouseout="tooltipOff(this, event)"><%= messages.getString("listeRisqueVisuBtnAjouter") %></a>
     </td>
   </tr>
   
@@ -89,6 +98,5 @@
 
 <!-- Aide en ligne -->
 <script type="text/javascript" language="JavaScript">
-pCodeAide  = "La page de <b>gestion de risques</b> permet de visualiser tout les risques spécifiés par le chef de projet qui pourraient <b>survenir</b> sur le projet." ;
-pCodeAide += " Chaque risque comprend une <b>description</b>, le détail de son <b>impact</b>, son <b>état de résolution</b> ainsi que sa <b>priorité</b> (1 pour le plus prioritaire)." ;
+pCodeAide  = "<%= messages.getString("listeRisqueVisuAide") %>" ;
 </script>
