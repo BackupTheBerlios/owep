@@ -135,6 +135,14 @@ public abstract class CControleurBase extends HttpServlet
     return mRequete ;
   }
   
+  /**
+   * Récupère la session ouverte.
+   * @return Session ouverte.
+   */
+  public Session getSession()
+  {
+    return mSession;
+  }
   
   /**
    * Récupère les données nécessaire au controleur dans la base de données. 

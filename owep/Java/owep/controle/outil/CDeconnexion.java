@@ -11,19 +11,17 @@ import javax.servlet.http.HttpSession ;
 
 
 /**
- * @author lalo
- * TODO To change the template for this generated type comment go to Window -
- *         Preferences - Java - Code Style - Code Templates
+ * Controleur permettant la fermeture de la session d'un client.
  */
 public class CDeconnexion extends HttpServlet
 {
-  private HttpServletRequest  mRequete ; // Requête HTTP à l'origine de l'appel du controleur
+  private HttpServletRequest mRequete ; // Requête HTTP à l'origine de l'appel du controleur
   private HttpServletResponse mReponse ; // Réponse HTTP du controleur à la requête
 
 
   /**
-   * Appellé lors d'une requête d'un client. Redirige le client vers la page retourné par la méthode
-   * traiter.
+   * Appellé lors d'une requête d'un client.
+   * 
    * @param pRequete Requête HTTP à l'origine de l'appel du controleur
    * @param pReponse Réponse HTTP du controleur à la requête
    * @throws ServletException Si une erreur survient durant le traitement de la page.
@@ -35,10 +33,9 @@ public class CDeconnexion extends HttpServlet
     doPost (pRequete, pReponse) ;
   }
 
-
   /**
-   * Appellé lors d'une requête d'un client contenant des données transmises. Redirige le client
-   * vers la page retourné par la méthode traiter.
+   * Appellé lors d'une requête d'un client contenant des données transmises.
+   * 
    * @param pRequete Requête HTTP à l'origine de l'appel du controleur
    * @param pReponse Réponse HTTP du controleur à la requête
    * @throws ServletException Si une erreur survient durant le traitement de la page.
@@ -48,15 +45,17 @@ public class CDeconnexion extends HttpServlet
     throws ServletException, IOException
   {
     RequestDispatcher lRequeteDispatcher ; // Permet d'appeler la JSP d'affichage.
-    
+
     // Initialise les variables membres.
     mRequete = pRequete ;
     mReponse = pReponse ;
-    
-    // Vérifie qu'une session a été ouverte
+
+    // Invalide la session ouverte
     HttpSession lSession = mRequete.getSession (true) ;
     lSession.removeAttribute ("SESSION") ;
     lSession.invalidate () ;
+
+    // Redirige vers l'index
     lRequeteDispatcher = pRequete.getRequestDispatcher ("..\\JSP\\index.jsp") ;
     lRequeteDispatcher.forward (mRequete, mReponse) ;
   }

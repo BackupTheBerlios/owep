@@ -34,9 +34,9 @@ public class MCollaborateur extends MModeleBase
     mTaches = new ArrayList () ;
   }
 
-
   /**
-   * Crée une instance initialisée de MArtefact.
+   * Crée une instance initialisée de MCollaborateur.
+   * 
    * @param pId Identifiant unique de l'artefact.
    * @param pPrenom Prénom du collaborateur.
    * @param pNom Nom du collaborateur.
@@ -57,13 +57,44 @@ public class MCollaborateur extends MModeleBase
     mPortable     = pPortable ;
     mEmail        = pEmail ;
     mCommentaires = pCommentaires ;
-    
+
     mTaches = new ArrayList () ;
   }
 
+  /**
+   * 
+   * Créé une instance initialisée MCollaborateur.
+   * 
+   * @param pPrenom Prénom du collaborateur.
+   * @param pNom Nom du collaborateur.
+   * @param pAdresse Adresse du collaborateur.
+   * @param pTelephone Téléphone du collaborateur.
+   * @param pPortable Portable du collaborateur.
+   * @param pEmail Email du collaborateur.
+   * @param pCommentaires Commentaires du chef de projet sur le collaborateur.
+   * @param pUtilisateur Nom d'utilidateur du collaborateur.
+   * @param pMotDePasse Mot de passe du collaborateur.
+   */
+  public MCollaborateur (String pPrenom, String pNom, String pAdresse, String pTelephone,
+                         String pPortable, String pEmail, String pCommentaire, String pUtilisateur,
+                         String pMotDePasse)
+  {
+    mPrenom       = pPrenom ;
+    mNom          = pNom ;
+    mAdresse      = pAdresse ;
+    mTelephone    = pTelephone;
+    mPortable     = pPortable;
+    mEmail        = pEmail;
+    mCommentaires = pCommentaire;
+    mUtilisateur  = pUtilisateur;
+    mMotDePasse   = pMotDePasse;
+    
+    mTaches = new ArrayList();
+  }
 
   /**
    * Récupère l'adresse du collaborateur.
+   * 
    * @return Adresse du collaborateur.
    */
   public String getAdresse ()
@@ -71,9 +102,9 @@ public class MCollaborateur extends MModeleBase
     return mAdresse ;
   }
 
-
   /**
    * Initialise l'adresse du collaborateur.
+   * 
    * @param pAdresse Adresse du collaborateur.
    */
   public void setAdresse (String pAdresse)
@@ -81,9 +112,9 @@ public class MCollaborateur extends MModeleBase
     mAdresse = pAdresse ;
   }
 
-
   /**
    * Récupère les artefacts dont le collaborateur est responsable.
+   * 
    * @return Artefacts dont le collaborateur est responsable.
    */
   public ArrayList getListeArtefacts ()
@@ -91,9 +122,9 @@ public class MCollaborateur extends MModeleBase
     return mArtefacts ;
   }
 
-
   /**
    * Initialise les artefacts dont le collaborateur est responsable.
+   * 
    * @param pArtefacts Artefacts dont le collaborateur est responsable.
    */
   public void setListeArtefacts (ArrayList pArtefacts)
@@ -101,9 +132,9 @@ public class MCollaborateur extends MModeleBase
     mArtefacts = pArtefacts ;
   }
 
-
   /**
    * Récupère le nombre d'artefacts dont le collaborateur est responsable.
+   * 
    * @return Nombre d'artefacts dont le collaborateur est responsable.
    */
   public int getNbArtefacts ()
@@ -111,9 +142,9 @@ public class MCollaborateur extends MModeleBase
     return mArtefacts.size () ;
   }
 
-
   /**
    * Récupère l'artefact d'indice spécifié dont le collaborateur est responsable.
+   * 
    * @param pIndice Indice de l'artefact dont le collaborateur est responsable.
    * @return Artefact dont le collaborateur est responsable.
    */
@@ -122,9 +153,9 @@ public class MCollaborateur extends MModeleBase
     return (MArtefact) mArtefacts.get (pIndice) ;
   }
 
-
   /**
    * Ajoute un artefact dont le collaborateur est responsable.
+   * 
    * @param pArtefact Artefact dont le collaborateur est responsable.
    */
   public void addArtefact (MArtefact pArtefact)
@@ -132,9 +163,9 @@ public class MCollaborateur extends MModeleBase
     mArtefacts.add (pArtefact) ;
   }
 
-
   /**
    * Récupère les commentaires du chef de projet.
+   * 
    * @return Commentaires du chef de projet sur le collaborateur.
    */
   public String getCommentaires ()
@@ -142,9 +173,9 @@ public class MCollaborateur extends MModeleBase
     return mCommentaires ;
   }
 
-
   /**
    * Initialise les commentaires du chef de projet.
+   * 
    * @param pCommentaires Commentaires du chef de projet sur le collaborateur.
    */
   public void setCommentaires (String pCommentaires)
@@ -152,9 +183,9 @@ public class MCollaborateur extends MModeleBase
     mCommentaires = pCommentaires ;
   }
 
-
   /**
    * Récupère l'email du collaborateur.
+   * 
    * @return Email du collaborateur.
    */
   public String getEmail ()
@@ -162,9 +193,9 @@ public class MCollaborateur extends MModeleBase
     return mEmail ;
   }
 
-
   /**
    * Initialise l'email du collaborateur.
+   * 
    * @param pEmail Email du collaborateur.
    */
   public void setEmail (String pEmail)
@@ -172,9 +203,9 @@ public class MCollaborateur extends MModeleBase
     mEmail = pEmail ;
   }
 
-
   /**
    * Récupère l'identifiant du collaborateur.
+   * 
    * @return Identifiant unique du collaborateur.
    */
   public int getId ()
@@ -182,9 +213,9 @@ public class MCollaborateur extends MModeleBase
     return mId ;
   }
 
-
   /**
    * Initialise l'identifiant du collaborateur.
+   * 
    * @param pId Identifiant unique du collaborateur.
    */
   public void setId (int pId)
@@ -192,9 +223,9 @@ public class MCollaborateur extends MModeleBase
     mId = pId ;
   }
 
-
   /**
    * Récupère le mot de passe.
+   * 
    * @return Mot de passe lors de la connexion.
    */
   public String getMotDePasse ()
@@ -202,9 +233,9 @@ public class MCollaborateur extends MModeleBase
     return mMotDePasse ;
   }
 
-
   /**
    * Initialise le mot de passe.
+   * 
    * @param pMotDePasse Mot de passe lors de la connexion.
    */
   public void setMotDePasse (String pMotDePasse)
@@ -212,9 +243,9 @@ public class MCollaborateur extends MModeleBase
     mMotDePasse = pMotDePasse ;
   }
 
-
   /**
    * Récupère le nom du collaborateur.
+   * 
    * @return Nom du collaborateur.
    */
   public String getNom ()
@@ -222,9 +253,9 @@ public class MCollaborateur extends MModeleBase
     return mNom ;
   }
 
-
   /**
    * Initialise le nom du collaborateur.
+   * 
    * @param pNom Nom du collaborateur.
    */
   public void setNom (String pNom)
@@ -232,9 +263,9 @@ public class MCollaborateur extends MModeleBase
     mNom = pNom ;
   }
 
-
   /**
    * Récupère le portable du collaborateur.
+   * 
    * @return Portable du collaborateur.
    */
   public String getPortable ()
@@ -242,9 +273,9 @@ public class MCollaborateur extends MModeleBase
     return mPortable ;
   }
 
-
   /**
    * Initialise le portable du collaborateur.
+   * 
    * @param pPortable Portable du collaborateur.
    */
   public void setPortable (String pPortable)
@@ -252,9 +283,9 @@ public class MCollaborateur extends MModeleBase
     mPortable = pPortable ;
   }
 
-
   /**
    * Récupère le prénom du collaborateur.
+   * 
    * @return Prénom du collaborateur.
    */
   public String getPrenom ()
@@ -262,9 +293,9 @@ public class MCollaborateur extends MModeleBase
     return mPrenom ;
   }
 
-
   /**
    * Initialise le prénom du collaborateur.
+   * 
    * @param pPrenom Prénom du collaborateur.
    */
   public void setPrenom (String pPrenom)
@@ -272,9 +303,9 @@ public class MCollaborateur extends MModeleBase
     mPrenom = pPrenom ;
   }
 
-
   /**
    * Récupère les rôles tenues par le collaborateur.
+   * 
    * @return Rôles tenues par le collaborateur.
    */
   public ArrayList getListeRoles ()
@@ -282,9 +313,9 @@ public class MCollaborateur extends MModeleBase
     return mRoles ;
   }
 
-
   /**
    * Récupère les rôles tenues par le collaborateur.
+   * 
    * @param pRoles Rôles tenues par le collaborateur.
    */
   public void setListeRoles (ArrayList pRoles)
@@ -292,9 +323,9 @@ public class MCollaborateur extends MModeleBase
     mRoles = pRoles ;
   }
 
-
   /**
    * Récupère le nombre de Roles que doit réaliser le collaborateur.
+   * 
    * @return Nombre de rôles tenus par le collaborateur.
    */
   public int getNbRoles ()
@@ -302,9 +333,9 @@ public class MCollaborateur extends MModeleBase
     return mRoles.size () ;
   }
 
-
   /**
    * Récupère le rôle d'indice spécifié tenu par le collaborateur.
+   * 
    * @param pIndice Indice du rôle dans la liste.
    * @return Rôle tenu par le collaborateur.
    */
@@ -313,9 +344,9 @@ public class MCollaborateur extends MModeleBase
     return (MRole) mRoles.get (pIndice) ;
   }
 
-
   /**
    * Ajoute un rôle tenu par le collaborateur.
+   * 
    * @param pRole Rôle tenu par le collaborateur.
    */
   public void addRole (MRole pRole)
@@ -323,9 +354,9 @@ public class MCollaborateur extends MModeleBase
     mRoles.add (pRole) ;
   }
 
-
   /**
    * Récupère la liste des tâches que doit réaliser le collaborateur.
+   * 
    * @return Liste des tâches que doit réaliser le collaborateur.
    */
   public ArrayList getListeTaches ()
@@ -333,9 +364,9 @@ public class MCollaborateur extends MModeleBase
     return mTaches ;
   }
 
-
   /**
    * Initialise la liste des tâches que doit réaliser le collaborateur.
+   * 
    * @param pTaches Liste des tâches que doit réaliser le collaborateur.
    */
   public void setListeTaches (ArrayList pTaches)
@@ -343,9 +374,9 @@ public class MCollaborateur extends MModeleBase
     mTaches = pTaches ;
   }
 
-
   /**
    * Récupère le nombre de tâches que doit réaliser le collaborateur.
+   * 
    * @return Nombre de tâches que doit réaliser le collaborateur.
    */
   public int getNbTaches ()
@@ -353,9 +384,9 @@ public class MCollaborateur extends MModeleBase
     return mTaches.size () ;
   }
 
-
   /**
    * Récupère la tâche d'indice spécifié que doit réaliser le collaborateur.
+   * 
    * @param pIndice Indice de la tâche dans la liste.
    * @return Tâche que doit réaliser le collaborateur.
    */
@@ -364,9 +395,9 @@ public class MCollaborateur extends MModeleBase
     return (MTache) mTaches.get (pIndice) ;
   }
 
-
   /**
    * Ajoute la tâche spécifiée au collaborateur.
+   * 
    * @param pTache Tâche que doit réaliser le collaborateur.
    */
   public void addTache (MTache pTache)
@@ -374,9 +405,9 @@ public class MCollaborateur extends MModeleBase
     mTaches.add (pTache) ;
   }
 
-
   /**
    * Récupère le télépone du collaborateur.
+   * 
    * @return Télépone du collaborateur.
    */
   public String getTelephone ()
@@ -384,9 +415,9 @@ public class MCollaborateur extends MModeleBase
     return mTelephone ;
   }
 
-
   /**
    * Initialise le télépone du collaborateur.
+   * 
    * @param pTelephone Téléphone du collaborateur.
    */
   public void setTelephone (String pTelephone)
@@ -394,9 +425,9 @@ public class MCollaborateur extends MModeleBase
     mTelephone = pTelephone ;
   }
 
-
   /**
    * Récupère le nom d'utilisateur pour la connexion.
+   * 
    * @return Nom d'utilisateur pour la connexion.
    */
   public String getUtilisateur ()
@@ -404,9 +435,9 @@ public class MCollaborateur extends MModeleBase
     return mUtilisateur ;
   }
 
-
   /**
    * Initialise le nom d'utilisateur pour la connexion.
+   * 
    * @param pUtilisateur Nom d'utilisateur pour la connexion.
    */
   public void setUtilisateur (String pUtilisateur)

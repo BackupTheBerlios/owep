@@ -62,7 +62,7 @@
   </servlet> 
   <servlet-mapping> 
     <servlet-name>CConnexion</servlet-name> 
-    <url-pattern>/Tache/Connexion</url-pattern> 
+    <url-pattern>/Outil/Connexion</url-pattern> 
   </servlet-mapping> 
   
   <servlet> 
@@ -71,12 +71,30 @@
   </servlet> 
   <servlet-mapping> 
     <servlet-name>CDeconnexion</servlet-name> 
-    <url-pattern>/Tache/Deconnexion</url-pattern> 
+    <url-pattern>/Outil/Deconnexion</url-pattern> 
   </servlet-mapping> 
   
+  <servlet> 
+    <servlet-name>CCreationCollaborateur</servlet-name> 
+    <servlet-class>owep.controle.processus.CCreationCollaborateur</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CCreationCollaborateur</servlet-name> 
+    <url-pattern>/Processus/CreationCollaborateur</url-pattern> 
+  </servlet-mapping> 
+
+  <servlet> 
+    <servlet-name>COuvrirProjet</servlet-name> 
+    <servlet-class>owep.controle.projet.COuvrirProjet</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>COuvrirProjet</servlet-name> 
+    <url-pattern>/Projet/OuvrirProjet</url-pattern> 
+  </servlet-mapping> 
+
   <!-- Configuration de la session -->
   <session-config>
-	<session-timeout>30</session-timeout>
+	<session-timeout>900</session-timeout>
   </session-config>
 
 </web-app>
