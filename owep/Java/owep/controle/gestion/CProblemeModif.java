@@ -48,12 +48,26 @@ public class CProblemeModif extends CControleurBase
       {
         getBaseDonnees ().begin () ;
         
-        // Récupère la liste des problèmes survenus sur le projet en cours.
+        // Récupère le projet actuellement ouvert.
+        lRequete = getBaseDonnees ().getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
+        lRequete.bind (mProjet.getId ()) ;
+        lResultat = lRequete.execute () ;
+        // Si on récupère correctement le projet dans la base,
+        if (lResultat.hasMore ())
+        {
+          mProjet = (MProjet) lResultat.next () ;
+        }
+        // Si le projet n'existe pas,
+        else
+        {
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        
+        // Récupère le problème choisi par l'utilisateur.
         lRequete = getBaseDonnees ().getOQLQuery ("select PROBLEME from owep.modele.execution.MProbleme PROBLEME where mId = $1 AND mTacheProvoque.mIteration.mProjet.mId = $2") ;
         lRequete.bind (Integer.parseInt (lIdProbleme)) ;
         lRequete.bind (mProjet.getId ()) ;
         lResultat = lRequete.execute () ;
-        
         // Si on récupère correctement le problème dans la base,
         if (lResultat.hasMore ())
         {
