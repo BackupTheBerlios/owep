@@ -32,13 +32,14 @@ public class VDateConvertor
   {
     if (! pValeur.equals (""))
     {
-      return new SimpleDateFormat ("yyyy-MM-dd").parse (pValeur) ;
+      return new SimpleDateFormat ("dd/MM/yyyy").parse (pValeur) ;
     }
     else
     {
       return null ;
     }
   }
+
   
   
   /**
@@ -51,7 +52,7 @@ public class VDateConvertor
   {
     if (pDate != null)
     {
-      SimpleDateFormat lDateFormat = new SimpleDateFormat ("yyyy-MM-dd") ;
+      SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
       return lDateFormat.format (pDate) ;
     }
     else
@@ -66,12 +67,13 @@ public class VDateConvertor
       }
     }
   }
+
   
   public static String getString (Date pDate)
   {
     if (pDate != null)
     {
-      SimpleDateFormat lDateFormat = new SimpleDateFormat ("yyyy-MM-dd") ;
+      SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
       return lDateFormat.format (pDate) ;
     }
     else
@@ -79,6 +81,7 @@ public class VDateConvertor
       return "" ;
     }
   }
+
   
   
   /**
