@@ -10,9 +10,17 @@ var gCouleurFond     = null ;
  */
 function isVide (pValeur, pLibelle)
 {
-  var lRegExpression = /^\S+$/ ;
+  var lNonVide = false ;
   
-  if(! lRegExpression.test (pValeur))
+  for (i = 0; i < pValeur.length; i ++)
+  {
+    if (' '.indexOf (pValeur.charAt (i)) < 0)
+    {
+      lNonVide = true ;
+    }
+  }
+  
+  if (! lNonVide)
   {
     gChampsInvalides += 'Le champ \'' + pLibelle + '\' est vide.\n' ;
     return true ;
