@@ -40,28 +40,33 @@ public class CProblemeModif extends CControleurBase
     lIdProbleme = getRequete ().getParameter (CConstante.PAR_PROBLEME) ;
     
     
-    // Si un problème est passé en paramètre,
-    if (lIdProbleme != null)
+    try
     {
-      // Charge le problème passé en paramètre.
-      try
+      getBaseDonnees ().begin () ;
+      
+      // Récupère le projet actuellement ouvert.
+      lRequete = getBaseDonnees ().getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
+      lRequete.bind (mProjet.getId ()) ;
+      lResultat = lRequete.execute () ;
+      // Si on récupère correctement le projet dans la base,
+      if (lResultat.hasMore ())
       {
+        mProjet = (MProjet) lResultat.next () ;
+      }
+      // Si le projet n'existe pas,
+      else
+      {
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      }
+      
+      getBaseDonnees ().commit () ;
+      
+      
+      // Si un problème est passé en paramètre,
+      if (lIdProbleme != null)
+      {
+        // Charge le problème passé en paramètre.
         getBaseDonnees ().begin () ;
-        
-        // Récupère le projet actuellement ouvert.
-        lRequete = getBaseDonnees ().getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
-        lRequete.bind (mProjet.getId ()) ;
-        lResultat = lRequete.execute () ;
-        // Si on récupère correctement le projet dans la base,
-        if (lResultat.hasMore ())
-        {
-          mProjet = (MProjet) lResultat.next () ;
-        }
-        // Si le projet n'existe pas,
-        else
-        {
-          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-        }
         
         // Récupère le problème choisi par l'utilisateur.
         lRequete = getBaseDonnees ().getOQLQuery ("select PROBLEME from owep.modele.execution.MProbleme PROBLEME where mId = $1 AND mTacheProvoque.mIteration.mProjet.mId = $2") ;
@@ -81,24 +86,24 @@ public class CProblemeModif extends CControleurBase
         
         getBaseDonnees ().commit () ;
       }
-      catch (Exception eException)
+      // Si aucun problème existant n'est passé en paramètre,
+      else
       {
-        eException.printStackTrace () ;
-        try
-        {
-          getBaseDonnees ().close () ;
-        }
-        catch (Exception eCloseException)
-        {
-          eCloseException.printStackTrace () ;
-        }
-        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        mProbleme = new MProbleme () ;
       }
     }
-    // Si aucun problème existant n'est passé en paramètre,
-    else
+    catch (Exception eException)
     {
-      mProbleme = new MProbleme () ;
+      eException.printStackTrace () ;
+      try
+      {
+        getBaseDonnees ().close () ;
+      }
+      catch (Exception eCloseException)
+      {
+        eCloseException.printStackTrace () ;
+      }
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
     }
   }
   

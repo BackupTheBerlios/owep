@@ -97,14 +97,22 @@ public class MProbleme extends MModeleBase
     result.close () ;
     lConnection.close () ;
     
+    pConnection.commit () ;    
+    pConnection.begin () ;    
     pConnection.update (this) ;
     for (int i = 0; i < getNbTachesProvoque (); i ++)
     {
       pConnection.update (getTacheProvoque (i)) ;
+      
+      pConnection.commit () ;    
+      pConnection.begin () ;    
     }
     for (int i = 0; i < getNbTachesResout (); i ++)
     {
       pConnection.update (getTacheResout (i)) ;
+      
+      pConnection.commit () ;    
+      pConnection.begin () ;    
     }
   }
   

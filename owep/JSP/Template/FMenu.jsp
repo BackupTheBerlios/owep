@@ -99,25 +99,25 @@
 <%//Test droit : partie chef de projet
   if (((owep.infrastructure.Session)(request.getSession().getAttribute("SESSION"))).getCollaborateur().getDroit() == 1) {%>
 
-  <!-- menu projet -->
+  <!-- menu Suivi de projet -->
   <tr>
     <td class="caseMenuNiveau1">
-      <p class="menuNiveau1">Projet :</p>
+      <p class="menuNiveau1">Suivi de Projet :</p>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Avancement/AvancementProjet?menu=clique">Suivi du projet</a>
+      <a class="menuNiveau2" href="../Avancement/AvancementProjet?menu=clique">Projet</a>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Avancement/AvancementCollaborateur?menu=clique">Suivi des collaborateurs</a>
+      <a class="menuNiveau2" href="../Avancement/AvancementCollaborateur?menu=clique">Collaborateurs</a>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <p class="menuNiveau2">Gestion des risques</p>
+      <p class="menuNiveau2">Risques</p>
     </td>
   </tr>
   <tr>
@@ -126,16 +126,27 @@
     </td>
   </tr>
   <tr>
-    <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Processus/CreationCollaborateur">Gestion des collaborateurs</a>
+    <td class="caseMenuSeparation">
+      &nbsp;
+    </td>
+  </tr>
+  
+  <!-- menu Gestion de projet -->
+  <tr>
+    <td class="caseMenuNiveau1">
+      <p class="menuNiveau1">Gestion de Projet :</p>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Processus/ProjetVisu">Gestion des itérations</a>
+      <a class="menuNiveau2" href="../Processus/ProjetVisu">Itérations</a>
     </td>
   </tr>
-  
+  <tr>
+    <td class="caseMenuNiveau2">
+      <a class="menuNiveau2" href="../Processus/CreationCollaborateur">Collaborateurs</a>
+    </td>
+  </tr>
   <tr>
     <td class="caseMenuNiveau2">
       <a class="menuNiveau2" href="../Processus/ActiviteImprevue">Activités imprévues</a>
@@ -143,7 +154,7 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Processus/TacheImprevue">Gestion des tâches imprévues</a>
+      <a class="menuNiveau2" href="../Processus/TacheImprevue">Tâches imprévues</a>
     </td>
   </tr>
   <tr>
