@@ -3,6 +3,7 @@ package owep.modele.processus ;
 
 import java.util.ArrayList ;
 import owep.modele.MModeleBase ;
+import owep.modele.execution.MCollaborateur;
 
 
 /**
@@ -11,12 +12,13 @@ import owep.modele.MModeleBase ;
  */
 public class MRole extends MModeleBase
 {
-  private int        mId ;          // Identifie le rôle de manière unique.
-  private String     mNom ;         // Nom désignant le rôle.
-  private String     mDescription ; // Description du rôle.
-  private ArrayList  mActivites ;   // Liste des activités auxquelles participent le rôle.
-  private ArrayList  mProduits ;    // Liste des produits dont est responsable le rôle.
-  private MComposant mComposant ;   // Composant incluant le rôle.
+  private int        mId ;             // Identifie le rôle de manière unique.
+  private String     mNom ;            // Nom désignant le rôle.
+  private String     mDescription ;    // Description du rôle.
+  private ArrayList  mActivites ;      // Liste des activités auxquelles participent le rôle.
+  private ArrayList  mProduits ;       // Liste des produits dont est responsable le rôle.
+  private ArrayList  mCollaborateurs ; // Liste des collaborateurs qui tiennent le rôle.
+  private MComposant mComposant ;      // Composant incluant le rôle.
 
 
   /**
@@ -83,13 +85,12 @@ public class MRole extends MModeleBase
 
 
   /**
-   * Récupère l'activité d'indice spécifié à laquelle participe le rôle.
+   * Récupère l'activité d'indice spécifié à laquelle participent le rôle.
    * @param pIndice Indice de l'activité dans la liste.
-   * @return Activité à laquelle participe le rôle.
    */
-  public MActivite getComposant (int pIndice)
+  public void getActivite (int pIndice)
   {
-    return (MActivite) mActivites.get (pIndice) ;
+    mActivites.get (pIndice) ;
   }
 
 
@@ -100,6 +101,67 @@ public class MRole extends MModeleBase
   public void addActivite (MActivite pActivite)
   {
     mActivites.add (pActivite) ;
+  }
+
+
+  /**
+   * Récupère la liste des collaborateurs qui tiennent le rôle.
+   * @return Liste des collaborateurs qui tiennent le rôle.
+   */
+  public ArrayList getListeCollaborateurs ()
+  {
+    return mCollaborateurs ;
+  }
+
+
+  /**
+   * Initialise la liste des collaborateurs qui tiennent le rôle.
+   * @param pCollaborateurs Liste des collaborateurs qui tiennent le rôle.
+   */
+  public void setListeCollaborateurs (ArrayList pCollaborateurs)
+  {
+    mCollaborateurs = pCollaborateurs ;
+  }
+
+
+  /**
+   * Récupère le nombre de collaborateurs qui tiennent le rôle.
+   * @return Nombre de collaborateurs qui tiennent le rôle.
+   */
+  public int getNbCollaborateurs ()
+  {
+    return mCollaborateurs.size () ;
+  }
+
+
+  /**
+   * Récupère le collaborateur d'indice spécifié qui tient le rôle.
+   * @param pIndice Indice du collaborateur dans la liste.
+   */
+  public void getCollaborateur (int pIndice)
+  {
+    mCollaborateurs.get (pIndice) ;
+  }
+
+
+  /**
+   * Ajoute le collaborateur spécifié pour ce rôle.
+   * @param pCollaborateur Collaborateur qui tient le rôle.
+   */
+  public void addCollaborateur (MCollaborateur pCollaborateur)
+  {
+    mCollaborateurs.add (pCollaborateur) ;
+  }
+
+
+  /**
+   * Récupère l'activité d'indice spécifié à laquelle participe le rôle.
+   * @param pIndice Indice de l'activité dans la liste.
+   * @return Activité à laquelle participe le rôle.
+   */
+  public MActivite getComposant (int pIndice)
+  {
+    return (MActivite) mActivites.get (pIndice) ;
   }
 
 

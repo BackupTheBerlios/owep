@@ -3,6 +3,7 @@ package owep.modele.processus ;
 
 import java.util.ArrayList ;
 import owep.modele.MModeleBase ;
+import owep.modele.execution.MProjet;
 
 
 /**
@@ -18,6 +19,7 @@ public class MProcessus extends MModeleBase
   private String    mNomAuteur ;   // Nom de l'auteur du processus.
   private String    mEmailAuteur ; // Email de l'auteur du processus.
   private ArrayList mComposants ;  // Liste des composants définissant le processus.
+  private ArrayList mProjets ;     // Liste des projets pour lesquels est appliqué le processus.
 
 
   /**
@@ -202,5 +204,56 @@ public class MProcessus extends MModeleBase
   public void setNomAuteur (String pNomAuteur)
   {
     mNomAuteur = pNomAuteur ;
+  }
+
+
+  /**
+   * Récupère la liste des projets pour lesquels est appliqué le processus.
+   * @return Liste des projets pour lesquels est appliqué le processus.
+   */
+  public ArrayList getListeProjets ()
+  {
+    return mProjets ;
+  }
+
+
+  /**
+   * Initialise la liste des projets pour lesquels est appliqué le processus.
+   * @param pProjets Liste des projets pour lesquels est appliqué le processus.
+   */
+  public void setListeProjets (ArrayList pProjets)
+  {
+    mProjets = pProjets ;
+  }
+
+
+  /**
+   * Récupère le nombre de projets pour lesquels est appliqué le processus.
+   * @return Nombre de projets pour lesquels est appliqué le processus.
+   */
+  public int getNbProjets ()
+  {
+    return mProjets.size () ;
+  }
+
+
+  /**
+   * Récupère le projet d'indice spécifié pour lesquels est appliqué le processus.
+   * @param pIndice Indice du projet dans la liste.
+   * @return Projet pour lequel est appliqué le processus.
+   */
+  public MProjet getProjet (int pIndice)
+  {
+    return (MProjet) mProjets.get (pIndice) ;
+  }
+
+
+  /**
+   * Ajoute le projet spécifié qui applique le processus.
+   * @param pProjet Projet pour lequel est appliqué le processus.
+   */
+  public void addProjet (MProjet pProjet)
+  {
+    mProjets.add (pProjet) ;
   }
 }

@@ -3,6 +3,7 @@ package owep.modele.processus ;
 
 import java.util.ArrayList ;
 import owep.modele.MModeleBase ;
+import owep.modele.execution.MTache;
 import owep.modele.processus.MDefinitionTravail ;
 
 
@@ -13,13 +14,14 @@ import owep.modele.processus.MDefinitionTravail ;
  */
 public class MActivite extends MModeleBase
 {
-  private int                mId ;                 // Identifie l'activité de manière unique.
-  private String             mNom ;                // Nom désignant l'activité.
-  private String             mDescription ;        // Description de l'activité.
-  private ArrayList          mProduitsEntrees ;    // Liste des produits nécessaires à l'activité.
-  private ArrayList          mProduitsSorties ;    // Liste des produits réalisés durant l'activité.
-  private ArrayList          mRoles ;              // Liste des rôles participant à l'activité.
-  private MDefinitionTravail mDefinitionsTravail ; // Définition de travail contenant l'activité.
+  private int                mId ;                // Identifie l'activité de manière unique.
+  private String             mNom ;               // Nom désignant l'activité.
+  private String             mDescription ;       // Description de l'activité.
+  private ArrayList          mProduitsEntrees ;   // Liste des produits nécessaires à l'activité.
+  private ArrayList          mProduitsSorties ;   // Liste des produits réalisés durant l'activité.
+  private ArrayList          mRoles ;             // Liste des rôles participant à l'activité.
+  private ArrayList          mTaches ;            // Liste des tâches qui instancie l'activité.
+  private MDefinitionTravail mDefinitionTravail ; // Définitions de travail contenant l'activité.
 
 
   /**
@@ -40,17 +42,17 @@ public class MActivite extends MModeleBase
    * @param pId Identifiant unqiue de l'activité.
    * @param pNom Nom désignant l'activité.
    * @param pDescription Description de l'activité.
-   * @param pDefinitionsTravail éfinition de travail à laquelle appartient l'activité.
+   * @param pDefinitionTravail éfinition de travail à laquelle appartient l'activité.
    */
   public MActivite (int pId, String pNom, String pDescription,
-                    MDefinitionTravail pDefinitionsTravail)
+                    MDefinitionTravail pDefinitionTravail)
   {
     super () ;
     
     mId                 = pId ;
     mNom                = pNom ;
     mDescription        = pDescription ;
-    mDefinitionsTravail = pDefinitionsTravail ;
+    mDefinitionTravail = pDefinitionTravail ;
     
     mProduitsEntrees = new ArrayList () ;
     mProduitsSorties = new ArrayList () ;
@@ -64,17 +66,17 @@ public class MActivite extends MModeleBase
    */
   public MDefinitionTravail getDefinitionsTravail ()
   {
-    return mDefinitionsTravail ;
+    return mDefinitionTravail ;
   }
 
 
   /**
    * Associe la définition de travail à laquelle appartient l'activité.
-   * @param pDefinitionsTravail Définition de travail à laquelle appartient l'activité.
+   * @param pDefinitionTravail Définition de travail à laquelle appartient l'activité.
    */
-  public void setDefinitionsTravail (MDefinitionTravail pDefinitionsTravail)
+  public void setDefinitionsTravail (MDefinitionTravail pDefinitionTravail)
   {
-    mDefinitionsTravail = pDefinitionsTravail ;
+    mDefinitionTravail = pDefinitionTravail ;
   }
 
 
@@ -288,5 +290,56 @@ public class MActivite extends MModeleBase
   public void addRoleSortie (MRole pRole)
   {
     mProduitsEntrees.add (pRole) ;
+  }
+
+
+  /**
+   * Récupère la liste des tâches qui instancie l'activité.
+   * @return Liste des tâches qui instancie l'activité.
+   */
+  public ArrayList getListeTaches ()
+  {
+    return mTaches ;
+  }
+
+
+  /**
+   * Initialise la liste des tâches qui instancie l'activité.
+   * @param pTaches Liste des tâches qui instancie l'activité.
+   */
+  public void setListeTaches (ArrayList pTaches)
+  {
+    mTaches = pTaches ;
+  }
+
+
+  /**
+   * Récupère le nombre de tâches qui instancie l'activité.
+   * @return Nombre de tâches qui instancie l'activité.
+   */
+  public int getNbTaches ()
+  {
+    return mTaches.size () ;
+  }
+
+
+  /**
+   * Récupère la tâche d'indice spécifié qui instancie l'activité.
+   * @param pIndice Indice de la tâche dans la liste.
+   * @return Tâche qui instancie l'activité.
+   */
+  public MTache getTache (int pIndice)
+  {
+    return (MTache) mTaches.get (pIndice) ;
+  }
+
+
+  /**
+   * Ajoute la tâche spécifiée qui instancie l'activité.
+   * @param pTache Tâche qui instancie l'activité.
+   */
+  public void addTache (MTache pTache)
+  {
+    mTaches.add (pTache) ;
   }
 }

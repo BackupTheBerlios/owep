@@ -3,6 +3,7 @@ package owep.modele.processus ;
 
 import java.util.ArrayList ;
 import owep.modele.MModeleBase ;
+import owep.modele.execution.MArtefact;
 
 
 /**
@@ -17,6 +18,7 @@ public class MProduit extends MModeleBase
   private String     mDescription ;      // Description du produit.
   private ArrayList  mActivitesEntrees ; // Liste des activités qui nécessite le produit.
   private ArrayList  mActivitesSorties ; // Liste des activités qui réalisant le produit.
+  private ArrayList  mArtefacts ;        // Liste des artefacts qui instancie le produit.
   private MComposant mComposant ;        // Composant incluant le produit.
   private MRole      mResponsable ;      // Rôle responsable du produit.
 
@@ -108,7 +110,7 @@ public class MProduit extends MModeleBase
    * Récupère la liste des activités en sorties.
    * @return Liste des activités qui réalisent le produit.
    */
-  public ArrayList getActivitesSorties ()
+  public ArrayList getListeActivitesSorties ()
   {
     return mActivitesSorties ;
   }
@@ -118,7 +120,7 @@ public class MProduit extends MModeleBase
    * Initialise la liste des activités en sorties.
    * @param pActivitesSorties Liste des activités qui réalisent le produit.
    */
-  public void setActivitesSorties (ArrayList pActivitesSorties)
+  public void setListeActivitesSorties (ArrayList pActivitesSorties)
   {
     mActivitesSorties = pActivitesSorties ;
   }
@@ -136,10 +138,10 @@ public class MProduit extends MModeleBase
 
   /**
    * Récupère l'activité d'indice spécifié pour laquelle le produit est en sortie.
-   * @param pIndice Indice de l'activité qui réalise le produit.
+   * @param pIndice Indice de l'activité dans la liste.
    * @return Activité qui réalise le produit.
    */
-  public MActivite getActiviteSorties (int pIndice)
+  public MActivite getActiviteSortie (int pIndice)
   {
     return (MActivite) mActivitesEntrees.get (pIndice) ;
   }
@@ -149,7 +151,7 @@ public class MProduit extends MModeleBase
    * Ajoute l'activité spécifié en sortie.
    * @param pActivite Activité qui réalise le produit.
    */
-  public void addActiviteSorties (MActivite pActivite)
+  public void addActiviteSortie (MActivite pActivite)
   {
     mActivitesEntrees.add (pActivite) ;
   }
@@ -235,6 +237,57 @@ public class MProduit extends MModeleBase
   }
   
   
+  /**
+   * Récupère la liste des artefacts qui instancie le produit.
+   * @return Liste des artefacts qui instancie le produit.
+   */
+  public ArrayList getListeArtefacts ()
+  {
+    return mArtefacts ;
+  }
+
+
+  /**
+   * Initialise la liste des artefacts qui instancie le produit.
+   * @param pArtefacts Liste des artefacts qui instancie le produit.
+   */
+  public void setListeArtefacts (ArrayList pArtefacts)
+  {
+    mArtefacts = pArtefacts ;
+  }
+
+
+  /**
+   * Récupère le nombre des artefacts qui instancie le produit.
+   * @return Nombre des artefacts qui instancie le produit.
+   */
+  public int getNbArtefacts ()
+  {
+    return mArtefacts.size () ;
+  }
+
+
+  /**
+   * Récupère l'artefact d'indice spécifié qui instancie le produit.
+   * @param pIndice Indice de l'artefact dans la liste.
+   * @return Artefact qui instancie le produit.
+   */
+  public MArtefact getArtefact (int pIndice)
+  {
+    return (MArtefact) mArtefacts.get (pIndice) ;
+  }
+
+
+  /**
+   * Ajoute l'artefact spécifié qui instancie le produit.
+   * @param pArtefact Artefact qui instancie le produit.
+   */
+  public void addArtefact (MArtefact pArtefact)
+  {
+    mArtefacts.add (pArtefact) ;
+  }
+
+
   /**
    * Récupère le rôle responsable du produit.
    * @return Rôle responsable du produit.

@@ -2,12 +2,180 @@
 <!DOCTYPE databases PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.exolab.org/mapping.dtd">
 
 <mapping>
+
+  <!-- Mapping modèle Processus -->
+  <class name="owep.modele.processus.MProcessus" identity="mId">
+    <map-to table="PRC_PROCESSUS"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+      <sql name="PRC_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
+      <sql name="PRC_NOM" type="char"/>
+    </field>
+    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
+      <sql name="PRC_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mNomAuteur" type="string" get-method="getNomAuteur" set-method="setNomAuteur">
+      <sql name="PRC_NOMAUTEUR" type="char"/>
+    </field>
+    <field name="mEmailAuteur" type="string" get-method="getEmailAuteur" set-method="setEmailAuteur">
+      <sql name="PRC_MAILAUTEUR" type="char"/>
+    </field>
+    <field name="mComposants" type="owep.modele.processus.MComposant" collection="arraylist" get-method="getListeComposants" set-method="setListeComposants">
+      <sql many-key="COM_PRC_ID"/>
+    </field>
+    <field name="mProjets" type="owep.modele.execution.MProjet" collection="arraylist" get-method="getListeProjets" set-method="setListeProjets">
+      <sql many-key="PRJ_PRC_ID"/>
+    </field>
+  </class>
+  
+  
+  <class name="owep.modele.processus.MComposant" identity="mId">
+    <map-to table="COM_COMPOSANT"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+      <sql name="COM_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
+      <sql name="COM_NOM" type="char"/>
+    </field>
+    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
+      <sql name="COM_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mNomAuteur" type="string" get-method="getNomAuteur" set-method="setNomAuteur">
+      <sql name="COM_NOMAUTEUR" type="char"/>
+    </field>
+    <field name="mEmailAuteur" type="string" get-method="getEmailAuteur" set-method="setEmailAuteur">
+      <sql name="COM_MAILAUTEUR" type="char"/>
+    </field>
+    <field name="mProcessus" type="owep.modele.processus.MProcessus" get-method="getProcessus" set-method="setProcessus" required="true">
+      <sql name="COM_PRC_ID"/>
+    </field>    
+    <field name="mDefinitionsTravail" type="owep.modele.processus.MDefinitionTravail" collection="arraylist" get-method="getListeDefinitionsTravail" set-method="setListeDefinitionsTravail">
+      <sql many-key="DFT_COM_ID"/>
+    </field>
+    <field name="mProduits" type="owep.modele.processus.MProduit" collection="arraylist" get-method="getListeProduits" set-method="setListeProduits">
+      <sql many-key="PRD_COM_ID"/>
+    </field>
+    <field name="mRoles" type="owep.modele.processus.MRole" collection="arraylist" get-method="getListeRoles" set-method="setListeRoles">
+      <sql many-key="ROL_COM_ID"/>
+    </field>
+  </class>
+  
+  
+  <class name="owep.modele.processus.MDefinitionTravail" identity="mId">
+    <map-to table="DFT_DEFINITIONTRAVAIL"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+      <sql name="DFT_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
+      <sql name="DFT_NOM" type="char"/>
+    </field>
+    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
+      <sql name="DFT_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mComposant" type="owep.modele.processus.MComposant" get-method="getComposant" set-method="setComposant" required="true">
+      <sql name="DFT_COM_ID"/>
+    </field>
+    <field name="mActivites" type="owep.modele.processus.MActivite" collection="arraylist" get-method="getListeActivites" set-method="setListeActivites">
+      <sql many-key="ACT_DFT_ID"/>
+    </field>
+  </class>
+  
+  
+  <class name="owep.modele.processus.MActivite" identity="mId">
+    <map-to table="ACT_ACTIVITE"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+      <sql name="ACT_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
+      <sql name="ACT_NOM" type="char"/>
+    </field>
+    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
+      <sql name="ACT_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mDefinitionsTravail" type="owep.modele.processus.MDefinitionTravail" get-method="getDefinitionsTravail" set-method="setDefinitionsTravail" required="true">
+      <sql name="ACT_DFT_ID"/>
+    </field>
+    <field name="mProduitsEntrees" type="owep.modele.processus.MProduit" collection="arraylist" get-method="getListeProduitsEntrees" set-method="setListeProduitsEntrees">
+      <sql name="R01_PRD_ID" many-table="R01_ACT_PRD_ENTREE" many-key="R01_ACT_ID"/>
+    </field>
+    <field name="mProduitsSorties" type="owep.modele.processus.MProduit" collection="arraylist" get-method="getListeProduitsSorties" set-method="setListeProduitsSorties">
+      <sql name="R02_PRD_ID" many-table="R02_ACT_PRD_SORTIE" many-key="R02_ACT_ID"/>
+    </field>
+    <field name="mRoles" type="owep.modele.processus.MRole" collection="arraylist" get-method="getListeRoles" set-method="setListeRoles">
+      <sql name="R03_ROL_ID" many-table="R03_ACT_ROL" many-key="R03_ACT_ID"/>
+    </field>
+    <field name="mTaches" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTaches" set-method="setListeTaches">
+      <sql many-key="TAC_ACT_ID"/>
+    </field>
+  </class>
+
+  
+  <class name="owep.modele.processus.MRole" identity="mId">
+    <map-to table="ROL_ROLE"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+      <sql name="ROL_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
+      <sql name="ROL_NOM" type="char"/>
+    </field>
+    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
+      <sql name="ROL_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mComposant" type="owep.modele.processus.MComposant" get-method="getComposant" set-method="setComposant" required="true">
+      <sql name="ROL_COM_ID"/>
+    </field>
+    <field name="mProduits" type="owep.modele.processus.MProduit" collection="arraylist" get-method="getListeProduits" set-method="setListeProduits">
+      <sql many-key="PRD_ROL_ID"/>
+    </field>
+    <field name="mActivites" type="owep.modele.processus.MActivite" collection="arraylist" get-method="getListeActivites" set-method="setListeActivites">
+      <sql name="R03_ACT_ID" many-table="R03_ACT_ROL" many-key="R03_ROL_ID"/>
+    </field>
+    <field name="mCollaborateurs" type="owep.modele.execution.MCollaborateur" collection="arraylist" get-method="getListeCollaborateurs" set-method="setListeCollaborateurs">
+      <sql name="R04_COL_ID" many-table="R04_COL_ROL" many-key="R04_ROL_ID"/>
+    </field>
+  </class>
+  
+  <class name="owep.modele.processus.MProduit" identity="mId">
+    <map-to table="PRD_PRODUIT"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
+      <sql name="PRD_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
+      <sql name="PRD_NOM" type="char"/>
+    </field>
+    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
+      <sql name="PRD_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mComposant" type="owep.modele.processus.MComposant" get-method="getComposant" set-method="setComposant" required="true">
+      <sql name="PRD_COM_ID"/>
+    </field>
+    <field name="mResponsable" type="owep.modele.processus.MRole" get-method="getResponsable" set-method="setResponsable" required="true">
+      <sql name="PRD_ROL_ID"/>
+    </field>
+    <field name="mActivitesEntrees" type="owep.modele.processus.MActivite" collection="arraylist" get-method="getListeActivitesEntrees" set-method="setListeActivitesEntrees">
+      <sql name="R01_ACT_ID" many-table="R01_ACT_PRD_ENTREE" many-key="R01_PRD_ID"/>
+    </field>
+    <field name="mActivitesSorties" type="owep.modele.processus.MActivite" collection="arraylist" get-method="getListeActivitesSorties" set-method="setListeActivitesSorties">
+      <sql name="R02_ACT_ID" many-table="R02_ACT_PRD_SORTIE" many-key="R02_PRD_ID"/>
+    </field>
+    <field name="mArtefacts" type="owep.modele.execution.MArtefact" collection="arraylist" get-method="getListeArtefacts" set-method="setListeArtefacts">
+      <sql many-key="ART_PRD_ID"/>
+    </field>
+  </class>
+  
+  
+  
+  
+  
+  
+  <!-- Mapping modèle Exécution -->
   <class name="owep.modele.execution.MProjet" identity="mId">
     <map-to table="PRJ_PROJET"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="PRJ_ID" type="integer"/>
     </field>
-    <field name="mNom" type="string" get-method="getNom" set-method="setNom">
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
       <sql name="PRJ_NOM" type="char"/>
     </field>
     <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
@@ -19,11 +187,14 @@
     <field name="mDateFinPrevue" type="date" get-method="getDateFinPrevue" set-method="setDateFinPrevue">
       <sql name="PRJ_DATEFINPREVUE" type="date"/>
     </field>
+    <field name="mProcessus" type="owep.modele.processus.MProcessus" get-method="getProcessus" set-method="setProcessus" required="true">
+      <sql name="PRJ_PRC_ID"/>
+    </field>
     <field name="mArtefacts" type="owep.modele.execution.MArtefact" collection="arraylist" get-method="getListeArtefacts" set-method="setListeArtefacts">
       <sql many-key="ART_PRJ_ID"/>
     </field>
     <field name="mCollaborateurs" type="owep.modele.execution.MCollaborateur" collection="arraylist" get-method="getListeCollaborateurs" set-method="setListeCollaborateurs">
-      <sql name="R05_PRJ_ID" many-table="R05_COL_PRJ" many-key="R05_COL_ID"/>
+      <sql name="R05_COL_ID" many-table="R05_COL_PRJ" many-key="R05_PRJ_ID"/>
     </field>
     <field name="mIterations" type="owep.modele.execution.MIteration" collection="arraylist" get-method="getListeIterations" set-method="setListeIterations">
       <sql many-key="ITE_PRJ_ID"/>
@@ -33,16 +204,16 @@
   
   <class name="owep.modele.execution.MIteration" identity="mId">
     <map-to table="ITE_ITERATION"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="ITE_ID" type="integer"/>
     </field>
-    <field name="mNumero" type="integer" get-method="getNumero" set-method="setNumero">
+    <field name="mNumero" type="integer" get-method="getNumero" set-method="setNumero" required="true">
       <sql name="ITE_NUMERO" type="integer"/>
     </field>
-    <field name="mDateDebutPrevue" type="date" get-method="getDateDebutPrevue" set-method="setDateDebutPrevue">
+    <field name="mDateDebutPrevue" type="date" get-method="getDateDebutPrevue" set-method="setDateDebutPrevue" required="true">
       <sql name="ITE_DATEDEBUTPREVUE" type="date"/>
     </field>
-    <field name="mDateFinPrevue" type="date" get-method="getDateFinPrevue" set-method="setDateFinPrevue">
+    <field name="mDateFinPrevue" type="date" get-method="getDateFinPrevue" set-method="setDateFinPrevue" required="true">
       <sql name="ITE_DATEFINPREVUE" type="date"/>
     </field>
     <field name="mDateDebutReelle" type="date" get-method="getDateDebutReelle" set-method="setDateDebutReelle">
@@ -51,7 +222,7 @@
     <field name="mDateFinReelle" type="date" get-method="getDateFinReelle" set-method="setDateFinReelle">
       <sql name="ITE_DATEFINREELLE" type="date"/>
     </field>
-    <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet">
+    <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet" required="true">
       <sql name="ITE_PRJ_ID"/>
     </field>
     <field name="mTaches" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTaches" set-method="setListeTaches">
@@ -62,10 +233,10 @@
 
   <class name="owep.modele.execution.MCollaborateur" identity="mId">
     <map-to table="COL_COLLABORATEUR"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="COL_ID" type="integer"/>
     </field>
-    <field name="mNom" type="string" get-method="getNom" set-method="setNom">
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
       <sql name="COL_NOM" type="char"/>
     </field>
     <field name="mPrenom" type="string" get-method="getPrenom" set-method="setPrenom">
@@ -86,10 +257,10 @@
     <field name="mCommentaires" type="string" get-method="getCommentaires" set-method="setCommentaires">
       <sql name="COL_COMMENTAIRES" type="char"/>
     </field>
-    <field name="mUtilisateur" type="string" get-method="getUtilisateur" set-method="setUtilisateur">
+    <field name="mUtilisateur" type="string" get-method="getUtilisateur" set-method="setUtilisateur" required="true">
       <sql name="COL_UTILISATEUR" type="char"/>
     </field>
-    <field name="mMotDePasse" type="string" get-method="getMotDePasse" set-method="setMotDePasse">
+    <field name="mMotDePasse" type="string" get-method="getMotDePasse" set-method="setMotDePasse" required="true">
       <sql name="COL_MOTDEPASSE" type="char"/>
     </field>
     <field name="mArtefacts" type="owep.modele.execution.MArtefact" collection="arraylist" get-method="getListeArtefacts" set-method="setListeArtefacts">
@@ -98,33 +269,36 @@
     <field name="mTaches" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTaches" set-method="setListeTaches">
       <sql many-key="TAC_COL_ID"/>
     </field>
+    <!--field name="mRoles" type="owep.modele.processus.MRole" collection="arraylist" get-method="getListeRoles" set-method="setListeRoles">
+      <sql name="R04_ROL_ID" many-table="R04_COL_ROL" many-key="R04_COL_ID"/>
+    </field!-->
   </class>
   
   
   <class name="owep.modele.execution.MTache" identity="mId">
     <map-to table="TAC_TACHE"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="TAC_ID" type="integer"/>
     </field>
-    <field name="mNom" type="string" get-method="getNom" set-method="setNom">
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
       <sql name="TAC_NOM" type="char"/>
     </field>
     <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
       <sql name="TAC_DESCRIPTION" type="char"/>
     </field>
-    <field name="mChargeInitiale" type="double" get-method="getChargeInitiale" set-method="setChargeInitiale">
+    <field name="mChargeInitiale" type="double" get-method="getChargeInitiale" set-method="setChargeInitiale" required="true">
       <sql name="TAC_CHARGEINITIALE" type="float"/>
     </field>
-    <field name="mTempsPasse" type="double" get-method="getTempsPasse" set-method="setTempsPasse">
+    <field name="mTempsPasse" type="double" get-method="getTempsPasse" set-method="setTempsPasse" required="true">
       <sql name="TAC_TEMPSPASSE" type="float"/>
     </field>
-    <field name="mResteAPasser" type="double" get-method="getResteAPasser" set-method="setResteAPasser">
+    <field name="mResteAPasser" type="double" get-method="getResteAPasser" set-method="setResteAPasser" required="true">
       <sql name="TAC_RESTEAPASSER" type="float"/>
     </field>
-    <field name="mDateDebutPrevue" type="date" get-method="getDateDebutPrevue" set-method="setDateDebutPrevue">
+    <field name="mDateDebutPrevue" type="date" get-method="getDateDebutPrevue" set-method="setDateDebutPrevue" required="true">
       <sql name="TAC_DATEDEBUTPREVUE" type="date"/>
     </field>
-    <field name="mDateFinPrevue" type="date" get-method="getDateFinPrevue" set-method="setDateFinPrevue">
+    <field name="mDateFinPrevue" type="date" get-method="getDateFinPrevue" set-method="setDateFinPrevue" required="true">
       <sql name="TAC_DATEFINPREVUE" type="date"/>
     </field>
     <field name="mDateDebutReelle" type="date" get-method="getDateDebutReelle" set-method="setDateDebutReelle">
@@ -133,11 +307,14 @@
     <field name="mDateFinReelle" type="date" get-method="getDateFinReelle" set-method="setDateFinReelle">
       <sql name="TAC_DATEFINREELLE" type="date"/>
     </field>
-    <field name="mIteration" type="owep.modele.execution.MIteration" get-method="getIteration" set-method="setIteration">
+    <field name="mIteration" type="owep.modele.execution.MIteration" get-method="getIteration" set-method="setIteration" required="true">
       <sql name="TAC_ITE_ID"/>
     </field>
-    <field name="mCollaborateur" type="owep.modele.execution.MCollaborateur" get-method="getCollaborateur" set-method="setCollaborateur">
+    <field name="mCollaborateur" type="owep.modele.execution.MCollaborateur" get-method="getCollaborateur" set-method="setCollaborateur" required="true">
       <sql name="TAC_COL_ID"/>
+    </field>
+    <field name="mActivite" type="owep.modele.processus.MActivite" get-method="getActivite" set-method="setActivite">
+      <sql name="TAC_ACT_ID"/>
     </field>
     <field name="mArtefactsEntrees" type="owep.modele.execution.MArtefact" collection="arraylist" get-method="getListeArtefactsEntrees" set-method="setListeArtefactsEntrees">
       <sql many-key="ART_TAC_ID_ENTREE"/>
@@ -150,25 +327,28 @@
   
   <class name="owep.modele.execution.MArtefact" identity="mId">
     <map-to table="ART_ARTEFACT" xml="artefact" />
-    <field name="mId" type="integer" get-method="getId" set-method="setId">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="ART_ID" type="integer"/>
     </field>
-    <field name="mNom" type="string" get-method="getNom" set-method="setNom">
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
       <sql name="ART_NOM" type="char"/>
     </field>
     <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
       <sql name="ART_DESCRIPTION" type="char"/>
     </field>
-    <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet">
+    <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet" required="true">
       <sql name="ART_PRJ_ID"/>
     </field>
-    <field name="mCollaborateur" type="owep.modele.execution.MCollaborateur" get-method="getCollaborateur" set-method="setCollaborateur">
+    <field name="mCollaborateur" type="owep.modele.execution.MCollaborateur" get-method="getCollaborateur" set-method="setCollaborateur" required="true">
       <sql name="ART_COL_ID"/>
     </field>
-    <field name="mTacheEntree" type="owep.modele.execution.MTache" get-method="getTacheEntree" set-method="setTacheEntree">
+    <field name="mProduit" type="owep.modele.processus.MProduit" get-method="getProduit" set-method="setProduit" required="true">
+      <sql name="ART_PRD_ID"/>
+    </field>
+    <field name="mTacheEntree" type="owep.modele.execution.MTache" get-method="getTacheEntree" set-method="setTacheEntree" required="true">
       <sql name="ART_TAC_ID_ENTREE"/>
     </field>
-    <field name="mTacheSortie" type="owep.modele.execution.MTache" get-method="getTacheSortie" set-method="setTacheSortie">
+    <field name="mTacheSortie" type="owep.modele.execution.MTache" get-method="getTacheSortie" set-method="setTacheSortie" required="true">
       <sql name="ART_TAC_ID_SORTIE"/>
     </field>
   </class>
@@ -176,14 +356,15 @@
 
   <class name="owep.modele.execution.MCondition" identity="mTache mTachePrecedente">
     <map-to table="TAC_TACHE"/>
-    <field name="mTache" type="owep.modele.execution.MTache" get-method="getTache" set-method="setTache">
+    <field name="mTache" type="owep.modele.execution.MTache" get-method="getTache" set-method="setTache" required="true">
       <sql name="CND_TAC_ID"/>
     </field>
-    <field name="mTachePrecedente" type="owep.modele.execution.MTache" get-method="getTachePrecedente" set-method="setTachePrecedente">
+    <field name="mTachePrecedente" type="owep.modele.execution.MTache" get-method="getTachePrecedente" set-method="setTachePrecedente" required="true">
       <sql name="CND_TAC_ID_PREC"/>
     </field>
-    <field name="mEtat" type="integer" get-method="getEtat" set-method="setEtat">
+    <field name="mEtat" type="integer" get-method="getEtat" set-method="setEtat" required="true">
       <sql name="CND_ETAT" type="integer"/>
     </field>
   </class>
+  
 </mapping>
