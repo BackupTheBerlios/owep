@@ -264,7 +264,7 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <p class="menuNiveau2">Modifier son profil</p>
+      <a class="menuNiveau2" href="../Outil/ModificationProfil">Modifier son profil</a>
     </td>
   </tr>
   

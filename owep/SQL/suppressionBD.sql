@@ -8,6 +8,8 @@ drop table r07_prb_tac_resout;
 drop table r08_prb_tac_provoque;
 
 drop table con_configuration;
+drop table ari_artefactimprevue;
+drop table tim_tacheimprevue;
 
 drop table ris_risque;
 drop table met_metrique;
@@ -20,6 +22,9 @@ drop table cnd_condition;
 drop table tac_tache;
 drop table col_collaborateur;
 drop table ite_iteration;
+
+drop table aim_activiteimprevue;
+
 drop table prj_projet;
 
 drop table act_activite;

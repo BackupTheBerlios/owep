@@ -354,7 +354,7 @@ public class CTacheImprevue extends CControleurBase
     try
     {
       DriverManager.registerDriver (new Driver ()) ;
-      lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", "root", "owep2005") ;
+      lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", "root", "mysql") ;
       lConnection.setAutoCommit(false);
       
         mIteration.update (lConnection) ;

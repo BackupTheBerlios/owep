@@ -156,7 +156,6 @@ public class COuvrirProjet extends CControleurBase
       // Enregistre l'itération à ouvrir dans la session
       getSession ().setIteration(lIteration) ;      
       
-      return "..\\Tache\\ListeTacheVisu" ;
     }
     catch (PersistenceException e)
     {
@@ -176,6 +175,8 @@ public class COuvrirProjet extends CControleurBase
         throw new ServletException (CConstante.EXC_DECONNEXION) ;
       }
     }
+
+    return "..\\Tache\\ListeTacheVisu" ;
   }
 
 }

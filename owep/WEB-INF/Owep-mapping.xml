@@ -21,6 +21,9 @@
     <field name="mEmailAuteur" type="string" get-method="getEmailAuteur" set-method="setEmailAuteur">
       <sql name="PRC_MAILAUTEUR" type="char"/>
     </field>
+    <field name="mIdDpe" type="string" get-method="getIdDpe" set-method="setIdDpe">
+      <sql name="PRC_IDDPE" type="char"/>
+    </field>
     <field name="mComposants" type="owep.modele.processus.MComposant" collection="arraylist" get-method="getListeComposants" set-method="setListeComposants">
       <sql many-key="COM_PRC_ID"/>
     </field>
@@ -46,6 +49,9 @@
     </field>
     <field name="mEmailAuteur" type="string" get-method="getEmailAuteur" set-method="setEmailAuteur">
       <sql name="COM_MAILAUTEUR" type="char"/>
+    </field>
+    <field name="mIdDpe" type="string" get-method="getIdDpe" set-method="setIdDpe">
+      <sql name="COM_IDDPE" type="char"/>
     </field>
     <field name="mProcessus" type="owep.modele.processus.MProcessus" get-method="getProcessus" set-method="setProcessus" required="true">
       <sql name="COM_PRC_ID"/>
@@ -73,6 +79,9 @@
     <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
       <sql name="DFT_DESCRIPTION" type="char"/>
     </field>
+    <field name="mIdDpe" type="string" get-method="getIdDpe" set-method="setIdDpe">
+      <sql name="DFT_IDDPE" type="char"/>
+    </field>
     <field name="mComposant" type="owep.modele.processus.MComposant" get-method="getComposant" set-method="setComposant" required="true">
       <sql name="DFT_COM_ID"/>
     </field>
@@ -92,6 +101,9 @@
     </field>
     <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
       <sql name="ACT_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mIdDpe" type="string" get-method="getIdDpe" set-method="setIdDpe">
+      <sql name="ACT_IDDPE" type="char"/>
     </field>
     <field name="mDefinitionTravail" type="owep.modele.processus.MDefinitionTravail" get-method="getDefinitionsTravail" set-method="setDefinitionsTravail" required="true">
       <sql name="ACT_DFT_ID"/>
@@ -122,6 +134,9 @@
     <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
       <sql name="ROL_DESCRIPTION" type="char"/>
     </field>
+    <field name="mIdDpe" type="string" get-method="getIdDpe" set-method="setIdDpe">
+      <sql name="ROL_IDDPE" type="char"/>
+    </field>
     <field name="mComposant" type="owep.modele.processus.MComposant" get-method="getComposant" set-method="setComposant" required="true">
       <sql name="ROL_COM_ID"/>
     </field>
@@ -147,6 +162,9 @@
     <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
       <sql name="PRD_DESCRIPTION" type="char"/>
     </field>
+    <field name="mIdDpe" type="string" get-method="getIdDpe" set-method="setIdDpe">
+      <sql name="PRD_IDDPE" type="char"/>
+    </field>
     <field name="mComposant" type="owep.modele.processus.MComposant" get-method="getComposant" set-method="setComposant" required="true">
       <sql name="PRD_COM_ID"/>
     </field>
@@ -154,10 +172,10 @@
       <sql name="PRD_ROL_ID"/>
     </field>
     <field name="mActivitesEntrees" type="owep.modele.processus.MActivite" collection="arraylist" get-method="getListeActivitesEntrees" set-method="setListeActivitesEntrees">
-      <sql name="R01_ACT_ID" many-table="R01_ACT_PRD_ENTREE" many-key="R01_PRD_ID"/>
+      <sql name="R02_ACT_ID" many-table="R02_ACT_PRD_SORTIE" many-key="R02_PRD_ID"/>
     </field>
     <field name="mActivitesSorties" type="owep.modele.processus.MActivite" collection="arraylist" get-method="getListeActivitesSorties" set-method="setListeActivitesSorties">
-      <sql name="R02_ACT_ID" many-table="R02_ACT_PRD_SORTIE" many-key="R02_PRD_ID"/>
+      <sql name="R01_ACT_ID" many-table="R01_ACT_PRD_ENTREE" many-key="R01_PRD_ID"/>
     </field>
     <field name="mArtefacts" type="owep.modele.execution.MArtefact" collection="arraylist" get-method="getListeArtefacts" set-method="setListeArtefacts">
       <sql many-key="ART_PRD_ID"/>
@@ -196,7 +214,7 @@
     <field name="mArtefacts" type="owep.modele.execution.MArtefact" collection="arraylist" get-method="getListeArtefacts" set-method="setListeArtefacts">
       <sql many-key="ART_PRJ_ID"/>
     </field>
-    <field name="mCollaborateurs" type="owep.modele.execution.MCollaborateur" collection="arraylist" get-method="getListeCollaborateurs" set-method="setListeCollaborateurs" required="true">
+    <field name="mCollaborateurs" type="owep.modele.execution.MCollaborateur" collection="arraylist" get-method="getListeCollaborateurs" set-method="setListeCollaborateurs">
       <sql name="R05_COL_ID" many-table="R05_COL_PRJ" many-key="R05_PRJ_ID"/>
     </field>
     <field name="mIterations" type="owep.modele.execution.MIteration" collection="arraylist" get-method="getListeIterations" set-method="setListeIterations">

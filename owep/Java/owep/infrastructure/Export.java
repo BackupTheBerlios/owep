@@ -144,8 +144,7 @@ public class Export
     out.newLine () ;
     out.write ("\t\t\t<dateFin>" + mProjet.getDateFinPrevue () + "</dateFin>") ;
     out.newLine () ;
-    // TODO budget
-    out.write ("\t\t\t<budget></budget>") ;
+    out.write ("\t\t\t<budget>"+mProjet.getBudget()+"</budget>") ;
     out.newLine () ;
     out.write ("\t\t</projet>") ;
     out.newLine () ;
@@ -810,7 +809,7 @@ public class Export
 
     // Processus / Projet
     out.write ("\t\t<ProcessusProjet>\n") ;
-    out.write ("\t\t\t<idProcessus>" + lProcessus.getId () + "</idProcessus>\n") ;
+    out.write ("\t\t\t<idProcessus>" + lProcessus.getIdDpe () + "</idProcessus>\n") ;
     out.write ("\t\t\t<IdProjet>" + mProjet.getId () + "</IdProjet>\n") ;
     out.write ("\t\t</ProcessusProjet>\n") ;
 
@@ -824,7 +823,7 @@ public class Export
       if (liste.size () > 0)
       {
         out.write ("\t\t\t<ProduitArtefact>") ;
-        out.write ("\t\t\t\t<idProduit>" + lProduit.getId () + "</idProduit>") ;
+        out.write ("\t\t\t\t<idProduit>" + lProduit.getIdDpe () + "</idProduit>") ;
         out.write ("\t\t\t\t<listeIdArtefact>") ;
         Iterator itArtefact = liste.iterator () ;
         while (itArtefact.hasNext ())
@@ -848,7 +847,7 @@ public class Export
       if (liste.size () > 0)
       {
         out.write ("\t\t\t<ActiviteTache>\n") ;
-        out.write ("\t\t\t\t<idActivite>" + lActivite.getId () + "</idActivite>\n") ;
+        out.write ("\t\t\t\t<idActivite>" + lActivite.getIdDpe () + "</idActivite>\n") ;
         out.write ("\t\t\t\t<listeIdTache>\n") ;
         Iterator itTache = liste.iterator () ;
         while (itTache.hasNext ())
@@ -879,7 +878,7 @@ public class Export
         while (itRole.hasNext ())
         {
           MRole lRole = (MRole) itRole.next () ;
-          out.write ("\t\t\t\t\t<id>" + lRole.getId () + "</id>\n") ;
+          out.write ("\t\t\t\t\t<id>" + lRole.getIdDpe () + "</id>\n") ;
         }
         out.write ("\t\t\t\t</listeRole>\n") ;
         out.write ("\t\t\t</Membre>\n") ;

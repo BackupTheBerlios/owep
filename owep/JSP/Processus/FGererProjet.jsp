@@ -1,63 +1,183 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="owep.modele.execution.MCollaborateur"%>
+<%@page import="owep.modele.processus.MProcessus"%>
+<%@page import="owep.controle.CConstante" %>
+<%@page import="owep.infrastructure.Session" %>
+<%@page import="java.util.ResourceBundle" %>
 
 <jsp:useBean id="lCollaborateur" class="owep.modele.execution.MCollaborateur" scope="page"/>
+<jsp:useBean id="lProcessus" class="owep.modele.processus.MProcessus" scope="page"/>
+<jsp:useBean id="lSession" class="owep.infrastructure.Session" scope="page"/>
 
 <%@ page language="java" %>
 
 <%
+  // Recuperation de la session
+  HttpSession httpSession = request.getSession(true);
+  lSession = (Session) httpSession.getAttribute("SESSION");
+  
+  // Récupération du ressource bundle
+  ResourceBundle lMessage = lSession.getMessages();
+  
+  // Récupération parametres
   ArrayList listCollaborateur = (ArrayList) request.getAttribute("mListCollaborateur");
+  ArrayList listProcessus = (ArrayList) request.getAttribute("mListProcessus");
+  String lErreur = (String) request.getAttribute("erreur");
+  String lIdProjet = (String) request.getAttribute("idProjet");
+  
+  // Aucune erreur n'est survenue
+  if(lErreur.equals(""))
+  {
 %>
 
+<script language="javascript">
+function decocher()
+{
+<%
+  if(listProcessus.size() > 0)
+  {
+%>
+  document.formCreerProjet.mProcessus[<%=listProcessus.size()%>].checked = true;
+<%
+  }
+  else
+  {
+%>
+  document.formCreerProjet.mProcessus.checked = true;
+<%
+  }
+%>
+}
+
+function envoyer()
+{
+  var texte = "";
+  if(document.formCreerProjet.mNom.value == "")
+  {
+    //alert("Veuillez saisir un nom.");
+    texte = texte + "<%=lMessage.getString("projetMessageNom")%>\n";
+  }
+  if(document.formCreerProjet.mDateDebut.value == "")
+    texte = texte + "<%=lMessage.getString("projetMessageDateDebut")%>\n";
+  if(document.formCreerProjet.mDateFin.value == "")
+    texte = texte + "<%=lMessage.getString("projetMessageDateFin")%>\n";
+  // Verification d'un responsable selectionné
+  if(!(
+<%
+  if(listCollaborateur.size() > 1)
+  {
+    for(int i = 0 ; i < listCollaborateur.size() ; i++)
+    {
+%>
+      document.formCreerProjet.mResponsable[<%=i%>].checked
+<%
+      if(i < listCollaborateur.size()-1)
+      {
+%>
+      ||
+<%
+      }
+    }
+  }
+  else{
+%>
+      document.formCreerProjet.mResponsable.checked
+<%
+  }
+%>
+      ))
+    texte = texte + "<%=lMessage.getString("projetMessageResponsable")%>\n";
+  // Verification d'un processus selectionné
+  if(!(
+<%
+  int nbProcessus;
+  for(nbProcessus = 0 ; nbProcessus < listProcessus.size() ; nbProcessus++)
+  {
+%>
+      document.formCreerProjet.mProcessus[<%=nbProcessus%>].checked ||
+<%
+  }
+%>
+      document.formCreerProjet.mFichierProcessus.value != ""))
+    texte = texte + "<%=lMessage.getString("projetMessageProcessus")%>\n";
+  
+  if(texte == "")
+    document.formCreerProjet.submit();
+  else
+    alert(texte);
+}
+
+</script>
 
 <center>
 <form name="formCreerProjet" method="post" action="/owep/Processus/GererProjet" enctype="multipart/form-data">
+<input type="hidden" name="creation" value="1">
 <table class="tableau" border="0" cellpadding="0" cellspacing="0">
 <tbody>
   <tr>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Nom du projet.')" onmouseout="tooltipOff(this, event)">Nom *</a>
+            <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Nom du projet.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("projetNom")%> *</a>
     </td>
     <td class="caseNiveau3">
-      <input class="niveau2" type="text" name="mNom" value="">
+      <input type="text" name="mNom" value="" size="<%= CConstante.TXT_LOGIN %>" class="niveau2">
     </td>
   </tr>
   <tr>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Date prévue à laquelle doit commencer le projet.')" onmouseout="tooltipOff(this, event)">Date de début *</a>
+      <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Date prévue à laquelle doit commencer le projet.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("projetDateDebut")%> *</a>
     </td>
     <td class="caseNiveau3">
-      <input class="niveau2" type="text" name="mDateDebut" value="">
+      <input type="text" name="mDateDebut" value="" size="<%= CConstante.TXT_DATE %>" class="niveau2">
     </td>
   </tr>
   <tr>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Date prévue à laquelle doit se terminer le projet.')" onmouseout="tooltipOff(this, event)">Date de fin *</a>
+      <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Date prévue à laquelle doit se terminer le projet.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("projetDateFin")%> *</a>
     </td>
     <td class="caseNiveau3">
-      <input class="niveau2" type="text" name="mDateFin" value="">
+      <input type="text" name="mDateFin" value="" size="<%= CConstante.TXT_DATE %>" class="niveau2">
     </td>
   </tr>
   <tr>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Description de ce qui doit être réalisé au cours du projet.')" onmouseout="tooltipOff(this, event)">Description</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Description de ce qui doit être réalisé au cours du projet.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("projetDescription")%></a>
     </td>
     <td class="caseNiveau3">
-      <textarea class="niveau2" name="mDescription"></textarea>
+      <textarea name="mDescription" class="niveau2"></textarea>
     </td>
   </tr>
   <tr>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Choisissez le fichier <b>.DPE</b> qui définit le processus à appliquer sur le projet.')" onmouseout="tooltipOff(this, event)">Processus *</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Budget attribué au projet.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("projetBudget")%></a>
     </td>
     <td class="caseNiveau3">
-      <input class="niveau2" type="file" name="mFichierProcessus" value="">
+      <input type="text" name="mBudget" value="" size="<%= CConstante.TXT_CHARGE %>" class="niveau2">
     </td>
   </tr>
   <tr>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Superviseur qui s\'occupe du projet.')" onmouseout="tooltipOff(this, event)">Responsable *</a>
+      <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Choisissez le fichier <b>.DPE</b> qui définit le processus à appliquer sur le projet.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("projetProcessus")%> *</a>
+    </td>
+    <td class="caseNiveau3">
+<%
+    Iterator itProcessus = listProcessus.iterator();
+    while(itProcessus.hasNext()){
+      lProcessus = (MProcessus) itProcessus.next();
+%>
+      <input name="mProcessus" type="radio" value="<%=lProcessus.getId()%>">
+      <%=lProcessus.getNom()%>
+      <br>
+<%
+    }
+%>
+      <input name="mProcessus" type="radio" value="0">
+      <input type="file" name="mFichierProcessus" value="<%=lMessage.getString("projetParcourir")%>" size="<%= CConstante.TXT_LOGIN %>" onclick="decocher();" class="niveau2">
+    </td>
+  </tr>
+  <tr>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Superviseur qui s\'occupe du projet.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("projetResponsable")%> *</a>
     </td>
     <td class="caseNiveau3">
 <%
@@ -66,8 +186,8 @@
   {
     lCollaborateur = (MCollaborateur) it.next();
 %>
-      <input class="texte" name="mResponsable" type="radio" value="<%=lCollaborateur.getId()%>">
-      <%= lCollaborateur.getPrenom()+"&nbsp;"+lCollaborateur.getNom()%>
+      <input name="mResponsable" type="radio" value="<%=lCollaborateur.getId()%>">
+      <%=lCollaborateur.getPrenom()+"&nbsp;"+lCollaborateur.getNom()%>
       <br>
 <%
   }
@@ -77,52 +197,35 @@
 </tbody>
 </table>
 </form>
+<br>
+<p class="texteSubmit"><input class="bouton" type="button" value="<%=lMessage.getString("projetCreer")%>" onclick="envoyer();"></p>
 </center>
 
 <p class="texteObligatoire">Les champs marqué d'un * sont obligatoires.</p>
-<p class="texteSubmit"><input class="bouton" type="button" value="Valider" onclick="envoyer();"></p>
 
-
-<script language="javascript">
-function envoyer()
-{
-  var texte = "";
-  if(document.formCreerProjet.mNom.value == "")
-  {
-    //alert("Veuillez saisir un nom.");
-    texte = texte + "Veuillez saisir un nom.\n";
+<%
   }
-  if(document.formCreerProjet.mDateDebut.value == "")
-    texte = texte + "Veuillez saisir une date de début.\n";
-  if(document.formCreerProjet.mDateFin.value == "")
-    texte = texte + "Veuillez saisir une date de fin.\n";
-  if(document.formCreerProjet.mFichierProcessus.value == "")
-    texte = texte + "Veuillez selectionner un processus.\n";
-  if(!(
-<%
-  for(int i = 0 ; i < listCollaborateur.size() ; i++)
+  else
   {
+    // Une erreur est survenue
 %>
-      document.formCreerProjet.mResponsable[<%=i%>].checked
+<center>
+  <%=lErreur%><br>
+  
 <%
-    if(i < listCollaborateur.size()-1)
+    if(lErreur.equals(lMessage.getString("projetMessageCreer")) && !lIdProjet.equals("0"))
     {
 %>
-      ||
+  <a href="../Projet/OuvrirProjet?mIdProjet=<%=lIdProjet%>"><%=lMessage.getString("projetMessageOuvrir")%></a><br>
+  <a href="../Processus/GererProjet"><%=lMessage.getString("projetMessageCreerNouveau")%></a>
 <%
     }
+%>
+
+</center>
+<%
   }
 %>
-      ))
-    texte = texte + "Veuillez selectionner un responsable.\n";
-  
-  if(texte == "")
-    document.formCreerProjet.submit();
-  else
-    alert(texte);
-}
-</script>
-
 
 <!-- Aide en ligne -->
 <script type="text/javascript" language="JavaScript">

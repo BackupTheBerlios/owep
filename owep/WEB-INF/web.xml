@@ -130,6 +130,15 @@
   </servlet-mapping> 
   
   <servlet> 
+    <servlet-name>CModificationProfil</servlet-name> 
+    <servlet-class>owep.controle.outil.CModificationProfil</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CModificationProfil</servlet-name> 
+    <url-pattern>/Outil/ModificationProfil</url-pattern> 
+  </servlet-mapping> 
+  
+  <servlet> 
     <servlet-name>COuvrirProjet</servlet-name> 
     <servlet-class>owep.controle.projet.COuvrirProjet</servlet-class> 
   </servlet> 

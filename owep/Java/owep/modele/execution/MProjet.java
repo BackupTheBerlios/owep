@@ -3,6 +3,8 @@ package owep.modele.execution ;
 
 import java.util.Date ;
 import java.util.ArrayList ;
+import java.util.Iterator;
+
 import owep.modele.MModeleBase ;
 import owep.modele.processus.MProcessus ;
 
@@ -29,7 +31,6 @@ public class MProjet extends MModeleBase
                                                // projet.
   private ArrayList      mIndicateurs ;       // Liste des indicateurs associés au projet.
 
-
   /**
    * Crée une instance vide de MProjet.
    */
@@ -44,7 +45,21 @@ public class MProjet extends MModeleBase
     mIndicateurs = new ArrayList () ;
   }
 
-
+  /**
+   * @param pId
+   */
+  public MProjet (int pId)
+  {
+    super () ;
+    mId = pId ;
+    
+    mIterations          = new ArrayList () ;
+    mArtefacts           = new ArrayList () ;
+    mCollaborateurs      = new ArrayList () ;
+    mActivitesImprevues  = new ArrayList () ;
+    mArtefactsImprevues  = new ArrayList () ;
+  }
+  
   /**
    * Crée une instance initialisée de MProjet.
    * @param pId Identifiant du projet.
@@ -143,12 +158,15 @@ public class MProjet extends MModeleBase
 
 
   /**
-   * Initialise le chef de projet.
+   * Initialise le chef de projet et l'ajoute à la liste des collaborateurs du projet.
    * @param pChefProjet Chef de projet.
    */
   public void setChefProjet (MCollaborateur pChefProjet)
   {
     mChefProjet = pChefProjet ;
+    if(!pChefProjet.getListeProjetsChef().contains(this))
+      pChefProjet.addProjetChef(this);
+    addCollaborateur(pChefProjet);
   }
 
 
@@ -169,6 +187,13 @@ public class MProjet extends MModeleBase
   public void setListeCollaborateurs (ArrayList pCollaborateurs)
   {
     mCollaborateurs = pCollaborateurs ;
+    Iterator it = pCollaborateurs.iterator();
+    while(it.hasNext())
+    {
+      MCollaborateur lCollaborateur = (MCollaborateur) it.next();
+      if(!lCollaborateur.getListeProjets().contains(this))
+        lCollaborateur.addProjet(this);
+    }
   }
 
 
@@ -199,7 +224,10 @@ public class MProjet extends MModeleBase
    */
   public void addCollaborateur (MCollaborateur pCollaborateur)
   {
-    mCollaborateurs.add (pCollaborateur) ;
+    if(!mCollaborateurs.contains(pCollaborateur))
+      mCollaborateurs.add (pCollaborateur) ;
+    if(!pCollaborateur.getListeProjets().contains(this))
+      pCollaborateur.addProjet(this);
   }
 
 
