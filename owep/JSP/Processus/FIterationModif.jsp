@@ -466,7 +466,7 @@
           </tr>
           <tr>
             <td>
-              <p class="titre2">Tâches dépendantes :</p>
+              <p class="titre2">Tâches dont elle dépend :</p>
               
               <!-- Liste des tâches dépendantes -->
               <table width="100%" height="100%" cellpadding="0" cellspacing="0" valign="top">
