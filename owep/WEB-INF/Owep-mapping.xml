@@ -629,8 +629,14 @@
     <field name="mTacheResout" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTacheResout" set-method="setListeTacheResout">
       <sql name="R07_TAC_ID" many-table="R07_PRB_TAC_RESOUT" many-key="R07_PRB_ID"/>
     </field>
-    <field name="mTacheProvoque" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTacheProvoque" set-method="setListeTacheProvoque" required="true">
+    <field name="mTacheProvoque" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTacheProvoque" set-method="setListeTacheProvoque">
       <sql name="R08_TAC_ID" many-table="R08_PRB_TAC_PROVOQUE" many-key="R08_PRB_ID"/>
+    </field>
+    <field name="mTacheImprevueResout" type="owep.modele.execution.MTacheImprevue" collection="arraylist" get-method="getListeTacheImprevueResout" set-method="setListeTacheImprevueResout">
+      <sql name="R09_TIM_ID" many-table="R09_PRB_TIM_RESOUT" many-key="R09_PRB_ID"/>
+    </field>
+    <field name="mTacheImprevueProvoque" type="owep.modele.execution.MTacheImprevue" collection="arraylist" get-method="getListeTacheImprevueProvoque" set-method="setListeTacheImprevueProvoque">
+      <sql name="R10_TIM_ID" many-table="R10_PRB_TIM_PROVOQUE" many-key="R10_PRB_ID"/>
     </field>
   </class>
   

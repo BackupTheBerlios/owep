@@ -39,6 +39,8 @@ public class MTacheImprevue extends MModeleBase
   private MIteration         mIteration ;         // Itération durant laquelle est effectuée la tâche.
   private Date               mDateDebutChrono ;   // Date a laquelle on demarre le chrono pour le temps passé sur une tache
   private ArrayList          mConditions ;        // Liste de conditions nécessaires pour que la tâche soit dans l'état prêt
+  private ArrayList          mProblemesEntrees ;  // Liste des problèmes résultant de la tâche.
+  private ArrayList          mProblemesSorties ;  // Liste des problèmes que résout la tâche.
 
   /**
    * Crée une instance vide de MTache.
@@ -51,6 +53,8 @@ public class MTacheImprevue extends MModeleBase
     
     mArtefactsImprevuesEntrees  = new ArrayList () ;
     mArtefactsImprevuesSorties  = new ArrayList () ;
+    mProblemesEntrees  = new ArrayList () ;
+    mProblemesSorties  = new ArrayList () ;
     mConditions        = new ArrayList () ;
   }
 
@@ -79,6 +83,8 @@ public class MTacheImprevue extends MModeleBase
     
     mArtefactsImprevuesEntrees  = new ArrayList () ;
     mArtefactsImprevuesSorties  = new ArrayList () ;
+    mProblemesEntrees  = new ArrayList () ;
+    mProblemesSorties  = new ArrayList () ;
     mConditions        = new ArrayList () ;
   }
 
@@ -116,6 +122,8 @@ public class MTacheImprevue extends MModeleBase
     
     mArtefactsImprevuesEntrees  = new ArrayList () ;
     mArtefactsImprevuesSorties  = new ArrayList () ;
+    mProblemesEntrees  = new ArrayList () ;
+    mProblemesSorties  = new ArrayList () ;
     mConditions        = new ArrayList () ;
   }
 
@@ -755,5 +763,65 @@ public class MTacheImprevue extends MModeleBase
   public void setDateDebutChrono (Date pDateDebutChrono)
   {
     mDateDebutChrono = pDateDebutChrono ;
+  }
+  
+  
+  /**
+   * Récupère la liste des problèmes résultant de la tâche.
+   * @return Liste des problèmes résultant de la tâche.
+   */
+  public ArrayList getListeProblemesEntrees ()
+  {
+    return mProblemesEntrees ;
+  }
+
+
+  /**
+   * Initialise la liste des problèmes résultant de la tâche.
+   * @param pProblemesEntrees Liste des problèmes résultant de la tâche.
+   */
+  public void setListeProblemesEntrees (ArrayList pProblemesEntrees)
+  {
+    mProblemesEntrees = pProblemesEntrees ;
+  }
+
+
+  /**
+   * Ajoute un problème résultant de la tâche.
+   * @param pProblemeEntree Problème résultant de la tâche.
+   */
+  public void addProblemeEntree (MProbleme pProblemeEntree)
+  {
+    mProblemesEntrees.add (pProblemeEntree) ;
+  }
+
+
+  /**
+   * Récupère la liste des problèmes que résout la tâche.
+   * @return Liste des problèmes que résout la tâche.
+   */
+  public ArrayList getListeProblemesSorties ()
+  {
+    return mProblemesSorties ;
+  }
+
+
+  /**
+   * Initialise la liste des problèmes que résout la tâche.
+   * @param pProblemesSorties Liste des problèmes que résout la tâche.
+   */
+  public void setListeProblemesSorties (ArrayList pProblemesSorties)
+  {
+    mProblemesSorties = pProblemesSorties ;
+  }
+ 
+
+  /**
+   * Ajoute un problème que résout la tâche.
+   * @param pProblemeSortie Problème que résout la tâche.
+   */
+  public void addProblemeSortie (MProbleme pProblemeSortie)
+  {
+    mProblemesSorties.add (pProblemeSortie) ;
   }
 }

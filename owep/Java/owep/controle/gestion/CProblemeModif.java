@@ -12,6 +12,7 @@ import owep.modele.execution.MIteration ;
 import owep.modele.execution.MProbleme ;
 import owep.modele.execution.MProjet ;
 import owep.modele.execution.MTache ;
+import owep.modele.execution.MTacheImprevue ;
 import owep.vue.transfert.VTransfert ;
 
 
@@ -121,22 +122,42 @@ public class CProblemeModif extends CControleurBase
     
       // Récupère la liste des tâches provoquant le problème.
       mProbleme.getListeTacheProvoque ().clear () ;
+      mProbleme.getListeTacheImprevueProvoque ().clear () ;
       StringTokenizer lTokenizer = new StringTokenizer (getRequete ().getParameter (CConstante.PAR_LISTETACHESPROVOQUE), "-") ;
       while (lTokenizer.hasMoreTokens ())
       {
-        MTache lTache = chercherTache (Integer.parseInt (lTokenizer.nextToken ())) ;
-        mProbleme.addTacheProvoque (lTache) ;
-        lTache.addProblemeEntree (mProbleme) ;
+        if (lTokenizer.nextToken ().equals ("i"))
+        {
+          MTacheImprevue lTache = chercherTacheImprevue (Integer.parseInt (lTokenizer.nextToken ())) ;
+          mProbleme.addTacheImprevueProvoque (lTache) ;
+          lTache.addProblemeEntree (mProbleme) ;
+        }
+        else
+        {
+          MTache lTache = chercherTache (Integer.parseInt (lTokenizer.nextToken ())) ;
+          mProbleme.addTacheProvoque (lTache) ;
+          lTache.addProblemeEntree (mProbleme) ;
+        }
       }
       
       // Récupère la liste des tâches résolvant le problème.
       mProbleme.getListeTacheResout ().clear () ;
+      mProbleme.getListeTacheImprevueResout ().clear () ;
       lTokenizer = new StringTokenizer (getRequete ().getParameter (CConstante.PAR_LISTETACHESRESOUT), "-") ;
       while (lTokenizer.hasMoreTokens ())
       {
-        MTache lTache = chercherTache (Integer.parseInt (lTokenizer.nextToken ())) ;
-        mProbleme.addTacheResout (lTache) ;
-        lTache.addProblemeSortie (mProbleme) ;
+        if (lTokenizer.nextToken ().equals ("i"))
+        {
+          MTacheImprevue lTache = chercherTacheImprevue (Integer.parseInt (lTokenizer.nextToken ())) ;
+          mProbleme.addTacheImprevueResout (lTache) ;
+          lTache.addProblemeSortie (mProbleme) ;
+        }
+        else
+        {
+          MTache lTache = chercherTache (Integer.parseInt (lTokenizer.nextToken ())) ;
+          mProbleme.addTacheResout (lTache) ;
+          lTache.addProblemeSortie (mProbleme) ;
+        }
       }
     }
   }
@@ -216,6 +237,29 @@ public class CProblemeModif extends CControleurBase
         if (lIteration.getTache (j).getId () == pId)
         {
           return lIteration.getTache (j) ;
+        }
+      }
+    }
+    throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+  }
+  
+  
+  /**
+   * Récupère une tâche à partir de son identifiant.
+   * @param pId Identifiant de la tâche
+   * @return Tache d'identifiant pId.
+   * @throws ServletException Si la tâche recherché n'est pas trouvée.
+   */
+  private MTacheImprevue chercherTacheImprevue (int pId) throws ServletException
+  {
+    for (int i = 0; i < mProjet.getNbIterations (); i ++)
+    {
+      MIteration lIteration = mProjet.getIteration (i) ;
+      for (int j = 0; j < lIteration.getNbTachesImprevues (); j ++)
+      {
+        if (lIteration.getTacheImprevue (j).getId () == pId)
+        {
+          return lIteration.getTacheImprevue (j) ;
         }
       }
     }

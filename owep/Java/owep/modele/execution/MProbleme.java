@@ -24,14 +24,16 @@ import owep.modele.MModeleBase ;
  */
 public class MProbleme extends MModeleBase
 {
-  private int       mId ;                 // Identifiant du probleme
-  private String    mNom ;                // Nom du probleme
-  private String    mDescription ;        // Description du probleme
-  private String    mEtat ;               // Etat du probleme
-  private Date      mDateIdentification ; // Date à laquelle le probleme a été identifié
-  private Date      mDateCloture ;        // Date à laquelle le probleme a été résolu
-  private ArrayList mTacheResout ;        // Liste des taches résolvant le problème
-  private ArrayList mTacheProvoque ;      // Liste des taches provoquant le problème
+  private int       mId ;                    // Identifiant du probleme.
+  private String    mNom ;                   // Nom du probleme.
+  private String    mDescription ;           // Description du probleme.
+  private String    mEtat ;                  // Etat du probleme.
+  private Date      mDateIdentification ;    // Date à laquelle le probleme a été identifié.
+  private Date      mDateCloture ;           // Date à laquelle le probleme a été résolu.
+  private ArrayList mTacheResout ;           // Liste des taches résolvant le problème.
+  private ArrayList mTacheProvoque ;         // Liste des taches provoquant le problème.
+  private ArrayList mTacheImprevueResout ;   // Liste des taches imprévues résolvant le problème.
+  private ArrayList mTacheImprevueProvoque ; // Liste des taches imprévues provoquant le problème.
 
 
   /**
@@ -41,6 +43,8 @@ public class MProbleme extends MModeleBase
   {
     mTacheResout   = new ArrayList () ;
     mTacheProvoque = new ArrayList () ;
+    mTacheImprevueResout   = new ArrayList () ;
+    mTacheImprevueProvoque = new ArrayList () ;
   }
 
 
@@ -60,8 +64,10 @@ public class MProbleme extends MModeleBase
     mNom = pNom ;
     mDateIdentification = pDateIdentifiaction ;
     
-    mTacheResout   = new ArrayList () ;
-    mTacheProvoque = new ArrayList () ;
+    mTacheResout           = new ArrayList () ;
+    mTacheProvoque         = new ArrayList () ;
+    mTacheImprevueResout   = new ArrayList () ;
+    mTacheImprevueProvoque = new ArrayList () ;
   }
 
 
@@ -110,6 +116,20 @@ public class MProbleme extends MModeleBase
     for (int i = 0; i < getNbTachesResout (); i ++)
     {
       pConnection.update (getTacheResout (i)) ;
+      
+      pConnection.commit () ;    
+      pConnection.begin () ;    
+    }
+    for (int i = 0; i < getNbTachesImprevuesProvoque (); i ++)
+    {
+      pConnection.update (getTacheImprevueProvoque (i)) ;
+      
+      pConnection.commit () ;    
+      pConnection.begin () ;    
+    }
+    for (int i = 0; i < getNbTachesImprevuesResout (); i ++)
+    {
+      pConnection.update (getTacheImprevueResout (i)) ;
       
       pConnection.commit () ;    
       pConnection.begin () ;    
@@ -237,6 +257,128 @@ public class MProbleme extends MModeleBase
   public void setListeTacheResout (ArrayList pTacheResout)
   {
     mTacheResout = pTacheResout ;
+  }
+
+
+  /**
+   * Retourne le nombre de tâches imprévues ayant provoqué le problème.
+   * @return Nombre de tâches imprévues ayant provoqué le problème.
+   */
+  public int getNbTachesImprevuesProvoque ()
+  {
+    return mTacheImprevueProvoque.size () ;
+  }
+
+
+  /**
+   * Retourne la tâche imprévue d'indice pIndice qui a provoqué le problème.
+   * @param pIndice Indice d'une tâche imprévue provoquant le problème.
+   * @return La tâche imprévue désigné par le paramètre.
+   */
+  public MTacheImprevue getTacheImprevueProvoque (int pIndice)
+  {
+    return (MTacheImprevue) mTacheImprevueProvoque.get (pIndice) ;
+  }
+
+
+  /**
+   * Ajoute une tâche imprévue à la liste des tâches provoquant le problème.
+   * @param pTache Tâche imprévue provoquant le problème.
+   */
+  public void addTacheImprevueProvoque (MTacheImprevue pTache)
+  {
+    mTacheImprevueProvoque.add (pTache) ;
+  }
+
+
+  /**
+   * Supprime une tâche de la liste des tâches provoquant le problème.
+   * @param pTache Tâche provoquant le problème.
+   */
+  public void supprimeTacheImprevueProvoque (MTacheImprevue pTache)
+  {
+    mTacheImprevueProvoque.remove (pTache) ;
+  }
+
+
+  /**
+   * Récupère la liste des taches imprévues résolvant le problème.
+   * @return Liste des taches imprévues résolvant le problème.
+   */
+  public ArrayList getListeTacheImprevueProvoque ()
+  {
+    return mTacheImprevueProvoque ;
+  }
+
+
+  /**
+   * Initialise la liste des taches imprévues résolvant le problème.
+   * @param pTacheImprevueProvoque Liste des taches imprévues résolvant le problème.
+   */
+  public void setListeTacheImprevueProvoque (ArrayList pTacheImprevueProvoque)
+  {
+    mTacheImprevueProvoque = pTacheImprevueProvoque ;
+  }
+
+
+  /**
+   * Retourne le nombre de tâches imprévues résolvant le problème.
+   * @return Nombre de tâches imprévues résolvant le problème.
+   */
+  public int getNbTachesImprevuesResout ()
+  {
+    return mTacheImprevueResout.size () ;
+  }
+
+
+  /**
+   * Retourne la tâche imprévue qui resout le problème ayant pour index le numèro passé en paramètre.
+   * @param pIndice Indice de la tâche que l'on souhaite récupèrer.
+   * @return Tâche correspondant à l'index passé en paramètre.
+   */
+  public MTacheImprevue getTacheImprevueResout (int pIndice)
+  {
+    return (MTacheImprevue) mTacheImprevueResout.get (pIndice) ;
+  }
+
+
+  /**
+   * Ajoute la tâche imprévue à la liste des taches qui résout le problème.
+   * @param pTacheImprevueResout Tâche imprévue qui résout le problème.
+   */
+  public void addTacheImprevueResout (MTacheImprevue pTacheImprevueResout)
+  {
+    mTacheImprevueResout.add (pTacheImprevueResout) ;
+  }
+
+
+  /**
+   * Supprime la tâche imprévue de la liste des taches qui résout le problème.
+   * @param pTacheImprevueResout Tâche imprévue qui résout le problème.
+   */
+  public void supprimeTacheImprevueResout (MTacheImprevue pTacheImprevueResout)
+  {
+    mTacheImprevueResout.remove (pTacheImprevueResout) ;
+  }
+
+
+  /**
+   * Récupère la liste des taches imprévues provoquant le problème.
+   * @return Liste des taches imprévues provoquant le problème.
+   */
+  public ArrayList getListeTacheImprevueResout ()
+  {
+    return mTacheImprevueResout ;
+  }
+ 
+
+  /**
+   * Initialise la liste des taches imprévues provoquant le problème.
+   * @param pTacheImprevueResout Liste des taches imprévues provoquant le problème.
+   */
+  public void setListeTacheImprevueResout (ArrayList pTacheImprevueResout)
+  {
+    mTacheImprevueResout = pTacheImprevueResout ;
   }
 
 

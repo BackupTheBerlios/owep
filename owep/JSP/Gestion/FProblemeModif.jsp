@@ -3,6 +3,7 @@
 <%@page import="owep.modele.execution.MProjet" %>
 <%@page import="owep.modele.execution.MIteration" %>
 <%@page import="owep.modele.execution.MTache" %>
+<%@page import="owep.modele.execution.MTacheImprevue" %>
 <%@page import="owep.vue.transfert.convertor.VDateConvertor" %>
 <%@page import="owep.vue.transfert.convertor.VStringConvertor" %>
 <%@page import="owep.vue.transfert.VTransfertConstante" %>
@@ -77,10 +78,13 @@
          type="text" class="niveau2" value="<%= VDateConvertor.getString (pProbleme.getDateCloture (), true) %>" size="<%= CConstante.LNG_DATE %>" maxlength="<%= CConstante.TXT_DATE %>">
       </td>
     </tr>
+    
+    
     <tr>
       <td class="caseNiveau1">
         <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Tâches au cours desquelles est apparu le problème.')" onmouseout="tooltipOff(this, event)">Tâches à l'origine</br>du problème *</a>
       </td>
+      
       <td class="caseNiveau3" style="border-width : 0px 0px 1px 1px ;">
         <font class="titre3">Tâches possibles :</font><br/>
         <select name="pSelectTachesProvoquePossible" class="niveau2" style="width: 250" size="6"
@@ -90,6 +94,8 @@
         for (int lIndiceIteration = 0; lIndiceIteration < pProjet.getNbIterations (); lIndiceIteration ++)
         {
           MIteration lIteration = pProjet.getIteration (lIndiceIteration) ;
+          
+          // Affichage de la liste des tâches prévues.
           for (int lIndiceTache = 0; lIndiceTache < lIteration.getNbTaches (); lIndiceTache ++)
           {
             MTache lTache = lIteration.getTache (lIndiceTache) ;
@@ -108,7 +114,31 @@
             if (! lTrouve)
             {
         %>
-          <option value="<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
+          <option value="p-<%= lTache.getId () %>"><%= lTache.getNom () %></option>
+        <%
+            }
+          }
+          
+          // Affichage de la liste des tâches imprévues.
+          for (int lIndiceTache = 0; lIndiceTache < lIteration.getNbTachesImprevues (); lIndiceTache ++)
+          {
+            MTacheImprevue lTache = lIteration.getTacheImprevue (lIndiceTache) ;
+            
+            // Vérifie que la tâche n'appartient pas au problème.
+            boolean lTrouve = false ;
+            for (int lIndicePbTache = 0; lIndicePbTache < pProbleme.getNbTachesImprevuesProvoque (); lIndicePbTache ++)
+            {
+              if (pProbleme.getTacheImprevueProvoque (lIndicePbTache).getId () == lTache.getId ())
+              {
+                lTrouve = true ;
+              }
+            }
+            
+            // Si la tâche n'appartient pas au probleme.
+            if (! lTrouve)
+            {
+        %>
+          <option value="i-<%= lTache.getId () %>"><%= lTache.getNom () %></option>
         <%
             }
           }
@@ -116,6 +146,7 @@
         %>
         </select>
       </td>
+      
       <td class="caseNiveau3" align="center" valign="middle" width="0" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">&nbsp;</font><br/>
         <center>
@@ -126,6 +157,7 @@
            onmouseover="tooltipOn(this, event, 'Cliquez pour supprimer la tâche de la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
         </center>
       </td>
+      
       <td class="caseNiveau3" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">Tâches choisies :</font><br/>
         <select name="pSelectTachesProvoque" class="niveau2" style="width: 250" size="6"
@@ -135,17 +167,29 @@
         {
           MTache lTache = pProbleme.getTacheProvoque (lIndiceTache) ;
         %>
-          <option value="<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
+          <option value="p-<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
+        <%
+        }
+        %>
+        <%
+        for (int lIndiceTache = 0; lIndiceTache < pProbleme.getNbTachesImprevuesProvoque (); lIndiceTache ++)
+        {
+          MTacheImprevue lTache = pProbleme.getTacheImprevueProvoque (lIndiceTache) ;
+        %>
+          <option value="i-<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
         <%
         }
         %>
         </select>
       </td>
     </tr>
+    
+    
     <tr>
       <td class="caseNiveau1">
         <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Tâches au cours desquelles sera résolu le problème.')" onmouseout="tooltipOff(this, event)">Tâches de résolution</br>du problème</a>
       </td>
+      
       <td class="caseNiveau3" style="border-width : 0px 0px 1px 1px ;">
         <font class="titre3">Tâches possibles :</font><br/>
         <select name="pSelectTachesResoutPossible" class="niveau2" style="width: 250" size="6"
@@ -155,6 +199,8 @@
         for (int lIndiceIteration = 0; lIndiceIteration < pProjet.getNbIterations (); lIndiceIteration ++)
         {
           MIteration lIteration = pProjet.getIteration (lIndiceIteration) ;
+          
+          // Affichage de la liste des tâches prévues.
           for (int lIndiceTache = 0; lIndiceTache < lIteration.getNbTaches (); lIndiceTache ++)
           {
             MTache lTache = lIteration.getTache (lIndiceTache) ;
@@ -173,7 +219,31 @@
             if (! lTrouve)
             {
         %>
-          <option value="<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
+          <option value="p-<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
+        <%
+            }
+          }
+          
+          // Affichage de la liste des tâches imprévues.
+          for (int lIndiceTache = 0; lIndiceTache < lIteration.getNbTachesImprevues (); lIndiceTache ++)
+          {
+            MTacheImprevue lTache = lIteration.getTacheImprevue (lIndiceTache) ;
+            
+            // Vérifie que la tâche n'appartient pas au problème.
+            boolean lTrouve = false ;
+            for (int lIndicePbTache = 0; lIndicePbTache < pProbleme.getNbTachesImprevuesResout (); lIndicePbTache ++)
+            {
+              if (pProbleme.getTacheImprevueResout (lIndicePbTache).getId () == lTache.getId ())
+              {
+                lTrouve = true ;
+              }
+            }
+            
+            // Si la tâche n'appartient pas au probleme.
+            if (! lTrouve)
+            {
+        %>
+          <option value="i-<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
         <%
             }
           }
@@ -181,6 +251,7 @@
         %>
         </select>
       </td>
+      
       <td class="caseNiveau3" align="center" valign="middle" width="0" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">&nbsp;</font><br/>
         <center>
@@ -191,6 +262,7 @@
            onmouseover="tooltipOn(this, event, 'Cliquez pour supprimer la tâche de la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
         </center>
       </td>
+      
       <td class="caseNiveau3" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">Tâches choisies :</font><br/>
         <select name="pSelectTachesResout" class="niveau2" style="width: 250" size="6"
@@ -200,7 +272,16 @@
         {
           MTache lTache = pProbleme.getTacheResout (lIndiceTache) ;
         %>
-          <option value="<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
+          <option value="p-<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
+        <%
+        }
+        %>
+        <%
+        for (int lIndiceTache = 0; lIndiceTache < pProbleme.getNbTachesImprevuesResout (); lIndiceTache ++)
+        {
+          MTacheImprevue lTache = pProbleme.getTacheImprevueResout (lIndiceTache) ;
+        %>
+          <option value="i-<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
         <%
         }
         %>
