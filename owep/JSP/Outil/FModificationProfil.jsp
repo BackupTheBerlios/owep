@@ -61,31 +61,45 @@ function envoyer(){
   <table class="tableau" border="0" cellpadding="0" cellspacing="0">
   <tbody>
     <tr>
-      <td class="caseNiveau1"><%=lMessages.getString("collaborateurNom")%> *</td>
+      <td class="caseNiveau1">
+        <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, '<%=lMessages.getString("aideChampObligatoire")%>', '<%=lMessages.getString("aideCollaborateurNom")%>')" onmouseout="tooltipOff(this, event)"><%=lMessages.getString("collaborateurNom")%> *</a>
+      </td>
       <td class="caseNiveau3"><input type="text" name="mNom" value="<%=mNom%>" size="<%= CConstante.TXT_LOGIN %>" class="niveau2"></td>
     </tr>
     <tr>
-      <td class="caseNiveau1"><%=lMessages.getString("collaborateurPrenom")%></td>
+      <td class="caseNiveau1">
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=lMessages.getString("aideCollaborateurPrenom")%>')" onmouseout="tooltipOff(this, event)"><%=lMessages.getString("collaborateurPrenom")%></a>
+      </td>
       <td class="caseNiveau3"><input type="text" name="mPrenom" value="<%=mPrenom%>" size="<%= CConstante.TXT_LOGIN %>" class="niveau2"></td>
     </tr>
     <tr>
-      <td class="caseNiveau1"><%=lMessages.getString("collaborateurMail")%></td>
+      <td class="caseNiveau1">
+        <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, '<%=lMessages.getString("aideChampObligatoire")%>', '<%=lMessages.getString("aideCollaborateurMail")%>')" onmouseout="tooltipOff(this, event)"><%=lMessages.getString("collaborateurMail")%></a>
+      </td>
       <td class="caseNiveau3"><input type="text" name="mMail" value="<%=mMail%>" size="<%= CConstante.TXT_LOGIN %>" class="niveau2"></td>
     </tr>
     <tr>
-      <td class="caseNiveau1"><%=lMessages.getString("collaborateurAdresse")%></td>
+      <td class="caseNiveau1">
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=lMessages.getString("aideCollaborateurAdresse")%>')" onmouseout="tooltipOff(this, event)"><%=lMessages.getString("collaborateurAdresse")%></a>
+      </td>
       <td class="caseNiveau3"><textarea name="mAdresse" rows=3><%=mAdresse%></textarea></td>
     </tr>
     <tr>
-      <td class="caseNiveau1"><%=lMessages.getString("collaborateurTelephone")%></td>
+      <td class="caseNiveau1">
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=lMessages.getString("aideCollaborateurTelephone")%>')" onmouseout="tooltipOff(this, event)"><%=lMessages.getString("collaborateurTelephone")%></a>
+      </td>
       <td class="caseNiveau3"><input type="text" name="mTelephone" value="<%=mTelephone%>" size="<%= CConstante.TXT_LOGIN %>" class="niveau2"></td>
     </tr>
     <tr>
-      <td class="caseNiveau1"><%=lMessages.getString("collaborateurPortable")%></td>
+      <td class="caseNiveau1">
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=lMessages.getString("aideCollaborateurPortable")%>')" onmouseout="tooltipOff(this, event)"><%=lMessages.getString("collaborateurPortable")%></a>
+      </td>
       <td class="caseNiveau3"><input type="text" name="mPortable" value="<%=mPortable%>" size="<%= CConstante.TXT_LOGIN %>" class="niveau2"></td>
     </tr>
     <tr>
-      <td class="caseNiveau1"><%=lMessages.getString("collaborateurCommentaire")%></td>
+      <td class="caseNiveau1">
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=lMessages.getString("aideCollaborateurCommentaire")%>')" onmouseout="tooltipOff(this, event)"><%=lMessages.getString("collaborateurCommentaire")%></a>
+      </td>
       <td class="caseNiveau3"><textarea name="mCommentaire" rows=3><%=mCommentaire%></textarea></td>
     </tr>
   </tbody>
@@ -93,32 +107,45 @@ function envoyer(){
   <br><br>
   <table class="tableau" border="0" cellpadding="0" cellspacing="0">
     <tr>
-      <td class="caseNiveau1"><%=lMessages.getString("collaborateurLogin")%> *</td>
+      <td class="caseNiveau1">
+        <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, '<%=lMessages.getString("aideChampObligatoire")%>', '<%=lMessages.getString("aideCollaborateurLogin")%>')" onmouseout="tooltipOff(this, event)"><%=lMessages.getString("collaborateurLogin")%> *</a>
+      </td>
       <td class="caseNiveau3"><input type="text" name="mLogin" value="<%=mLogin%>" size="<%= CConstante.TXT_LOGIN %>" class="niveau2"></td>
     </tr>
     <tr>
-      <td class="caseNiveau1"><%=lMessages.getString("profilAncienMdp")%></td>
+      <td class="caseNiveau1">
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=lMessages.getString("aideCollaborateurProfilAncienMdp")%>')" onmouseout="tooltipOff(this, event)"><%=lMessages.getString("profilAncienMdp")%></a>
+      </td>
       <td class="caseNiveau3"><input type="PASSWORD" name="mAncienMdp" size="<%= CConstante.TXT_LOGIN %>" class="niveau2" onclick="changementMdp();"></td>
     </tr>
     <tr>
-      <td class="caseNiveau1"><%=lMessages.getString("profilNouveauMdp")%></td>
+      <td class="caseNiveau1">
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=lMessages.getString("aideCollaborateurProfilNouveauMdp")%>')" onmouseout="tooltipOff(this, event)"><%=lMessages.getString("profilNouveauMdp")%></a>
+      </td>
       <td class="caseNiveau3"><input type="PASSWORD" name="mNouveauMdp" size="<%= CConstante.TXT_LOGIN %>" class="niveau2" onclick="changementMdp();"></td>
     </tr>
     <tr>
-      <td class="caseNiveau1"><%=lMessages.getString("profilConfirmationMdp")%></td>
+      <td class="caseNiveau1">
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=lMessages.getString("aideCollaborateurProfilConfirmationMdp")%>')" onmouseout="tooltipOff(this, event)"><%=lMessages.getString("profilConfirmationMdp")%></a>
+      </td>
       <td class="caseNiveau3"><input type="PASSWORD" name="mConfirmationMdp" size="<%= CConstante.TXT_LOGIN %>" class="niveau2" onclick="changementMdp();"></td>
     </tr>
   </table>
   <input type="hidden" name="mModifLogin" value="0">
   <input type="hidden" name="mModifMdp" value="0">
   <br><br>
-  <font class="texteSubmit">
-    <input type="button" class="bouton" value="<%=lMessages.getString("collaborateurValider")%>" onCLick="envoyer();">
-  </font>
-  <br><br><br>
-  * : Champs obligatoire
+  <p class="texteObligatoire"><%=lMessages.getString("champObligatoire")%></p>
+  <p class="texteSubmit">
+    <input class="bouton" type="button" value="<%=lMessages.getString("identificationValider")%>" onclick="envoyer();"
+     onmouseover="tooltipOn(this, event, '<%=lMessages.getString("aideCollaborateurValidationFormulaire")%>')" onmouseout="tooltipOff(this, event)">
+  </p>
 </form>
 <%
   }
 %>
 </center>
+
+<!-- Aide en ligne -->
+<script type="text/javascript" language="JavaScript">
+pCodeAide  = "<%=lMessages.getString("aidePageCollaborateurProfil")%>" ;
+</script>

@@ -117,7 +117,7 @@ function valider(){
   <table class="tableau" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td class="caseNiveau1">
-        <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Nom du collaborateur.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurNom")%></a>
+        <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, '<%=lMessage.getString("aideChampObligatoire")%>', '<%=lMessage.getString("aideCollaborateurNom")%>')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurNom")%></a>
       </td>
       <td class="caseNiveau3">
         <select name="mCollaborateur" class="niveau2" onchange="changeRole(document.formCreerCollaborateur.mCollaborateur);">
@@ -162,7 +162,7 @@ function valider(){
     </tr>
     <tr>
       <td class="caseNiveau1">
-        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Rôle du collaborateur.')" onmouseout="tooltipOff(this, event)">Rôle</a>
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=lMessage.getString("aideCollaborateurRole")%>')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurCreationRole")%></a>
       </td>
       <td class="caseNiveau3">
       
@@ -184,7 +184,7 @@ function valider(){
       <td>
         <font class="titre3">Rôles possibles :</font><br/>
         <select name="pSelectRolePossible<%=i%>" class="niveau2" style="width: 250" size="6"
-         onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Rôles pouvant être attribués au collaborateur sélectionné.')" onmouseout="tooltipOff(this, event)">
+         onmouseover="tooltipTitreOn(this, event, '<%=lMessage.getString("aideChampObligatoire")%>', '<%=lMessage.getString("aideCollaborateurRolePossible")%>')" onmouseout="tooltipOff(this, event)">
 <%
         it = listeRolePossible.iterator();
         while(it.hasNext())
@@ -202,17 +202,17 @@ function valider(){
         <font class="titre3">&nbsp;</font><br/>
         <center>
           <input type="button" value="    Ajouter >  " class="bouton" onclick="transfererItem (document.formCreerCollaborateur.pSelectRolePossible<%=i%>, document.formCreerCollaborateur.pSelectRole<%=i%>) ;"
-           onmouseover="tooltipOn(this, event, 'Cliquez pour ajouter le rôle de la liste de gauche à la liste des rôles choisis.')" onmouseout="tooltipOff(this, event)"/>
+           onmouseover="tooltipOn(this, event, '<%=lMessage.getString("aideCollaborateurAjoutRole")%>')" onmouseout="tooltipOff(this, event)"/>
           <br/>
           <input type="button" value="< Supprimer" class="bouton" onclick="transfererItem (document.formCreerCollaborateur.pSelectRole<%=i%>, document.formCreerCollaborateur.pSelectRolePossible<%=i%>) ;"
-           onmouseover="tooltipOn(this, event, 'Cliquez pour supprimer le rôle de la liste des rôles choisis.')" onmouseout="tooltipOff(this, event)"/>
+           onmouseover="tooltipOn(this, event, '<%=lMessage.getString("aideCollaborateurSupprimerRole")%>')" onmouseout="tooltipOff(this, event)"/>
         </center>
       </td>
       
       <td>
-        <font class="titre3">Rôles choisis :</font><br/>
+        <font class="titre3"><%=lMessage.getString("collaborateurRoleEffectif")%></font><br/>
         <select name="pSelectRole<%=i%>" class="niveau2" style="width: 250" size="6"
-         onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Tâches qui provoquent le problème.')" onmouseout="tooltipOff(this, event)">
+         onmouseover="tooltipTitreOn(this, event, '<%=lMessage.getString("aideChampObligatoire")%>', '<%=lMessage.getString("aideCollaborateurRoleEffectif")%>')" onmouseout="tooltipOff(this, event)">
 <%
         it = listeRoleEffectif.iterator();
         while(it.hasNext())
@@ -271,59 +271,59 @@ function valider(){
   <tbody>
     <tr>
       <td class="caseNiveau1">
-        <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Nom du collaborateur.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurNom")%> *</a>
+        <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, '<%=lMessage.getString("aideChampObligatoire")%>', '<%=lMessage.getString("aideCollaborateurNom")%>')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurNom")%> *</a>
       </td>
       <td class="caseNiveau3"><input class="niveau2" type="text" name="mNom" value="<%=(mProbleme.equals(""))?"":mNom%>"></td>
     </tr>
     <tr>
       <td class="caseNiveau1">
-        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Prénom du collaborateur.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurPrenom")%></a>
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=lMessage.getString("aideCollaborateurPrenom")%>')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurPrenom")%></a>
       </td>
       <td class="caseNiveau3"><input class="niveau2" type="text" name="mPrenom" value="<%=(mProbleme.equals(""))?"":mPrenom%>"></td>
     </tr>
     <tr>
       <td class="caseNiveau1">
-        <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Nom que le collaborateur utilisera pour se connecter. Ce login doit être unique.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurLogin")%> *</a>
+        <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, '<%=lMessage.getString("aideChampObligatoire")%>', '<%=lMessage.getString("aideCollaborateurLogin")%>')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurLogin")%> *</a>
       </td>
       <td class="caseNiveau3"><input class="niveau2" type="text" name="mLogin" value="<%=(mProbleme.equals(""))?"":mLogin%>"></td>
     </tr>
     <tr>
       <td class="caseNiveau1">
-        <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Adresse mail du collaborateur. Cette adresse sera utilisée par <b>OWEP</b> pour transmettre des messages.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurMail")%> *</a>
+        <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, '<%=lMessage.getString("aideChampObligatoire")%>', '<%=lMessage.getString("aideCollaborateurMail")%>')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurMail")%> *</a>
       </td>
       <td class="caseNiveau3"><input class="niveau2" type="text" name="mMail" value="<%=(mProbleme.equals(""))?"":mMail%>"></td>
     </tr>
     <tr>
       <td class="caseNiveau1">
-        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Domicile du collaborateur.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurAdresse")%></a>
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=lMessage.getString("aideCollaborateurAdresse")%>')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurAdresse")%></a>
       </td>
       <td class="caseNiveau3"><textarea class="niveau2" name="mAdresse" rows=3><%=(mProbleme.equals(""))?"":mAdresse%></textarea></td>
     </tr>
     <tr>
       <td class="caseNiveau1">
-        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Numéro de téléphone fixe du collaborateur.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurTelephone")%></a>
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=lMessage.getString("aideCollaborateurTelephone")%>')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurTelephone")%></a>
       </td>
       <td class="caseNiveau3"><input class="niveau2" type="text" name="mTelephone" value="<%=(mProbleme.equals(""))?"":mTelephone%>"></td>
     </tr>
     <tr>
       <td class="caseNiveau1">
-        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Numéro de portable du collaborateur.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurPortable")%></a>
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=lMessage.getString("aideCollaborateurPortable")%>')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurPortable")%></a>
       </td>
       <td class="caseNiveau3"><input class="niveau2" type="text" name="mPortable" value="<%=(mProbleme.equals(""))?"":mPortable%>"></td>
     </tr>
     <tr>
       <td class="caseNiveau1">
-        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Commentaires et précisions sur le collaborateur. Ces informations ne sont visibles que par les chefs de projets.')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurCommentaire")%></a>
+        <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=lMessage.getString("aideCollaborateurCommentaire")%>')" onmouseout="tooltipOff(this, event)"><%=lMessage.getString("collaborateurCommentaire")%></a>
       </td>
       <td class="caseNiveau3"><textarea class="niveau2" name="mCommentaire" rows=3><%=(mProbleme.equals(""))?"":mCommentaire%></textarea></td>
     </tr>
   </tbody>
   </table>
   <input type="hidden" name="numPage" value="2">
-  <p class="texteObligatoire">Les champs marqués d'un * sont obligatoires.</p>
+  <p class="texteObligatoire"><%=lMessage.getString("champObligatoire")%></p>
   <p class="texteSubmit">
-    <input class="bouton" type="button" value="Valider" onclick="valider();"
-     onmouseover="tooltipOn(this, event, 'Cliquez pour valider le formulaires.')" onmouseout="tooltipOff(this, event)">
+    <input class="bouton" type="button" value="<%=lMessage.getString("identificationValider")%>" onclick="valider();"
+     onmouseover="tooltipOn(this, event, '<%=lMessage.getString("aideCollaborateurValidationFormulaire")%>')" onmouseout="tooltipOff(this, event)">
   </p>
 
 <%
@@ -335,6 +335,5 @@ function valider(){
 
 <!-- Aide en ligne -->
 <script type="text/javascript" language="JavaScript">
-pCodeAide  = "La page de <b>Création d'un collaborateur</b> permet de créer un nouveau <b>compte utilisateur</b> pour une personne." ;
-pCodeAide += " Vous devez pour cela saisir ses informations personnelles et préciser les rôles (définis dans le processus) qu'il peut tenir." ;
+pCodeAide  = "<%=lMessage.getString("aidePageCollaborateur")%>" ;
 </script>

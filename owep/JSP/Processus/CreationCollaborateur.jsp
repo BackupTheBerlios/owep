@@ -1,9 +1,15 @@
 <%@ page language="java" %>
 <%@ taglib uri="/WEB-INF/tld/template.tld" prefix="template" %>
-<!DOCTYPE HTML PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+
+<% 
+  //localisation
+  java.util.ResourceBundle messages ;
+  messages = java.util.ResourceBundle.getBundle("MessagesBundle");
+  String titre = messages.getString ("collaborateurTitre") ;
+%>  
 
 <template:template nom="/JSP/Template/FTemplate.jsp">
-  <template:section region="RegionTitre"      contenu="Création d'un collaborateur"               typePage="false"/>
+  <template:section region="RegionTitre"      contenu="<%=titre%>"                                typePage="false"/>
   <template:section region="RegionPrincipal"  contenu="/JSP/Processus/FCreationCollaborateur.jsp" typePage="true"/>
   <template:section region="RegionLogo"       contenu="/JSP/Template/FLogo.jsp"                   typePage="true"/>
   <template:section region="RegionMenu"       contenu="/JSP/Template/FMenu.jsp"                   typePage="true"/>
