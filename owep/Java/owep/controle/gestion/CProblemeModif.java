@@ -3,8 +3,6 @@ package owep.controle.gestion ;
 
 import java.util.StringTokenizer;
 import javax.servlet.ServletException ;
-import org.exolab.castor.jdo.OQLQuery ;
-import org.exolab.castor.jdo.QueryResults ;
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
 import owep.infrastructure.Session ;
@@ -32,8 +30,6 @@ public class CProblemeModif extends CControleurBase
   public void initialiserBaseDonnees () throws ServletException
   {
     Session      lSession ;    // Session actuelle de l'utilisateur.
-    OQLQuery     lRequete ;    // Requête à réaliser sur la base.
-    QueryResults lResultat ;   // Résultat de la requête sur la base.
     String       lIdProbleme ; // Identifiant du problème.
     
     lSession    = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
@@ -41,63 +37,47 @@ public class CProblemeModif extends CControleurBase
     lIdProbleme = getRequete ().getParameter (CConstante.PAR_PROBLEME) ;
     
     
-    try
+    begin () ;
+    
+    // Récupère le projet actuellement ouvert.
+    creerRequete ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
+    parametreRequete (mProjet.getId ()) ;
+    executer () ;
+    // Si on récupère correctement le projet dans la base,
+    if (contientResultat ())
     {
-      getBaseDonnees ().begin () ;
-      
-      // Récupère le projet actuellement ouvert.
-      lRequete = getBaseDonnees ().getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
-      lRequete.bind (mProjet.getId ()) ;
-      lResultat = lRequete.execute () ;
-      // Si on récupère correctement le projet dans la base,
-      if (lResultat.hasMore ())
+      mProjet = (MProjet) getResultat () ;
+    }
+    // Si le projet n'existe pas,
+    else
+    {
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+    }
+    
+    
+    // Si un problème est passé en paramètre,
+    if (lIdProbleme != null)
+    {
+      // Récupère le problème choisi par l'utilisateur.
+      creerRequete ("select PROBLEME from owep.modele.execution.MProbleme PROBLEME where mId = $1 AND mTacheProvoque.mIteration.mProjet.mId = $2") ;
+      parametreRequete (Integer.parseInt (lIdProbleme)) ;
+      parametreRequete (mProjet.getId ()) ;
+      executer () ;
+      // Si on récupère correctement le problème dans la base,
+      if (contientResultat ())
       {
-        mProjet = (MProjet) lResultat.next () ;
+        mProbleme = (MProbleme) getResultat () ;
       }
-      // Si le projet n'existe pas,
+      // Si le problème n'existe pas ou n'appartient pas au projet ouvert,
       else
       {
         throw new ServletException (CConstante.EXC_TRAITEMENT) ;
       }
-      
-      
-      // Si un problème est passé en paramètre,
-      if (lIdProbleme != null)
-      {
-        // Récupère le problème choisi par l'utilisateur.
-        lRequete = getBaseDonnees ().getOQLQuery ("select PROBLEME from owep.modele.execution.MProbleme PROBLEME where mId = $1 AND mTacheProvoque.mIteration.mProjet.mId = $2") ;
-        lRequete.bind (Integer.parseInt (lIdProbleme)) ;
-        lRequete.bind (mProjet.getId ()) ;
-        lResultat = lRequete.execute () ;
-        // Si on récupère correctement le problème dans la base,
-        if (lResultat.hasMore ())
-        {
-          mProbleme = (MProbleme) lResultat.next () ;
-        }
-        // Si le problème n'existe pas ou n'appartient pas au projet ouvert,
-        else
-        {
-          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-        }
-      }
-      // Si aucun problème existant n'est passé en paramètre,
-      else
-      {
-        mProbleme = new MProbleme () ;
-      }
     }
-    catch (Exception eException)
+    // Si aucun problème existant n'est passé en paramètre,
+    else
     {
-      eException.printStackTrace () ;
-      try
-      {
-        getBaseDonnees ().close () ;
-      }
-      catch (Exception eCloseException)
-      {
-        eCloseException.printStackTrace () ;
-      }
-      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      mProbleme = new MProbleme () ;
     }
   }
   
@@ -164,50 +144,43 @@ public class CProblemeModif extends CControleurBase
    */
   public String traiter () throws ServletException
   {
-    try
+    // Si l'utilisateur affiche la page pour la première fois,
+    if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_VIDE))
     {
-      // Si l'utilisateur affiche la page pour la première fois,
-      if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_VIDE))
-      {
-        // Si l'utilisateur accède à la page d'ajout/modification, transmet les données à la page.
-        getRequete ().setAttribute (CConstante.PAR_PROBLEME, mProbleme) ;
-        getRequete ().setAttribute (CConstante.PAR_PROJET, mProjet) ;
-        getBaseDonnees ().commit () ;
-        getBaseDonnees ().close () ;
-        
-        // Affiche la page de modification de problème.
-        return "/JSP/Gestion/TProblemeModif.jsp" ;
-      }
-      else
-      {
-        // Si l'utilisateur valide les données, alors on les enregistre dans la base.
-        String lMessage = "" ;
-        if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
-        {
-          // Crée l'objet ou le met à jour s'il existe déjà.
-          if (mProbleme.getId () == 0)
-          {
-            getBaseDonnees ().create (mProbleme) ;
-            lMessage = "Le problème \"" + mProbleme.getNom () + "\" a été créé." ;
-          }
-          else
-          {
-            lMessage = "Le problème \"" + mProbleme.getNom () + "\" a été mis à jour." ;
-          }
-        }
-        // Valide les données.
-        getBaseDonnees ().commit () ;
-        getBaseDonnees ().close () ;
-        
-        // Affiche la page de visualisation de la liste des problèmes.
-        getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
-        return "/Gestion/ListeProblemeVisu" ;
-      }
+      // Si l'utilisateur accède à la page d'ajout/modification, transmet les données à la page.
+      getRequete ().setAttribute (CConstante.PAR_PROBLEME, mProbleme) ;
+      getRequete ().setAttribute (CConstante.PAR_PROJET, mProjet) ;
+      
+      commit () ;
+      close () ;
+      
+      // Affiche la page de modification de problème.
+      return "/JSP/Gestion/TProblemeModif.jsp" ;
     }
-    catch (Exception eException)
+    else
     {
-      eException.printStackTrace () ;
-      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      // Si l'utilisateur valide les données, alors on les enregistre dans la base.
+      String lMessage = "" ;
+      if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
+      {
+        // Crée l'objet ou le met à jour s'il existe déjà.
+        if (mProbleme.getId () == 0)
+        {
+          creer (mProbleme) ;
+          lMessage = "Le problème \"" + mProbleme.getNom () + "\" a été créé." ;
+        }
+        else
+        {
+          lMessage = "Le problème \"" + mProbleme.getNom () + "\" a été mis à jour." ;
+        }
+      }
+      // Valide les données.
+      commit () ;
+      close () ;
+      
+      // Affiche la page de visualisation de la liste des problèmes.
+      getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
+      return "/Gestion/ListeProblemeVisu" ;
     }
   }
   

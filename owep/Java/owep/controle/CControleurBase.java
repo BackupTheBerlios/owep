@@ -10,8 +10,11 @@ import javax.servlet.http.HttpServletResponse ;
 import javax.servlet.http.HttpSession;
 import org.exolab.castor.jdo.Database ;
 import org.exolab.castor.jdo.JDO ;
+import org.exolab.castor.jdo.OQLQuery ;
+import org.exolab.castor.jdo.QueryResults ;
 import owep.infrastructure.Session ;
 import owep.infrastructure.localisation.LocalisateurIdentifiant ;
+import owep.modele.MModeleBase;
 import owep.modele.execution.MIteration;
 import owep.modele.execution.MProjet;
 
@@ -22,10 +25,12 @@ import owep.modele.execution.MProjet;
  */
 public abstract class CControleurBase extends HttpServlet
 {
-  private HttpServletRequest  mRequete ; // Requête HTTP à l'origine de l'appel du controleur
-  private HttpServletResponse mReponse ; // Réponse HTTP du controleur à la requête
-  private Database mBaseDonnees ;        // Connexion à la base de données
-  private Session mSession ;             // Session associé à la connexion
+  private HttpServletRequest  mRequete ;     // Requête HTTP à l'origine de l'appel du controleur
+  private HttpServletResponse mReponse ;     // Réponse HTTP du controleur à la requête
+  private Database            mBaseDonnees ; // Connexion à la base de données
+  private Session             mSession ;     // Session associé à la connexion
+  private OQLQuery            mRequeteSQL ;  // Requête à réaliser sur la base.
+  private QueryResults        mResultatSQL ; // Résultat de la requête sur la base.
 
   
   /**
@@ -105,7 +110,11 @@ public abstract class CControleurBase extends HttpServlet
       }
       initialiserBaseDonnees () ;
       initialiserParametres () ;
+      
       lRequeteDispatcher = pRequete.getRequestDispatcher (traiter ()) ;
+      // Libère la mémoire.
+      mRequeteSQL  = null ;
+      mResultatSQL = null ;
       if (lRequeteDispatcher == null)
       {
         throw new ServletException (CConstante.EXC_FORWARD) ;
@@ -177,6 +186,138 @@ public abstract class CControleurBase extends HttpServlet
     try
     {
       mBaseDonnees.close () ;
+    }
+    catch (Exception eException)
+    {
+      eException.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+    }
+  }
+
+  
+  /**
+   * Crée une nouvelle requête pour interroger la base de données.
+   * @param pRequete Requête d'interrogation de la base de données.
+   * @throws ServletException Si une erreur survient lors de l'interrogation.
+   */
+  public void creerRequete (String pRequete) throws ServletException
+  {
+    try
+    {
+      mRequeteSQL = mBaseDonnees.getOQLQuery (pRequete) ;
+    }
+    catch (Exception eException)
+    {
+      eException.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+    }
+  }
+  
+  
+  /**
+   * Crée une nouvelle requête pour interroger la base de données.
+   * @param pParametre Paramètre à passer à la requête (à passer dans l'ordre de leur définition).
+   * @throws ServletException Si une erreur survient lors de l'interrogation.
+   */
+  public void parametreRequete (int pParametre) throws ServletException
+  {
+    try
+    {
+      mRequeteSQL.bind (pParametre) ;
+    }
+    catch (Exception eException)
+    {
+      eException.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+    }
+  }
+  
+  
+  /**
+   * Exécute une requête sur la base de données.
+   * @throws ServletException Si une erreur survient lors de l'exécution.
+   */
+  public void executer () throws ServletException
+  {
+    try
+    {
+      mResultatSQL = mRequeteSQL.execute () ;
+    }
+    catch (Exception eException)
+    {
+      eException.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+    }
+  }
+  
+  
+  /**
+   * Indique si le résultat de l'exécution de la requête contient encore une donnée.
+   * @return Vrai si le résultat contient encore un résultat et faux sinon.
+   * @throws ServletException Si une erreur survient lors de la consultation.
+   */
+  public boolean contientResultat () throws ServletException
+  {
+    try
+    {
+      return mResultatSQL.hasMore () ;
+    }
+    catch (Exception eException)
+    {
+      eException.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+    }
+  }
+  
+  
+  /**
+   * Récupère une ligne de résultats issu de l'exécution de la requête.
+   * @return Ligne de résultat.
+   * @throws ServletException S'il n'y a plus de lignes de résultats.
+   */
+  public Object getResultat () throws ServletException
+  {
+    try
+    {
+      return mResultatSQL.next () ;
+    }
+    catch (Exception eException)
+    {
+      eException.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+    }
+  }
+  
+  
+  /**
+   * Crée un nouvel objet dans la base.
+   * @param pObjet Objet à créer.
+   * @throws ServletException Si une erreur survient lors de la création.
+   */
+  public void creer (MModeleBase pObjet) throws ServletException
+  {
+    try
+    {
+      mBaseDonnees.create (pObjet) ;
+    }
+    catch (Exception eException)
+    {
+      eException.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+    }
+  }
+  
+  
+  /**
+   * Supprime un objet la base.
+   * @param pObjet Objet à supprimer.
+   * @throws ServletException Si une erreur survient lors de la suppression.
+   */
+  public void supprimer (MModeleBase pObjet) throws ServletException
+  {
+    try
+    {
+      mBaseDonnees.remove (pObjet) ;
     }
     catch (Exception eException)
     {

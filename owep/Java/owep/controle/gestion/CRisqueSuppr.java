@@ -2,8 +2,6 @@ package owep.controle.gestion ;
 
 
 import javax.servlet.ServletException ;
-import org.exolab.castor.jdo.OQLQuery ;
-import org.exolab.castor.jdo.QueryResults ;
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
 import owep.infrastructure.Session ;
@@ -27,8 +25,6 @@ public class CRisqueSuppr extends CControleurBase
   {
     Session      lSession ;  // Session actuelle de l'utilisateur.
     MProjet      lProjet ;   // Projet en cours.
-    OQLQuery     lRequete ;  // Requête à réaliser sur la base.
-    QueryResults lResultat ; // Résultat de la requête sur la base.
     String       lIdRisque ; // Identifiant du risque.
     
     lSession  = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
@@ -40,38 +36,22 @@ public class CRisqueSuppr extends CControleurBase
     if (lIdRisque != null)
     {
       // Charge le problème passé en paramètre.
-      try
+      begin () ;
+      
+      // Récupère la liste des problèmes survenus sur le projet en cours.
+      creerRequete ("select RISQUE from owep.modele.execution.MRisque RISQUE where mId = $1 AND mProjet.mId = $2") ;
+      parametreRequete (Integer.parseInt (lIdRisque)) ;
+      parametreRequete (lProjet.getId ()) ;
+      executer () ;
+      
+      // Si on récupère correctement le problème dans la base,
+      if (contientResultat ())
       {
-        getBaseDonnees ().begin () ;
-        
-        // Récupère la liste des problèmes survenus sur le projet en cours.
-        lRequete = getBaseDonnees ().getOQLQuery ("select RISQUE from owep.modele.execution.MRisque RISQUE where mId = $1 AND mProjet.mId = $2") ;
-        lRequete.bind (Integer.parseInt (lIdRisque)) ;
-        lRequete.bind (lProjet.getId ()) ;
-        lResultat = lRequete.execute () ;
-        
-        // Si on récupère correctement le problème dans la base,
-        if (lResultat.hasMore ())
-        {
-          mRisque = (MRisque) lResultat.next () ;
-        }
-        // Si le problème n'existe pas ou n'appartient pas au projet ouvert,
-        else
-        {
-          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-        }
+        mRisque = (MRisque) getResultat () ;
       }
-      catch (Exception eException)
+      // Si le problème n'existe pas ou n'appartient pas au projet ouvert,
+      else
       {
-        eException.printStackTrace () ;
-        try
-        {
-          getBaseDonnees ().close () ;
-        }
-        catch (Exception eCloseException)
-        {
-          eCloseException.printStackTrace () ;
-        }
         throw new ServletException (CConstante.EXC_TRAITEMENT) ;
       }
     }
@@ -100,29 +80,10 @@ public class CRisqueSuppr extends CControleurBase
    */
   public String traiter () throws ServletException
   {
-    try
-    {
-      // Supprime le problème.
-      getBaseDonnees ().remove (mRisque) ;
-      getBaseDonnees ().commit () ;
-    }
-    catch (Exception eException)
-    {
-      eException.printStackTrace () ;
-      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-    }
-    finally
-    {
-      try
-      {
-        getBaseDonnees ().close () ;
-      }
-      catch (Exception eException)
-      {
-        eException.printStackTrace () ;
-        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-      }
-    }
+    // Supprime le problème.
+    supprimer (mRisque) ;
+    commit () ;
+    close () ;
     
     // Affiche la page de visualisation de la liste des problèmes.
     getRequete ().setAttribute (CConstante.PAR_MESSAGE, "Le risque \"" + mRisque.getNom () + "\" a été supprimé.") ;

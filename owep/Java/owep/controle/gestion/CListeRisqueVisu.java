@@ -1,14 +1,10 @@
 package owep.controle.gestion ;
 
 
-import java.util.ArrayList ;
 import javax.servlet.ServletException ;
-import org.exolab.castor.jdo.OQLQuery ;
-import org.exolab.castor.jdo.QueryResults ;
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
 import owep.infrastructure.Session ;
-import owep.modele.execution.MRisque;
 import owep.modele.execution.MProjet ;
 
 
@@ -27,52 +23,31 @@ public class CListeRisqueVisu extends CControleurBase
   public void initialiserBaseDonnees () throws ServletException
   {
     Session      lSession ;  // Session actuelle de l'utilisateur.
-    MProjet      lProjet ;   // Projet en cours.
-    OQLQuery     lRequete ;  // Requête à réaliser sur la base.
-    QueryResults lResultat ; // Résultat de la requête sur la base.
     
     lSession = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
     mProjet  = lSession.getProjet () ;
     
     // Charge la liste des problèmes pour le projet ouvert.
-    try
+    begin () ;
+    
+    // Récupère le projet actuellement ouvert.
+    creerRequete ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
+    parametreRequete (mProjet.getId ()) ;
+    executer () ;
+    
+    // Si on récupère correctement le projet dans la base,
+    if (contientResultat ())
     {
-      getBaseDonnees ().begin () ;
-      
-      // Récupère le projet actuellement ouvert.
-      lRequete = getBaseDonnees ().getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
-      lRequete.bind (mProjet.getId ()) ;
-      lResultat = lRequete.execute () ;
-      // Si on récupère correctement le projet dans la base,
-      if (lResultat.hasMore ())
-      {
-        mProjet = (MProjet) lResultat.next () ;
-      }
-      // Si le projet n'existe pas,
-      else
-      {
-        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-      }
-      
-      getBaseDonnees ().commit () ;
+      mProjet = (MProjet) getResultat () ;
     }
-    catch (Exception eException)
+    // Si le projet n'existe pas,
+    else
     {
-      eException.printStackTrace () ;
       throw new ServletException (CConstante.EXC_TRAITEMENT) ;
     }
-    finally
-    {
-      try
-      {
-        getBaseDonnees ().close () ;
-      }
-      catch (Exception eException)
-      {
-        eException.printStackTrace () ;
-        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-      }
-    }
+    
+    commit () ;
+    close () ;
   }
   
   

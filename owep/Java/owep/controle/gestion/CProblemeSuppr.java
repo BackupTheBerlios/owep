@@ -2,8 +2,6 @@ package owep.controle.gestion ;
 
 
 import javax.servlet.ServletException ;
-import org.exolab.castor.jdo.OQLQuery ;
-import org.exolab.castor.jdo.QueryResults ;
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
 import owep.infrastructure.Session ;
@@ -27,8 +25,6 @@ public class CProblemeSuppr extends CControleurBase
   {
     Session      lSession ;    // Session actuelle de l'utilisateur.
     MProjet      lProjet ;     // Projet en cours.
-    OQLQuery     lRequete ;    // Requête à réaliser sur la base.
-    QueryResults lResultat ;   // Résultat de la requête sur la base.
     String       lIdProbleme ; // Identifiant du problème.
     
     lSession    = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
@@ -40,38 +36,22 @@ public class CProblemeSuppr extends CControleurBase
     if (lIdProbleme != null)
     {
       // Charge le problème passé en paramètre.
-      try
+      begin () ;
+      
+      // Récupère la liste des problèmes survenus sur le projet en cours.
+      creerRequete ("select PROBLEME from owep.modele.execution.MProbleme PROBLEME where mId = $1 AND mTacheProvoque.mIteration.mProjet.mId = $2") ;
+      parametreRequete (Integer.parseInt (lIdProbleme)) ;
+      parametreRequete (lProjet.getId ()) ;
+      executer () ;
+      
+      // Si on récupère correctement le problème dans la base,
+      if (contientResultat ())
       {
-        getBaseDonnees ().begin () ;
-        
-        // Récupère la liste des problèmes survenus sur le projet en cours.
-        lRequete = getBaseDonnees ().getOQLQuery ("select PROBLEME from owep.modele.execution.MProbleme PROBLEME where mId = $1 AND mTacheProvoque.mIteration.mProjet.mId = $2") ;
-        lRequete.bind (Integer.parseInt (lIdProbleme)) ;
-        lRequete.bind (lProjet.getId ()) ;
-        lResultat = lRequete.execute () ;
-        
-        // Si on récupère correctement le problème dans la base,
-        if (lResultat.hasMore ())
-        {
-          mProbleme = (MProbleme) lResultat.next () ;
-        }
-        // Si le problème n'existe pas ou n'appartient pas au projet ouvert,
-        else
-        {
-          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-        }
+        mProbleme = (MProbleme) getResultat () ;
       }
-      catch (Exception eException)
+      // Si le problème n'existe pas ou n'appartient pas au projet ouvert,
+      else
       {
-        eException.printStackTrace () ;
-        try
-        {
-          getBaseDonnees ().close () ;
-        }
-        catch (Exception eCloseException)
-        {
-          eCloseException.printStackTrace () ;
-        }
         throw new ServletException (CConstante.EXC_TRAITEMENT) ;
       }
     }
@@ -100,29 +80,10 @@ public class CProblemeSuppr extends CControleurBase
    */
   public String traiter () throws ServletException
   {
-    try
-    {
-      // Supprime le problème.
-      getBaseDonnees ().remove (mProbleme) ;
-      getBaseDonnees ().commit () ;
-    }
-    catch (Exception eException)
-    {
-      eException.printStackTrace () ;
-      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-    }
-    finally
-    {
-      try
-      {
-        getBaseDonnees ().close () ;
-      }
-      catch (Exception eException)
-      {
-        eException.printStackTrace () ;
-        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-      }
-    }
+    // Supprime le problème.
+    supprimer (mProbleme) ;
+    commit () ;
+    close () ;
     
     // Affiche la page de visualisation de la liste des problèmes.
     getRequete ().setAttribute (CConstante.PAR_MESSAGE, "Le problème \"" + mProbleme.getNom () + "\" a été supprimé.") ;

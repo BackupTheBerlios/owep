@@ -2,8 +2,6 @@ package owep.controle.gestion ;
 
 
 import javax.servlet.ServletException ;
-import org.exolab.castor.jdo.OQLQuery ;
-import org.exolab.castor.jdo.QueryResults ;
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
 import owep.infrastructure.Session ;
@@ -28,8 +26,6 @@ public class CRisqueModif extends CControleurBase
   public void initialiserBaseDonnees () throws ServletException
   {
     Session      lSession ;  // Session actuelle de l'utilisateur.
-    OQLQuery     lRequete ;  // Requête à réaliser sur la base.
-    QueryResults lResultat ; // Résultat de la requête sur la base.
     String       lIdRisque ; // Identifiant du risque.
     
     lSession    = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
@@ -37,63 +33,48 @@ public class CRisqueModif extends CControleurBase
     lIdRisque = getRequete ().getParameter (CConstante.PAR_RISQUE) ;
     
     
-    try
+    begin () ;
+    
+    // Récupère le projet actuellement ouvert.
+    creerRequete ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
+    parametreRequete (mProjet.getId ()) ;
+    executer () ;
+    // Si on récupère correctement le projet dans la base,
+    if (contientResultat ())
     {
-      getBaseDonnees ().begin () ;
+      mProjet = (MProjet) getResultat () ;
+    }
+    // Si le projet n'existe pas,
+    else
+    {
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+    }
+    
+    
+    // Si un problème est passé en paramètre,
+    if (lIdRisque != null)
+    {
+      // Charge le problème passé en paramètre.
+      creerRequete ("select RISQUE from owep.modele.execution.MRisque RISQUE where mId = $1 AND mProjet.mId = $2") ;
+      parametreRequete (Integer.parseInt (lIdRisque)) ;
+      parametreRequete (mProjet.getId ()) ;
+      executer () ;
       
-      // Récupère le projet actuellement ouvert.
-      lRequete = getBaseDonnees ().getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
-      lRequete.bind (mProjet.getId ()) ;
-      lResultat = lRequete.execute () ;
-      // Si on récupère correctement le projet dans la base,
-      if (lResultat.hasMore ())
+      // Si on récupère correctement le problème dans la base,
+      if (contientResultat ())
       {
-        mProjet = (MProjet) lResultat.next () ;
+        mRisque = (MRisque) getResultat () ;
       }
-      // Si le projet n'existe pas,
+      // Si le problème n'existe pas ou n'appartient pas au projet ouvert,
       else
       {
         throw new ServletException (CConstante.EXC_TRAITEMENT) ;
       }
-      
-      
-      // Si un problème est passé en paramètre,
-      if (lIdRisque != null)
-      {
-        // Charge le problème passé en paramètre.
-        lRequete = getBaseDonnees ().getOQLQuery ("select RISQUE from owep.modele.execution.MRisque RISQUE where mId = $1 AND mProjet.mId = $2") ;
-        lRequete.bind (Integer.parseInt (lIdRisque)) ;
-        lRequete.bind (mProjet.getId ()) ;
-        lResultat = lRequete.execute () ;
-        // Si on récupère correctement le problème dans la base,
-        if (lResultat.hasMore ())
-        {
-          mRisque = (MRisque) lResultat.next () ;
-        }
-        // Si le problème n'existe pas ou n'appartient pas au projet ouvert,
-        else
-        {
-          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-        }
-      }
-      // Si aucun problème existant n'est passé en paramètre,
-      else
-      {
-        mRisque = new MRisque () ;
-      }
     }
-    catch (Exception eException)
+    // Si aucun problème existant n'est passé en paramètre,
+    else
     {
-      eException.printStackTrace () ;
-      try
-      {
-        getBaseDonnees ().close () ;
-      }
-      catch (Exception eCloseException)
-      {
-        eCloseException.printStackTrace () ;
-      }
-      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      mRisque = new MRisque () ;
     }
   }
   
@@ -125,51 +106,43 @@ public class CRisqueModif extends CControleurBase
    */
   public String traiter () throws ServletException
   {
-    try
+    // Si l'utilisateur affiche la page pour la première fois,
+    if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_VIDE))
     {
-      // Si l'utilisateur affiche la page pour la première fois,
-      if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_VIDE))
-      {
-        // Si l'utilisateur accède à la page d'ajout/modification, transmet les données à la page.
-        getRequete ().setAttribute (CConstante.PAR_RISQUE, mRisque) ;
-        getRequete ().setAttribute (CConstante.PAR_PROJET, mProjet) ;
-        // Valide les données.
-        getBaseDonnees ().commit () ;
-        getBaseDonnees ().close () ;
-        
-        // Affiche la page de modification de problème.
-        return "/JSP/Gestion/TRisqueModif.jsp" ;
-      }
-      else
-      {
-        // Si l'utilisateur valide les données, alors on les enregistre dans la base.
-        String lMessage = "" ;
-        if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
-        {
-          // Crée l'objet ou le met à jour s'il existe déjà.
-          if (mRisque.getId () == 0)
-          {
-            getBaseDonnees ().create (mRisque) ;
-            lMessage = "Le risque \"" + mRisque.getNom () + "\" a été créé." ;
-          }
-          else
-          {
-            lMessage = "Le risque \"" + mRisque.getNom () + "\" a été mis à jour." ;
-          }
-        }
-        // Valide les données.
-        getBaseDonnees ().commit () ;
-        getBaseDonnees ().close () ;
-        
-        // Affiche la page de visualisation de la liste des problèmes.
-        getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
-        return "/Gestion/ListeRisqueVisu" ;
-      }
+      // Si l'utilisateur accède à la page d'ajout/modification, transmet les données à la page.
+      getRequete ().setAttribute (CConstante.PAR_RISQUE, mRisque) ;
+      getRequete ().setAttribute (CConstante.PAR_PROJET, mProjet) ;
+      // Valide les données.
+      commit () ;
+      close () ;
+      
+      // Affiche la page de modification de problème.
+      return "/JSP/Gestion/TRisqueModif.jsp" ;
     }
-    catch (Exception eException)
+    else
     {
-      eException.printStackTrace () ;
-      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      // Si l'utilisateur valide les données, alors on les enregistre dans la base.
+      String lMessage = "" ;
+      if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
+      {
+        // Crée l'objet ou le met à jour s'il existe déjà.
+        if (mRisque.getId () == 0)
+        {
+          creer (mRisque) ;
+          lMessage = "Le risque \"" + mRisque.getNom () + "\" a été créé." ;
+        }
+        else
+        {
+          lMessage = "Le risque \"" + mRisque.getNom () + "\" a été mis à jour." ;
+        }
+      }
+      // Valide les données.
+      commit () ;
+      close () ;
+      
+      // Affiche la page de visualisation de la liste des problèmes.
+      getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
+      return "/Gestion/ListeRisqueVisu" ;
     }
   }
 }
