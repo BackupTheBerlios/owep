@@ -2,8 +2,6 @@
 <%@page import="owep.controle.CConstante"%>
 <%@page import="owep.modele.execution.MTache"%>
 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-
 <jsp:useBean id="lTache"         class="owep.modele.execution.MTache"         scope="session"/> 
 <HEAD>
 <SCRIPT LANGUAGE="JavaScript">

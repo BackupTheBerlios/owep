@@ -296,9 +296,9 @@ public class MProjet extends MModeleBase
    * Ajoute l'itération spécifiée au projet.
    * @param pTache Itération réalisée durant le projet.
    */
-  public void addIteration (MTache pTache)
+  public void addIteration (MIteration pIteration)
   {
-    mIterations.add (pTache) ;
+    mIterations.add (pIteration) ;
   }
 
 

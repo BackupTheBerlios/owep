@@ -1,4 +1,23 @@
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<%@page import="java.util.ArrayList"%>
+<%@page import="owep.modele.processus.MRole"%>
+
+<script language="javascript">
+function ajout(listeDep, listeArr)
+{
+  var option = new Option(listeDep.options[listeDep.selectedIndex].text,listeDep.options[listeDep.selectedIndex].value); 
+  listeArr.options[listeArr.length] = option; 
+  listeDep.options[listeDep.selectedIndex] = null ;
+}
+
+function enleve(listeArr)
+{ 
+  if(listeArr.options[listeArr.selectedIndex].value == 0){ } 
+  else
+  { 
+    listeArr.options[listeArr.selectedIndex] = null; 
+  }
+}
+</script>
 
 <center>
 
@@ -6,6 +25,7 @@
   // Récupération des parametres
   String mProbleme = (String) request.getAttribute("mProbleme");       // Probleme rencontré lors de l'enregistrement du collaborateur
   String mPageSource = (String) request.getAttribute("mPageSource");   // Page qui a appellé la servlet création d'un collaborateur à l'origine
+  ArrayList mListeRole = (ArrayList) request.getAttribute("listeRole");// Liste des roles possibles
   
   String mNom = (String) request.getAttribute("mNom");                 // Nom du collaborateur
   String mPrenom = (String) request.getAttribute("mPrenom");           // Prenom du collaborateur
@@ -57,7 +77,7 @@ Veuillez saisir un nom.<br>
    // Auncun probléme n'a été rencontré
 %>
 L'utilisateur a bien été enregistré<br>
-<!--<a href="<%=mPageSource%>">Ok</a>-->
+<a href="<%=mPageSource%>">Ok</a>
 <%
   }
   else
@@ -82,7 +102,7 @@ L'utilisateur a bien été enregistré<br>
     </tr>
     <tr>
       <td class="caseNiveau1">EMail *</td>
-      <td class="caseNiveau3"><input type="PASSWORD" name="mMail" value=<%=(!mProbleme.equals("nouveau"))?mMail:""%>></td>
+      <td class="caseNiveau3"><input type="text" name="mMail" value=<%=(!mProbleme.equals("nouveau"))?mMail:""%>></td>
     </tr>
     <tr>
       <td class="caseNiveau1">Adresse</td>
@@ -99,6 +119,40 @@ L'utilisateur a bien été enregistré<br>
     <tr>
       <td class="caseNiveau1">Commentaire</td>
       <td class="caseNiveau3"><textarea name="mCommentaire" rows=3><%=(!mProbleme.equals("nouveau"))?mCommentaire:""%></textarea></td>
+    </tr>
+    <tr>
+      <td class="caseNiveau1">Role</td>
+      <td class="caseNiveau3">
+<!--        <table border="0" cellpadding="0" cellspacing="0">
+        <tbody>
+          <tr>
+            <td rowspan="2">
+              <select name="mListeRole" size="4" multiple> -->
+<%
+    for(int i = 0 ; i<mListeRole.size() ; i++)
+    {
+%>
+              <input type="checkbox" name="mRoleSelect<%=((MRole) mListeRole.get(i)).getId()%>" value="<%=((MRole) mListeRole.get(i)).getId()%>"><%=((MRole) mListeRole.get(i)).getNom()%><br>
+<%
+    }
+%>
+<!--                <option value="">
+                  
+                </option>
+              <select>
+            </td>
+            <td><input type="button" value="->" onclick="ajout(mListeRole,mListeRoleChoisi);enlever(mListeRole)"></td>
+            <td rowspan="2">
+              <select name="mListeRoleChoisi" size="4" multiple>
+              <select>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="button" value="<-" onclick="ajout(mListeRoleChoisi,mListeRole);enlever(mListeRoleChoisi)"></td>
+          </tr>
+        </tbody>
+        </table> -->
+      </td>
     </tr>
   </tbody>
   </table>

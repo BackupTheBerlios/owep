@@ -1,9 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-
 <%@page import="owep.controle.CConstante"%>
 <%@page import="owep.modele.execution.MArtefact"%>
 
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <jsp:useBean id="lArtefact" class="owep.modele.execution.MArtefact" scope="page"/>
 
 <%

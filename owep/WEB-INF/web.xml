@@ -101,7 +101,7 @@
   </servlet-mapping> 
 
 
-  <!-- Liste des Servlets Processus -->
+    <!-- Liste des Servlets Processus -->
   <servlet>
     <servlet-name>CProjetVisu</servlet-name>
     <servlet-class>owep.controle.processus.CProjetVisu</servlet-class>

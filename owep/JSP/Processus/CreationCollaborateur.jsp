@@ -6,7 +6,7 @@
   <template:section region="RegionTitre"      contenu="Création d'un collaborateur"               typePage="false"/>
   <template:section region="RegionPrincipal"  contenu="/JSP/Processus/FCreationCollaborateur.jsp" typePage="true"/>
   <template:section region="RegionLogo"       contenu="/JSP/Template/FLogo.jsp"                   typePage="true"/>
-  <template:section region="RegionMenu"       contenu="/JSP/Template/FMenu.jsp"         typePage="true"/>
-  <template:section region="RegionMessagerie" contenu="/JSP/Template/FMessagerie.jsp"   typePage="true"/>
+  <template:section region="RegionMenu"       contenu="/JSP/Template/FMenu.jsp"                   typePage="true"/>
+  <template:section region="RegionMessagerie" contenu="/JSP/Template/FMessagerie.jsp"             typePage="true"/>
   <template:section region="RegionPied"       contenu="/JSP/Template/FPied.jsp"                   typePage="true"/>
 </template:template>

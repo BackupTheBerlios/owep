@@ -5,8 +5,6 @@
 <jsp:useBean id="lCollaborateur" class="owep.modele.execution.MCollaborateur" scope="page"/>
 <jsp:useBean id="lTache"         class="owep.modele.execution.MTache"         scope="page"/> 
 
-<meta http-equiv="refresh" content="60; URL=./ListeTacheVisu">
-
 <%
     SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
     lCollaborateur = (MCollaborateur) request.getAttribute (CConstante.PAR_COLLABORATEUR) ;

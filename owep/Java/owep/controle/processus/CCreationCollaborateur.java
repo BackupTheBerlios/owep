@@ -1,6 +1,8 @@
 package owep.controle.processus ;
 
 
+import java.util.ArrayList;
+
 import javax.servlet.ServletException ;
 
 import org.exolab.castor.jdo.OQLQuery ;
@@ -10,6 +12,9 @@ import org.exolab.castor.jdo.QueryResults ;
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
 import owep.modele.execution.MCollaborateur ;
+import owep.modele.execution.MProjet;
+import owep.modele.processus.MComposant;
+import owep.modele.processus.MProcessus;
 
 
 /**
@@ -28,7 +33,9 @@ public class CCreationCollaborateur extends CControleurBase
   private String mPortable ; // Numéro du portable du collaborateur à créer
   private String mCommentaire ; // Commentaire du collaborateur à créer
   private String mMdp ; // Mot de passe du collaborateur à créer
-  private int    mDroit ; //Droit du collaboratur (collaborateur = 0 ; chef de projet = 1) 
+  private int    mDroit ; //Droit du collaboratur (collaborateur = 0 ; chef de projet = 1)
+  
+  private ArrayList mListeRole;
   
   private MCollaborateur mCollaborateur ; // Collaborateur à créer
 
@@ -63,6 +70,7 @@ public class CCreationCollaborateur extends CControleurBase
     mCommentaire = getRequete ().getParameter ("mCommentaire") ;
     mDroit = 0 ;
     mMdp = mLogin ;
+    getListeRole () ;
   }
 
   /**
@@ -80,6 +88,7 @@ public class CCreationCollaborateur extends CControleurBase
     if (mNom == null)
     {
       getRequete ().setAttribute ("mPageSource", getRequete ().getHeader ("referer")) ;
+      getRequete ().setAttribute ("listeRole", mListeRole) ;
       return "..\\JSP\\Processus\\CreationCollaborateur.jsp" ;
     }
 
@@ -166,6 +175,7 @@ public class CCreationCollaborateur extends CControleurBase
   private void renvoieAttribut ()
   {
     getRequete ().setAttribute ("mPageSource", mPageSource) ;
+    getRequete ().setAttribute ("listeRole", mListeRole) ;
 
     getRequete ().setAttribute ("mNom", (mNom == null ? "" : mNom)) ;
     getRequete ().setAttribute ("mPrenom", (mPrenom == null ? "" : mPrenom)) ;
@@ -175,6 +185,28 @@ public class CCreationCollaborateur extends CControleurBase
     getRequete ().setAttribute ("mTelephone", (mTelephone == null ? "" : mTelephone)) ;
     getRequete ().setAttribute ("mPortable", (mPortable == null ? "" : mPortable)) ;
     getRequete ().setAttribute ("mCommentaire", (mCommentaire == null ? "" : mCommentaire)) ;
+  }
+  private void getListeRole ()
+  {
+    MProjet lProjet = getSession ().getProjet () ;
+    MProcessus lProcessus = lProjet.getProcessus () ;
+    ArrayList lListeComposants = lProcessus.getListeComposants () ;
+    MComposant lComposant ;
+
+    mListeRole = new ArrayList () ;
+    for (int i = 0 ; i < lListeComposants.size () ; i++)
+    {
+      lComposant = (MComposant) lListeComposants.get (i) ;
+      ArrayList lListeRole = lComposant.getListeRoles () ;
+      for (int j = 0 ; j < lListeRole.size () ; j++)
+      {
+        if (!mListeRole.contains (lListeRole.get (j)))
+        {
+          mListeRole.add (lListeRole.get (j)) ;
+        }
+      }
+    }
+
   }
 
 }

@@ -1,6 +1,5 @@
 <%@ page language="java" %>
 <%@ taglib uri="/WEB-INF/tld/template.tld" prefix="template" %>
-<!DOCTYPE HTML PUBLIC "-//w3c//dtd html 4.0 transitional//en">
 
 <template:template nom="/JSP/Template/FTemplate.jsp">
   <template:section region="RegionScript"     contenu="NavigationIteration.js"         typePage="false"/>

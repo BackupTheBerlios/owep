@@ -38,7 +38,7 @@
 <p class="titre1">PROJET : <%= lProjet.getNom () %></p>
 <p class="texte"><%= lProjet.getDescription () %></p>
 <br/><br/>
-
+ 
 <form action="./IterationModif" method="post">
 
   <transfert:transfertbean scope="Session" type="owep.modele.execution.MIteration" bean="pIteration" idArbre="<%= CConstante.PAR_ARBREITERATION %>">
@@ -207,15 +207,20 @@
                 {
                   lCodeScript += "gListeTaches[" + i + "][8].push (new Array (\"" + ai + "\", \"" + lTache.getArtefactSortie (ai).getNom () +
                              "\", \"" + lTache.getArtefactSortie (ai).getDescription () + "\", \"" +
-                             w + "\", " ;
+                             w + "\"" ;
+boolean passe = false ; // MODIF YANN
                   for (int x = 0; x < lProduitTmp.getResponsable ().getNbCollaborateurs (); x ++)
                   {
                     MCollaborateur lRespTmp = lProduitTmp.getResponsable ().getCollaborateur (x) ;
                     if (lRespTmp.getId ()  == lTache.getArtefactSortie (ai).getResponsable ().getId ()) 
                     {
-                      lCodeScript += x + ")) ;\n" ;
+                      lCodeScript += ", " + x + ")) ;\n" ;
+passe = true ;
                     }
                   }
+if (! passe) {
+  lCodeScript += ")) ;\n" ;
+}
                 }
               }
               
@@ -233,7 +238,7 @@
       
       <!-- Liste des tâches -->
       <td class="caseNiveau3">
-        <select name="<%= CConstante.PAR_LISTETACHES %>" class="niveau2" style="width: 200; height: 100%" size="15"
+        <select name="<%= CConstante.PAR_LISTETACHES %>" class="niveau2" style="width: 200" size="15"
          onchange="selectTache (document.forms[0].<%= CConstante.PAR_LISTETACHES %>.selectedIndex)">
           <%
             for (int i = 0; i < lIteration.getNbTaches (); i++)
@@ -500,26 +505,42 @@
           %>
         </select><br/>
         <%
-          lCodeScriptActivite += "function selectActivite (pIndiceDiscipline, pIndiceActivite) { \n" ;
-          lCodeScriptActivite += "document.forms[0]." + CConstante.PAR_LISTEPRODUITS + ".length = 0 ; \n" ;
-          lCodeScriptActivite += "for (i = 0 ; i <  gListeActivites[pIndiceDiscipline][pIndiceActivite][2].length ; i++) { \n" ; 
-          lCodeScriptActivite += "var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][2][i][1],gListeActivites [pIndiceDiscipline][pIndiceActivite][2][i][0]) ; \n" ; 
-          lCodeScriptActivite += "document.forms[0]." + CConstante.PAR_LISTEPRODUITS + ".options[i] = option; } \n" ;
-          
-          lCodeScriptActivite += "document.forms[0]." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ".length = 0 ; \n" ;          
-          lCodeScriptActivite += "var present ;" ;
-          lCodeScriptActivite += "for (j = 0 ; j < gListeActivites[pIndiceDiscipline][pIndiceActivite][3].length ; j++)  { \n" ;
-          lCodeScriptActivite += "  present = 0 ; " ;
-          lCodeScriptActivite += "  for (a = 0 ; a <  gListeTaches[document.forms[0]." + CConstante.PAR_LISTETACHES + ".selectedIndex][9].length ; a++) { \n" ;
-          lCodeScriptActivite += "    if (gListeActivites [pIndiceDiscipline][pIndiceActivite][3][j][0] == gListeTaches[document.forms[0]." + CConstante.PAR_LISTETACHES + ".selectedIndex][9][a][0] ) { " ;
-          lCodeScriptActivite += "       present = 1 ; " ;
-          lCodeScriptActivite += "    } ";
-          lCodeScriptActivite += "  } " ;
-          lCodeScriptActivite += "  if (present == 0) {" ;
-          lCodeScriptActivite += "  var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][3][j][1],gListeActivites [pIndiceDiscipline][pIndiceActivite][3][j][0]) ; \n" ; 
-          lCodeScriptActivite += "  document.forms[0]." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ".options[document.forms[0]." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ".length] = option; " ;
-          lCodeScriptActivite += "  }";
-          lCodeScriptActivite += "}\n} \n" ;
+          lCodeScriptActivite += "function selectActivite (pIndiceDiscipline, pIndiceActivite) \n" ;
+          lCodeScriptActivite += "{ \n " ;
+          lCodeScriptActivite += "  document.forms[0]." + CConstante.PAR_LISTEPRODUITS + ".length = 0 ; \n" ;
+          lCodeScriptActivite += "  for (i = 0 ; i <  gListeActivites[pIndiceDiscipline][pIndiceActivite][2].length ; i++) \n" ; 
+          lCodeScriptActivite += "  { \n" ;
+          lCodeScriptActivite += "    var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][2][i][1],gListeActivites [pIndiceDiscipline][pIndiceActivite][2][i][0]) ; \n" ; 
+          lCodeScriptActivite += "    document.forms[0]." + CConstante.PAR_LISTEPRODUITS + ".options[i] = option; \n" ;
+          lCodeScriptActivite += "  } \n";
+          lCodeScriptActivite += "  document.forms[0]." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ".length = 0 ; \n" ;          
+          lCodeScriptActivite += "  if (document.forms[0]." + CConstante.PAR_LISTETACHES + ".selectedIndex != -1) \n" ;
+          lCodeScriptActivite += "  { \n" ;
+          lCodeScriptActivite += "    var present ;\n" ;
+          lCodeScriptActivite += "    for (j = 0 ; j < gListeActivites[pIndiceDiscipline][pIndiceActivite][3].length ; j++) \n" ;
+          lCodeScriptActivite += "    { \n" ;
+          lCodeScriptActivite += "      present = 0 ; \n" ;
+          lCodeScriptActivite += "      for (a = 0 ; a <  gListeTaches[document.forms[0]." + CConstante.PAR_LISTETACHES + ".selectedIndex][9].length ; a++) \n" ;
+          lCodeScriptActivite += "      { \n" ;
+          lCodeScriptActivite += "        if (gListeActivites [pIndiceDiscipline][pIndiceActivite][3][j][0] == gListeTaches[document.forms[0]." + CConstante.PAR_LISTETACHES + ".selectedIndex][9][a][0] ) \n" ;
+          lCodeScriptActivite += "        { \n" ;
+          lCodeScriptActivite += "           present = 1 ; \n" ;
+          lCodeScriptActivite += "        } \n";
+          lCodeScriptActivite += "      } \n" ;
+          lCodeScriptActivite += "      if (present == 0) {\n" ;
+          lCodeScriptActivite += "      var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][3][j][1],gListeActivites [pIndiceDiscipline][pIndiceActivite][3][j][0]) ; \n" ; 
+          lCodeScriptActivite += "      document.forms[0]." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ".options[document.forms[0]." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ".length] = option; \n" ;
+          lCodeScriptActivite += "      }\n";
+          lCodeScriptActivite += "    } \n" ;
+          lCodeScriptActivite += "  } \n" ;
+          lCodeScriptActivite += "  else \n" ;
+          lCodeScriptActivite += "  { \n" ;
+          lCodeScriptActivite += "    for (j = 0 ; j < gListeActivites[pIndiceDiscipline][pIndiceActivite][3].length ; j++)  { \n" ;
+          lCodeScriptActivite += "      var option = new Option(gListeActivites [pIndiceDiscipline][pIndiceActivite][3][j][1],gListeActivites [pIndiceDiscipline][pIndiceActivite][3][j][0]) ; \n" ; 
+          lCodeScriptActivite += "      document.forms[0]." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ".options[document.forms[0]." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ".length] = option; \n" ;
+          lCodeScriptActivite += "    } \n" ;
+          lCodeScriptActivite += "  } \n" ;
+          lCodeScriptActivite += "} \n" ;
         %>
 </td>
 <tr>
