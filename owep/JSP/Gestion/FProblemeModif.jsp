@@ -81,9 +81,10 @@
       <td class="caseNiveau1">
         <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Tâches au cours desquelles est apparu le problème.')" onmouseout="tooltipOff(this, event)">Tâches à l'origine</br>du problème *</a>
       </td>
-      <td class="caseNiveau3" style="border-width : 0px 0px 1px 0px ;">
+      <td class="caseNiveau3" style="border-width : 0px 0px 1px 1px ;">
         <font class="titre3">Tâches possibles :</font><br/>
-        <select name="pSelectTachesProvoquePossible" class="niveau2" style="width: 250" size="6">
+        <select name="pSelectTachesProvoquePossible" class="niveau2" style="width: 250" size="6"
+         onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Tâches qui peuvent être indiqués comme provoquant le problème.')" onmouseout="tooltipOff(this, event)">
         <%
         // Parcours l'ensemble des tâches du projet.
         for (int lIndiceIteration = 0; lIndiceIteration < pProjet.getNbIterations (); lIndiceIteration ++)
@@ -123,9 +124,10 @@
         <input type="button" value="< Supprimer" class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoque, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoquePossible) ;"
          onmouseover="tooltipOn(this, event, 'Cliquez pour supprimer la tâche de la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
       </td>
-      <td class="caseNiveau3">
+      <td class="caseNiveau3" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">Tâches choisies :</font><br/>
-        <select name="pSelectTachesProvoque" class="niveau2" style="width: 250" size="6">
+        <select name="pSelectTachesProvoque" class="niveau2" style="width: 250" size="6"
+         onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Tâches qui provoquent le problème.')" onmouseout="tooltipOff(this, event)">
         <%
         for (int lIndiceTache = 0; lIndiceTache < pProbleme.getNbTachesProvoque (); lIndiceTache ++)
         {
@@ -142,31 +144,10 @@
       <td class="caseNiveau1">
         <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Tâches au cours desquelles sera résolu le problème.')" onmouseout="tooltipOff(this, event)">Tâches de résolution</br>du problème</a>
       </td>
-      <td class="caseNiveau3">
-        <font class="titre3">Tâches choisies :</font><br/>
-        <select name="pSelectTachesResout" class="niveau2" style="width: 250" size="6">
-        <%
-        for (int lIndiceTache = 0; lIndiceTache < pProbleme.getNbTachesResout (); lIndiceTache ++)
-        {
-          MTache lTache = pProbleme.getTacheResout (lIndiceTache) ;
-        %>
-          <option value="<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
-        <%
-        }
-        %>
-        </select>
-      </td>
-      <td class="caseNiveau3" align="center" valign="middle" width="0" style="border-width : 0px 0px 1px 0px ;">
-        <font class="titre3">&nbsp;</font><br/>
-        <input type="button" value="     Ajouter >   " class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResoutPossible, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResout)"
-         onmouseover="tooltipOn(this, event, 'Cliquez pour ajouter la tâche de la liste de gauche à la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
-        <br/>
-        <input type="button" value="< Supprimer" class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResout, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResoutPossible)"
-         onmouseover="tooltipOn(this, event, 'Cliquez pour supprimer la tâche de la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
-      </td>
-      <td class="caseNiveau3" style="border-width : 0px 0px 1px 0px ;">
+      <td class="caseNiveau3" style="border-width : 0px 0px 1px 1px ;">
         <font class="titre3">Tâches possibles :</font><br/>
-        <select name="pSelectTachesResoutPossible" class="niveau2" style="width: 250" size="6">
+        <select name="pSelectTachesResoutPossible" class="niveau2" style="width: 250" size="6"
+         onmouseover="tooltipOn(this, event, 'Tâches au cours desquelles sera résolu le problème.')" onmouseout="tooltipOff(this, event)">
         <%
         // Parcours l'ensemble des tâches du projet.
         for (int lIndiceIteration = 0; lIndiceIteration < pProjet.getNbIterations (); lIndiceIteration ++)
@@ -194,6 +175,29 @@
         <%
             }
           }
+        }
+        %>
+        </select>
+      </td>
+      <td class="caseNiveau3" align="center" valign="middle" width="0" style="border-width : 0px 0px 1px 0px ;">
+        <font class="titre3">&nbsp;</font><br/>
+        <input type="button" value="    < Ajouter    " class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResoutPossible, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResout)"
+         onmouseover="tooltipOn(this, event, 'Cliquez pour ajouter la tâche de la liste de gauche à la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
+        <br/>
+        <input type="button" value="Supprimer >" class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResout, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResoutPossible)"
+         onmouseover="tooltipOn(this, event, 'Cliquez pour supprimer la tâche de la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
+      </td>
+      <td class="caseNiveau3" style="border-width : 0px 0px 1px 0px ;">
+        <font class="titre3">Tâches choisies :</font><br/>
+        <select name="pSelectTachesResout" class="niveau2" style="width: 250" size="6"
+         onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Tâches qui peuvent être indiqués comme résolvant le problème.')" onmouseout="tooltipOff(this, event)">
+        <%
+        for (int lIndiceTache = 0; lIndiceTache < pProbleme.getNbTachesResout (); lIndiceTache ++)
+        {
+          MTache lTache = pProbleme.getTacheResout (lIndiceTache) ;
+        %>
+          <option value="<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
+        <%
         }
         %>
         </select>
