@@ -24,6 +24,7 @@ public class MActiviteImprevue
    */
   public MActiviteImprevue ()
   {
+    mTachesImprevues = new ArrayList() ;
   }
 
 
@@ -40,6 +41,7 @@ public class MActiviteImprevue
     mNom = pNom ;
     mDescription = pDescription ;
     mProjet = pProjet ;
+    mTachesImprevues = new ArrayList() ;
   }
 
   /**
