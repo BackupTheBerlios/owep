@@ -1,6 +1,7 @@
 package owep.controle.gestion ;
 
 
+import java.util.StringTokenizer;
 import javax.servlet.ServletException ;
 import org.exolab.castor.jdo.OQLQuery ;
 import org.exolab.castor.jdo.QueryResults ;
@@ -21,10 +22,6 @@ public class CProblemeModif extends CControleurBase
 {
   private MProjet   mProjet ;          // Projet actuellement ouvert.
   private MProbleme mProbleme ;        // Problème à créer ou modifier.
-  private int mTacheProvoque ;         // Identifiant de la tâche sélectionnée dans la liste équivalente du formulaire.
-  private int mTacheProvoquePossible ; // Identifiant de la tâche sélectionnée dans la liste équivalente du formulaire.
-  private int mTacheResout ;           // Identifiant de la tâche sélectionnée dans la liste équivalente du formulaire.
-  private int mTacheResoutPossible ;   // Identifiant de la tâche sélectionnée dans la liste équivalente du formulaire.
   
   
   /**
@@ -102,6 +99,24 @@ public class CProblemeModif extends CControleurBase
     if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
     {
       VTransfert.transferer (getRequete (), mProbleme, CConstante.PAR_ARBREPROBLEME) ;
+    
+      // Récupère la liste des tâches provoquant le problème.
+      mProbleme.getListeTacheProvoque ().clear () ;
+      StringTokenizer lTokenizer = new StringTokenizer (getRequete ().getParameter (CConstante.PAR_LISTETACHESPROVOQUE), "-") ;
+      while (lTokenizer.hasMoreTokens ())
+      {
+        int lIdTache = Integer.parseInt (lTokenizer.nextToken ()) ;
+        mProbleme.addTacheProvoque (chercherTache (lIdTache)) ;
+      }
+      
+      // Récupère la liste des tâches résolvant le problème.
+      mProbleme.getListeTacheResout ().clear () ;
+      lTokenizer = new StringTokenizer (getRequete ().getParameter (CConstante.PAR_LISTETACHESRESOUT), "-") ;
+      while (lTokenizer.hasMoreTokens ())
+      {
+        int lIdTache = Integer.parseInt (lTokenizer.nextToken ()) ;
+        mProbleme.addTacheResout (chercherTache (lIdTache)) ;
+      }
     }
   }
   
@@ -121,6 +136,7 @@ public class CProblemeModif extends CControleurBase
       {
         // Si l'utilisateur accède à la page d'ajout/modification, transmet les données à la page.
         getRequete ().setAttribute (CConstante.PAR_PROBLEME, mProbleme) ;
+        getRequete ().setAttribute (CConstante.PAR_PROJET, mProjet) ;
         getBaseDonnees ().close () ;
         
         // Affiche la page de modification de problème.

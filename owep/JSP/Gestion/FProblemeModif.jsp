@@ -1,5 +1,7 @@
 <%@page import="owep.controle.CConstante" %>
 <%@page import="owep.modele.execution.MProbleme" %>
+<%@page import="owep.modele.execution.MProjet" %>
+<%@page import="owep.modele.execution.MIteration" %>
 <%@page import="owep.modele.execution.MTache" %>
 <%@page import="owep.vue.transfert.convertor.VDateConvertor" %>
 <%@page import="owep.vue.transfert.VTransfertConstante" %>
@@ -12,6 +14,7 @@
   
   // Récupération des paramètres.
   MProbleme pProbleme = (MProbleme) request.getAttribute (CConstante.PAR_PROBLEME) ;
+  MProjet   pProjet   = (MProjet)   request.getAttribute (CConstante.PAR_PROJET) ;
 %>
 
 <center>
@@ -100,6 +103,35 @@
       <td class="caseNiveau3" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">Tâches possibles :</font><br/>
         <select name="pSelectTachesProvoquePossible" class="niveau2" style="width: 250" size="6">
+        <%
+        // Parcours l'ensemble des tâches du projet.
+        for (int lIndiceIteration = 0; lIndiceIteration < pProjet.getNbIterations (); lIndiceIteration ++)
+        {
+          MIteration lIteration = pProjet.getIteration (lIndiceIteration) ;
+          for (int lIndiceTache = 0; lIndiceTache < lIteration.getNbTaches (); lIndiceTache ++)
+          {
+            MTache lTache = lIteration.getTache (lIndiceTache) ;
+            
+            // Vérifie que la tâche n'appartient pas au problème.
+            boolean lTrouve = false ;
+            for (int lIndicePbTache = 0; lIndicePbTache < pProbleme.getNbTachesProvoque (); lIndicePbTache ++)
+            {
+              if (pProbleme.getTacheProvoque (lIndicePbTache).getId () == lTache.getId ())
+              {
+                lTrouve = true ;
+              }
+            }
+            
+            // Si la tâche n'appartient pas au probleme.
+            if (! lTrouve)
+            {
+        %>
+          <option value="<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
+        <%
+            }
+          }
+        }
+        %>
         </select>
       </td>
     </tr>
@@ -130,6 +162,35 @@
       <td class="caseNiveau3" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">Tâches possibles :</font><br/>
         <select name="pSelectTachesResoutPossible" class="niveau2" style="width: 250" size="6">
+        <%
+        // Parcours l'ensemble des tâches du projet.
+        for (int lIndiceIteration = 0; lIndiceIteration < pProjet.getNbIterations (); lIndiceIteration ++)
+        {
+          MIteration lIteration = pProjet.getIteration (lIndiceIteration) ;
+          for (int lIndiceTache = 0; lIndiceTache < lIteration.getNbTaches (); lIndiceTache ++)
+          {
+            MTache lTache = lIteration.getTache (lIndiceTache) ;
+            
+            // Vérifie que la tâche n'appartient pas au problème.
+            boolean lTrouve = false ;
+            for (int lIndicePbTache = 0; lIndicePbTache < pProbleme.getNbTachesResout (); lIndicePbTache ++)
+            {
+              if (pProbleme.getTacheResout (lIndicePbTache).getId () == lTache.getId ())
+              {
+                lTrouve = true ;
+              }
+            }
+            
+            // Si la tâche n'appartient pas au probleme.
+            if (! lTrouve)
+            {
+        %>
+          <option value="<%= lTache.getId () %>"> <%= lTache.getNom () %> </option>
+        <%
+            }
+          }
+        }
+        %>
         </select>
       </td>
     </tr>
@@ -144,6 +205,7 @@
     
     <input type="button" value="Annuler" class="bouton" onclick="window.location.href = '/owep/Gestion/ListeProblemeVisu' ;"/>
     <% lCodeValidation = VTransfertConstante.getVerification (CConstante.PAR_ARBREPROBLEME)+ " () ;" ; %>
+    <% lCodeValidation += "isSelectVide (document." + CConstante.PAR_FORMULAIRE + ".pSelectTachesProvoque, 'liste des tâches à l\\'origine du problème') ;" ; %>
     <% lCodeValidation += "submitListesTaches (pSelectTachesProvoque, " + CConstante.PAR_LISTETACHESPROVOQUE + ") ;" ; %>
     <% lCodeValidation += "submitListesTaches (pSelectTachesResout, " + CConstante.PAR_LISTETACHESRESOUT + ") ;" ; %>
     <% lCodeValidation += "validerChamps () ;" ; %>

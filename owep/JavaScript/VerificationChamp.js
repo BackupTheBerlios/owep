@@ -25,6 +25,23 @@ function isVide (pValeur, pLibelle)
 
 
 /**
+ * Méthode vérifiant qu'un champ n'est pas vide.
+ */
+function isSelectVide (pListe, pLibelle)
+{
+  if(pListe.length == 0)
+  {
+    gChampsInvalides += 'La liste \'' + pLibelle + '\' est vide.\n' ;
+    return true ;
+  }
+  else
+  {
+    return false ;
+  }
+}
+
+
+/**
  * Méthode vérifiant qu'un champ contient une date correctement formatée.
  */
 function isDate (pDate, pLibelle)
@@ -105,6 +122,12 @@ function transfererItem (pListeDep, pListeArr)
     pListeArr.options[pListeArr.length]        = lOption ; 
     pListeDep.options[pListeDep.selectedIndex] = null ;
     pListeArr.selectedIndex = pListeArr.length - 1 ;
+    
+    // S'il reste des éléments dans la liste, sélectionne le premier.
+    if (pListeDep.length > 0)
+    {
+      pListeDep.selectedIndex = 0 ;
+    }
   }
 }
 
