@@ -108,8 +108,10 @@
         %>
       </td>
       <td style="text-align: center" class="caseNiveau3" width="1px">
-        <input type="button" value="Modifier"  class="bouton" onclick="window.location.href = '/owep/Gestion/ProblemeModif?<%= CConstante.PAR_PROBLEME %>=<%= lProbleme.getId () %>' ;"/>
-        <input type="button" value="Supprimer" class="bouton" onclick="window.location.href = '/owep/Gestion/ProblemeSuppr?<%= CConstante.PAR_PROBLEME %>=<%= lProbleme.getId () %>' ;"/>
+        <input type="button" value="Modifier"  class="bouton" onclick="window.location.href = '/owep/Gestion/ProblemeModif?<%= CConstante.PAR_PROBLEME %>=<%= lProbleme.getId () %>' ;"
+         onmouseover="tooltipOn (this, event, 'Actualiser les données du problème.')" onmouseout="tooltipOff(this, event)"/>
+        <input type="button" value="Supprimer" class="bouton" onclick="window.location.href = '/owep/Gestion/ProblemeSuppr?<%= CConstante.PAR_PROBLEME %>=<%= lProbleme.getId () %>' ;"
+         onmouseover="tooltipOn (this, event, 'Supprimer le problème de la liste.')" onmouseout="tooltipOff(this, event)"/>
       </td>
     </tr>
   <%
