@@ -10,6 +10,81 @@
   ArrayList listCollaborateur = (ArrayList) request.getAttribute("mListCollaborateur");
 %>
 
+
+<center>
+<form name="formCreerProjet" method="post" action="/owep/Processus/GererProjet" enctype="multipart/form-data">
+<table class="tableau" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+  <tr>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Nom du projet.')" onmouseout="tooltipOff(this, event)">Nom *</a>
+    </td>
+    <td class="caseNiveau3">
+      <input type="text" name="mNom" value="">
+    </td>
+  </tr>
+  <tr>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Date prévue à laquelle doit commencer le projet.')" onmouseout="tooltipOff(this, event)">Date de début *</a>
+    </td>
+    <td class="caseNiveau3">
+      <input type="text" name="mDateDebut" value="">
+    </td>
+  </tr>
+  <tr>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Date prévue à laquelle doit se terminer le projet.')" onmouseout="tooltipOff(this, event)">Date de fin *</a>
+    </td>
+    <td class="caseNiveau3">
+      <input type="text" name="mDateFin" value="">
+    </td>
+  </tr>
+  <tr>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Description de ce qui doit être réalisé au cours du projet.')" onmouseout="tooltipOff(this, event)">Description</a>
+    </td>
+    <td class="caseNiveau3">
+      <textarea name="mDescription"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Choisissez le fichier <b>.DPE</b> qui définit le processus à appliquer sur le projet.')" onmouseout="tooltipOff(this, event)">Processus *</a>
+    </td>
+    <td class="caseNiveau3">
+      <input type="file" name="mFichierProcessus" value="">
+    </td>
+  </tr>
+  <tr>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Superviseur qui s\'occupe du projet.')" onmouseout="tooltipOff(this, event)">Responsable *</a>
+    </td>
+    <td class="caseNiveau3">
+<%
+  Iterator it = listCollaborateur.iterator();
+  while(it.hasNext())
+  {
+    lCollaborateur = (MCollaborateur) it.next();
+%>
+      <input name="mResponsable" type="radio" value="<%=lCollaborateur.getId()%>">
+      <%= lCollaborateur.getPrenom()+"&nbsp;"+lCollaborateur.getNom()%>
+      <br>
+<%
+  }
+%>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <center><input class="bouton" type="button" value="Valider" onclick="envoyer();"></center>
+    </td>
+  </tr>
+</tbody>
+</table>
+</form>
+</center>
+
+
 <script language="javascript">
 function envoyer()
 {
@@ -48,78 +123,12 @@ function envoyer()
   else
     alert(texte);
 }
-
 </script>
 
-<center>
-<form name="formCreerProjet" method="post" action="/owep/Processus/GererProjet" enctype="multipart/form-data">
-<table class="tableau" border="0" cellpadding="0" cellspacing="0">
-<tbody>
-  <tr>
-    <td class="caseNiveau1">
-      Nom *
-    </td>
-    <td class="caseNiveau3">
-      <input type="text" name="mNom" value="">
-    </td>
-  </tr>
-  <tr>
-    <td class="caseNiveau1">
-      Date de début *
-    </td>
-    <td class="caseNiveau3">
-      <input type="text" name="mDateDebut" value="">
-    </td>
-  </tr>
-  <tr>
-    <td class="caseNiveau1">
-      Date de fin *
-    </td>
-    <td class="caseNiveau3">
-      <input type="text" name="mDateFin" value="">
-    </td>
-  </tr>
-  <tr>
-    <td class="caseNiveau1">
-      Description
-    </td>
-    <td class="caseNiveau3">
-      <textarea name="mDescription"></textarea>
-    </td>
-  </tr>
-  <tr>
-    <td class="caseNiveau1">
-      Processus *
-    </td>
-    <td class="caseNiveau3">
-      <input type="file" name="mFichierProcessus" value="">
-    </td>
-  </tr>
-  <tr>
-    <td class="caseNiveau1">
-      Responsable *
-    </td>
-    <td class="caseNiveau3">
-<%
-  Iterator it = listCollaborateur.iterator();
-  while(it.hasNext())
-  {
-    lCollaborateur = (MCollaborateur) it.next();
-%>
-      <input name="mResponsable" type="radio" value="<%=lCollaborateur.getId()%>">
-      <%=lCollaborateur.getPrenom()+"&nbsp;"+lCollaborateur.getNom()%>
-      <br>
-<%
-  }
-%>
-    </td>
-  </tr>
-  <tr>
-    <td colspan=2>
-      <center><input class="bouton" type="button" value="Créer" onclick="envoyer();"></center>
-    </td>
-  </tr>
-</tbody>
-</table>
-</form>
-</center>
+
+<!-- Aide en ligne -->
+<script type="text/javascript" language="JavaScript">
+pCodeAide  = "La page de <b>Création d\'un projet</b> permet, comme son nom l\'indique, à un chef de projet de créer un nouveau projet accessible par <b>OWEP</b>." ;
+pCodeAide += " Vous devez pour cela définir les <b>caractéristiques</b> du projet (nom, dates, etc.), le <b>processus</b> appliqué sur le projet (fichier au format .DPE exporté depuis <b>IEPP</b>)" ;
+pCodeAide += " et enfin le <b>superviseur</b> responsable du projet. La personne qui crée le projet est considérée comme <b>chef</b> de ce projet." ;
+</script>

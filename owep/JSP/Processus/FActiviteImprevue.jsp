@@ -38,10 +38,10 @@
        </transfert:transfertbean>
       <%
         }
-      %>  
-        
-
-
+      %>
+  
+  
+  
   <table class="tableau" width="100%" cellpadding="0" cellspacing="0">
   <tbody>
   
@@ -52,7 +52,8 @@
     <tr>
       <td>
         <select name="<%= CConstante.PAR_LISTEACTIVITESIMPREVUES %>" class="niveau2" style="width: 200" size="5"
-        onchange="selectActiviteImprevue (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITESIMPREVUES %>.selectedIndex)">
+         onchange="selectActiviteImprevue (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITESIMPREVUES %>.selectedIndex)"
+         onmouseover="tooltipOn (this, event, 'Liste des activités imprévues existantes.')" onmouseout="tooltipOff(this, event)">
           <% for (int lIndiceActiviteImprevue = 0; lIndiceActiviteImprevue < lProjet.getNbActivitesImprevues (); lIndiceActiviteImprevue++)
              {
           %>
@@ -71,8 +72,8 @@
             </td>
             <td>
               <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom de l\\'activité" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREACTIVITE %>"/>
-               type="text" size="48" class="niveau2"
-               value="" maxlength="<%= CConstante.TXT_MOYEN %>">
+               type="text" size="48" class="niveau2" value="" maxlength="<%= CConstante.TXT_MOYEN %>"
+               onmouseover="tooltipOn (this, event, 'Saisissez le nouveau nom de l\'activité.')" onmouseout="tooltipOff(this, event)">
               <% lChampActiviteImprevueNom = VTransfert.getDernierChamp () ; %>
             </td>
           </tr>
@@ -82,8 +83,8 @@
             </td>
             <td>
               <input <transfert:transfertchamp membre="setDescription" type="java.lang.String" libelle="Description" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBREACTIVITE %>"/> 
-               type="text" size="48" class="niveau2"
-               value=""  maxlength="<%= CConstante.TXT_MOYEN %>">
+               type="text" size="48" class="niveau2" value=""  maxlength="<%= CConstante.TXT_MOYEN %>"
+               onmouseover="tooltipOn (this, event, 'Saisissez la description de l\'activité.')" onmouseout="tooltipOff(this, event)">
               <% lChampActiviteImprevueDescription = VTransfert.getDernierChamp () ; %>
             </td>
           </tr>
@@ -132,8 +133,14 @@
 
   function validerFormulaire () 
   {
-    
     <%= VTransfertConstante.getVerification (CConstante.PAR_ARBREACTIVITE) %> () ;
     validerChamps () ;
   }
+</script>
+
+
+<!-- Aide en ligne -->
+<script type="text/javascript" language="JavaScript">
+pCodeAide  = "La page de <b>Activité imprévue</b> offre la possibilité de définir des activités (c'est à dire des regroupements de tâches) <b>non prévues</b> dans le processus." ;
+pCodeAide += " Ces activités imprévues doivent donc être utilisés en conjonction avec des <b>tâches imprévues</b> (accessibles depuis le menu)." ;
 </script>

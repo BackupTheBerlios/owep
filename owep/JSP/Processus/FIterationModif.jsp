@@ -61,22 +61,29 @@
     </tr>
     <tr>
       <td class="caseNiveau3" colspan="2">
-        Nom de l'itération * : <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom de l\\'itération" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
-                              type="text" size="48" class="niveau2"
-                              value="<%= lIteration.getNom () %>" maxlength="<%= CConstante.TXT_MOYEN %>">
+        <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Libellé de l\'itération.')" onmouseout="tooltipOff(this, event)">
+          Nom de l'itération * :
+        </a>
+        <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom de l\\'itération" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
+         type="text" size="48" class="niveau2"
+         value="<%= lIteration.getNom () %>" maxlength="<%= CConstante.TXT_MOYEN %>">
       </td>
     </tr>
     <tr>
       <td class="caseNiveau3" width="50%">
-        Date de début prévue * : <input <transfert:transfertchamp membre="setDateDebutPrevue" type="java.util.Date" libelle="Date de début prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/> 
-                                type="text" size="8" class="niveau2"
-                                value="<%= VDateConvertor.getString (lIteration.getDateDebutPrevue ()) %>"  maxlength="<%= CConstante.TXT_DATE %>">
+        <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Date de début d\itération initialement prévue par le chef de projet.')" onmouseout="tooltipOff(this, event)">
+          Date de début prévue * :
+        </a>
+        <input <transfert:transfertchamp membre="setDateDebutPrevue" type="java.util.Date" libelle="Date de début prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/> 
+         type="text" size="8" class="niveau2"
+         value="<%= VDateConvertor.getString (lIteration.getDateDebutPrevue ()) %>"  maxlength="<%= CConstante.TXT_DATE %>">
       </td>
       <td class="caseNiveau3" width="50%">
-        Date de fin prévue * : <input <transfert:transfertchamp membre="setDateFinPrevue" type="java.util.Date" libelle="Date de fin prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>  
-                              type="text" size="8" class="niveau2"
-                              value="<%= VDateConvertor.getString (lIteration.getDateFinPrevue ()) %>" 
-                              maxlength="<%= CConstante.TXT_DATE %>">
+        <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Date de fin d\itération initialement prévue par le chef de projet.')" onmouseout="tooltipOff(this, event)">
+          Date de fin prévue * :
+        </a>
+        <input <transfert:transfertchamp membre="setDateFinPrevue" type="java.util.Date" libelle="Date de fin prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>  
+         type="text" size="8" class="niveau2" value="<%= VDateConvertor.getString (lIteration.getDateFinPrevue ()) %>" maxlength="<%= CConstante.TXT_DATE %>">
       </td>
     </tr>
   </tbody>
@@ -150,7 +157,8 @@
       
       <td class="caseNiveau3">
         <select name="<%= CConstante.PAR_LISTETACHES %>" class="niveau2" style="width: 200" size="29"
-         onchange="selectTache (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHES %>.selectedIndex)">
+         onchange="selectTache (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTETACHES %>.selectedIndex)"
+         onmouseover="tooltipOn(this, event, 'Liste des tâches actuellement définies pour l\'itération. Selectionnez-en une pour pouvoir la modifier.')" onmouseout="tooltipOff(this, event)">
           <%
             for (int lIndiceTache = 0; lIndiceTache < lIteration.getNbTaches (); lIndiceTache ++)
             {
@@ -162,20 +170,26 @@
         </select>
       </td>
       
-      
+        
+        
+      <transfert:transfertbean scope="Session" type="owep.modele.execution.MTache" bean="getTache" idArbre="<%= CConstante.PAR_ARBRETACHES %>">
       
       <!-- Détail de la tâche -->
-      <transfert:transfertbean scope="Session" type="owep.modele.execution.MTache" bean="getTache" idArbre="<%= CConstante.PAR_ARBRETACHES %>">
       <td class="caseNiveau3" valign="top" align="left" width="100%" rowspan="2">
         <table width="100%" cellpadding="0" cellspacing="0" valign="top">
           <tr>
             <td colspan="2">
-              <p class="titre2">Détail de la tâche :</p>
+              <p class="titre2" onmouseout="tooltipOff(this, event)" onmouseover="tooltipOn(this, event, '<b>Section</b> vous permettant de spécifier les informations sur une tâches.<br/>' +
+               ' Cliquez ensuite sur le bouton <b>Ajouter</b> ou <b>Modifier</b> en bas à gauche pour valider.')">
+                Détail de la tâche :
+              </p>
             </td>        
           </tr>
           <tr>
             <td width="50%" class="caseNiveau3SansBordure">    
-              Nom * :
+              <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Libellé de la tâche.')" onmouseout="tooltipOff(this, event)">
+                Nom * :
+              </a>
             </td>
             <td>
               <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
@@ -185,7 +199,9 @@
           </tr>
           <tr>
             <td class="caseNiveau3SansBordure">
+              <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Description de ce qui doit être fait au cours de la tâche.')" onmouseout="tooltipOff(this, event)">
               Description :
+              </a>
             </td>
             <td>
               <input <transfert:transfertchamp membre="setDescription" type="java.lang.String" libelle="Description" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
@@ -195,7 +211,9 @@
           </tr>
           <tr>
             <td class="caseNiveau3SansBordure">
-              Charge initiale * :
+              <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Charge affectée par le chef de projet sur la tâche (en heures).')" onmouseout="tooltipOff(this, event)">
+                Charge initiale * :
+              </a>
             </td>
             <td>
               <input <transfert:transfertchamp membre="setChargeInitiale" type="java.lang.Double" libelle="Charge initiale" convertor="VDoubleConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
@@ -205,7 +223,9 @@
           </tr>
           <tr>
             <td class="caseNiveau3SansBordure">
-              Date de début prévue * :
+              <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Date à laquelle le chef de projet a prévu de démarrer la tâche.')" onmouseout="tooltipOff(this, event)">
+                Date de début prévue * :
+              </a>
             </td>
             <td>
               <input <transfert:transfertchamp membre="setDateDebutPrevue" type="java.util.Date" libelle="Date de début prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
@@ -215,7 +235,9 @@
           </tr>
           <tr>
             <td class="caseNiveau3SansBordure">
-              Date de fin prévue * :
+              <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Date à laquelle le chef de projet a prévue de terminer la tâche.')" onmouseout="tooltipOff(this, event)">
+                Date de fin prévue * :
+              </a>
             </td>
             <td>
               <input <transfert:transfertchamp membre="setDateFinPrevue" type="java.lang.Date" libelle="Date de fin prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
@@ -234,7 +256,10 @@
           <tr>
             <td class="caseNiveau3SansBordure">
               <!-- Activités et collaborateurs -->
-              Discipline * :
+              <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Permet de filtrer les activités par définitions de travail.<br/>' +
+               'Attention ce champ n\'est modifiable que si aucun artefact en entrée ou sortie n\'a été spécifié.')" onmouseout="tooltipOff(this, event)">
+                Discipline * :
+              </a>
               <select class="niveau2" name="<%= CConstante.PAR_LISTEDISCIPLINES %>" onchange="selectDiscipline (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex) ;
                                                                                               selectActivite (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex);
                                                                                               selectProduit (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex);">
@@ -257,7 +282,10 @@
             
             <td class="caseNiveau3SansBordure">
               <!-- Données de l'activité. -->
-              Activité * :
+              <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Choisissez l\'activité du processus à laquelle correspond la tâche.<br/>' +
+               'Attention ce champ n\'est modifiable que si aucun artefact en entrée ou sortie n\'a été spécifié.')" onmouseout="tooltipOff(this, event)">
+                Activité * :
+              </a>
               <select class="niveau2" name="<%= CConstante.PAR_LISTEACTIVITES %>" onchange="selectActivite (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex) ;
                                                                                             selectProduit (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex);">
               <%
@@ -274,7 +302,9 @@
           </tr>
           <tr>
             <td colspan="2" class="caseNiveau3SansBordure">
-              Collaborateur affecté * :
+              <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Choisissez le collaborateur qui effectuera la tâche.')" onmouseout="tooltipOff(this, event)">
+                Collaborateur affecté * :
+              </a>
               <select class="niveau2" name="<%= CConstante.PAR_LISTECOLLABORATEURS %>">
               <%
                 MActivite lActiviteTmp = lProcessus.getComposant (0).getDefinitionTravail (0).getActivite (0) ;
@@ -324,10 +354,16 @@
             <td>
               <!-- Liste des artefacts en sorties -->
               <transfert:transfertbean scope="Session" type="owep.modele.execution.MArtefact" bean="getArtefactSortie" idArbre="<%= CConstante.PAR_ARBREARTEFACTSORTIES %>">
-              <p class="titre2">Artefacts en Sorties :</p>
+              <p class="titre2" onmouseout="tooltipOff(this, event)" onmouseover="tooltipOn(this, event, '<b>Section</b> vous permettant de spécifier les artefacts en sorties réalisés au cours de la tâche selectionnée.<br/>' +
+               ' Cliquez sur le bouton <b>Ajouter</b> ou <b>Modifier</b> en dessous pour valider, individuellement, chaque <b>artefact</b>.')">
+                Artefacts en Sorties :
+              </p>
             </td>
             <td>
-              <p class="titre2">Artefacts en Entrées :</p>
+              <p class="titre2" onmouseout="tooltipOff(this, event)" onmouseover="tooltipOn(this, event, '<b>Section</b> vous permettant de spécifier les artefacts en entrées nécessaires à la réalisation de la tâche selectionnée.<br/>' +
+               ' Cliquez sur le bouton <b>Ajouter</b> pour ajouter un artefact depuis la liste des <b>artefacts possibles</b>.')">
+                Artefacts en Entrées :
+              </p>
             </td>
           </tr>
           <tr>
@@ -341,7 +377,9 @@
                 </tr>
                 <tr>
                   <td width="50%" class="caseNiveau3SansBordure">     
-                    Nom * :
+                    <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Libellé de l\'artefact en sortie.')" onmouseout="tooltipOff(this, event)">
+                      Nom * :
+                    </a>
                   </td>
                   <td>
                     <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREARTEFACTSORTIES %>"/>
@@ -351,7 +389,9 @@
                   </td>
                 </tr>
                   <td class="caseNiveau3SansBordure">
-                    Description :
+                    <a href="#" class="texte" onmouseover="tooltipOn(this, event, 'Description de l\'artefact en sortie.')" onmouseout="tooltipOff(this, event)">
+                      Description :
+                    </a>
                   </td>
                   <td>
                     <input <transfert:transfertchamp membre="setDescription" type="java.lang.String" libelle="Description" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBREARTEFACTSORTIES %>"/>
@@ -363,7 +403,9 @@
               </transfert:transfertbean>
                 <tr>
                   <td class="caseNiveau3SansBordure">
-                    Produit * :
+                    <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Produit du processus dont est tiré l\'artefact.')" onmouseout="tooltipOff(this, event)">
+                      Produit * :
+                    </a>
                   </td>
                   <td>
                     <select class="niveau2" name="<%= CConstante.PAR_LISTEPRODUITS %>" onchange="selectProduit (document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.selectedIndex, document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEPRODUITS %>.selectedIndex)">
@@ -382,7 +424,9 @@
                 </tr>
                 <tr>
                   <td class="caseNiveau3SansBordure">
-                    Responsable * :
+                    <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Collaborateur qui s\'assurera de la bonne réalisation de l\'artefact (généralement la personne qui le réalise).')" onmouseout="tooltipOff(this, event)">
+                      Responsable * :
+                    </a>
                   </td>
                   <td>
                     <select class="niveau2" name="<%= CConstante.PAR_LISTERESPONSABLES %>">
@@ -403,13 +447,16 @@
                   <td colspan="2">        
                     <!-- Barre d'outils d'artefacts -->
                     <% lCodeValidation = "validerArtefactSortie (document." + CConstante.PAR_FORMULAIRE +"." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.' ) ;" ; %>
-                    <transfert:transfertsubmit libelle="Ajouter"   valeur="<%= CConstante.PAR_SUBMITAJOUTER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"/>
+                    <transfert:transfertsubmit libelle="Ajouter"   valeur="<%= CConstante.PAR_SUBMITAJOUTER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"
+                     additionnel="onmouseover=\"tooltipOn(this, event, 'Ajoute un nouvel artefact en sortie.')\" onmouseout=\"tooltipOff(this, event)\""/>
                     
                     <% lCodeValidation = "validerArtefactSortie (document." + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTEARTEFACTSSORTIES + ", 'Attention aucun artefact en sortie n\\'a été sélectionné.') ;" ; %>
-                    <transfert:transfertsubmit libelle="Modifier"  valeur="<%= CConstante.PAR_SUBMITMODIFIER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"/>
+                    <transfert:transfertsubmit libelle="Modifier"  valeur="<%= CConstante.PAR_SUBMITMODIFIER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"
+                     additionnel="onmouseover=\"tooltipOn(this, event, 'Modifie l\\'artefact en sortie selectionnée dans la liste.')\" onmouseout=\"tooltipOff(this, event)\""/>
                     
                     <% lCodeValidation = "validerArtefactSortieSuppr (document." + CConstante.PAR_FORMULAIRE +"." + CConstante.PAR_LISTEARTEFACTSSORTIES + ", 'Attention aucun artefact en sortie n\\'a été sélectionné.') ;" ; %>
-                    <transfert:transfertsubmit libelle="Supprimer" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"/>
+                    <transfert:transfertsubmit libelle="Supprimer" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_ARTSORTIES %>" verification="true" validation="<%= lCodeValidation %>"
+                     additionnel="onmouseover=\"tooltipOn(this, event, 'Supprime l\\'artefact en sortie selectionnée dans la liste.')\" onmouseout=\"tooltipOff(this, event)\""/>
                   </td>
                 </tr>
               </table>    
@@ -421,10 +468,14 @@
               <table width="100%" height="100%" cellpadding="0" cellspacing="0" valign="top">
                 <tr>
                   <td class="caseNiveau3SansBordure" width="50%">        
-                    <p class="">Possibles :</p>
+                    <a href="#" class="texte" onmouseover="tooltipOn(this, event, 'Liste des artefacts qui sont suceptibles d\'être en entrée de la tâche.')" onmouseout="tooltipOff(this, event)">
+                      Possibles :
+                    </a>
                   </td>
                   <td class="caseNiveau3SansBordure">       
-                    Effectifs :
+                    <a href="#" class="texte" onmouseover="tooltipOn(this, event, 'Liste des artefacts réellement en entrée de la tâche.')" onmouseout="tooltipOff(this, event)">
+                      Effectifs :
+                    </a>
                   </td>
                 </tr>
                 <tr>
@@ -440,11 +491,13 @@
                 <tr>
                   <td align="center">
                     <% lCodeValidation = "validerArtefactEntree (document." + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTEARTEFACTSPOSSIBLES + ", 'Attention aucun artefact en entrée n\\'a été sélectionné.' ) ;" ; %>
-                    <transfert:transfertsubmit libelle="Ajouter"  valeur="<%= CConstante.PAR_SUBMITAJOUTER_ARTENTREES %>" verification="true" validation="<%= lCodeValidation %>"/>
+                    <transfert:transfertsubmit libelle="Ajouter"  valeur="<%= CConstante.PAR_SUBMITAJOUTER_ARTENTREES %>" verification="true" validation="<%= lCodeValidation %>"
+                     additionnel="onmouseover=\"tooltipOn(this, event, 'Ajoute l'\\artefact en entrée de la tâche.')\" onmouseout=\"tooltipOff(this, event)\""/>
                   </td>
                   <td align="center">     
                     <% lCodeValidation = "validerArtefactEntreeSuppr (document." + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTEARTEFACTSENTREES + ", 'Attention aucun artefact en entrée n\\'a été sélectionné.' ) ;" ; %>
-                    <transfert:transfertsubmit libelle="Supprimer"  valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_ARTENTREES %>" verification="true" validation="<%= lCodeValidation %>"/>
+                    <transfert:transfertsubmit libelle="Supprimer"  valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_ARTENTREES %>" verification="true" validation="<%= lCodeValidation %>"
+                     additionnel="onmouseover=\"tooltipOn(this, event, 'Supprime l\\'artefact des entrées de la tâche.')\" onmouseout=\"tooltipOff(this, event)\""/>
                   </td>
                 </tr>
               </table>
@@ -456,7 +509,10 @@
           </tr>
           <tr>
             <td>
-              <p class="titre2">Tâches dépendantes :</p>
+              <p class="titre2" onmouseout="tooltipOff(this, event)" onmouseover="tooltipOn(this, event, '<b>Section</b> vous permettant de spécifier de quelles tâches est dépendante celle que vous définissez actuellement.<br/>' +
+               ' Cliquez sur le bouton <b>Ajouter</b> pour valider la nouvelle <b>condition</b>.')">
+                Tâches dépendantes :
+              </p>
               
               <!-- Liste des tâches dépendantes -->
               <table width="100%" height="100%" cellpadding="0" cellspacing="0" valign="top">
@@ -468,33 +524,41 @@
                 </tr>
                 <tr>
                   <td class="caseNiveau3SansBordure">        
-                    Tâches possibles * : <select class="niveau2" name="<%= CConstante.PAR_LISTETACHESPOSSIBLES %>">
-                                           <%
-                                             for (int lIndiceTache = 0; lIndiceTache < lIteration.getNbTaches (); lIndiceTache ++)
-                                             {
-                                           %>
-                                                <option value="<%= lIndiceTache %>"> <%= lIteration.getTache (lIndiceTache).getNom () %> </option>
-                                           <%
-                                             }
-                                           %>
-                                         </select>
+                    <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Tâche envers laquelle il est suceptible d\'y avoir une dépendance.')" onmouseout="tooltipOff(this, event)">
+                      Tâches possibles * :
+                    </a>
+                    <select class="niveau2" name="<%= CConstante.PAR_LISTETACHESPOSSIBLES %>">
+                      <%
+                        for (int lIndiceTache = 0; lIndiceTache < lIteration.getNbTaches (); lIndiceTache ++)
+                        {
+                      %>
+                          <option value="<%= lIndiceTache %>"> <%= lIteration.getTache (lIndiceTache).getNom () %> </option>
+                      <%
+                        }
+                      %>
+                    </select>
                   </td>
                 </tr>
                 <tr>
                   <td class="caseNiveau3SansBordure">
-                    Condition * : <select class="niveau2" name="<%= CConstante.PAR_LISTETACHESCONDITION %>">
-                                    <option value="0"> En cours </option>
-                                    <option value="1"> Terminée </option>
-                                  </select>
+                    <a href="#" class="texte" onmouseover="tooltipTitreOn(this, event, 'Champ obligatoire', 'Quelle doit être l\'état de la tâche pour pouvoir démarrer la tâche courante.')" onmouseout="tooltipOff(this, event)">
+                      Condition * :
+                    </a>
+                    <select class="niveau2" name="<%= CConstante.PAR_LISTETACHESCONDITION %>">
+                      <option value="0"> En cours </option>
+                      <option value="1"> Terminée </option>
+                    </select>
                   </td>
                   
                 </tr>
                 <tr>
                   <td align="center">
                     <% lCodeValidation = "validerTachesDep (document." + CConstante.PAR_FORMULAIRE +"." + CConstante.PAR_LISTETACHES + ", 'cv' ) ;" ; %>
-                    <transfert:transfertsubmit libelle="Ajouter"  valeur="<%= CConstante.PAR_SUBMITAJOUTER_TACDEPEND %>" verification="true" validation="<%= lCodeValidation %>"/> 
+                    <transfert:transfertsubmit libelle="Ajouter"  valeur="<%= CConstante.PAR_SUBMITAJOUTER_TACDEPEND %>" verification="true" validation="<%= lCodeValidation %>"
+                     additionnel="onmouseover=\"tooltipOn(this, event, 'Ajoute une dépendance vers une tâche tierce.')\" onmouseout=\"tooltipOff(this, event)\""/>
                     <% lCodeValidation = "validerTachesDepSuppr (document." + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTETACHESDEPENDANTES + ", 'Attention aucune tâche  n\\'a été sélectionnée.' ) ;" ; %>   
-                    <transfert:transfertsubmit libelle="Supprimer"  valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_TACDEPEND %>" verification="true" validation="<%= lCodeValidation %>"/>
+                    <transfert:transfertsubmit libelle="Supprimer"  valeur="<%= CConstante.PAR_SUBMITSUPPRIMER_TACDEPEND %>" verification="true" validation="<%= lCodeValidation %>"
+                     additionnel="onmouseover=\"tooltipOn(this, event, 'Supprime la dépendance.')\" onmouseout=\"tooltipOff(this, event)\""/>
                   </td>
                 </tr>
               </table>
@@ -507,13 +571,16 @@
       <!-- Barre d'outils de tâches -->
       <td class="caseNiveau3">
         <% lCodeValidation = "validerTacheAjout () ;" ; %>
-        <transfert:transfertsubmit libelle="Ajouter" valeur="<%= CConstante.PAR_SUBMITAJOUTER %>" verification="true" validation="<%= lCodeValidation %>"/>
+        <transfert:transfertsubmit libelle="Ajouter" valeur="<%= CConstante.PAR_SUBMITAJOUTER %>" verification="true" validation="<%= lCodeValidation %>"
+        additionnel="onmouseover=\"tooltipOn(this, event, 'Ajoute une nouvelle tâche.')\" onmouseout=\"tooltipOff(this, event)\""/>
         
         <% lCodeValidation = "validerTacheModif (document." + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.') ;" ; %>
-        <transfert:transfertsubmit libelle="Modifier" valeur="<%= CConstante.PAR_SUBMITMODIFIER %>" verification="true" validation="<%= lCodeValidation %>"/>
+        <transfert:transfertsubmit libelle="Modifier" valeur="<%= CConstante.PAR_SUBMITMODIFIER %>" verification="true" validation="<%= lCodeValidation %>"
+        additionnel="onmouseover=\"tooltipOn(this, event, 'Modifie la tâche actuellement selectionnée dans la liste.')\" onmouseout=\"tooltipOff(this, event)\""/>
         
         <% lCodeValidation = "validerTacheSuppr (document." + CConstante.PAR_FORMULAIRE +"." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.') ;" ; %>
-        <transfert:transfertsubmit libelle="Supprimer" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER %>" verification="true" validation="<%= lCodeValidation %>"/>
+        <transfert:transfertsubmit libelle="Supprimer" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER %>" verification="true" validation="<%= lCodeValidation %>"
+        additionnel="onmouseover=\"tooltipOn(this, event, 'Supprime la tâche actuellement selectionnée dans la liste.')\" onmouseout=\"tooltipOff(this, event)\""/>
       </td>
     </tr>
   </tbody>
@@ -523,7 +590,8 @@
 
   <br>
   <p class="paragrapheSubmit">
-    <transfert:transfertsubmit libelle="Valider" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="validerFormulaire () ;"/>
+    <transfert:transfertsubmit libelle="Valider" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="validerFormulaire () ;"
+     additionnel="onmouseover=\"tooltipOn(this, event, 'Valide toutes les données de l\\'itération.')\" onmouseout=\"tooltipOff(this, event)\""/>
   </p>
   
 </form>
@@ -1112,4 +1180,14 @@
     }
   }
     
+</script>
+
+
+<!-- Aide en ligne -->
+<script type="text/javascript" language="JavaScript">
+pCodeAide  = "La page de <b>Gestion d\'itération</b> vous permet de modifier ou de créer une nouvelle <b>itération</b>." ;
+pCodeAide += " Vous devez définir, pour celà, toute une série de <b>tâches</b> qui seront réalisées durant l\'itération (section \"<b>Détail de la tâche</b>\"), en précisant leurs noms, descriptions, charges et dates de réalisations." ;
+pCodeAide += " Lorsque vous validez une nouvelle tâche, celle-ci s\'ajoute à la <b>liste des tâches</b> à gauche de l\'écran." ;
+pCodeAide += " Une fois les tâches ajoutées, vous pouvez précisez, pour chacune d\'entre elle, leurs <b>artefacts en entrées et sorties</b> (c\'est à dire tous <b>\"documents\" nécessaires</b> à la réalisation des tâches et ceux qu\'elles <b>produisent</b>)." ;
+pCodeAide += " Pour terminer, vous pouvez définir de quelles tâches tierces <b>dépendent</b> chacune des tâches. Il est ainsi possible d\'indiquer qu\'une tâche ne doit <b>démarrer</b> que lorsqu\'une seconde à été <b>entamée</b> ou <b>terminée</b>." ;
 </script>

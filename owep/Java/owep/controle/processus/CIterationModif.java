@@ -477,7 +477,7 @@ public class CIterationModif extends CControleurBase
       try
       {
         DriverManager.registerDriver (new Driver ()) ;
-        lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", "root", "6431") ;
+        lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", "root", "root") ;
         lConnection.setAutoCommit(false);
         if (mIteration.getId () == 0)
         {

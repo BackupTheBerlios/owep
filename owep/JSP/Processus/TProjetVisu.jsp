@@ -2,9 +2,7 @@
 <%@ taglib uri="/WEB-INF/tld/template.tld" prefix="template" %>
 
 <template:template nom="/JSP/Template/FTemplate.jsp">
-  <!--template:section region="RegionScript"     contenu="/owep/JavaScript/NavigationIteration.js"         typePage="false"/-->
-  <template:section region="RegionTitre"      contenu="Suivi du projet"               typePage="false"/>
-  <!--template:section region="RegionNavigation" contenu="/JSP/Navigation/FIteration.jsp" typePage="true"/-->
+  <template:section region="RegionTitre"      contenu="Gestion du projet"               typePage="false"/>
   <template:section region="RegionPrincipal"  contenu="/JSP/Processus/FProjetVisu.jsp" typePage="true"/>
   <template:section region="RegionLogo"       contenu="/JSP/Template/FLogo.jsp"        typePage="true"/>
   <template:section region="RegionMenu"       contenu="/JSP/Template/FMenu.jsp"        typePage="true"/>

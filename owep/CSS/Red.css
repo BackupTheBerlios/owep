@@ -159,6 +159,33 @@ a.niveau2:visited
   font-size       : 12px ;
   font-weight     : bold ;
 }
+a.texte:active
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  text-decoration : none ;
+}
+a.texte:hover
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  text-decoration : underline ;
+}
+a.texte:link
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+  text-decoration : none ;
+}
+a.texte:visited
+{
+  color           : rgb(0,0,0) ;
+  font-family     : arial ;
+  font-size       : 12px ;
+}
 
 
 
