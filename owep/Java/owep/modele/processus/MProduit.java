@@ -132,7 +132,7 @@ public class MProduit extends MModeleBase
    */
   public int getNbActivitesSorties ()
   {
-    return mActivitesEntrees.size () ;
+    return mActivitesSorties.size () ;
   }
 
 
@@ -143,7 +143,7 @@ public class MProduit extends MModeleBase
    */
   public MActivite getActiviteSortie (int pIndice)
   {
-    return (MActivite) mActivitesEntrees.get (pIndice) ;
+    return (MActivite) mActivitesSorties.get (pIndice) ;
   }
 
 
@@ -153,7 +153,7 @@ public class MProduit extends MModeleBase
    */
   public void addActiviteSortie (MActivite pActivite)
   {
-    mActivitesEntrees.add (pActivite) ;
+    mActivitesSorties.add (pActivite) ;
   }
 
 

@@ -66,7 +66,7 @@
                               value="<%= lIteration.getNom () %>" maxlength="<%= CConstante.TXT_MOYEN %>">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td class="caseNiveau3" width="50%">
         Date de début prévue * : <input <transfert:transfertchamp membre="setDateDebutPrevue" type="java.util.Date" libelle="Date de début prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/> 
                                 type="text" size="8" class="niveau2"

@@ -96,8 +96,11 @@
   </tr>
 
 
-<%//Test droit : partie chef de projet
-  if (((owep.infrastructure.Session)(request.getSession().getAttribute("SESSION"))).getCollaborateur().getDroit() == 1) {%>
+<%
+  // Test si un projet est ouvert et si le collaborateur connecté est le responsale du projet ouvert
+  if(lSession.getProjet() != null && lSession.getProjet().getChefProjet().getId() == lSession.getCollaborateur().getId())
+  {
+%>
 
   <!-- menu Suivi de projet -->
   <tr>
@@ -157,13 +160,56 @@
       <a class="menuNiveau2" href="../Processus/TacheImprevue">Tâches imprévues</a>
     </td>
   </tr>
+<%
+    // Test si le collaborateur connecté a le droit de créer un projet
+    if(lSession.getCollaborateur().getDroit() == 1)
+    {
+%>
+  <tr>
+    <td class="caseMenuNiveau2">
+      <a class="menuNiveau2" href="../Processus/GererProjet">Création d'un projet</a><br>
+    </td>
+  </tr>
+<%
+    }
+%>
+  <tr>
+    <td class="caseMenuNiveau2">
+      <a class="menuNiveau2" href="../Outil/ExporterProjet">Exporter le projet</a><br>
+    </td>
+  </tr>
   <tr>
     <td class="caseMenuSeparation">
       &nbsp;
     </td>
   </tr>
   
-  <%}%>
+<%
+  }
+  
+  // Si aucun projet n'est ouvert le collaborateur peut créer un projet si il en a le droit
+  if(lSession.getProjet() == null && lSession.getCollaborateur().getDroit() == 1)
+  {
+%>
+  <!-- menu projet -->
+  <tr>
+    <td class="caseMenuNiveau1">
+      <p class="menuNiveau1">Projet :</p>
+    </td>
+  </tr>
+  <tr>
+    <td class="caseMenuNiveau2">
+      <a class="menuNiveau2" href="../Processus/GererProjet">Création d'un projet</a><br>
+    </td>
+  </tr>
+  <tr>
+    <td class="caseMenuSeparation">
+      &nbsp;
+    </td>
+  </tr>
+<%
+  }
+%>
   
   <!-- menu configuration -->
   <tr>
@@ -177,8 +223,8 @@
     </td>
   </tr>
   
-<%//Test droit : partie chef de projet
-  if (((owep.infrastructure.Session)(request.getSession().getAttribute("SESSION"))).getCollaborateur().getDroit() == 1) {%>  
+<%//Test si l'utilisateur connecté est le chef de projet
+  if (lSession.getProjet().getChefProjet().getId() == lSession.getCollaborateur().getId()) {%>  
   <tr>
     <td class="caseMenuNiveau2">
       <p class="menuNiveau2">Option de l'application</p>

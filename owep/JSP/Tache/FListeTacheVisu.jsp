@@ -14,6 +14,8 @@
 
     SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
     lCollaborateur = (MCollaborateur) request.getAttribute (CConstante.PAR_COLLABORATEUR) ;
+  if(lSession.getIteration() != null)
+  {
     if(lCollaborateur.getNbTaches()>0)
     {
 %>
@@ -176,4 +178,11 @@
     Vous n'avez pas de tâches à réaliser dans cette itération.
 <%
     }
+  }
+  else
+  {
+%>
+    Aucune itération
+<%
+  }
 %>

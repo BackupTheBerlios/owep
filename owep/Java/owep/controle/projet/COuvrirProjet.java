@@ -147,7 +147,9 @@ public class COuvrirProjet extends CControleurBase
       lRequete.bind (lProjet) ;
       lResultat = lRequete.execute () ;
 
-      MIteration lIteration = (MIteration) lResultat.next () ;
+      MIteration lIteration = null;
+      if(lResultat.hasMore())
+        lIteration = (MIteration) lResultat.next () ;
 
       getBaseDonnees ().commit () ;
 
@@ -176,60 +178,4 @@ public class COuvrirProjet extends CControleurBase
     }
   }
 
-  /**
-   * Cherche tous les projets auxquels le collaborateur participe
-   * 
-   * @return Liste des projets auxquelq le collaborateur participe
-   * @throws ServletException
-   */
-/*  private ArrayList getProjet () throws ServletException
-  {
-    OQLQuery lRequete ; // Requête à réaliser sur la base
-    QueryResults lResultat ; // Résultat de la requête sur la base
-    ArrayList lListProjet = new ArrayList () ; // Liste de projet ayant pour collaborateur celui
-    // connecté
-    MCollaborateur lCollaborateur = getSession ().getCollaborateur () ; // Collaborateur connecté
-    MProjet lProjet ; // Projet enregistré
-
-    try
-    {
-      getBaseDonnees ().begin () ;
-
-      // Cherche tous les projets enregistré
-      lRequete = getBaseDonnees ()
-        .getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET") ;
-      lResultat = lRequete.execute () ;
-
-      // Pour chaque projet présent dans la base de donnée, on cherche si le collaborateur connecté
-      // y participe
-      while (lResultat.hasMore ())
-      {
-        lProjet = (MProjet) lResultat.next () ;
-        ArrayList lListCollaborateur = lProjet.getListeCollaborateurs () ;
-        int i = 0 ;
-        for (i = 0 ; i < lListCollaborateur.size () ; i++)
-        {
-          // Si le collaborateur connecté participe à ce projet alors on ajoute le projet a la list
-          // retourné
-          if (lCollaborateur.getId () == ((MCollaborateur) lListCollaborateur.get (i)).getId ())
-          {
-            lListProjet.add (lProjet) ;
-            i = lListCollaborateur.size () ;
-          }
-        }
-      }
-
-      getBaseDonnees ().commit () ;
-
-      // La connexion à la base de données est fermé dans le finally de la fonction traiter
-    }
-    catch (PersistenceException e)
-    {
-      e.printStackTrace () ;
-      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-    }
-
-    return lListProjet ;
-
-  }*/
 }

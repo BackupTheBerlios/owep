@@ -256,4 +256,9 @@ public class MProcessus extends MModeleBase
   {
     mProjets.add (pProjet) ;
   }
+  
+  public String toString()
+  {
+    return mId+" "+mNom;
+  }
 }

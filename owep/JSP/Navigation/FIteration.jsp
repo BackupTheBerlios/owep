@@ -6,6 +6,7 @@
 <jsp:useBean id="lSession"   class="owep.infrastructure.Session"      scope="page"/> 
 <jsp:useBean id="lIteration" class="owep.modele.execution.MIteration"        scope="page"/> 
 
+
 <center>
 
 	<form action="/owep/Navigation/NavigationIteration" id="navigation" name="formulaireIteration">

@@ -93,7 +93,7 @@
     <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
       <sql name="ACT_DESCRIPTION" type="char"/>
     </field>
-    <field name="mDefinitionsTravail" type="owep.modele.processus.MDefinitionTravail" get-method="getDefinitionsTravail" set-method="setDefinitionsTravail" required="true">
+    <field name="mDefinitionTravail" type="owep.modele.processus.MDefinitionTravail" get-method="getDefinitionsTravail" set-method="setDefinitionsTravail" required="true">
       <sql name="ACT_DFT_ID"/>
     </field>
     <field name="mProduitsEntrees" type="owep.modele.processus.MProduit" collection="arraylist" get-method="getListeProduitsEntrees" set-method="setListeProduitsEntrees">
@@ -193,7 +193,7 @@
     <field name="mArtefacts" type="owep.modele.execution.MArtefact" collection="arraylist" get-method="getListeArtefacts" set-method="setListeArtefacts">
       <sql many-key="ART_PRJ_ID"/>
     </field>
-    <field name="mCollaborateurs" type="owep.modele.execution.MCollaborateur" collection="arraylist" get-method="getListeCollaborateurs" set-method="setListeCollaborateurs">
+    <field name="mCollaborateurs" type="owep.modele.execution.MCollaborateur" collection="arraylist" get-method="getListeCollaborateurs" set-method="setListeCollaborateurs" required="true">
       <sql name="R05_COL_ID" many-table="R05_COL_PRJ" many-key="R05_PRJ_ID"/>
     </field>
     <field name="mIterations" type="owep.modele.execution.MIteration" collection="arraylist" get-method="getListeIterations" set-method="setListeIterations">

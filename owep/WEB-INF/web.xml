@@ -218,6 +218,24 @@
   
   
   
+  <servlet> 
+    <servlet-name>CGererProjet</servlet-name> 
+    <servlet-class>owep.controle.processus.CGererProjet</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CGererProjet</servlet-name> 
+    <url-pattern>/Processus/GererProjet</url-pattern> 
+  </servlet-mapping> 
+  
+  <servlet> 
+    <servlet-name>CExporterProjet</servlet-name> 
+    <servlet-class>owep.controle.outil.CExporterProjet</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CExporterProjet</servlet-name> 
+    <url-pattern>/Outil/ExporterProjet</url-pattern> 
+  </servlet-mapping> 
+  
   <!-- Configuration de la session -->
   <session-config>
 	<session-timeout>30</session-timeout>

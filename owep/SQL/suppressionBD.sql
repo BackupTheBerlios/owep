@@ -3,14 +3,16 @@ drop table r02_act_prd_sortie;
 drop table r03_act_rol;
 drop table r04_col_rol;
 drop table r05_col_prj;
-drop table r06_col_tcol;
-drop table r07_tac_prb_resout;
-drop table r08_tac_prb_provoque;
+drop table r06_col_tcl;
+drop table r07_prb_tac_resout;
+drop table r08_prb_tac_provoque;
+
+drop table con_configuration;
 
 drop table ris_risque;
 drop table met_metrique;
 drop table imp_activiteimp;
-drop table tcol_tachecollaborative;
+drop table tcl_tachecollaborative;
 drop table prb_probleme;
 
 drop table art_artefact;
