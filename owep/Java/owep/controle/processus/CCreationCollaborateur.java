@@ -23,25 +23,25 @@ import owep.modele.processus.MRole ;
  */
 public class CCreationCollaborateur extends CControleurBase
 {
-  private String mPageSource ; // Page appelant la création d'un collaborateur
+  private String         mPageSource ;   // Page appelant la création d'un collaborateur
 
-  private String mNom ; // Nom du collaborateur à créer
-  private String mPrenom ; // Prenom du collaborateur à créer
-  private String mLogin ; // Login du collaborateur à créer
-  private String mMail ; // Email du collaborateur à créer
-  private String mAdresse ; // Adresse du collaborateur à créer
-  private String mTelephone ; // Numéro du telephone du collaborateur à créer
-  private String mPortable ; // Numéro du portable du collaborateur à créer
-  private String mCommentaire ; // Commentaire du collaborateur à créer
-  private String mMdp ; // Mot de passe du collaborateur à créer
-  private int mDroit ; //Droit du collaboratur (collaborateur = 0 ; chef de
+  private String         mNom ;          // Nom du collaborateur à créer
+  private String         mPrenom ;       // Prenom du collaborateur à créer
+  private String         mLogin ;        // Login du collaborateur à créer
+  private String         mMail ;         // Email du collaborateur à créer
+  private String         mAdresse ;      // Adresse du collaborateur à créer
+  private String         mTelephone ;    // Numéro du telephone du collaborateur à créer
+  private String         mPortable ;     // Numéro du portable du collaborateur à créer
+  private String         mCommentaire ;  // Commentaire du collaborateur à créer
+  private String         mMdp ;          // Mot de passe du collaborateur à créer
+  private int            mDroit ;        //Droit du collaboratur (collaborateur = 0 ; chef de
   // projet = 1)
 
-  private ArrayList mListeRole ;
+  private ArrayList      mListeRole ;
 
   private MCollaborateur mCollaborateur ; // Collaborateur à créer
 
-  private ArrayList mSelectRole ; // Liste des roles selectionné pour
+  private ArrayList      mSelectRole ;   // Liste des roles selectionné pour
 
 
   // l'utilisateur qu'on souhaite créer
@@ -161,7 +161,7 @@ public class CCreationCollaborateur extends CControleurBase
       getBaseDonnees ().create (mCollaborateur) ;
       getBaseDonnees ().commit () ;
 
-      getBaseDonnees().begin();
+      getBaseDonnees ().begin () ;
 
       // Recupére le nouveau collaborateur enregistré
       lRequete = getBaseDonnees ()
@@ -169,8 +169,8 @@ public class CCreationCollaborateur extends CControleurBase
                       "select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mUtilisateur = $1") ;
       lRequete.bind (mLogin) ;
       lResultat = lRequete.execute () ;
-      mCollaborateur = (MCollaborateur) lResultat.next();
-      
+      mCollaborateur = (MCollaborateur) lResultat.next () ;
+
       // Attribution des roles
       for (int i = 0 ; i < mSelectRole.size () ; i++)
       {
@@ -184,7 +184,14 @@ public class CCreationCollaborateur extends CControleurBase
         mCollaborateur.addRole (roleSelect) ;
       }
 
-      getBaseDonnees().commit();
+      lRequete = getBaseDonnees ()
+        .getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
+      lRequete.bind (getSession().getProjet().getId()) ;
+      lResultat = lRequete.execute () ;
+      MProjet projet = (MProjet) lResultat.next () ;
+      mCollaborateur.addProjet(projet);
+
+      getBaseDonnees ().commit () ;
       getBaseDonnees ().close () ;
 
       getRequete ().setAttribute ("mProbleme", "false") ;

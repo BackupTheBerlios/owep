@@ -14,26 +14,32 @@ import owep.modele.processus.MRole ;
 public class MCollaborateur extends MModeleBase
 {
 
-  private int       mId ;           // Identifie le collaborateur de manière unique.
-  private String    mPrenom ;       // Prénom du collaborateur.
-  private String    mNom ;          // Nom du collaborateur.
-  private String    mAdresse ;      // Adresse du collaborateur.
-  private String    mTelephone ;    // Téléphone du collaborateur.
-  private String    mPortable ;     // Portable du collaborateur.
-  private String    mEmail ;        // Email du collaborateur.
-  private String    mCommentaires ; // Commentaires du chef de projet sur le collaborateur.
-  private String    mUtilisateur ;  // Nom d'utilisateur pour la connexion.
-  private String    mMotDePasse ;   // Mot de passe lors de la connexion.
-  private ArrayList mArtefacts ;    // Artefacts dont le collaborateur est responsable.
-  private ArrayList mRoles ;        // Rôles tenues par le collaborateur.
-  private ArrayList mTaches ;       // Listes des tâches que doient réaliser le collaborateur.
-  private ArrayList mProjets ;      // Listes des projets sur lesquels travaille le collaborateur.
-  private ArrayList mProjetsChef ;  // Listes des projets pour lesquels le collaborateur est chef.
-  private int       mTacheEnCours ; // identifiant de la tâche en cours de réalisation
-  private int       mDroit ;        // Droits du collaborateur (collaborateur = 0 ; chef de projet = 1) 
-  private ArrayList mTachesImprevues ; // Listes des tâches imprévues que doient réaliser le collaborateur.
-  private ArrayList mArtefactsImprevues ;       // Artefacts imprévues dont le collaborateur est responsable.
-  private ArrayList  mMesures ;     // Liste des mesures associées au collaborateur.
+  private int       mId ;                // Identifie le collaborateur de manière unique.
+  private String    mPrenom ;            // Prénom du collaborateur.
+  private String    mNom ;               // Nom du collaborateur.
+  private String    mAdresse ;           // Adresse du collaborateur.
+  private String    mTelephone ;         // Téléphone du collaborateur.
+  private String    mPortable ;          // Portable du collaborateur.
+  private String    mEmail ;             // Email du collaborateur.
+  private String    mCommentaires ;      // Commentaires du chef de projet sur le collaborateur.
+  private String    mUtilisateur ;       // Nom d'utilisateur pour la connexion.
+  private String    mMotDePasse ;        // Mot de passe lors de la connexion.
+  private ArrayList mArtefacts ;         // Artefacts dont le collaborateur est responsable.
+  private ArrayList mRoles ;             // Rôles tenues par le collaborateur.
+  private ArrayList mTaches ;            // Listes des tâches que doient réaliser le collaborateur.
+  private ArrayList mProjets ;           // Listes des projets sur lesquels travaille le
+                                         // collaborateur.
+  private ArrayList mProjetsChef ;       // Listes des projets pour lesquels le collaborateur est
+                                         // chef.
+  private int       mTacheEnCours ;      // identifiant de la tâche en cours de réalisation
+  private int       mDroit ;             // Droits du collaborateur (collaborateur = 0 ; chef de
+                                         // projet = 1)
+  private ArrayList mTachesImprevues ;   // Listes des tâches imprévues que doient réaliser le
+                                         // collaborateur.
+  private ArrayList mArtefactsImprevues ; // Artefacts imprévues dont le collaborateur est
+                                          // responsable.
+  private ArrayList mMesures ;           // Liste des mesures associées au collaborateur.
+
 
   /**
    * Crée une instance vide de MCollaborateur.
@@ -370,8 +376,8 @@ public class MCollaborateur extends MModeleBase
   {
     if (!mProjets.contains (pProjet))
       mProjets.add (pProjet) ;
-    if(!pProjet.getListeCollaborateurs().contains(this))
-      pProjet.addCollaborateur(this);
+    if (!pProjet.getListeCollaborateurs ().contains (this))
+      pProjet.addCollaborateur (this) ;
   }
 
   /**
@@ -443,6 +449,13 @@ public class MCollaborateur extends MModeleBase
   public void setListeRoles (ArrayList pRoles)
   {
     mRoles = pRoles ;
+    Iterator it = pRoles.iterator () ;
+    while (it.hasNext ())
+    {
+      MRole lRole = (MRole) it.next () ;
+      if (!lRole.getListeCollaborateurs ().contains (this))
+        lRole.addCollaborateur (this) ;
+    }
   }
 
   /**
@@ -473,7 +486,10 @@ public class MCollaborateur extends MModeleBase
    */
   public void addRole (MRole pRole)
   {
-    mRoles.add (pRole) ;
+    if (!mRoles.contains (pRole))
+      mRoles.add (pRole) ;
+    if(!pRole.getListeCollaborateurs().contains(this))
+      pRole.addCollaborateur(this);
   }
 
   /**
@@ -738,23 +754,25 @@ public class MCollaborateur extends MModeleBase
   {
     mArtefactsImprevues.remove (pArtefactImprevue) ;
   }
+
   /**
    * Retourne le parametre encode.
+   * 
    * @param pMdp Parametre a encode.
    * @return Chaine code
    */
-  public static String encode(String pMdp){
-/*    String  code = "";
-    for(int i = 0 ; i<pMdp.length() ; i++){
-      int j = pMdp.charAt(i);
-      code += j;
-    }
-    return code;*/
-    return pMdp;
+  public static String encode (String pMdp)
+  {
+    /*
+     * String code = ""; for(int i = 0 ; i <pMdp.length() ; i++){ int j = pMdp.charAt(i); code += j; }
+     * return code;
+     */
+    return pMdp ;
   }
-  
+
   /**
    * Récupère la liste des mesures associées au collaborateur.
+   * 
    * @return Liste des mesures associées au collaborateur.
    */
   public ArrayList getListeMesures ()
@@ -762,9 +780,9 @@ public class MCollaborateur extends MModeleBase
     return mMesures ;
   }
 
-
   /**
    * Initialise la liste des mesures associées au collaborateur.
+   * 
    * @param pArtefacts Liste des mesures associées au collaborateur.
    */
   public void setListeMesures (ArrayList pMesures)

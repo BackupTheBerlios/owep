@@ -149,11 +149,13 @@ public class MDefinitionTravail extends MModeleBase
    */
   public void setComposant (MComposant pComposant)
   {
+    if(pComposant != null){
     mComposant = pComposant ;
     ArrayList lListDefinitionTravail = pComposant.getListeDefinitionsTravail () ;
     if (!lListDefinitionTravail.contains (this))
     {
       pComposant.addDefinitionTravail (this) ;
+    }
     }
   }
 

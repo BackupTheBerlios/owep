@@ -2,10 +2,16 @@ package owep.controle.processus ;
 
 
 import java.io.File ;
+import java.io.FileOutputStream ;
+import java.io.InputStream ;
+import java.io.InputStreamReader ;
+import java.io.OutputStreamWriter ;
 import java.util.ArrayList ;
 import java.util.Iterator ;
 import java.util.List ;
 import java.util.ResourceBundle ;
+import java.util.zip.ZipEntry ;
+import java.util.zip.ZipFile ;
 
 import javax.servlet.ServletException ;
 
@@ -37,6 +43,7 @@ public class CGererProjet extends CControleurBase
   private float          mBudget     = 0 ;   // Budget du projet
   private String         mResponsable ;      // Identifiant du collaborateur responsable du
   // projet
+  private String         mExtension ;        // Extension du fichier
   private int            mProcessus ;        // Identifiant du processus ou 0
   //private File mFichierProcessus = null ; // Fichier du processus
   FileItem               itemFichier = null ;
@@ -160,6 +167,9 @@ public class CGererProjet extends CControleurBase
 
           if (fieldName.equals ("creation"))
             mNouveau = item.getString () ;
+
+          if (fieldName.equals ("mExtension"))
+            mExtension = item.getString () ;
         }
       }
       catch (FileUploadException e)
@@ -186,6 +196,7 @@ public class CGererProjet extends CControleurBase
   {
     OQLQuery lRequete ; // Requête à réaliser sur la base
     QueryResults lResultat ; // Résultat de la requête sur la base
+    File fichierDpe = null ;
 
     if (!mErreur.equals (""))
     {
@@ -208,6 +219,41 @@ public class CGererProjet extends CControleurBase
         {
           // Sauvegarde du fichier
           itemFichier.write (savedFile) ;
+
+          if (mExtension.equals (".dpe"))
+            fichierDpe = savedFile ;
+
+          if (mExtension.equals (".dpc"))
+          {
+            ZipFile zip = new ZipFile (savedFile) ;
+            ZipEntry entry = zip.getEntry ("processus.dpe") ;
+            InputStream input = zip.getInputStream (entry) ;
+
+            File f = new File (getServletContext ().getRealPath ("/") + "/Processus/Import/",
+                               "temp2") ;
+
+            FileOutputStream fOut = new FileOutputStream (f) ;
+            OutputStreamWriter out = new OutputStreamWriter (fOut, "UTF-16") ;
+
+            InputStreamReader in = new InputStreamReader (input, "UTF-16") ;
+            char [] c = new char [100] ;
+            int i = in.read (c) ;
+            while (i > 0)
+            {
+              String ligne ;
+              ligne = String.valueOf (c, 0, i) ;
+              out.write (ligne) ;
+              i = in.read (c) ;
+            }
+
+            in.close () ;
+            out.close () ;
+            fOut.close () ;
+            input.close () ;
+            zip.close () ;
+
+            fichierDpe = f ;
+          }
         }
         catch (Exception e)
         {
@@ -249,9 +295,12 @@ public class CGererProjet extends CControleurBase
         XMLReader saxReader ;
         try
         {
+          if (fichierDpe == null)
+            throw new Exception ("Fichier erroné") ;
+
           saxReader = XMLReaderFactory.createXMLReader ("org.apache.xerces.parsers.SAXParser") ;
           saxReader.setContentHandler (new Parser (maxIdProcessus)) ;
-          saxReader.parse (savedFile.toURI ().toString ()) ;
+          saxReader.parse (fichierDpe.toURI ().toString ()) ;
         }
         catch (Exception e1)
         {
@@ -308,7 +357,8 @@ public class CGererProjet extends CControleurBase
         lProjet.setDescription (mDescription) ;
         lProjet.setBudget (mBudget) ;
         lProjet.setProcessus (lProcessus) ;
-        lProjet.setChefProjet (lCollaborateur) ; // initialise le chef de projet et ajoute le chef au col du projet
+        lProjet.setChefProjet (lCollaborateur) ; // initialise le chef de projet et ajoute le chef
+        // au col du projet
 
         getBaseDonnees ().create (lProjet) ;
         getBaseDonnees ().commit () ;
@@ -325,7 +375,13 @@ public class CGererProjet extends CControleurBase
         // Renommage du fichier processus
         File f = new File (getServletContext ().getRealPath ("/") + "/Processus/Import/", "temp") ;
         f.renameTo (new File (getServletContext ().getRealPath ("/") + "/Processus/Import/",
-                              lProjet.getId () + "_" + lProjet.getNom () + ".xml")) ;
+                              lProjet.getId () + "_" + lProjet.getNom () + mExtension)) ;
+        
+        if (mExtension.equals (".dpc"))
+        {
+          f = new File (getServletContext ().getRealPath ("/") + "/Processus/Import/", "temp") ;
+          f.delete () ;
+        }
 
         mErreur = mMessage.getString ("projetMessageCreer") ;
         getRequete ().setAttribute ("idProjet", String.valueOf (maxIdProjet)) ;

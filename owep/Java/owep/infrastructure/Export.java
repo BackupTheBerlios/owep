@@ -6,9 +6,12 @@ import java.io.File ;
 import java.io.FileInputStream ;
 import java.io.FileWriter ;
 import java.io.IOException ;
+import java.io.InputStream ;
 import java.io.InputStreamReader ;
 import java.util.ArrayList ;
 import java.util.Iterator ;
+import java.util.zip.ZipEntry ;
+import java.util.zip.ZipFile ;
 
 import org.exolab.castor.jdo.Database ;
 import org.exolab.castor.jdo.JDO ;
@@ -26,15 +29,16 @@ import owep.modele.processus.* ;
  */
 public class Export
 {
-  private FileWriter mFichier ;
-  private MProjet mProjet ;
+  private FileWriter     mFichier ;
+  private MProjet        mProjet ;
   private BufferedWriter out ;
-  private String mChemin ;
+  private String         mChemin ;
 
-  private JDO lJdo ; // Charge le système de persistence avec la base de données
-  private Database mBaseDonnees = null ; // Connexion à la base de données
-  private OQLQuery lRequete ; // Requête à réaliser sur la base
-  private QueryResults lResultat ; // Résultat de la requête sur la base
+  private JDO            lJdo ;               // Charge le système de persistence avec la base de
+  // données
+  private Database       mBaseDonnees = null ; // Connexion à la base de données
+  private OQLQuery       lRequete ;           // Requête à réaliser sur la base
+  private QueryResults   lResultat ;          // Résultat de la requête sur la base
 
 
   public Export (MProjet pProjet, String pChemin) throws IOException
@@ -96,22 +100,35 @@ public class Export
   {
     out.write ("<exportProjet>\n") ;
 
-    FileInputStream input = new FileInputStream (mChemin + "Import/" + mProjet.getId () + "_"
-                                                 + mProjet.getNom () + ".xml") ;
+    InputStream input = null ;
+    File f ;
+
+    f = new File (mChemin + "Import/" + mProjet.getId () + "_" + mProjet.getNom () + ".dpe") ;
+    if (f.exists ())
+      input = new FileInputStream (f) ;
+
+    f = new File (mChemin + "Import/" + mProjet.getId () + "_" + mProjet.getNom () + ".dpc") ;
+    if (f.exists ())
+    {
+      ZipFile zip = new ZipFile (f) ;
+      ZipEntry entry = zip.getEntry ("processus.dpe") ;
+      input = zip.getInputStream (entry) ;
+    }
+
     InputStreamReader in = new InputStreamReader (input, "UTF-16") ;
     char [] c = new char [100] ;
     int i = in.read (c) ;
-    boolean enleve = false;
+    boolean enleve = false ;
     while (i > 0)
     {
-      String ligne;
-      ligne = String.valueOf (c,0,i) ;
-      if (ligne.contains("?>") && !enleve)
+      String ligne ;
+      ligne = String.valueOf (c, 0, i) ;
+      if (ligne.contains ("?>") && !enleve)
       {
         ligne = ligne.substring (ligne.lastIndexOf ("?>") + 2) ;
-        enleve = true;
+        enleve = true ;
       }
-      out.write(ligne);
+      out.write (ligne) ;
       i = in.read (c) ;
     }
   }
@@ -144,41 +161,53 @@ public class Export
     out.newLine () ;
     out.write ("\t\t\t<dateFin>" + mProjet.getDateFinPrevue () + "</dateFin>") ;
     out.newLine () ;
-    out.write ("\t\t\t<budget>"+mProjet.getBudget()+"</budget>") ;
+    out.write ("\t\t\t<budget>" + mProjet.getBudget () + "</budget>") ;
     out.newLine () ;
     out.write ("\t\t</projet>") ;
     out.newLine () ;
-    
+
+    // Metrique
+    // TODO
+    /*
+     * <listeMetriques> <eltMetrique> <id> </id> <nom> </nom> <description> </description> <valeur>
+     * </valeur> <type> </type> </eltMetrique> </listeMetriques>
+     */
+
+    /**/
+
     // Indicateur
     out.write ("\t\t<listeIndicateurs>") ;
     out.newLine () ;
-    liste = mProjet.getListeIndicateurs() ;
-    it = liste.iterator () ;
-    while (it.hasNext ())
+    liste = mProjet.getListeIndicateurs () ;
+    if (liste != null)
     {
-      MIndicateur lIndicateur = (MIndicateur) it.next () ;
-      out.write ("\t\t\t<eltIndicateur>\n") ;
-      out.write ("\t\t\t\t<id>" + lIndicateur.getId () + "</id>\n") ;
-      out.write ("\t\t\t\t<nom>" + lIndicateur.getNom() + "</nom>\n") ;
-      out.write ("\t\t\t\t<description>" + lIndicateur.getDescription()
-                 + "</description>\n") ;
-      out.write ("\t\t\t\t<unite>" + lIndicateur.getUnite()
-                 + "</unite>\n") ;
-      out.write ("\t\t\t</eltIndicateur>\n") ;
+      it = liste.iterator () ;
+      while (it.hasNext ())
+      {
+        MIndicateur lIndicateur = (MIndicateur) it.next () ;
+        out.write ("\t\t\t<eltIndicateur>\n") ;
+        out.write ("\t\t\t\t<id>" + lIndicateur.getId () + "</id>\n") ;
+        out.write ("\t\t\t\t<nom>" + lIndicateur.getNom () + "</nom>\n") ;
+        out.write ("\t\t\t\t<description>" + lIndicateur.getDescription () + "</description>\n") ;
+        out.write ("\t\t\t\t<unite>" + lIndicateur.getUnite () + "</unite>\n") ;
+        out.write ("\t\t\t</eltIndicateur>\n") ;
+      }
     }
     out.write ("\t\t</listeIndicateurs>") ;
     out.newLine () ;
-    
+
     // MesureIndicateur
     out.write ("\t\t<listeMesures>") ;
     out.newLine () ;
-    liste = mProjet.getListeIndicateurs() ;
+    liste = mProjet.getListeIndicateurs () ;
+    if (liste == null)
+      liste = new ArrayList () ;
     it = liste.iterator () ;
     ArrayList listeMesure = new ArrayList () ;
     while (it.hasNext ())
     {
       MIndicateur lIndicateur = (MIndicateur) it.next () ;
-      listeMesure.addAll (lIndicateur.getListeMesures()) ;
+      listeMesure.addAll (lIndicateur.getListeMesures ()) ;
     }
     it = listeMesure.iterator () ;
     while (it.hasNext ())
@@ -186,13 +215,14 @@ public class Export
       MMesureIndicateur lMesureIndicateur = (MMesureIndicateur) it.next () ;
       out.write ("\t\t\t<eltMesure>\n") ;
       out.write ("\t\t\t\t<id>" + lMesureIndicateur.getId () + "</id>\n") ;
-      out.write ("\t\t\t\t<valeur>" + lMesureIndicateur.getValeur() + "</valeur>\n") ;
-      out.write ("\t\t\t\t<commentaire>" + lMesureIndicateur.getCommentaire() + "</commentaire>\n") ;
+      out.write ("\t\t\t\t<valeur>" + lMesureIndicateur.getValeur () + "</valeur>\n") ;
+      out
+        .write ("\t\t\t\t<commentaire>" + lMesureIndicateur.getCommentaire () + "</commentaire>\n") ;
       out.write ("\t\t\t</eltMesure>\n") ;
     }
     out.write ("\t\t</listeMesures>") ;
     out.newLine () ;
-    
+
     // Risque
     out.write ("\t\t<listeRisques>") ;
     out.newLine () ;
@@ -230,6 +260,8 @@ public class Export
     out.write ("\t\t<listeMembres>") ;
     out.newLine () ;
     liste = mProjet.getListeCollaborateurs () ;
+    if (liste == null)
+      liste = new ArrayList () ;
     it = liste.iterator () ;
     while (it.hasNext ())
     {
@@ -251,6 +283,8 @@ public class Export
     out.write ("\t\t<listeIterations>") ;
     out.newLine () ;
     liste = mProjet.getListeIterations () ;
+    if (liste == null)
+      liste = new ArrayList () ;
     it = liste.iterator () ;
     while (it.hasNext ())
     {
@@ -273,6 +307,8 @@ public class Export
     out.write ("\t\t<listeTaches>") ;
     out.newLine () ;
     liste = mProjet.getListeIterations () ;
+    if (liste == null)
+      liste = new ArrayList () ;
     it = liste.iterator () ;
     ArrayList listeTache = new ArrayList () ;
     while (it.hasNext ())
@@ -288,8 +324,27 @@ public class Export
       out.write ("\t\t\t\t<id>" + lTache.getId () + "</id>\n") ;
       out.write ("\t\t\t\t<nom>" + lTache.getNom () + "</nom>\n") ;
       out.write ("\t\t\t\t<description>" + lTache.getDescription () + "</description>\n") ;
-      out.write ("\t\t\t\t<etat>" + lTache.getEtat () + "</etat>\n") ;
-      // TODO etat : <!-- prete - commence - arrete -->
+      out.write ("\t\t\t\t<etat>") ;
+      // etat : <!-- prete - commence - arrete -->
+      switch (lTache.getEtat ())
+      {
+        case MTache.ETAT_CREEE :
+          out.write ("CREEE") ;
+          break ;
+        case MTache.ETAT_EN_COURS :
+          out.write ("EN_COURS") ;
+          break ;
+        case MTache.ETAT_NON_DEMARRE :
+          out.write ("NON_DEMARRE") ;
+          break ;
+        case MTache.ETAT_SUSPENDU :
+          out.write ("SUSPENDU") ;
+          break ;
+        case MTache.ETAT_TERMINE :
+          out.write ("TERMINE") ;
+          break ;
+      }
+      out.write ("</etat>\n") ;
       out.write ("\t\t\t\t<chargePrevue>" + lTache.getChargeInitiale () + "</chargePrevue>\n") ;
       out.write ("\t\t\t\t<tempsPasse>" + lTache.getTempsPasse () + "</tempsPasse>\n") ;
       out.write ("\t\t\t\t<resteAPasser>" + lTache.getResteAPasser () + "</resteAPasser>\n") ;
@@ -337,6 +392,8 @@ public class Export
     out.write ("\t\t<listeArtefacts>") ;
     out.newLine () ;
     liste = mProjet.getListeArtefacts () ;
+    if (liste == null)
+      liste = new ArrayList () ;
     it = liste.iterator () ;
     while (it.hasNext ())
     {
@@ -359,6 +416,8 @@ public class Export
     out.newLine () ;
     liste = new ArrayList () ;
     it = listeTache.iterator () ;
+    if (liste == null)
+      liste = new ArrayList () ;
     while (it.hasNext ())
     {
       MTache lTache = (MTache) it.next () ;
@@ -378,8 +437,7 @@ public class Export
       out.write ("\t\t\t<eltProbleme>\n") ;
       out.write ("\t\t\t\t<id>" + lProbleme.getId () + "</id>\n") ;
       out.write ("\t\t\t\t<nom>" + lProbleme.getNom () + "</nom>\n") ;
-      out.write ("\t\t\t\t<cause></cause>\n") ;
-      // TODO cause
+      out.write ("\t\t\t\t<cause>" + lProbleme.getDescription () + "</cause>\n") ;
       out.write ("\t\t\t\t<dateDebut>" + lProbleme.getDateIdentification () + "</dateDebut>") ;
       out.write ("\t\t\t\t<dateFin>" + lProbleme.getDateCloture () + "</dateFin>") ;
       out.write ("\t\t\t</eltProbleme>\n") ;
@@ -417,6 +475,8 @@ public class Export
     out.write ("\t\t<listeProjetIteration>") ;
     out.newLine () ;
     liste = mProjet.getListeIterations () ;
+    if (liste == null)
+      liste = new ArrayList () ;
     if (liste.size () > 0)
     {
       it = liste.iterator () ;
@@ -433,6 +493,13 @@ public class Export
     }
     out.write ("\t\t</listeProjetIteration>") ;
     out.newLine () ;
+
+    // Projet / Metrique
+    // TODO
+    /*
+     * <listeProjetMetrique> <ProjetMetrique> <idProjet> </idProjet> <listeIdMetrique> <id> </id>
+     * <id> </id> </listeIdMetrique> </ProjetMetrique> </listeProjetMetrique>
+     */
 
     // Projet / Risque
     out.write ("\t\t<listeProjetRisque>") ;
@@ -472,6 +539,8 @@ public class Export
     out.write ("\t\t<listeIterationTache>") ;
     out.newLine () ;
     liste = mProjet.getListeIterations () ;
+    if (liste == null)
+      liste = new ArrayList () ;
     it = liste.iterator () ;
     while (it.hasNext ())
     {
@@ -506,6 +575,8 @@ public class Export
     out.write ("\t\t<listeProjetMembre>") ;
     out.newLine () ;
     liste = mProjet.getListeCollaborateurs () ;
+    if (liste == null)
+      liste = new ArrayList () ;
     if (liste.size () > 0)
     {
       it = liste.iterator () ;
@@ -527,6 +598,8 @@ public class Export
     out.write ("\t\t<listeMembreArtefact>") ;
     out.newLine () ;
     liste = mProjet.getListeCollaborateurs () ;
+    if (liste == null)
+      liste = new ArrayList () ;
     it = liste.iterator () ;
     while (it.hasNext ())
     {
@@ -554,6 +627,8 @@ public class Export
     out.write ("\t\t<listeMembreTache>") ;
     out.newLine () ;
     liste = mProjet.getListeCollaborateurs () ;
+    if (liste == null)
+      liste = new ArrayList () ;
     it = liste.iterator () ;
     ArrayList listTaches = new ArrayList () ;
     while (it.hasNext ())
@@ -787,6 +862,8 @@ public class Export
 
     // Récupération d'objet
     liste = lProcessus.getListeComposants () ;
+    if (liste == null)
+      liste = new ArrayList () ;
     it = liste.iterator () ;
     ArrayList listeProduit = new ArrayList () ;
     ArrayList listeDefinitionTravail = new ArrayList () ;
@@ -820,6 +897,8 @@ public class Export
     {
       MProduit lProduit = (MProduit) it.next () ;
       liste = lProduit.getListeArtefacts () ;
+      if (liste == null)
+        liste = new ArrayList () ;
       if (liste.size () > 0)
       {
         out.write ("\t\t\t<ProduitArtefact>") ;
@@ -844,6 +923,8 @@ public class Export
     {
       MActivite lActivite = (MActivite) it.next () ;
       liste = lActivite.getListeTaches () ;
+      if (liste == null)
+        liste = new ArrayList () ;
       if (liste.size () > 0)
       {
         out.write ("\t\t\t<ActiviteTache>\n") ;
@@ -864,11 +945,15 @@ public class Export
     // Membre / Role
     out.write ("\t\t<MembreRole>\n\t\t\t<listeMembre>\n") ;
     liste = mProjet.getListeCollaborateurs () ;
+    if (liste == null)
+      liste = new ArrayList () ;
     it = liste.iterator () ;
     while (it.hasNext ())
     {
       MCollaborateur lCollaborateur = (MCollaborateur) it.next () ;
       ArrayList listeRole = lCollaborateur.getListeRoles () ;
+      if (listeRole == null)
+        listeRole = new ArrayList () ;
       if (listeRole.size () > 0)
       {
         out.write ("\t\t\t<Membre>\n") ;

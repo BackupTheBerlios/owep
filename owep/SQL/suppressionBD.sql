@@ -6,13 +6,14 @@ drop table r05_col_prj;
 drop table r06_col_tcl;
 drop table r07_prb_tac_resout;
 drop table r08_prb_tac_provoque;
+drop table r09_prb_tim_resout;
+drop table r10_prb_tim_provoque;
 
 drop table con_configuration;
 drop table ari_artefactimprevue;
 drop table tim_tacheimprevue;
 
 drop table ris_risque;
-drop table met_metrique;
 drop table imp_activiteimp;
 drop table tcl_tachecollaborative;
 drop table prb_probleme;
@@ -20,6 +21,10 @@ drop table prb_probleme;
 drop table art_artefact;
 drop table cnd_condition;
 drop table tac_tache;
+
+drop table msi_mesureindicateur;
+drop table ind_indicateur;
+
 drop table col_collaborateur;
 drop table ite_iteration;
 

@@ -101,6 +101,16 @@ function envoyer()
 %>
       document.formCreerProjet.mFichierProcessus.value != ""))
     texte = texte + "<%=lMessage.getString("projetMessageProcessus")%>\n";
+    
+    if(document.formCreerProjet.mProcessus[<%=listProcessus.size()%>].checked)
+    {
+      var fich = document.formCreerProjet.mFichierProcessus.value;
+      var extension = fich.slice(fich.length-4);
+      if(extension != ".dpc" && extension != ".dpe")
+        texte = texte + "<%=lMessage.getString("projetMessageExtension")%>\n";
+      else
+        document.formCreerProjet.mExtension.value = extension;
+    }
   
   if(texte == "")
     document.formCreerProjet.submit();
@@ -113,6 +123,7 @@ function envoyer()
 <center>
 <form name="formCreerProjet" method="post" action="/owep/Processus/GererProjet" enctype="multipart/form-data">
 <input type="hidden" name="creation" value="1">
+<input type="hidden" name="mExtension">
 <table class="tableau" border="0" cellpadding="0" cellspacing="0">
 <tbody>
   <tr>

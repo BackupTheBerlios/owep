@@ -2,6 +2,7 @@ package owep.infrastructure ;
 
 
 import java.util.ArrayList ;
+import java.util.Enumeration;
 import java.util.Hashtable ;
 
 import org.exolab.castor.jdo.Database ;
@@ -677,6 +678,12 @@ public class Parser implements ContentHandler
 
         if (mBalise.contains ("agregatComposant"))
         {
+          Enumeration enum = mIddpeObjet.keys();
+          while(enum.hasMoreElements()){
+            String key = (String) enum.nextElement();
+            if(key.startsWith(lAttribut))
+              lAttribut = key;
+          }
           MComposant lComposant = (MComposant) mIddpeObjet.get (lAttribut) ;
           mDefinitionTravail.setComposant (lComposant) ;
         }
