@@ -6,10 +6,11 @@ import java.io.FileOutputStream ;
 import java.io.InputStream ;
 import java.io.InputStreamReader ;
 import java.io.OutputStreamWriter ;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.ParseException ;
+import java.text.SimpleDateFormat ;
 import java.util.ArrayList ;
-import java.util.Date;
+import java.util.Date ;
+import java.util.HashMap ;
 import java.util.Iterator ;
 import java.util.List ;
 import java.util.ResourceBundle ;
@@ -32,6 +33,7 @@ import owep.infrastructure.fileupload.FileUploadException ;
 import owep.modele.processus.MProcessus ;
 import owep.modele.execution.MCollaborateur ;
 import owep.modele.execution.MProjet ;
+import owep.modele.execution.MTache;
 
 
 /**
@@ -190,6 +192,27 @@ public class CGererProjet extends CControleurBase
     QueryResults lResultat ; // Résultat de la requête sur la base
     File fichierDpe = null ;
 
+    if (mNouveau != null && mNouveau.equals ("1"))
+    {
+      // changement de format des dates
+      SimpleDateFormat dateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
+      Date d = null ;
+      Date d2 = null ;
+      try
+      {
+        d = dateFormat.parse (mDateDebut) ;
+        d2 = dateFormat.parse (mDateFin) ;
+      }
+      catch (ParseException e)
+      {
+        mErreur = mMessage.getString ("projetErreurDate") ;
+        //e.printStackTrace () ;
+      }
+      SimpleDateFormat dateFormat2 = new SimpleDateFormat ("yyyy-MM-dd") ;
+      mDateDebut = dateFormat2.format (d) ;
+      mDateFin = dateFormat2.format (d2) ;
+    }
+
     if (!mErreur.equals (""))
     {
       getRequete ().setAttribute ("erreur", mErreur) ;
@@ -199,111 +222,110 @@ public class CGererProjet extends CControleurBase
     if (mNouveau != null && mNouveau.equals ("1"))
     {
       MProcessus lProcessus ;
-//      if (mProcessus == 0)
-//      {
-        // Nouveau processus
-        // Création du répertoire
-        (new File (getServletContext ().getRealPath ("/") + "/Processus/Import")).mkdirs () ;
-        // Création du fichier
-        File savedFile = new File (getServletContext ().getRealPath ("/") + "/Processus/Import/",
-                                   "temp") ;
-        try
+      //      if (mProcessus == 0)
+      //      {
+      // Nouveau processus
+      // Création du répertoire
+      (new File (getServletContext ().getRealPath ("/") + "/Processus/Import")).mkdirs () ;
+      // Création du fichier
+      File savedFile = new File (getServletContext ().getRealPath ("/") + "/Processus/Import/",
+                                 "temp") ;
+      try
+      {
+        // Sauvegarde du fichier
+        itemFichier.write (savedFile) ;
+
+        if (mExtension.equals (".dpe"))
+          fichierDpe = savedFile ;
+
+        if (mExtension.equals (".dpc"))
         {
-          // Sauvegarde du fichier
-          itemFichier.write (savedFile) ;
+          ZipFile zip = new ZipFile (savedFile) ;
+          ZipEntry entry = zip.getEntry ("processus.dpe") ;
+          InputStream input = zip.getInputStream (entry) ;
 
-          if (mExtension.equals (".dpe"))
-            fichierDpe = savedFile ;
+          File f = new File (getServletContext ().getRealPath ("/") + "/Processus/Import/", "temp2") ;
 
-          if (mExtension.equals (".dpc"))
+          FileOutputStream fOut = new FileOutputStream (f) ;
+          OutputStreamWriter out = new OutputStreamWriter (fOut, "UTF-16") ;
+
+          InputStreamReader in = new InputStreamReader (input, "UTF-16") ;
+          char [] c = new char [100] ;
+          int i = in.read (c) ;
+          while (i > 0)
           {
-            ZipFile zip = new ZipFile (savedFile) ;
-            ZipEntry entry = zip.getEntry ("processus.dpe") ;
-            InputStream input = zip.getInputStream (entry) ;
+            String ligne ;
+            ligne = String.valueOf (c, 0, i) ;
+            out.write (ligne) ;
+            i = in.read (c) ;
+          }
 
-            File f = new File (getServletContext ().getRealPath ("/") + "/Processus/Import/",
-                               "temp2") ;
+          in.close () ;
+          out.close () ;
+          fOut.close () ;
+          input.close () ;
+          zip.close () ;
 
-            FileOutputStream fOut = new FileOutputStream (f) ;
-            OutputStreamWriter out = new OutputStreamWriter (fOut, "UTF-16") ;
+          fichierDpe = f ;
+        }
+      }
+      catch (Exception e)
+      {
+        mErreur = mMessage.getString ("projetErreurTelechargement") ;
+        e.printStackTrace () ;
+        getRequete ().setAttribute ("erreur", mErreur) ;
+        return "..\\JSP\\Processus\\TGererProjet.jsp" ;
+      }
 
-            InputStreamReader in = new InputStreamReader (input, "UTF-16") ;
-            char [] c = new char [100] ;
-            int i = in.read (c) ;
-            while (i > 0)
-            {
-              String ligne ;
-              ligne = String.valueOf (c, 0, i) ;
-              out.write (ligne) ;
-              i = in.read (c) ;
-            }
-
-            in.close () ;
-            out.close () ;
-            fOut.close () ;
-            input.close () ;
-            zip.close () ;
-
-            fichierDpe = f ;
+      // Recherche de l'id du nouveau processus
+      int maxIdProcessus = 0 ;
+      try
+      {
+        getBaseDonnees ().begin () ;
+        lRequete = getBaseDonnees ()
+          .getOQLQuery ("select PROCESSUS from owep.modele.processus.MProcessus PROCESSUS") ;
+        lResultat = lRequete.execute () ;
+        while (lResultat.hasMore ())
+        {
+          MProcessus tmpProcessus = (MProcessus) lResultat.next () ;
+          if (maxIdProcessus < tmpProcessus.getId ())
+          {
+            maxIdProcessus = tmpProcessus.getId () ;
+            lProcessus = tmpProcessus ;
           }
         }
-        catch (Exception e)
-        {
-          mErreur = mMessage.getString ("projetErreurTelechargement") ;
-          e.printStackTrace () ;
-          getRequete ().setAttribute ("erreur", mErreur) ;
-          return "..\\JSP\\Processus\\TGererProjet.jsp" ;
-        }
+        maxIdProcessus++ ;
+        getBaseDonnees ().commit () ;
+      }
+      catch (PersistenceException e3)
+      {
+        e3.printStackTrace () ;
+        mErreur = mMessage.getString ("projetErreur") ;
+        getRequete ().setAttribute ("erreur", mErreur) ;
+        return "..\\JSP\\Processus\\TGererProjet.jsp" ;
+      }
 
-        // Recherche de l'id du nouveau processus
-        int maxIdProcessus = 0 ;
-        try
-        {
-          getBaseDonnees ().begin () ;
-          lRequete = getBaseDonnees ()
-            .getOQLQuery ("select PROCESSUS from owep.modele.processus.MProcessus PROCESSUS") ;
-          lResultat = lRequete.execute () ;
-          while (lResultat.hasMore ())
-          {
-            MProcessus tmpProcessus = (MProcessus) lResultat.next () ;
-            if (maxIdProcessus < tmpProcessus.getId ())
-            {
-              maxIdProcessus = tmpProcessus.getId () ;
-              lProcessus = tmpProcessus ;
-            }
-          }
-          maxIdProcessus++ ;
-          getBaseDonnees ().commit () ;
-        }
-        catch (PersistenceException e3)
-        {
-          e3.printStackTrace () ;
-          mErreur = mMessage.getString ("projetErreur") ;
-          getRequete ().setAttribute ("erreur", mErreur) ;
-          return "..\\JSP\\Processus\\TGererProjet.jsp" ;
-        }
+      // Enregistrement des données du fichier en entrée à l'aide du parser
+      XMLReader saxReader ;
+      try
+      {
+        if (fichierDpe == null)
+          throw new Exception ("Fichier erroné") ;
 
-        // Enregistrement des données du fichier en entrée à l'aide du parser
-        XMLReader saxReader ;
-        try
-        {
-          if (fichierDpe == null)
-            throw new Exception ("Fichier erroné") ;
+        saxReader = XMLReaderFactory.createXMLReader ("org.apache.xerces.parsers.SAXParser") ;
+        saxReader.setContentHandler (new Parser (maxIdProcessus)) ;
+        saxReader.parse (fichierDpe.toURI ().toString ()) ;
+      }
+      catch (Exception e1)
+      {
+        e1.printStackTrace () ;
+        mErreur = mMessage.getString ("projetErreurParser") ;
+        getRequete ().setAttribute ("erreur", mErreur) ;
+        return "..\\JSP\\Processus\\TGererProjet.jsp" ;
+      }
 
-          saxReader = XMLReaderFactory.createXMLReader ("org.apache.xerces.parsers.SAXParser") ;
-          saxReader.setContentHandler (new Parser (maxIdProcessus)) ;
-          saxReader.parse (fichierDpe.toURI ().toString ()) ;
-        }
-        catch (Exception e1)
-        {
-          e1.printStackTrace () ;
-          mErreur = mMessage.getString ("projetErreurParser") ;
-          getRequete ().setAttribute ("erreur", mErreur) ;
-          return "..\\JSP\\Processus\\TGererProjet.jsp" ;
-        }
-
-        mProcessus = maxIdProcessus ;
-//      }
+      mProcessus = maxIdProcessus ;
+      //      }
 
       try
       {
@@ -344,21 +366,9 @@ public class CGererProjet extends CControleurBase
         // Création du projet
         lProjet = new MProjet (maxIdProjet) ;
         lProjet.setNom (mNom) ;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date d = null;
-        Date d2 = null;
-        try
-        {
-          d = dateFormat.parse(mDateDebut) ;
-          d2 = dateFormat.parse(mDateFin) ;
-        }
-        catch (ParseException e)
-        {
-          e.printStackTrace();
-        }
-        SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
-        lProjet.setDateDebutPrevue (java.sql.Date.valueOf (dateFormat2.format(d))) ;
-        lProjet.setDateFinPrevue (java.sql.Date.valueOf (dateFormat2.format(d2))) ;
+        lProjet.setDateDebutPrevue (java.sql.Date.valueOf (mDateDebut)) ;
+        lProjet.setDateFinPrevue (java.sql.Date.valueOf (mDateFin)) ;
+        lProjet.setEtat(MTache.ETAT_NON_DEMARRE);
         lProjet.setDescription (mDescription) ;
         lProjet.setBudget (mBudget) ;
         lProjet.setProcessus (lProcessus) ;
@@ -381,7 +391,7 @@ public class CGererProjet extends CControleurBase
         File f = new File (getServletContext ().getRealPath ("/") + "/Processus/Import/", "temp") ;
         f.renameTo (new File (getServletContext ().getRealPath ("/") + "/Processus/Import/",
                               lProjet.getId () + "_" + lProjet.getNom () + mExtension)) ;
-        
+
         if (mExtension.equals (".dpc"))
         {
           f = new File (getServletContext ().getRealPath ("/") + "/Processus/Import/", "temp") ;

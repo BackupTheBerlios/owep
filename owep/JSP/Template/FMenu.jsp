@@ -1,7 +1,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="owep.infrastructure.Session"%>
 <%@page import="owep.modele.execution.MProjet"%>
-<%@page import="owep.controle.CConstante"%>
+<%@page import="owep.modele.execution.MTache"%>
 <%@page import="java.util.ResourceBundle"%>
 
 <jsp:useBean id="lSession" class="owep.infrastructure.Session" scope="page"/>
@@ -37,7 +37,7 @@
   ArrayList lListProjet = lSession.getListProjetPossible();
   
   // Recuperation du projet ouvert
-  lProjet = (MProjet) request.getAttribute (CConstante.PAR_PROJET) ;
+  lProjet = lSession.getProjet() ;
   
   
   // Si aucun projet n'est ouvert
@@ -76,7 +76,13 @@
         </option>
 <%
   }
+  if(!mProjetOuvert)
+  {
 %>
+        <option VALUE="" selected>
+          &nbsp;
+        </option>
+<%}%>
       </select>
     </td>
   </tr>
@@ -225,12 +231,26 @@
   </tr>
   <%
   }
-  if(!lIterationExiste)
+  if(lProjet.getEtat() == MTache.ETAT_NON_DEMARRE)
   {
   %>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Outil/DemarrerProjet">Demarrer le projet</a>
+      <a class="menuNiveau2" href="../Outil/DemarrerProjet">
+        Demarrer le projet
+      </a>
+    </td>
+  </tr>
+<%
+  }
+  if(lProjet.getEtat() == MTache.ETAT_EN_COURS)
+  {
+%>
+  <tr>
+    <td class="caseMenuNiveau2">
+      <a class="menuNiveau2" href="../Processus/CloturerProjet">
+        Cloturer le projet
+      </a>
     </td>
   </tr>
 <%

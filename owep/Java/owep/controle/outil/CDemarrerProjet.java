@@ -13,7 +13,9 @@ import org.exolab.castor.jdo.QueryResults ;
 import owep.controle.CConstante;
 import owep.controle.CControleurBase ;
 import owep.modele.execution.MIteration ;
+import owep.modele.execution.MProjet;
 import owep.modele.execution.MTache ;
+import owep.modele.execution.MTacheImprevue;
 
 
 /**
@@ -51,7 +53,7 @@ public class CDemarrerProjet extends CControleurBase
    */
   public String traiter () throws ServletException
   {
-    int idProjet = getSession ().getIdProjet () ;
+    int idProjet = getSession().getProjet().getId() ;
     OQLQuery lRequete ;
     QueryResults lResultat ;
     ResourceBundle messages = java.util.ResourceBundle.getBundle("MessagesBundle");
@@ -59,6 +61,19 @@ public class CDemarrerProjet extends CControleurBase
 
     try
     {
+      getBaseDonnees().begin();
+      
+      lRequete = getBaseDonnees().getOQLQuery("select PROJET from owep.modele.execution.MProjet PROJET where mId=$1");
+      lRequete.bind(idProjet);
+      lResultat = lRequete.execute();
+      MProjet lProjet = (MProjet) lResultat.next();
+      lProjet.setDateDebutReelle(new Date());
+      lProjet.setEtat(MTache.ETAT_EN_COURS);
+      
+      getBaseDonnees().commit();
+      
+      getSession().ouvrirProjet(lProjet);
+      
       getBaseDonnees ().begin () ;
       lRequete = getBaseDonnees ().getOQLQuery ("select ITERATION from owep.modele.execution.MIteration ITERATION where mNumero = $1 AND mProjet.mId = $2") ;
       lRequete.bind(1);
@@ -69,6 +84,7 @@ public class CDemarrerProjet extends CControleurBase
       lIteration.setEtat (MIteration.ETAT_EN_COURS) ;
       Date date = new Date () ;
       lIteration.setDateDebutReelle (date) ;
+      
       //On parcour la liste des taches de la nouvelle itération
       //et on passe l'état de celle qui peuvent commencer à prète
       //Une tache est prète à commencer si elle n'a aucune condition
@@ -77,6 +93,16 @@ public class CDemarrerProjet extends CControleurBase
         MTache lTache = lIteration.getTache (i) ;
         if (lTache.getNbConditions () == 0)
           lTache.setEtat (MTache.ETAT_NON_DEMARRE) ;
+        lTache.setDateDebutReelle(new Date());
+      }
+      
+      // Taches imprevues
+      for (int i = 0 ; i < lIteration.getNbTachesImprevues() ; i++)
+      {
+        MTacheImprevue lTacheImp = lIteration.getTacheImprevue (i) ;
+        if (lTacheImp.getNbConditions() == 0)
+          lTacheImp.setEtat (MTache.ETAT_NON_DEMARRE) ;
+        lTacheImp.setDateDebutReelle(new Date());
       }
       getSession().setIteration(lIteration);
       getBaseDonnees ().commit () ;

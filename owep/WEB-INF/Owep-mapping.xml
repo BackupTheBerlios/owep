@@ -199,11 +199,23 @@
     <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
       <sql name="PRJ_DESCRIPTION" type="char"/>
     </field>
+    <field name="mBilan" type="string" get-method="getBilan" set-method="setBilan" required="true">
+      <sql name="PRJ_BILAN" type="char"/>
+    </field>
     <field name="mDateDebutPrevue" type="date" get-method="getDateDebutPrevue" set-method="setDateDebutPrevue">
       <sql name="PRJ_DATEDEBUTPREVUE" type="date"/>
     </field>
     <field name="mDateFinPrevue" type="date" get-method="getDateFinPrevue" set-method="setDateFinPrevue">
       <sql name="PRJ_DATEFINPREVUE" type="date"/>
+    </field>
+    <field name="mDateDebutReelle" type="date" get-method="getDateDebutReelle" set-method="setDateDebutReelle">
+      <sql name="PRJ_DATEDEBUTREELLE" type="date"/>
+    </field>
+    <field name="mDateFinReelle" type="date" get-method="getDateFinReelle" set-method="setDateFinReelle">
+      <sql name="PRJ_DATEFINREELLE" type="date"/>
+    </field>
+    <field name="mEtat" type="integer" get-method="getEtat" set-method="setEtat" required="true">
+      <sql name="PRJ_ETAT" type="integer"/>
     </field>
     <field name="mBudget" type="double" get-method="getBudget" set-method="setBudget">
       <sql name="PRJ_BUDGET" type="float"/> 

@@ -343,6 +343,14 @@
   
   
   
+  <servlet> 
+    <servlet-name>CCloturerProjet</servlet-name> 
+    <servlet-class>owep.controle.processus.CCloturerProjet</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CCloturerProjet</servlet-name> 
+    <url-pattern>/Processus/CloturerProjet</url-pattern> 
+  </servlet-mapping> 
   
   <servlet> 
     <servlet-name>CGererProjet</servlet-name> 
