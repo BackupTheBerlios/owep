@@ -27,6 +27,15 @@
   <!-- Liste des servlets pour l'installation -->
 
   <servlet>
+    <servlet-name>CInstallation</servlet-name>
+    <servlet-class>owep.controle.installation.CInstallation</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CInstallation</servlet-name>
+    <url-pattern>/Installation</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>CConfigurationBD</servlet-name>
     <servlet-class>owep.controle.installation.CConfigurationBD</servlet-class>
   </servlet>
