@@ -74,7 +74,7 @@ public class CRapportActivite extends CControleurBase
     if (getRequete ().getParameter (CConstante.PAR_SUBMIT) != null)
     {
       // Récupère le rapport d'activités pour chaque tâche du collaborateur.
-      for (int i = 0; i < mCollaborateur.getNbTaches (); i ++ )
+      for (int i = 0; i < mCollaborateur.getNbTaches(); i ++ )
       {
         MTache lTache = mCollaborateur.getTache (i) ;
         
@@ -132,7 +132,7 @@ public class CRapportActivite extends CControleurBase
       {
         // Met à jour la base de données avec les informations fournies par le collaborateur.
         getBaseDonnees ().begin () ;
-        for (int i = 0; i < mCollaborateur.getNbTaches (); i ++)
+        for (int i = 0; i < mCollaborateur.getNbTaches(); i ++)
         {
           getBaseDonnees ().update (mCollaborateur.getTache (i)) ;
         }

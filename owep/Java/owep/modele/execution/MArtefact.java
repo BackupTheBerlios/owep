@@ -1,5 +1,7 @@
 package owep.modele.execution ;
 
+import java.io.File;
+
 
 import owep.modele.MModeleBase ;
 import owep.modele.processus.MProduit;
@@ -10,15 +12,20 @@ import owep.modele.processus.MProduit;
  */
 public class MArtefact extends MModeleBase
 {
-  private int            mId ;            // Identifie l'artefact de manière unique.
-  private String         mNom ;           // Nom de l'artefact.
-  private String         mDescription ;   // Description de l'artefact.
+  // Indique la disponibilité de l'artefact
+  public static final int INDISPONIBLE = 0 ;
+  public static final int DISPONIBLE = 1 ;
+    
+  private int            mId ;            // Identifie l'artefact de manière unique
+  private String         mNom ;           // Nom de l'artefact
+  private String         mDescription ;   // Description de l'artefact
   private MTache         mTacheEntree ;   // Tâche dont est issu l'artefact.
   private MTache         mTacheSortie ;   // Tâche qui nécessite l'artefact.
   private MProduit       mProduit ;       // Produit que l'artefact instancie.
   private MCollaborateur mCollaborateur ; // Collaborateur responsable de l'artefact.
   private MProjet        mProjet ;        // Projet pour lequel est réalisé l'artefact.
-
+  private File           mFichier;        // fichier correspondant à l'artefact
+  
 
   /**
    * Crée une instance vide de MArtefact.
@@ -39,6 +46,7 @@ public class MArtefact extends MModeleBase
     mId          = pId ;
     mNom         = pNom ;
     mDescription = pDescription ;
+    mFichier = null;
   }
 
 
@@ -199,5 +207,15 @@ public class MArtefact extends MModeleBase
   public void setTacheSortie (MTache pTacheSortie)
   {
     mTacheSortie = pTacheSortie ;
+  }
+  
+  /**
+   * Vérifie si un artefact est disponible
+   * @return Disponibilité de l'artefact
+   */
+  public String estDisponible()
+  {
+      if (mFichier != null && mFichier.exists()) return "V";
+      else return "X";
   }
 }

@@ -24,7 +24,7 @@ public class MCollaborateur extends MModeleBase
   private ArrayList mArtefacts ;    // Artefacts dont le collaborateur est responsable.
   private ArrayList mRoles ;        // Rôles tenues par le collaborateur.
   private ArrayList mTaches ;       // Listes des tâches que doient réaliser le collaborateur.
-
+  private int       mTacheEnCours ; // Booléen indiquant si le collaborateur est en train de réaliser une tâche
 
   /**
    * Crée une instance vide de MCollaborateur.
@@ -412,5 +412,24 @@ public class MCollaborateur extends MModeleBase
   public void setUtilisateur (String pUtilisateur)
   {
     mUtilisateur = pUtilisateur ;
+  }
+  
+  /**
+   * Récupère le booléen indicateur de tache en cours.
+   * @return Booléen (0 ou 1)
+   */
+  public int getTacheEnCours ()
+  {
+    return mTacheEnCours ;
+  }
+
+
+  /**
+   * Initialise le booléen indicateur de tache en cours.
+   * @param pUtilisateur Booléen indicateur de tache en cours.
+   */
+  public void setTacheEnCours (int pTacheEnCours)
+  {
+    mTacheEnCours = pTacheEnCours ;
   }
 }

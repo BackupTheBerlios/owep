@@ -13,43 +13,32 @@ import owep.modele.processus.MActivite ;
  */
 public class MTache extends MModeleBase
 {
-  /**
-   * Indique que la tâche a été créée par le chef de projet mais ne peut être démarrée si certaines
-   * conditions ou dépendances ne sont pas remplies.
-   */
-  public static final int ETAT_CREEE    = 0 ;
-  /**
-   * Indique que la tâche peut être démarrée par le collaborateur concerné.
-   */
-  public static final int ETAT_PRETE    = 1 ;
-  /**
-   * Indique que la tâche est en cours de réalisation.
-   */
-  public static final int ETAT_EN_COURS = 2 ;
-  /**
-   * Indique que la tâche est terminée.
-   */
-  public static final int ETAT_TERMINE  = 3 ;
-
-
-  private int            mId ;               // Identifie la tâche de manière unique.
-  private String         mNom ;              // Nom de la tâche.
-  private String         mDescription ;      // Description de la tâche.
-  private int            mEtat ;             // Etat de la tâche.
-  private double         mChargeInitiale ;   // Charge prévue par le chef de projet.
-  private double         mTempsPasse ;       // Temps passé sur la tâche.
-  private double         mResteAPasser ;     // Temps restant à passer sur la tâche.
-  private Date           mDateDebutPrevue ;  // Date de début prévue par le chef de projet.
-  private Date           mDateFinPrevue ;    // Date de fin prévue par le chef de projet.
-  private Date           mDateDebutReelle ;  // Date de début réelle de la tâche.
-  private Date           mDateFinReelle ;    // Date de fin réelle de la tâche.
-  private ArrayList      mArtefactsEntrees ; // Liste des artefacts nécessaires à la tâche.
-  private ArrayList      mArtefactsSorties ; // Liste des artefacts à produire durant la tâche.
-  private MActivite      mActivite ;         // Activité que la tâche instancie. 
-  private MCollaborateur mCollaborateur ;    // Collaborateur réalisant la tâche.
-  private MIteration     mIteration ;        // Itération durant laquelle est effectuée la tâche.
-
-
+  // Indique l'état de la tâche
+  public static final int ETAT_CREEE = -1 ; // Tâche créée
+  public static final int ETAT_NON_DEMARRE = 0 ; // Tâche prête
+  public static final int ETAT_EN_COURS    = 1 ;
+  public static final int ETAT_SUSPENDU = 2 ;
+  public static final int ETAT_TERMINE     = 3 ;
+  
+  private int             mId ;                  // Identifie la tâche de manière unique
+  private String          mNom ;                 // Nom de la tâche
+  private String          mDescription ;         // Description de la tâche
+  private double          mChargeInitiale ;      // Charge prévue par le chef de projet
+  private double          mTempsPasse ;          // Temps passé sur la tâche
+  private double          mResteAPasser ;        // Temps restant à passer sur la tâche
+  private int             mEtat ;                //Etat de la tâche
+  private Date            mDateDebutPrevue ;     // Date de début prévue par le chef de projet
+  private Date            mDateDebutReelle ;     // Date de début réelle de la tâche
+  private Date            mDateFinPrevue ;       // Date de fin prévue par le chef de projet
+  private Date            mDateFinReelle ;       // Date de fin réelle de la tâche
+  private ArrayList       mArtefactsEntrees ;    // Liste des artefacts nécessaires à la tâche.
+  private ArrayList       mArtefactsSorties ;    // Liste des artefacts à produire durant la tâche.
+  private MActivite       mActivite ;            // Activité que la tâche instancie. 
+  private MCollaborateur  mCollaborateur ;       // Collaborateur réalisant la tâche.
+  private MIteration      mIteration ;           // Itération durant laquelle est effectuée la tâche.
+  private Date            mDateDebutChrono ;     // Date a laquelle on demarre le chrono pour le temps passé sur une tache
+  private ArrayList       mConditions ;          // Liste de conditions nécessaires pour que la tâche soit dans l'état prêt
+  
   /**
    * Crée une instance vide de MTache.
    */
@@ -57,7 +46,7 @@ public class MTache extends MModeleBase
   {
     super () ;
     
-    mEtat = ETAT_CREEE ;
+    mEtat = ETAT_NON_DEMARRE ;
     
     mArtefactsEntrees = new ArrayList () ;
     mArtefactsSorties = new ArrayList () ;
@@ -81,7 +70,7 @@ public class MTache extends MModeleBase
     mId              = pId ;
     mNom             = pNom ;
     mDescription     = pDescription ;
-    mEtat            = ETAT_CREEE ;
+    mEtat            = ETAT_NON_DEMARRE ;
     mChargeInitiale  = pChargeInitiale ;
     mDateDebutPrevue = pDateDebutPrevue ;
     mDateFinPrevue   = pDateFinPrevue ;
@@ -113,7 +102,7 @@ public class MTache extends MModeleBase
     mId              = pId ;
     mNom             = pNom ;
     mDescription     = pDescription ;
-    mEtat            = ETAT_CREEE ;
+    mEtat            = ETAT_NON_DEMARRE ;
     mChargeInitiale  = pChargeInitiale ;
     mTempsPasse      = pTempsPasse ;
     mResteAPasser    = pResteAPasser ;
@@ -415,9 +404,58 @@ public class MTache extends MModeleBase
     {
       mResteAPasser = 0 ;
     }
+    mEtat = pEtat ;
+  }
+
+  /**
+   * Récupère la liste des conditions pour le passage de la tâche à l'état prêt
+   * @return Liste des conditions pour le passage de la tâche à l'état prêt
+   */
+  public ArrayList getListeConditions ()
+  {
+    return mConditions ;
   }
 
 
+  /**
+   * Initialise la liste des conditions pour le passage de la tâche à l'état prêt
+   * @param pArtefactsEntrees Liste des conditions pour le passage de la tâche à l'état prêt
+   */
+  public void setListeConditions (ArrayList pConditions)
+  {
+    mConditions = pConditions ;
+  }
+
+
+  /**
+   * Récupère le nombre de conditions.
+   * @return Nombre de conditions.
+   */
+  public int getNbConditions ()
+  {
+    return mConditions.size () ;
+  }
+  
+  /**
+   * Récupère la condition de la tache d'indice spécifié
+   * @param pIndice Indice de la condition de la tache
+   * @return Condition de la tâche.
+   */
+  public MCondition getCondition (int pIndice)
+  {
+    return (MCondition) mConditions.get (pIndice) ;
+  }
+
+
+  /**
+   * Ajoute la condition spécifiée à la tâche.
+   * @param pCondition condition de la tâche.
+   */
+  public void addCondition (MCondition pCondition)
+  {
+    mConditions.add (pCondition) ;
+  }
+  
   /**
    * Récupère l'identifiant de la tâche.
    * @return Identifiant unique de la tâche
@@ -559,5 +597,23 @@ public class MTache extends MModeleBase
   public double getPrcAvancement ()
   {
     return mTempsPasse / (mTempsPasse + mResteAPasser) ;
+  }
+  
+   /**
+   * Recupere la date de lancement du chronometre.
+   * @return Date de lancement du chronometre
+   */
+  public Date getDateDebutChrono ()
+  {
+    return mDateDebutChrono ;
+  }
+  
+  /**
+   * Initialise la date de lancement du chronometre.
+   * @param pDateDebutChrono Date de lancement du chronometre.
+   */
+  public void setDateDebutChrono (Date pDateDebutChrono)
+  {
+    mDateDebutChrono = pDateDebutChrono ;
   }
 }

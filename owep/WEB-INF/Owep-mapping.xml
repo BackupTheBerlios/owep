@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+﻿<?xml version="1.0" ?>
 <!DOCTYPE databases PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.exolab.org/mapping.dtd">
 
 <mapping>
@@ -263,6 +263,9 @@
     <field name="mMotDePasse" type="string" get-method="getMotDePasse" set-method="setMotDePasse" required="true">
       <sql name="COL_MOTDEPASSE" type="char"/>
     </field>
+    <field name="mTacheEnCours" type="integer" get-method="getTacheEnCours" set-method="setTacheEnCours">
+      <sql name="COL_TACHEENCOURS" type="integer"/>
+    </field>
     <field name="mArtefacts" type="owep.modele.execution.MArtefact" collection="arraylist" get-method="getListeArtefacts" set-method="setListeArtefacts">
       <sql many-key="ART_COL_ID"/>
     </field>
@@ -295,6 +298,9 @@
     <field name="mResteAPasser" type="double" get-method="getResteAPasser" set-method="setResteAPasser" required="true">
       <sql name="TAC_RESTEAPASSER" type="float"/>
     </field>
+    <field name="mEtat" type="integer" get-method="getEtat" set-method="setEtat">
+      <sql name="TAC_ETAT" type="integer"/>
+    </field>
     <field name="mDateDebutPrevue" type="date" get-method="getDateDebutPrevue" set-method="setDateDebutPrevue" required="true">
       <sql name="TAC_DATEDEBUTPREVUE" type="date"/>
     </field>
@@ -306,6 +312,9 @@
     </field>
     <field name="mDateFinReelle" type="date" get-method="getDateFinReelle" set-method="setDateFinReelle">
       <sql name="TAC_DATEFINREELLE" type="date"/>
+    </field>
+    <field name="mDateDebutChrono" type="date" get-method="getDateDebutChrono" set-method="setDateDebutChrono">
+      <sql name="TAC_DATEDEBUTCHRONO" type="date"/>
     </field>
     <field name="mIteration" type="owep.modele.execution.MIteration" get-method="getIteration" set-method="setIteration" required="true">
       <sql name="TAC_ITE_ID"/>
@@ -321,6 +330,9 @@
     </field>
     <field name="mArtefactsSorties" type="owep.modele.execution.MArtefact" collection="arraylist" get-method="getListeArtefactsSorties" set-method="setListeArtefactsSorties">
       <sql many-key="ART_TAC_ID_SORTIE"/>
+    </field>
+    <field name="mConditions" type="owep.modele.execution.MCondition" collection="arraylist" get-method="getListeConditions" set-method="setListeConditions">
+      <sql many-key="CND_TAC_ID"/>
     </field>
   </class>
   
@@ -354,9 +366,12 @@
   </class>
   
 
-  <class name="owep.modele.execution.MCondition" identity="mTache mTachePrecedente">
-    <map-to table="TAC_TACHE"/>
-    <field name="mTache" type="owep.modele.execution.MTache" get-method="getTache" set-method="setTache" required="true">
+  <class name="owep.modele.execution.MCondition" identity="mId">
+    <map-to table="CND_CONDITION"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId">
+      <sql name="CND_ID" type="integer"/>
+    </field>
+    <field name="mTache" type="owep.modele.execution.MTache" get-method="getTache" set-method="setTache">
       <sql name="CND_TAC_ID"/>
     </field>
     <field name="mTachePrecedente" type="owep.modele.execution.MTache" get-method="getTachePrecedente" set-method="setTachePrecedente" required="true">

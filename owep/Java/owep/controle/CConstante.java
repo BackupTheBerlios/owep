@@ -16,9 +16,12 @@ public class CConstante
   // Identifiants des paramètres transmis à la JSP.
   public static final String PAR_SUBMIT          = "pSubmit" ;
   public static final String PAR_COLLABORATEUR   = "pCollaborateur" ;
+  public static final String PAR_TACHE           = "pTache" ;
+  public static final String PAR_ARTEFACT        = "pArtefact" ;
   public static final String PAR_ITERATION       = "pIteration" ;
   public static final String PAR_TEMPSPASSE      = "pTempsPasse" ;
   public static final String PAR_RESTEAPASSER    = "pResteAPasser" ;
+  public static final String PAR_ETAT            = "pEtat" ;
   public static final String PAR_DATEDEBUTREELLE = "pDateDebutReel" ;
   public static final String PAR_DATEFINREELLE   = "pDateFinReestimee" ;
 }

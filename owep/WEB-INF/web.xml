@@ -19,6 +19,16 @@
     <url-pattern>/Tache/ListeTacheVisu</url-pattern> 
   </servlet-mapping> 
   
+  <!-- Liste des Servlets -->
+  <servlet> 
+    <servlet-name>CTacheVisu</servlet-name> 
+    <servlet-class>owep.controle.CTacheVisu</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CTacheVisu</servlet-name> 
+    <url-pattern>/Tache/TacheVisu</url-pattern> 
+  </servlet-mapping> 
+  
   <servlet> 
     <servlet-name>CRapportActivite</servlet-name> 
     <servlet-class>owep.controle.CRapportActivite</servlet-class> 
@@ -27,6 +37,24 @@
     <servlet-name>CRapportActivite</servlet-name> 
     <url-pattern>/Tache/RapportActivite</url-pattern> 
   </servlet-mapping> 
+  
+  <servlet> 
+    <servlet-name>CEtat</servlet-name> 
+    <servlet-class>owep.controle.CEtat</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CEtat</servlet-name> 
+    <url-pattern>/Tache/Etat</url-pattern> 
+  </servlet-mapping>
+  
+  <servlet> 
+    <servlet-name>CValidationRapport</servlet-name> 
+    <servlet-class>owep.controle.CValidationRapport</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CValidationRapport</servlet-name> 
+    <url-pattern>/Tache/ValidationRapport</url-pattern> 
+  </servlet-mapping>
   
   <servlet> 
     <servlet-name>CConnexion</servlet-name> 
