@@ -320,7 +320,7 @@ td.regionPrincipal
  **************************************************************************************************/
 td.regionLogo
 {
-  background-image : url(/owep/Image/Red/regionLogo.png) ;
+  background-image : url(/owep/Image/Blue/regionLogo.png) ;
   height           : 159px ;
   width            : 170px ;
 }
@@ -339,41 +339,41 @@ td.regionMenu
 }
 td.caseMenuProjet
 {
-  background-image : url(/owep/Image/Red/caseMenuListe.png) ;
+  background-image : url(/owep/Image/Blue/caseMenuListe.png) ;
   height           : 33px ;
   padding-bottom   : 2px ;
   text-align       : center ;
 }
 td.caseMenuConnexion
 {
-  background-image : url(/owep/Image/Red/caseMenuNiveau2.png) ;
+  background-image : url(/owep/Image/Blue/caseMenuNiveau2.png) ;
   height           : 18px ;
   text-align       : center ;
 }
 td.caseMenuNiveau1
 {
   background-color : rgb(80,123,184) ;
-  background-image : url(/owep/Image/Red/caseMenuNiveau1.png) ;
+  background-image : url(/owep/Image/Blue/caseMenuNiveau1.png) ;
   height           : 27px ;
   padding-bottom   : 2px ;
   padding-left     : 9px ;
 }
 td.caseMenuNiveau2
 {
-  background-image : url(/owep/Image/Red/caseMenuNiveau2.png) ;
+  background-image : url(/owep/Image/Blue/caseMenuNiveau2.png) ;
   height           : 18px ;
   padding-left     : 18px ;
 }
 td.caseMenuSeparation
 {
-  background-image : url(/owep/Image/Red/caseMenuSeparation.png) ;
+  background-image : url(/owep/Image/Blue/caseMenuSeparation.png) ;
   height           : 16px ;
   font-family      : arial ;
   font-size        : 6px ;
 }
 td.caseMenuSeparation2
 {
-  background-image : url(/owep/Image/Red/caseMenuNiveau2.png) ;
+  background-image : url(/owep/Image/Blue/caseMenuNiveau2.png) ;
   font-family      : arial ;
   font-size        : 6px ;
 }
@@ -445,7 +445,7 @@ td.regionMessagerie
 }
 td.caseMessageCommande
 {
-  background-image : url(/owep/Image/Red/messageCommande.png) ;
+  background-image : url(/owep/Image/Blue/messageCommande.png) ;
   border-width     : 0px 0px 0px 0px ;
   height           : 26px ;
   padding-left     : 5px ;
@@ -540,7 +540,7 @@ p.message
 td.regionPied
 {
   background-color : rgb(80,123,184) ;
-  background-image : url(/owep/Image/Red/regionPied.png) ;
+  background-image : url(/owep/Image/Blue/regionPied.png) ;
   border           : solid rgb(57,101,198) ;
   border-width     : 0px 2px 2px 2px ;
   height           : 18px ;
@@ -560,13 +560,13 @@ td.regionPied
  **************************************************************************************************/
 img.iconeAide
 {
-  background-image : url(/owep/Image/Red/iconeAide.png) ;
+  background-image : url(/owep/Image/Blue/iconeAide.png) ;
   height           : 48px ;
   width            : 48px ;
 }
 img.iconeCaseAide
 {
-  background-image : url(/owep/Image/Red/iconeTexteAide.png) ;
+  background-image : url(/owep/Image/Blue/iconeTexteAide.png) ;
   height           : 48px ;
   width            : 48px ;
 }
