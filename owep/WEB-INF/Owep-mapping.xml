@@ -465,7 +465,7 @@
   </class>
   
   <class name="owep.modele.execution.MProbleme" identity="mId">
-    <map-to table="PRB_PROBLEME/>
+    <map-to table="PRB_PROBLEME"/>
     <field name="mId" type="integer" get-method="getId" set-method="setId">
       <sql name="PRB_ID" type="integer"/>
     </field>
