@@ -1,16 +1,12 @@
 <%@ page language="java" %>
-<%@page import="owep.modele.execution.MTache"%>
-<%@page import="owep.controle.CConstante"%>
 <%@ taglib uri="/WEB-INF/tld/template.tld" prefix="template" %>
-
-<%
-  MTache lTache  = (MTache) request.getAttribute (CConstante.PAR_TACHE) ;
-  String nomTache = "Détail de la tâche : "+lTache.getNom() ;
-%>
+<!DOCTYPE HTML PUBLIC "-//w3c//dtd html 4.0 transitional//en">
 
 <template:template nom="/JSP/Template/FTemplate.jsp">
-  <template:section region="RegionTitre"      contenu="<%=nomTache%>" typePage="false"/>
-  <template:section region="RegionPrincipal"  contenu="/JSP/Tache/FTacheVisu.jsp"      typePage="true"/>
+  <template:section region="RegionScript"     contenu="NavigationIteration.js"         typePage="false"/>  
+  <template:section region="RegionTitre"      contenu="Suivi d'avancement du projet"   typePage="false"/>
+  <template:section region="RegionNavigation" contenu="/JSP/Navigation/FIteration.jsp" typePage="true"/>  
+  <template:section region="RegionPrincipal"  contenu="/JSP/Avancement/FAvancementProjet.jsp" typePage="true"/>
   <template:section region="RegionLogo"       contenu="/JSP/Template/FLogo.jsp"        typePage="true"/>
   <template:section region="RegionMenu"       contenu="/JSP/Template/FMenu.jsp"        typePage="true"/>
   <template:section region="RegionMessagerie" contenu="/JSP/Template/FMessagerie.jsp"  typePage="true"/>

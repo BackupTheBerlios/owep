@@ -16,11 +16,28 @@ public class Session
   private MCollaborateur mCollaborateur = null;  // Collaborateur connecté
   private MProjet mProjet = null; // Projet ouvert par le collaborateur connecté
   private ArrayList mListeProjetPossible; // Liste des projets concernant l'utilisateur connecté
-  private MIteration mIteration = null; // itération ouvert par le collaborateur connecté
+  private MIteration mIteration = null; // itération ouverte par le collaborateur connecté
   private ResourceBundle messages = null; // resource bundle
   private MConfiguration mConfiguration = null; // Tous les éléments de configuration
   private String URLPagePrecedente = null ; //conserve l'URL de la page précédente pour pouvoire y retourner
+  private int idCollabAVisualiser ; // identifiant du collaborateur dont on veut visualiser la liste des taches
   
+  /**
+   * TODO Récupère idCollabAVisualiser.
+   * @return idCollabAVisualiser.
+   */
+  public int getIdCollabAVisualiser ()
+  {
+    return idCollabAVisualiser ;
+  }
+  /**
+   * TODO Initialise idCollabAVisualiser.
+   * @param idCollabAVisualiser idCollabAVisualiser.
+   */
+  public void setIdCollabAVisualiser (int idCollabAVisualiser)
+  {
+    this.idCollabAVisualiser = idCollabAVisualiser ;
+  }
   /**
    * Ouvre la session pour le collaborateur passé en paramètre et initialise les variables.
    * @param Collaborateur connecté.

@@ -42,7 +42,6 @@ public class CTacheVisu extends CControleurBase{
         
         //récupération de l'id de la tache donc on veut afficher le détail
         int idTache = Integer.parseInt(getRequete().getParameter(("pTacheAVisualiser")));
-        System.out.println(idTache);
         // Récupère la tâche à visualiser.
         lRequete = getBaseDonnees ().getOQLQuery ("select TACHE from owep.modele.execution.MTache TACHE where mId = $1") ;
         lRequete.bind (idTache) ;
@@ -91,7 +90,6 @@ public class CTacheVisu extends CControleurBase{
     {
       // Transmet les données à la JSP d'affichage.
       getRequete ().setAttribute (CConstante.PAR_TACHE, mTache) ;
-      
       getRequete ().setAttribute (CConstante.SES_SESSION, getSession()) ;
       
       return "..\\JSP\\Tache\\TTacheVisu.jsp" ;

@@ -331,8 +331,8 @@
     <field name="mDateFinReelle" type="date" get-method="getDateFinReelle" set-method="setDateFinReelle">
       <sql name="TAC_DATEFINREELLE" type="date"/>
     </field>
-    <field name="mDateDebutChrono" type="date" get-method="getDateDebutChrono" set-method="setDateDebutChrono">
-      <sql name="TAC_DATEDEBUTCHRONO" type="date"/>
+    <field name="mDateDebutChrono" type="long" get-method="getDateDebutChrono" set-method="setDateDebutChrono">
+      <sql name="TAC_DATEDEBUTCHRONO" type="bigint"/>
     </field>
     <field name="mIteration" type="owep.modele.execution.MIteration" get-method="getIteration" set-method="setIteration" required="true">
       <sql name="TAC_ITE_ID"/>

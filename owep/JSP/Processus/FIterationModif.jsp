@@ -68,7 +68,7 @@
       <td class="caseNiveau3" width="50%">
         Date de début prévue * : <input <transfert:transfertchamp membre="setDateDebutPrevue" type="java.util.Date" libelle="Date de début prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/> 
                                 type="text" size="8" class="niveau2"
-                                value="<%= VDateConvertor.getString (lIteration.getDateDebutPrevue (), true) %>"  maxlength="<%= CConstante.TXT_DATE %>">
+                                value="<%= VDateConvertor.getString(lIteration.getDateDebutPrevue (), true) %>"  maxlength="<%= CConstante.TXT_DATE %>">
       </td>
       <td class="caseNiveau3" width="50%">
         Date de fin prévue * : <input <transfert:transfertchamp membre="setDateFinPrevue" type="java.util.Date" libelle="Date de fin prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>  

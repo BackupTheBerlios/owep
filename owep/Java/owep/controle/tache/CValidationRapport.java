@@ -105,16 +105,6 @@ public class CValidationRapport extends CControleurBase{
 
       // récupération de la date de debut réelle
       debutReel = new SimpleDateFormat ("yyyy-MM-dd").parse(getRequete().getParameter(CConstante.PAR_DATEDEBUTREELLE));
-      
-      // Récupère le numéro d'itération.
-      if (getRequete ().getParameter (CConstante.PAR_ITERATION) == null)
-      {
-        mIterationNum = 1 ;
-      }
-      else
-      {
-        mIterationNum = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_ITERATION)) ;
-      }
     }
     catch (Exception eException)
     {
@@ -139,9 +129,9 @@ public class CValidationRapport extends CControleurBase{
     mTache.setEtat(ET) ; 
     mTache.setDateFinReelle(finReest) ;
     mTache.setDateDebutReelle(debutReel);
-    mTache.setDateDebutChrono(null) ;
+    mTache.setDateDebutChrono(0) ;
     // Le collaborateur n'a désormais plus de tâche en cours
-    mCollaborateur.setTacheEnCours(0) ;
+    mCollaborateur.setTacheEnCours(-1) ;
 
     try
     {
@@ -171,9 +161,6 @@ public class CValidationRapport extends CControleurBase{
     }
  
     // Transmet les données à la JSP d'affichage.
-    getRequete ().setAttribute (CConstante.PAR_ITERATION,     new Integer (mIterationNum)) ;
     return "ListeTacheVisu" ;
-          
-     
   }
 }

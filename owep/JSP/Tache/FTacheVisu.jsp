@@ -15,7 +15,7 @@
     
     String [] tabEtat = {"Créée", "Prète", "Commencée", "Suspendue", "Terminée"};
 
-	String PATH_ARTEFACT = lSession.getConfiguration().getPathArtefact();
+	  String PATH_ARTEFACT = lSession.getConfiguration().getPathArtefact();
 %>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -24,10 +24,6 @@
   <td width="50%">
     <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tbody>
-      <tr>
-        <td width="30%" class="caseNiveau2SansBordure">Tâche : </td>
-        <td align="left" class="caseNiveau3SansBordure"><%= lTache.getNom ()%></td>
-      </tr>
       <tr>
         <td width="30%" class="caseNiveau2SansBordure">Etat : </td>
         <td align="left" class="caseNiveau3SansBordure"><%= tabEtat[lTache.getEtat()+1]%></td>

@@ -16,6 +16,10 @@ import owep.modele.MModeleBase;
  */
 public class MIteration extends MModeleBase
 {
+  public static final int ETAT_NON_DEMARRE = 0 ; // iteration non demarree
+  public static final int ETAT_EN_COURS = 1 ; // iteration en cours
+  public static final int ETAT_TERMINE    = 2 ; //iteration terminee
+
   private int       mId ;              // Identifie l'itération de manière unique.
   private int       mNumero ;          // Numéro de l'itération.
   private String    mNom ;             // Nom désignant l'itération.
@@ -25,8 +29,8 @@ public class MIteration extends MModeleBase
   private Date      mDateFinReelle ;   // Date de fin réelle de l'itération.
   private MProjet   mProjet ;          // Projet dont l'itération est une étape.
   private ArrayList mTaches ;          // Liste des tâches réalisées durant l'itération.
-  private int       mEtat ;            // Etat de la tache
-
+  private int       mEtat ;            // Etat de l iteration
+  
 
   /**
    * Crée une instance vide de MIteration.
@@ -36,6 +40,7 @@ public class MIteration extends MModeleBase
     super () ;
     
     mTaches = new ArrayList () ;
+    mEtat = ETAT_NON_DEMARRE ;
   }
 
 
@@ -56,6 +61,7 @@ public class MIteration extends MModeleBase
     mDateFinPrevue   = pDateFinPrevue ;
     
     mTaches = new ArrayList () ;
+    mEtat = ETAT_NON_DEMARRE ;
   }
 
 
@@ -81,6 +87,7 @@ public class MIteration extends MModeleBase
     mDateFinReelle   = pDateFinReelle ;
     
     mTaches = new ArrayList () ;
+    mEtat = ETAT_NON_DEMARRE ;
   }
 
   /**
@@ -389,5 +396,89 @@ public class MIteration extends MModeleBase
   public void supprimerTache (int pIndice)
   {
     mTaches.remove (pIndice) ;
+  }
+  
+  /**
+   * TODO Calcule la charge initiale prévue pour l iteration
+   * @return chargeInitiale.
+   */
+  public double getChargeInitiale()
+  {
+    double chargeInitiale = 0 ;
+    MTache lTache ; 
+    for (int i = 0 ; i < mTaches.size() ; i++)
+    {
+      lTache = (MTache)mTaches.get(i) ; 
+      chargeInitiale = chargeInitiale + lTache.getChargeInitiale() ;
+    }
+    return chargeInitiale ;
+  }
+  
+  /**
+   * TODO Calcule le temps passé pour l iteration
+   * @return tempsPasse.
+   */
+  public double getTempsPasse()
+  {
+    double tempsPasse = 0 ;
+    MTache lTache ; 
+    for (int i = 0 ; i < mTaches.size() ; i++)
+    {
+      lTache = (MTache)mTaches.get(i) ; 
+      tempsPasse = tempsPasse + lTache.getTempsPasse() ;
+    }
+    return tempsPasse ;
+  }
+  
+  /**
+   * TODO Calcule le reste à passer pour l iteration
+   * @return resteAPasser.
+   */
+  public double getResteAPasser()
+  {
+    double resteAPasser = 0 ;
+    MTache lTache ; 
+    for (int i = 0 ; i < mTaches.size() ; i++)
+    {
+      lTache = (MTache)mTaches.get(i) ; 
+      resteAPasser = resteAPasser + lTache.getResteAPasser() ;
+    }
+    return resteAPasser ;
+  }
+  
+  /**
+   * TODO Calcule le pourcentage de dépassement de charge pour l iteration
+   * @return pourcentage de depassement de charge.
+   */
+  public double getPrcDepassementCharge()
+  {
+    return (this.getTempsPasse() + this.getResteAPasser() - this.getChargeInitiale()) / this.getChargeInitiale() ;
+  }
+  
+  /**
+   * TODO Calcule le dépassement de charge pour l iteration en homme jour
+   * @return depassement de charge en HJ.
+   */
+  public double getHJDepassementCharge()
+  {
+    return (this.getTempsPasse() + this.getResteAPasser() - this.getChargeInitiale()) ;
+  }
+  
+  /**
+   * TODO Calcule le budget consommé pour l iteration
+   * @return budget consommé
+   */
+  public double getBudgetConsomme()
+  {
+    return (this.getTempsPasse() / this.getChargeInitiale()) ;
+  }
+  
+  /**
+   * TODO Calcule le pourcentage d'avancement pour l iteration
+   * @return pourcentage d avancement
+   */
+  public double getPrcAvancement()
+  {
+    return (this.getTempsPasse() / (this.getTempsPasse()+this.getResteAPasser())) ;
   }
 }

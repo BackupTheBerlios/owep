@@ -26,7 +26,7 @@ public class MCollaborateur extends MModeleBase
   private ArrayList mTaches ;       // Listes des tâches que doient réaliser le collaborateur.
   private ArrayList mProjets ;      // Listes des projets sur lesquels travaille le collaborateur.
   private ArrayList mProjetsChef ;  // Listes des projets pour lesquels le collaborateur est chef.
-  private int       mTacheEnCours ; // Booléen indiquant si le collaborateur est en train de réaliser une tâche
+  private int       mTacheEnCours ; // identifiant de la tâche en cours de réalisation
   private int       mDroit ;        // Droits du collaborateur (collaborateur = 0 ; chef de projet = 1) 
   
 
@@ -37,6 +37,7 @@ public class MCollaborateur extends MModeleBase
   {
     mRoles = new ArrayList () ;
     mTaches = new ArrayList () ;
+    mTacheEnCours = -1 ;
   }
 
 
@@ -67,8 +68,8 @@ public class MCollaborateur extends MModeleBase
     mUtilisateur  = pUtilisateur;
     mMotDePasse   = pMotDePasse;
     mDroit        = pDroit;
-    
     mTaches = new ArrayList () ;
+    mTacheEnCours = -1 ;
     mRoles = new ArrayList () ;
   }
 

@@ -12,9 +12,6 @@
     HttpSession httpSession = request.getSession(true);
     lSession = (Session) httpSession.getAttribute("SESSION");
 
-	//Sauvegarde de l'URL en session pour la liste de itérations
-	lSession.setURLPagePrecedente("/Tache/ListeTacheVisu");
-
     SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
     lCollaborateur = (MCollaborateur) request.getAttribute (CConstante.PAR_COLLABORATEUR) ;
     if(lCollaborateur.getNbTaches()>0)
@@ -62,7 +59,7 @@
       <% if (lSession.getIteration().getEtat() >= 1) {%>
       
       <!-- Si le collaborateur n'a pas de taches en état démarré, on peut commencer ou reprendre n'importe quelle tâche -->  
-      <% if(lCollaborateur.getTacheEnCours()==0)
+      <% if(lCollaborateur.getTacheEnCours()==-1)
            {
             switch (lTache.getEtat())
              { 
@@ -88,7 +85,7 @@
             <!-- Si le collaborateur a une tache en état démarré, on ne peut modifier l'état que de cette tâche -->
             <% }
            } 
-          else if(lCollaborateur.getTacheEnCours()==1)
+          else if(lCollaborateur.getTacheEnCours()!=-1)
            {
             switch (lTache.getEtat())
              { 
@@ -171,4 +168,12 @@
 </tbody>
 </table>
 
-<%}%>
+<%
+    }
+    else
+    {    
+%>
+    Vous n'avez pas de tâches à réaliser dans cette itération.
+<%
+    }
+%>

@@ -27,23 +27,24 @@ public class CConstante
   public static final String PAR_SUBMITAJOUTER_ARTENTREES   = "pSubmitAjouterArtEntrees" ;
   public static final String PAR_SUBMITSUPPRIMER_ARTENTREES = "pSubmitSupprimerArtEntrees" ;
   
-  public static final String PAR_FORMULAIRE      = "pFormulaire" ;
-  public static final String PAR_COLLABORATEUR   = "pCollaborateur" ;
-  public static final String PAR_ARTEFACT        = "pArtefact" ;
-  public static final String PAR_TEMPSPASSE      = "pTempsPasse" ;
-  public static final String PAR_RESTEAPASSER    = "pResteAPasser" ;
-  public static final String PAR_DATEDEBUTREELLE = "pDateDebutReel" ;
-  public static final String PAR_DATEFINREELLE   = "pDateFinReestimee" ;
-  public static final String PAR_ITERATION       = "pIteration" ;
-  public static final String PAR_TACHE           = "pTache" ;
-  public static final String PAR_ETAT            = "pEtat" ;
-  public static final String PAR_PROBLEME        = "pProbleme" ;
+  public static final String PAR_FORMULAIRE            = "pFormulaire" ;
+  public static final String PAR_COLLABORATEUR         = "pCollaborateur" ;
+  public static final String PAR_ARTEFACT              = "pArtefact" ;
+  public static final String PAR_TEMPSPASSE            = "pTempsPasse" ;
+  public static final String PAR_RESTEAPASSER          = "pResteAPasser" ;
+  public static final String PAR_DATEDEBUTREELLE       = "pDateDebutReel" ;
+  public static final String PAR_DATEFINREELLE         = "pDateFinReestimee" ;
+  public static final String PAR_ITERATION             = "pIteration" ;
+  public static final String PAR_TACHE                 = "pTache" ;
+  public static final String PAR_ETAT                  = "pEtat" ;
+  public static final String PAR_PROJET                = "pProjet" ;
+  public static final String PAR_PROBLEME              = "pProbleme" ;
   
-  public static final String PAR_ARBREITERATION       = "pArbreIteration" ;
-  public static final String PAR_ARBRETACHES          = "pArbreTaches" ;
-  public static final String PAR_ARBREARTEFACTSORTIES = "pArbreArtefactSorties" ;
-  public static final String PAR_ARBREPROBLEME        = "pArbreProblemes" ;
-  
+  public static final String PAR_ARBREITERATION        = "pArbreIteration" ;
+  public static final String PAR_ARBRETACHES           = "pArbreTaches" ;
+  public static final String PAR_ARBREARTEFACTSORTIES  = "pArbreArtefactSorties" ;
+  public static final String PAR_ARBREPROBLEME         = "pArbreProblemes" ;
+
   public static final String PAR_LISTETACHES             = "pListeTaches" ;
   public static final String PAR_LISTETACHESPROVOQUE     = "pListeTachesProvoque" ;
   public static final String PAR_LISTETACHESRESOUT       = "pListeTachesResout" ;

@@ -12,6 +12,8 @@ import org.exolab.castor.jdo.Database ;
 import org.exolab.castor.jdo.JDO ;
 import owep.infrastructure.Session ;
 import owep.infrastructure.localisation.LocalisateurIdentifiant ;
+import owep.modele.execution.MIteration;
+import owep.modele.execution.MProjet;
 
 
 /**
@@ -87,6 +89,20 @@ public abstract class CControleurBase extends HttpServlet
       }
       
       // Appelle la JSP d'affichage retournée par traiter.
+      // si on a cliqué dans le menu, on remet l iteration en cours d execution
+      if (getRequete().getParameter("menu")!=null)
+      {
+        MIteration lIterationEnCours = mSession.getIteration() ;
+        MProjet mProjet = mSession.getProjet() ;
+        // recherche de l iteration en cours
+        for (int m = 0; m < mProjet.getNbIterations() ; m++)
+        {
+          if (mProjet.getIteration(m).getEtat()==1)
+            lIterationEnCours = mProjet.getIteration(m);
+        }
+        // on remet l iteration en cours selectionnee dans le menu deroulant des iterations 
+        mSession.setIteration(lIterationEnCours) ;
+      }
       initialiserBaseDonnees () ;
       initialiserParametres () ;
       lRequeteDispatcher = pRequete.getRequestDispatcher (traiter ()) ;

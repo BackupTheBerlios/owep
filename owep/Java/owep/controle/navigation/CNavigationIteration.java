@@ -6,8 +6,6 @@
  */
 package owep.controle.navigation;
 
-import java.util.StringTokenizer;
-
 import javax.servlet.ServletException;
 import org.exolab.castor.jdo.OQLQuery;
 import org.exolab.castor.jdo.PersistenceException;
@@ -37,7 +35,6 @@ public class CNavigationIteration extends CControleurBase
       QueryResults   lResultat ;      // Résultat de la requête sur la base
       
       int idIteration = Integer.parseInt(getRequete().getParameter(CConstante.PAR_ITERATION));
-      System.out.println (idIteration ) ;
       try
       {
         getBaseDonnees ().begin () ;
@@ -84,6 +81,4 @@ public class CNavigationIteration extends CControleurBase
     {  
       return getSession().getURLPagePrecedente();
     }
-
-  
 }

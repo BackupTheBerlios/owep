@@ -94,16 +94,6 @@ public class CEtat extends CControleurBase{
       {
         // Récupère l'identifiant du bouton cliqué
         idBoutonClique = Integer.parseInt(getRequete().getParameter("pBoutonClique")) ;
-        
-        // Récupère le numéro d'itération.
-        if (getRequete ().getParameter (CConstante.PAR_ITERATION) == null)
-        {
-          mIterationNum = 1 ;
-        }
-        else
-        {
-          mIterationNum = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_ITERATION)) ;
-        }
       }
       catch (Exception eException)
       {
@@ -127,8 +117,6 @@ public class CEtat extends CControleurBase{
       GregorianCalendar calendrierFinChrono = new GregorianCalendar();
       // initialise le calendrier à la valeur calendrierFinChrono
       calendrierFinChrono.setTime(dateFinChrono);
-      // déclaration d'un calendrier
-      GregorianCalendar calendrierDebutChrono = new GregorianCalendar();
       
       switch(idBoutonClique){
         
@@ -154,18 +142,18 @@ public class CEtat extends CControleurBase{
                 mTache.setDateFinReelle(mTache.getDateFinPrevue()) ;
               }
               
-              mTache.setDateDebutChrono(new Date()) ;
+              mTache.setDateDebutChrono(new Date().getTime()) ;
               // Le collaborateur a maintenant une tâche en cours
-              mCollaborateur.setTacheEnCours(1) ;
+              mCollaborateur.setTacheEnCours(mTache.getId()) ;
           }   
           // si la tache était dans l'état suspendu
           if (mTache.getEtat() == 2) 
           {
             // on met l etat de la tache à 'commencé' et on retient la date de début
             mTache.setEtat(1) ; 
-            mTache.setDateDebutChrono(new Date()) ;
+            mTache.setDateDebutChrono(new Date().getTime()) ;
             // Le collaborateur a maintenant une tâche en cours
-            mCollaborateur.setTacheEnCours(1) ;
+            mCollaborateur.setTacheEnCours(mTache.getId()) ;
           } 
           
           try
@@ -196,7 +184,6 @@ public class CEtat extends CControleurBase{
           }
           
           // Transmet les données à la JSP d'affichage.
-          getRequete ().setAttribute (CConstante.PAR_ITERATION,     new Integer (mIterationNum)) ;
           return "ListeTacheVisu" ;
             
         // cas ou on appuie sur le bouton suspendre 
@@ -204,11 +191,9 @@ public class CEtat extends CControleurBase{
           // on met l etat de la tache à 'suspendu'
           mTache.setEtat(2) ; 
           // calcul du temps passé
-          // initialise le calendrier à la valeur calendrierDebutChrono
-          calendrierDebutChrono.setTime(mTache.getDateDebutChrono());
           
           // temps passé = date de fin du chrono - date de début du chrono
-          long difftps = calendrierFinChrono.getTime().getTime() - calendrierDebutChrono.getTime().getTime();
+          long difftps = calendrierFinChrono.getTime().getTime() - mTache.getDateDebutChrono();
           // conversion du temps en minutes
           int tps = (int)(difftps/(60*1000.0));
           mTache.setTempsPasse(mTache.getTempsPasse() + tps) ;
@@ -232,11 +217,9 @@ public class CEtat extends CControleurBase{
           mTache.setDateFinReelle(new Date()) ;
           
           // calcul du temps passé
-          // initialise le calendrier à la valeur calendrierDebutChrono
-          calendrierDebutChrono.setTime(mTache.getDateDebutChrono());
           
           // temps passé = date de fin du chrono - date de début du chrono
-          long difftps2 = calendrierFinChrono.getTime().getTime() - calendrierDebutChrono.getTime().getTime();
+          long difftps2 = calendrierFinChrono.getTime().getTime() - mTache.getDateDebutChrono();
           // conversion du temps en minutes
           int tps2 = (int)(difftps2/(60*1000.0));
           mTache.setTempsPasse(mTache.getTempsPasse() + tps2) ;
@@ -247,7 +230,6 @@ public class CEtat extends CControleurBase{
           
         default : 
           // Transmet les données à la JSP d'affichage.
-          getRequete ().setAttribute (CConstante.PAR_ITERATION,     new Integer (mIterationNum)) ;
           return "ListeTacheVisu" ;
       }
     }

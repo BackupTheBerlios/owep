@@ -85,41 +85,41 @@ public class CListeTacheVisu extends CControleurBase
         // on regarde si toutes les conditions pour que la tache soit prete sont vérifiées
         MTache lTache = mCollaborateur.getTache(i);
         
-        //Si la tache corespond à l'itération sélectionnée
+        //Si la tache correspond à l'itération sélectionnée
         if(lTache.getIteration().getId() == mSession.getIteration().getId())
         {
         
-        // si la tache n'est pas encore prete on verifie si on ne peut pas la faire passer a prete
-        if (lTache.getEtat()==-1)
-        {
-          // pour chaque condition
-          for (int j = 0; j<lTache.getNbConditions(); j++)
+          // si la tache n'est pas encore prete on verifie si on ne peut pas la faire passer a prete
+          if (lTache.getEtat()==-1)
           {
-            ltacheSansCondition = 0 ; //on est sur une tache avec condition
-            MCondition lCondition = lTache.getCondition(j);
-          
-            // si la condition est fausse
-            if (lCondition.getTachePrecedente().getEtat()<lCondition.getEtat())
+            // pour chaque condition
+            for (int j = 0; j<lTache.getNbConditions(); j++)
             {
-             cond = 0;
+              ltacheSansCondition = 0 ; //on est sur une tache avec condition
+              MCondition lCondition = lTache.getCondition(j);
+            
+              // si la condition est fausse
+              if (lCondition.getTachePrecedente().getEtat()<lCondition.getEtat())
+              {
+               cond = 0;
+              }
             }
           }
-        }
-        if (ltacheSansCondition == 0)
-        {
-          // si les conditions sont vérifiées, on met l'état à prêt
-          if (cond == 1)
-            lTache.setEtat(0) ;
-          else lTache.setEtat(-1) ;
-        }
-        
-        
-        // Met à jour l'état de la tâche dans la base de données
-        getBaseDonnees ().begin () ;
-        getBaseDonnees ().update (lTache) ;
-        getBaseDonnees ().commit () ; 
-        
-        lListeTaches.add(lTache);
+          if (ltacheSansCondition == 0)
+          {
+            // si les conditions sont vérifiées, on met l'état à prêt
+            if (cond == 1)
+              lTache.setEtat(0) ;
+            else lTache.setEtat(-1) ;
+          }
+          
+          
+          // Met à jour l'état de la tâche dans la base de données
+          getBaseDonnees ().begin () ;
+          getBaseDonnees ().update (lTache) ;
+          getBaseDonnees ().commit () ; 
+          
+          lListeTaches.add(lTache);
         }  
       }
       mCollaborateur.setListeTaches(lListeTaches);
@@ -142,17 +142,6 @@ public class CListeTacheVisu extends CControleurBase
         throw new ServletException (CConstante.EXC_DECONNEXION) ;
       }
     }
-
-    // Récupère le numéro d'itération.
-    if (getRequete ().getParameter (CConstante.PAR_ITERATION) == null)
-    {
-      // TODO Requête recup it en cours.
-    }
-    else
-    {
-      mIterationNum = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_ITERATION)) ;
-    }
-    mIterationNum = 1 ;
   }
   
   
@@ -167,7 +156,9 @@ public class CListeTacheVisu extends CControleurBase
   {
     // Transmet les données à la JSP d'affichage.
     getRequete ().setAttribute (CConstante.PAR_COLLABORATEUR, mCollaborateur) ;
-    getRequete ().setAttribute (CConstante.PAR_ITERATION,     new Integer (mIterationNum)) ;
+
+    //Sauvegarde de l'URL en session pour la liste de itérations
+    mSession.setURLPagePrecedente("/Tache/ListeTacheVisu");
     
     return "..\\JSP\\Tache\\TListeTacheVisu.jsp" ;
   }

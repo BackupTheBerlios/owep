@@ -33,22 +33,7 @@
     <servlet-name>CTacheVisu</servlet-name> 
     <url-pattern>/Tache/TacheVisu</url-pattern> 
   </servlet-mapping>
-  
-  
-  
-  <!-- Liste des servlets pour les artefacts --> 
-  <servlet> 
-    <servlet-name>CArtefactAjout</servlet-name> 
-    <servlet-class>owep.controle.artefact.CArtefactAjout</servlet-class> 
-  </servlet> 
-  <servlet-mapping> 
-    <servlet-name>CArtefactAjout</servlet-name> 
-    <url-pattern>/Artefact/ArtefactAjout</url-pattern> 
-  </servlet-mapping>   
-  
-  
-  
-  <!-- Liste des servlets pour la connexion -->  
+   
   <servlet> 
     <servlet-name>CEtat</servlet-name> 
     <servlet-class>owep.controle.tache.CEtat</servlet-class> 
@@ -67,6 +52,56 @@
     <url-pattern>/Tache/ValidationRapport</url-pattern> 
   </servlet-mapping>
   
+  <!-- Liste des Servlets pour les avancements --> 
+  
+  <servlet> 
+    <servlet-name>CAvancementProjet</servlet-name> 
+    <servlet-class>owep.controle.avancement.CAvancementProjet</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CAvancementProjet</servlet-name> 
+    <url-pattern>/Avancement/AvancementProjet</url-pattern> 
+  </servlet-mapping>
+  
+  <servlet> 
+    <servlet-name>CAvancementCollaborateur</servlet-name> 
+    <servlet-class>owep.controle.avancement.CAvancementCollaborateur</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CAvancementCollaborateur</servlet-name> 
+    <url-pattern>/Avancement/AvancementCollaborateur</url-pattern> 
+  </servlet-mapping>
+  
+  <servlet> 
+    <servlet-name>CAvancementTachesCollabs</servlet-name> 
+    <servlet-class>owep.controle.avancement.CAvancementTachesCollabs</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CAvancementTachesCollabs</servlet-name> 
+    <url-pattern>/Avancement/AvancementTachesCollabs</url-pattern> 
+  </servlet-mapping>
+  
+  <servlet> 
+    <servlet-name>CDetailAvancementCollab</servlet-name> 
+    <servlet-class>owep.controle.avancement.CDetailAvancementCollab</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CDetailAvancementCollab</servlet-name> 
+    <url-pattern>/Avancement/DetailAvancementCollab</url-pattern> 
+  </servlet-mapping>
+ 
+  <!-- Liste des Servlets pour les artefacts --> 
+  <servlet> 
+    <servlet-name>CArtefactAjout</servlet-name> 
+    <servlet-class>owep.controle.artefact.CArtefactAjout</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CArtefactAjout</servlet-name> 
+    <url-pattern>/Artefact/ArtefactAjout</url-pattern> 
+  </servlet-mapping>   
+  
+  
+  <!-- Liste des Servlets pour la connexion -->   
   <servlet> 
     <servlet-name>CConnexion</servlet-name> 
     <servlet-class>owep.controle.outil.CConnexion</servlet-class> 

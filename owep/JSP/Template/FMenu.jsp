@@ -87,7 +87,7 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Tache/ListeTacheVisu">Liste des tâches</a>
+      <a class="menuNiveau2" href="../Tache/ListeTacheVisu?menu=clique">Liste des tâches</a>
     </td>
   </tr>
   <tr>
@@ -108,12 +108,12 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Processus/ProjetVisu">Suivi du projet</a>
+      <a class="menuNiveau2" href="../Avancement/AvancementProjet?menu=clique">Suivi du projet</a>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <p class="menuNiveau2">Suivi des collaborateurs</p>
+      <a class="menuNiveau2" href="../Avancement/AvancementCollaborateur?menu=clique">Suivi des collaborateurs</a>
     </td>
   </tr>
   <tr>

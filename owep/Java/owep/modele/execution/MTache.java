@@ -39,8 +39,8 @@ public class MTache extends MModeleBase
   private MActivite      mActivite ;         // Activité que la tâche instancie. 
   private MCollaborateur mCollaborateur ;    // Collaborateur réalisant la tâche.
   private MIteration     mIteration ;        // Itération durant laquelle est effectuée la tâche.
-  private Date           mDateDebutChrono ; // Date a laquelle on demarre le chrono pour le temps passé sur une tache
-  private ArrayList      mConditions ;      // Liste de conditions nécessaires pour que la tâche soit dans l'état prêt
+  private long           mDateDebutChrono ;  // Date a laquelle on demarre le chrono pour le temps passé sur une tache
+  private ArrayList      mConditions ;       // Liste de conditions nécessaires pour que la tâche soit dans l'état prêt
 
 
   /**
@@ -749,7 +749,7 @@ public class MTache extends MModeleBase
    * Recupere la date de lancement du chronometre.
    * @return Date de lancement du chronometre
    */
-  public Date getDateDebutChrono ()
+  public long getDateDebutChrono ()
   {
     return mDateDebutChrono ;
   }
@@ -759,7 +759,7 @@ public class MTache extends MModeleBase
    * Initialise la date de lancement du chronometre.
    * @param pDateDebutChrono Date de lancement du chronometre.
    */
-  public void setDateDebutChrono (Date pDateDebutChrono)
+  public void setDateDebutChrono (long pDateDebutChrono)
   {
     mDateDebutChrono = pDateDebutChrono ;
   }
