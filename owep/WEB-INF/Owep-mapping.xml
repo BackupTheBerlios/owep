@@ -490,10 +490,10 @@
       <sql name="PRB_DATECLOTURE" type="date"/>
     </field>
     <field name="mTacheResout" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTacheResout" set-method="setListeTacheResout">
-      <sql name="R07_TAC_ID" many-table="R07_TAC_PRB_RESOUT" many-key="R07_PRB_ID"/>
+      <sql name="R07_TAC_ID" many-table="R07_PRB_TAC_RESOUT" many-key="R07_PRB_ID"/>
     </field>
     <field name="mTacheProvoque" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTacheProvoque" set-method="setListeTacheProvoque" required="true">
-      <sql name="R08_TAC_ID" many-table="R08_TAC_PRB_PROVOQUE" many-key="R08_PRB_ID"/>
+      <sql name="R08_TAC_ID" many-table="R08_PRB_TAC_PROVOQUE" many-key="R08_PRB_ID"/>
     </field>
   </class>
   

@@ -13,8 +13,9 @@
     <taglib-location>/WEB-INF/tld/transfert.tld</taglib-location>
   </taglib>
   
-
-  <!-- Liste des Servlets -->
+  
+  
+  <!-- Liste des servlets pour les tâches -->
   <servlet> 
     <servlet-name>CListeTacheVisu</servlet-name> 
     <servlet-class>owep.controle.tache.CListeTacheVisu</servlet-class> 
@@ -32,8 +33,10 @@
     <servlet-name>CTacheVisu</servlet-name> 
     <url-pattern>/Tache/TacheVisu</url-pattern> 
   </servlet-mapping>
- 
-  <!-- Liste des Servlets pour les artefacts --> 
+  
+  
+  
+  <!-- Liste des servlets pour les artefacts --> 
   <servlet> 
     <servlet-name>CArtefactAjout</servlet-name> 
     <servlet-class>owep.controle.artefact.CArtefactAjout</servlet-class> 
@@ -44,8 +47,8 @@
   </servlet-mapping>   
   
   
-  <!-- Liste des Servlets pour la connexion -->  
   
+  <!-- Liste des servlets pour la connexion -->  
   <servlet> 
     <servlet-name>CEtat</servlet-name> 
     <servlet-class>owep.controle.tache.CEtat</servlet-class> 
@@ -90,7 +93,7 @@
     <servlet-name>CCreationCollaborateur</servlet-name> 
     <url-pattern>/Processus/CreationCollaborateur</url-pattern> 
   </servlet-mapping> 
-
+  
   <servlet> 
     <servlet-name>COuvrirProjet</servlet-name> 
     <servlet-class>owep.controle.projet.COuvrirProjet</servlet-class> 
@@ -99,9 +102,10 @@
     <servlet-name>COuvrirProjet</servlet-name> 
     <url-pattern>/Projet/OuvrirProjet</url-pattern> 
   </servlet-mapping> 
-
-
-    <!-- Liste des Servlets Processus -->
+  
+  
+  
+  <!-- Liste des servlets pour le processus -->
   <servlet>
     <servlet-name>CProjetVisu</servlet-name>
     <servlet-class>owep.controle.processus.CProjetVisu</servlet-class>
@@ -110,8 +114,30 @@
     <servlet-name>CProjetVisu</servlet-name>
     <url-pattern>/Processus/ProjetVisu</url-pattern>
   </servlet-mapping>
-    
-    <!-- Navigation -->
+  <servlet>
+    <servlet-name>CIterationModif</servlet-name>
+    <servlet-class>owep.controle.processus.CIterationModif</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CIterationModif</servlet-name>
+    <url-pattern>/Processus/IterationModif</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  <!-- Liste des servlets pour la gestion de projets -->
+  <servlet>
+    <servlet-name>CListeProblemeVisu</servlet-name>
+    <servlet-class>owep.controle.gestion.CListeProblemeVisu</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CListeProblemeVisu</servlet-name>
+    <url-pattern>/Gestion/ListeProblemeVisu</url-pattern>
+  </servlet-mapping>  
+  
+  
+  
+  <!-- Navigation -->
   <servlet>
     <servlet-name>CNavigationIteration</servlet-name>
     <servlet-class>owep.controle.navigation.CNavigationIteration</servlet-class>
@@ -121,14 +147,7 @@
     <url-pattern>/Navigation/NavigationIteration</url-pattern>
   </servlet-mapping>
   
-  <servlet>
-    <servlet-name>CIterationModif</servlet-name>
-    <servlet-class>owep.controle.processus.CIterationModif</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>CIterationModif</servlet-name>
-    <url-pattern>/Processus/IterationModif</url-pattern>
-  </servlet-mapping>
+  
   
   <!-- Configuration de la session -->
   <session-config>
