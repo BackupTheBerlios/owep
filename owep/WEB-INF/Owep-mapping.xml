@@ -600,12 +600,8 @@
   </class>
   
   
-  
-  
-  
-  
   <!-- Mapping table de configuration -->
-  <class name="owep.modele.configuration.MConfiguration" identity="mId">
+  <class name="owep.modele.configuration.MConfigurationSite" identity="mId">
     <map-to table="CON_CONFIGURATION"/>
     <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="CON_ID" type="integer"/>
@@ -622,8 +618,8 @@
     <field name="mPathArtefact" type="string" get-method="getPathArtefact" set-method="setPathArtefact" required="true">
       <sql name="CON_PATH_ARTEFACT" type="char"/>
     </field>
-    <field name="mPathSauvegarde" type="string" get-method="getPathSauvegarde" set-method="setPathSauvegarde" required="true">
-      <sql name="CON_PATH_SAUVEGARDE" type="char"/>
+    <field name="mPathExport" type="string" get-method="getPathExport" set-method="setPathExport" required="true">
+      <sql name="CON_PATH_EXPORT" type="char"/>
     </field>
   </class>
   
