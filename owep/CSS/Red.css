@@ -1,3 +1,4 @@
+@charset "iso-8859-1";
 body {font-family: arial; font-size: 12px; color: rgb(0,0,0); background-color: rgb(255,255,255)}
 a {font-family: arial; font-size: 12px; color:rgb(128,0,0); text-decoration: none}
 a:link {font-family: arial; font-size: 12px; color:rgb(128,0,0); text-decoration: none}
@@ -12,11 +13,11 @@ a:visited {font-family: arial; font-size: 12px; color:rgb(128,0,0); text-decorat
 
 
 /* Style du menu */
-.caseMenuListe {height: 31px; background-image: url(/OWEP/Image/Red/caseMenuListe.png); padding-top: 0px; padding-bottom: 3px; background-color: rgb(128,0,0); padding-left: 5px; text-align: center}
-.caseMenuSeparation {height: 18px; background-image: url(/OWEP/Image/Red/caseMenuSeparation.png); background-color: rgb(255,204,153)}
+.caseMenuListe {height: 33px; background-image: url(/OWEP/Image/Red/caseMenuListe.png); padding-top: 0px; padding-bottom: 2px; background-color: rgb(128,0,0); padding-left: 5px; text-align: center}
+.caseMenuSeparation {height: 16px; background-image: url(/OWEP/Image/Red/caseMenuSeparation.png); background-color: rgb(255,204,153)}
 .caseMenuSeparation2 {background-image: url(/OWEP/Image/Red/caseMenuNiveau2.png); background-color: rgb(255,204,153)}
 .caseMenuConnexion {height: 18px; background-image: url(/OWEP/Image/Red/caseMenuNiveau2.png); padding-top: 1px; padding-bottom: 1px; background-color: rgb(255,204,153); text-align: center}
-.caseMenuNiveau1 {height: 25px; background-image: url(/OWEP/Image/Red/caseMenuNiveau1.png); padding-top: 1px; padding-bottom: 1px; background-color: rgb(128,0,0); padding-left: 9px}
+.caseMenuNiveau1 {height: 27px; background-image: url(/OWEP/Image/Red/caseMenuNiveau1.png); padding-top: 0px; padding-bottom: 1px; background-color: rgb(128,0,0); padding-left: 9px}
 .caseMenuNiveau2 {height: 18px; background-image: url(/OWEP/Image/Red/caseMenuNiveau2.png); padding-top: 0px; padding-bottom: 0px; background-color: rgb(255,204,153); padding-left: 18px}
 .menuListe {font-family: arial; background-color: rgb(180,50,15); font-size: 13px; color: rgb(255,255,255); font-weight: bolder}
 .menuConnexion:link {font-family: arial; font-size: 12px; color: rgb(51,85,165); font-weight: bold; text-decoration: none}

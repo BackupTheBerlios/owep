@@ -30,7 +30,7 @@
   
   <%
     lCollaborateur = (MCollaborateur) request.getAttribute (CConstante.PAR_COLLABORATEUR) ;
-    for (int i = 0; i < lCollaborateur.getNbTache (); i ++)
+    for (int i = 0; i < lCollaborateur.getNbTaches (); i ++)
     {
       lTache = lCollaborateur.getTache (i) ;
   %>
@@ -41,8 +41,8 @@
       <td class='caseNiveau2'>
         <%
           SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
-          out.print (lTache.getArtefactSortie (lTache.getNbArtefactSortie () - 1).getNom ()) ;
-          for (int j = 0; j < lTache.getNbArtefactSortie () - 1; j ++)
+          out.print (lTache.getArtefactSortie (0).getNom ()) ;
+          for (int j = 1; j < lTache.getNbArtefactsSorties (); j ++)
           {
             out.print ("<br/>" + lTache.getArtefactSortie (j).getNom ()) ;
           }

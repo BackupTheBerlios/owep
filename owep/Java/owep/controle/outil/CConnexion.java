@@ -1,70 +1,65 @@
-/*
- * Created on 8 janv. 2005
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-package owep.controle.outil;
+package owep.controle.outil ;
 
-import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.io.IOException ;
+import javax.servlet.RequestDispatcher ;
+import javax.servlet.ServletException ;
+import javax.servlet.http.HttpServlet ;
+import javax.servlet.http.HttpServletRequest ;
+import javax.servlet.http.HttpServletResponse ;
+import javax.servlet.http.HttpSession ;
+import org.exolab.castor.jdo.Database ;
+import org.exolab.castor.jdo.JDO ;
+import org.exolab.castor.jdo.OQLQuery ;
+import org.exolab.castor.jdo.QueryResults ;
+import owep.controle.CConstante ;
+import owep.infrastructure.Session ;
+import owep.infrastructure.localisation.LocalisateurIdentifiant ;
+import owep.modele.execution.MCollaborateur ;
 
-import org.exolab.castor.jdo.Database;
-import org.exolab.castor.jdo.JDO;
-import org.exolab.castor.jdo.OQLQuery;
-import org.exolab.castor.jdo.QueryResults;
-
-import owep.controle.CConstante;
-import owep.infrastructure.Session;
-import owep.infrastructure.localisation.LocalisateurIdentifiant;
-import owep.modele.execution.MCollaborateur;
 
 /**
- * @author lalo
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * @author lalo TODO To change the template for this generated type comment go to Window -
+ *         Preferences - Java - Code Style - Code Templates
  */
 public class CConnexion extends HttpServlet
 {
-  private HttpServletRequest  mRequete ; // Requête HTTP à l'origine de l'appel du controleur
-  private HttpServletResponse mReponse ; // Réponse HTTP du controleur à la requête
-  private Database mBaseDonnees ;        // Connexion à la base de données
-  
-  private MCollaborateur mCollaborateur = null; // Collaborateur correspondant au login est mot de passe 
-  private String mLogin = null;                 // Login saisi
-  private String mPassword = null;              // mot de passe saisi
-  
+  private HttpServletRequest  mRequete ;              // Requête HTTP à l'origine de l'appel du controleur
+  private HttpServletResponse mReponse ;              // Réponse HTTP du controleur à la requête
+  private Database            mBaseDonnees ;          // Connexion à la base de données
+  private MCollaborateur      mCollaborateur = null ; // Collaborateur correspondant au login et mot de passe
+  private String              mLogin         = null ; // Login saisi
+  private String              mPassword      = null ; // mot de passe saisi
+
+
   /**
    * Appellé lors d'une requête d'un client. Redirige le client vers la page retourné par la méthode
    * traiter.
    * @param pRequete Requête HTTP à l'origine de l'appel du controleur
    * @param pReponse Réponse HTTP du controleur à la requête
+   * @throws ServletException Si une erreur survient durant le traitement de la page.
+   * @throws IOException Si une erreur survient durant le traitement de la page.
    */
   protected void doGet (HttpServletRequest pRequete, HttpServletResponse pReponse)
     throws ServletException, IOException
   {
     doPost (pRequete, pReponse) ;
   }
-  
-  
+
+
   /**
    * Appellé lors d'une requête d'un client contenant des données transmises. Redirige le client
    * vers la page retourné par la méthode traiter.
    * @param pRequete Requête HTTP à l'origine de l'appel du controleur
    * @param pReponse Réponse HTTP du controleur à la requête
+   * @throws ServletException Si une erreur survient durant le traitement de la page.
+   * @throws IOException Si une erreur survient durant le traitement de la page.
    */
   protected void doPost (HttpServletRequest pRequete, HttpServletResponse pReponse)
     throws ServletException, IOException
   {
     RequestDispatcher lRequeteDispatcher ; // Permet d'appeler la JSP d'affichage.
-    JDO lJdo ;                             // Charge le système de persistence avec la base de données
+    JDO lJdo ; // Charge le système de persistence avec la base de données
     
     // Initialise les variables membres.
     mRequete = pRequete ;
@@ -74,8 +69,7 @@ public class CConnexion extends HttpServlet
     try
     {
       JDO.loadConfiguration (LocalisateurIdentifiant.LID_BDCONFIGURATION) ;
-      lJdo = new JDO (LocalisateurIdentifiant.LID_BDNOM) ;
-
+      lJdo         = new JDO (LocalisateurIdentifiant.LID_BDNOM) ;
       mBaseDonnees = lJdo.getDatabase () ;
       mBaseDonnees.setAutoStore (false) ;
     }
@@ -98,8 +92,8 @@ public class CConnexion extends HttpServlet
       lRequeteDispatcher.forward (mRequete, mReponse) ;
     }
   }
-  
-  
+
+
   /**
    * Récupère une connexion à la base de données.
    * @return Connexion à la base de données.
@@ -108,8 +102,8 @@ public class CConnexion extends HttpServlet
   {
     return mBaseDonnees ;
   }
-  
-  
+
+
   /**
    * Récupère la réponse HTTP que le controleur va fournir au client.
    * @return Réponse HTTP du controleur.
@@ -118,8 +112,8 @@ public class CConnexion extends HttpServlet
   {
     return mReponse ;
   }
-  
-  
+
+
   /**
    * Récupère la requête HTTP à l'origine de l'appel du controleur.
    * @return Requête HTTP à l'origine de l'appel du controleur.
@@ -128,27 +122,27 @@ public class CConnexion extends HttpServlet
   {
     return mRequete ;
   }
-    
+
+
   private void initialiserBaseDonnees () throws ServletException
   {
-    OQLQuery       lRequete ;       // Requête à réaliser sur la base
-    QueryResults   lResultat ;      // Résultat de la requête sur la base
+    OQLQuery lRequete ;      // Requête à réaliser sur la base
+    QueryResults lResultat ; // Résultat de la requête sur la base
     
     try
     {
       getBaseDonnees ().begin () ;
       
       // Récupère la liste des tâches du collaborateur.
-      lRequete = getBaseDonnees ().getOQLQuery ("select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mNom = $1") ;
+      lRequete = getBaseDonnees ().getOQLQuery ("select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mUtilisateur = $1") ;
       lRequete.bind (mLogin) ;
-      lResultat      = lRequete.execute () ;
+      lResultat = lRequete.execute () ;
       
-      if(lResultat.size()>0)
+      if (lResultat.size () > 0)
       {
         // On suppose que le nom est unique
         mCollaborateur = (MCollaborateur) lResultat.next () ;
       }
-      
       getBaseDonnees ().commit () ;
     }
     catch (Exception eException)
@@ -158,41 +152,39 @@ public class CConnexion extends HttpServlet
     }
   }
 
-  /**
-   * Récupère les paramètres passés au controleur. 
-   * @throws ServletException Si une erreur survient lors de l'initialisation
-   */
-  public void initialiserParametres () throws ServletException
-  {
-    mLogin = getRequete ().getParameter ("login");
-    mPassword = getRequete ().getParameter ("pwd");
-  }
 
   /**
-   * Effectue tout le traîtement du controleur puis retourne l'URL vers laquelle le client doit
-   * être redirigé. 
-   * @return URL de la page vers laquelle doit être redirigé le client.
-   * @throws ServletException Si une erreur survient dans le controleur
+   * Récupère les paramètres passés au controleur.
    */
-  public String traiter () throws ServletException
+  public void initialiserParametres ()
   {
-    if(mCollaborateur != null && mPassword.equals(mCollaborateur.getPassword()))
+    mLogin    = getRequete ().getParameter ("login") ;
+    mPassword = getRequete ().getParameter ("pwd") ;
+  }
+
+
+  /**
+   * Effectue tout le traîtement du controleur puis retourne l'URL vers laquelle le client doit être
+   * redirigé.
+   * @return URL de la page vers laquelle doit être redirigé le client.
+   */
+  public String traiter ()
+  {
+    if (mCollaborateur != null && mPassword.equals (mCollaborateur.getMotDePasse ()))
     {
       // Création de la classe Session
-      Session mSession = new Session();
-      mSession.ouvertureSession(mCollaborateur);
-	  
+      Session mSession = new Session () ;
+      mSession.ouvertureSession (mCollaborateur) ;
+      
       // Création de la session HTTP
-	  HttpSession session = getRequete().getSession(true);
-      session.setAttribute("SESSION",mSession);
-        
-	  return "..\\Tache\\ListeTacheVisu";
+      HttpSession session = getRequete ().getSession (true) ;
+      session.setAttribute ("SESSION", mSession) ;
+      return "..\\Tache\\ListeTacheVisu" ;
     }
     else
     {
-      getRequete().getSession().invalidate();
-      return "..\\JSP\\Tache\\Erreur.jsp";
+      getRequete ().getSession ().invalidate () ;
+      return "..\\JSP\\Tache\\Erreur.jsp" ;
     }
   }
-
 }

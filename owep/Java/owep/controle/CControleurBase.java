@@ -8,10 +8,8 @@ import javax.servlet.http.HttpServlet ;
 import javax.servlet.http.HttpServletRequest ;
 import javax.servlet.http.HttpServletResponse ;
 import javax.servlet.http.HttpSession;
-
 import org.exolab.castor.jdo.Database ;
 import org.exolab.castor.jdo.JDO ;
-
 import owep.infrastructure.Session;
 import owep.infrastructure.localisation.LocalisateurIdentifiant;
 
@@ -26,13 +24,15 @@ public abstract class CControleurBase extends HttpServlet
   private HttpServletResponse mReponse ; // Réponse HTTP du controleur à la requête
   private Database mBaseDonnees ;        // Connexion à la base de données
   private Session mSession ;             // Session associé à la connexion
-  
+
   
   /**
    * Appellé lors d'une requête d'un client. Redirige le client vers la page retourné par la méthode
    * traiter.
    * @param pRequete Requête HTTP à l'origine de l'appel du controleur
    * @param pReponse Réponse HTTP du controleur à la requête
+   * @throws ServletException Si une erreur survient durant le traitement de la page.
+   * @throws IOException Si une erreur survient durant le traitement de la page.
    */
   protected void doGet (HttpServletRequest pRequete, HttpServletResponse pReponse)
     throws ServletException, IOException
@@ -46,6 +46,8 @@ public abstract class CControleurBase extends HttpServlet
    * vers la page retourné par la méthode traiter.
    * @param pRequete Requête HTTP à l'origine de l'appel du controleur
    * @param pReponse Réponse HTTP du controleur à la requête
+   * @throws ServletException Si une erreur survient durant le traitement de la page.
+   * @throws IOException Si une erreur survient durant le traitement de la page.
    */
   protected void doPost (HttpServletRequest pRequete, HttpServletResponse pReponse)
     throws ServletException, IOException
@@ -75,31 +77,31 @@ public abstract class CControleurBase extends HttpServlet
         JDO.loadConfiguration (LocalisateurIdentifiant.LID_BDCONFIGURATION) ;
         lJdo = new JDO (LocalisateurIdentifiant.LID_BDNOM) ;
 
-	      mBaseDonnees = lJdo.getDatabase () ;
-	      mBaseDonnees.setAutoStore (false) ;
-	  }
-	  catch (Exception eException)
-	  {
-	    eException.printStackTrace () ;
-	    throw new ServletException (CConstante.EXC_CONNEXION) ;
-	  }
-	    
-	  // Appelle la JSP d'affichage retournée par traiter.
-	  initialiserBaseDonnees () ;
-	  initialiserParametres () ;
-	  lRequeteDispatcher = pRequete.getRequestDispatcher (traiter ()) ;
-	  if (lRequeteDispatcher == null)
-	  {
-	    throw new ServletException (CConstante.EXC_FORWARD) ;
-	  }
-	  else
-	  {
-	    // mis à jour de la session
-	    lSession.setAttribute("SESSION",mSession);
-	    
-	    // redirection vers la page convenue
-	    lRequeteDispatcher.forward (mRequete, mReponse) ;
-	  }
+        mBaseDonnees = lJdo.getDatabase () ;
+        mBaseDonnees.setAutoStore (false) ;
+    }
+    catch (Exception eException)
+    {
+      eException.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_CONNEXION) ;
+    }
+      
+    // Appelle la JSP d'affichage retournée par traiter.
+    initialiserBaseDonnees () ;
+    initialiserParametres () ;
+    lRequeteDispatcher = pRequete.getRequestDispatcher (traiter ()) ;
+    if (lRequeteDispatcher == null)
+    {
+      throw new ServletException (CConstante.EXC_FORWARD) ;
+    }
+    else
+    {
+      // mis à jour de la session
+      lSession.setAttribute("SESSION",mSession);
+      
+      // redirection vers la page convenue
+      lRequeteDispatcher.forward (mRequete, mReponse) ;
+    }
     }
   }
   

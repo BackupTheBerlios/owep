@@ -2,8 +2,66 @@
 <!DOCTYPE databases PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.exolab.org/mapping.dtd">
 
 <mapping>
+  <class name="owep.modele.execution.MProjet" identity="mId">
+    <map-to table="PRJ_PROJET"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId">
+      <sql name="PRJ_ID" type="integer"/>
+    </field>
+    <field name="mNom" type="string" get-method="getNom" set-method="setNom">
+      <sql name="PRJ_NOM" type="char"/>
+    </field>
+    <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
+      <sql name="PRJ_DESCRIPTION" type="char"/>
+    </field>
+    <field name="mDateDebutPrevue" type="date" get-method="getDateDebutPrevue" set-method="setDateDebutPrevue">
+      <sql name="PRJ_DATEDEBUTPREVUE" type="date"/>
+    </field>
+    <field name="mDateFinPrevue" type="date" get-method="getDateFinPrevue" set-method="setDateFinPrevue">
+      <sql name="PRJ_DATEFINPREVUE" type="date"/>
+    </field>
+    <field name="mArtefacts" type="owep.modele.execution.MArtefact" collection="arraylist" get-method="getListeArtefacts" set-method="setListeArtefacts">
+      <sql many-key="ART_PRJ_ID"/>
+    </field>
+    <field name="mCollaborateurs" type="owep.modele.execution.MCollaborateur" collection="arraylist" get-method="getListeCollaborateurs" set-method="setListeCollaborateurs">
+      <sql name="R05_PRJ_ID" many-table="R05_COL_PRJ" many-key="R05_COL_ID"/>
+    </field>
+    <field name="mIterations" type="owep.modele.execution.MIteration" collection="arraylist" get-method="getListeIterations" set-method="setListeIterations">
+      <sql many-key="ITE_PRJ_ID"/>
+    </field>
+  </class>
+  
+  
+  <class name="owep.modele.execution.MIteration" identity="mId">
+    <map-to table="ITE_ITERATION"/>
+    <field name="mId" type="integer" get-method="getId" set-method="setId">
+      <sql name="ITE_ID" type="integer"/>
+    </field>
+    <field name="mNumero" type="integer" get-method="getNumero" set-method="setNumero">
+      <sql name="ITE_NUMERO" type="integer"/>
+    </field>
+    <field name="mDateDebutPrevue" type="date" get-method="getDateDebutPrevue" set-method="setDateDebutPrevue">
+      <sql name="ITE_DATEDEBUTPREVUE" type="date"/>
+    </field>
+    <field name="mDateFinPrevue" type="date" get-method="getDateFinPrevue" set-method="setDateFinPrevue">
+      <sql name="ITE_DATEFINPREVUE" type="date"/>
+    </field>
+    <field name="mDateDebutReelle" type="date" get-method="getDateDebutReelle" set-method="setDateDebutReelle">
+      <sql name="ITE_DATEDEBUTREELLE" type="date"/>
+    </field>
+    <field name="mDateFinReelle" type="date" get-method="getDateFinReelle" set-method="setDateFinReelle">
+      <sql name="ITE_DATEFINREELLE" type="date"/>
+    </field>
+    <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet">
+      <sql name="ITE_PRJ_ID"/>
+    </field>
+    <field name="mTaches" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTaches" set-method="setListeTaches">
+      <sql many-key="TAC_ITE_ID"/>
+    </field>
+  </class>
+
+
   <class name="owep.modele.execution.MCollaborateur" identity="mId">
-    <map-to table="col_collaborateur"/>
+    <map-to table="COL_COLLABORATEUR"/>
     <field name="mId" type="integer" get-method="getId" set-method="setId">
       <sql name="COL_ID" type="integer"/>
     </field>
@@ -25,13 +83,26 @@
     <field name="mEmail" type="string" get-method="getEmail" set-method="setEmail">
       <sql name="COL_EMAIL" type="char"/>
     </field>
-    <field name="mListeTaches" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTaches" set-method="setListeTaches">
-      <sql many-key="COL_COLLABORATEUR_COL_ID"/>
+    <field name="mCommentaires" type="string" get-method="getCommentaires" set-method="setCommentaires">
+      <sql name="COL_COMMENTAIRES" type="char"/>
+    </field>
+    <field name="mUtilisateur" type="string" get-method="getUtilisateur" set-method="setUtilisateur">
+      <sql name="COL_UTILISATEUR" type="char"/>
+    </field>
+    <field name="mMotDePasse" type="string" get-method="getMotDePasse" set-method="setMotDePasse">
+      <sql name="COL_MOTDEPASSE" type="char"/>
+    </field>
+    <field name="mArtefacts" type="owep.modele.execution.MArtefact" collection="arraylist" get-method="getListeArtefacts" set-method="setListeArtefacts">
+      <sql many-key="ART_COL_ID"/>
+    </field>
+    <field name="mTaches" type="owep.modele.execution.MTache" collection="arraylist" get-method="getListeTaches" set-method="setListeTaches">
+      <sql many-key="TAC_COL_ID"/>
     </field>
   </class>
   
+  
   <class name="owep.modele.execution.MTache" identity="mId">
-    <map-to table="tac_tache"/>
+    <map-to table="TAC_TACHE"/>
     <field name="mId" type="integer" get-method="getId" set-method="setId">
       <sql name="TAC_ID" type="integer"/>
     </field>
@@ -42,36 +113,43 @@
       <sql name="TAC_DESCRIPTION" type="char"/>
     </field>
     <field name="mChargeInitiale" type="double" get-method="getChargeInitiale" set-method="setChargeInitiale">
-      <sql name="TAC_CHARGE_INITIALE" type="float"/>
+      <sql name="TAC_CHARGEINITIALE" type="float"/>
     </field>
     <field name="mTempsPasse" type="double" get-method="getTempsPasse" set-method="setTempsPasse">
-      <sql name="TAC_TEMPS_PASSE" type="float"/>
+      <sql name="TAC_TEMPSPASSE" type="float"/>
     </field>
     <field name="mResteAPasser" type="double" get-method="getResteAPasser" set-method="setResteAPasser">
-      <sql name="TAC_RESTE_A_PASSER" type="float"/>
+      <sql name="TAC_RESTEAPASSER" type="float"/>
     </field>
     <field name="mDateDebutPrevue" type="date" get-method="getDateDebutPrevue" set-method="setDateDebutPrevue">
-      <sql name="TAC_DATE_DEBUT_PREVUE" type="date"/>
+      <sql name="TAC_DATEDEBUTPREVUE" type="date"/>
     </field>
     <field name="mDateFinPrevue" type="date" get-method="getDateFinPrevue" set-method="setDateFinPrevue">
-      <sql name="TAC_DATE_FIN_PREVUE" type="date"/>
+      <sql name="TAC_DATEFINPREVUE" type="date"/>
     </field>
     <field name="mDateDebutReelle" type="date" get-method="getDateDebutReelle" set-method="setDateDebutReelle">
-      <sql name="TAC_DATE_DEBUT_REELLE" type="date"/>
+      <sql name="TAC_DATEDEBUTREELLE" type="date"/>
     </field>
     <field name="mDateFinReelle" type="date" get-method="getDateFinReelle" set-method="setDateFinReelle">
-      <sql name="TAC_DATE_FIN_REELLE" type="date"/>
+      <sql name="TAC_DATEFINREELLE" type="date"/>
+    </field>
+    <field name="mIteration" type="owep.modele.execution.MIteration" get-method="getIteration" set-method="setIteration">
+      <sql name="TAC_ITE_ID"/>
     </field>
     <field name="mCollaborateur" type="owep.modele.execution.MCollaborateur" get-method="getCollaborateur" set-method="setCollaborateur">
-      <sql name="COL_COLLABORATEUR_COL_ID" />
+      <sql name="TAC_COL_ID"/>
     </field>
-    <field name="mListeArtefactSortie" type="owep.modele.execution.MArtefact" collection="arraylist" get-method="getListeArtefactSortie" set-method="setListeArtefactSortie">
-      <sql many-key="TAC_TACHE_TAC_ID"/>
+    <field name="mArtefactsEntrees" type="owep.modele.execution.MArtefact" collection="arraylist" get-method="getListeArtefactsEntrees" set-method="setListeArtefactsEntrees">
+      <sql many-key="ART_TAC_ID_ENTREE"/>
+    </field>
+    <field name="mArtefactsSorties" type="owep.modele.execution.MArtefact" collection="arraylist" get-method="getListeArtefactsSorties" set-method="setListeArtefactsSorties">
+      <sql many-key="ART_TAC_ID_SORTIE"/>
     </field>
   </class>
   
+  
   <class name="owep.modele.execution.MArtefact" identity="mId">
-    <map-to table="art_artefact" xml="artefact" />
+    <map-to table="ART_ARTEFACT" xml="artefact" />
     <field name="mId" type="integer" get-method="getId" set-method="setId">
       <sql name="ART_ID" type="integer"/>
     </field>
@@ -81,10 +159,31 @@
     <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
       <sql name="ART_DESCRIPTION" type="char"/>
     </field>
-    <field name="mTache" type="owep.modele.execution.MTache" get-method="getTache" set-method="setTache">
-      <sql name="TAC_TACHE_TAC_ID" />
+    <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet">
+      <sql name="ART_PRJ_ID"/>
+    </field>
+    <field name="mCollaborateur" type="owep.modele.execution.MCollaborateur" get-method="getCollaborateur" set-method="setCollaborateur">
+      <sql name="ART_COL_ID"/>
+    </field>
+    <field name="mTacheEntree" type="owep.modele.execution.MTache" get-method="getTacheEntree" set-method="setTacheEntree">
+      <sql name="ART_TAC_ID_ENTREE"/>
+    </field>
+    <field name="mTacheSortie" type="owep.modele.execution.MTache" get-method="getTacheSortie" set-method="setTacheSortie">
+      <sql name="ART_TAC_ID_SORTIE"/>
     </field>
   </class>
   
-</mapping>
 
+  <class name="owep.modele.execution.MCondition" identity="mTache mTachePrecedente">
+    <map-to table="TAC_TACHE"/>
+    <field name="mTache" type="owep.modele.execution.MTache" get-method="getTache" set-method="setTache">
+      <sql name="CND_TAC_ID"/>
+    </field>
+    <field name="mTachePrecedente" type="owep.modele.execution.MTache" get-method="getTachePrecedente" set-method="setTachePrecedente">
+      <sql name="CND_TAC_ID_PREC"/>
+    </field>
+    <field name="mEtat" type="integer" get-method="getEtat" set-method="setEtat">
+      <sql name="CND_ETAT" type="integer"/>
+    </field>
+  </class>
+</mapping>

@@ -1,249 +1,331 @@
-package owep.modele.execution;
+package owep.modele.execution ;
 
-import java.sql.Date;
-import java.util.ArrayList;
+
+import java.util.Date ;
+import java.util.ArrayList ;
+import owep.modele.processus.MProcessus ;
+
 
 /**
- * 
+ * Un projet est constitué d'un ensemble de tâches, de produits et de collaborateurs. MProjet est la
+ * classe centrale du paquetage execution.
  */
 public class MProjet
 {
-  private int       mId ;               // Identifiant du projet
-  private String    mNom ;              // Nom du projet
-  private String    mDescription ;      // Description du projet
-  private Date      mDateDebutPrevue ;  // Date de début prévue du projet
-  private Date      mDateFinPrevue ;    // Date de fin prévue du projet
-  private float     mBudget ;           // Budget du projet
-  private ArrayList mListeIterations ;  // Liste des itérations du projet
-  private ArrayList mListeRisques ;     // Liste des risques du projet
-  
+  private int        mId ;              // Identifie le projet de manière unique.
+  private String     mNom ;             // Nom du projet.
+  private String     mDescription ;     // Description du projet.
+  private Date       mDateDebutPrevue ; // Date de début prévue pour le projet.
+  private Date       mDateFinPrevue ;   // Date de fin prévue pour le projet.
+  private ArrayList  mArtefacts ;       // Liste des artefacts réalisés durant le projet.
+  private ArrayList  mCollaborateurs ;  // Liste des collaborateurs travaillant sur le projet.
+  private ArrayList  mIterations ;      // Liste des itérations réalisées durant le projet.
+  private MProcessus mProcessus ;       // Processus utilisé par le projet.
+
+
   /**
-   * Crée une instance vide de MProjet
+   * Crée une instance vide de MProjet.
    */
   public MProjet ()
   {
-    mListeIterations = new ArrayList () ;
-    mListeRisques    = new ArrayList () ;
+    super () ;
+    
+    mIterations = new ArrayList () ;
   }
-  
+
+
   /**
-   * Crée une instance de Mprojet
-   * @param pId Identifiant du projet
-   * @param pNom Nom du projet
-   * @param pDescription Description du projet
-   * @param pDateDebutPrevue Date de début prévue du projet
-   * @param pDateFinPrevue Date de fin prévue du projet
-   * @param pBudget Budget du projet
+   * Crée une instance initialisée de MProjet.
+   * @param pId Identifiant du projet.
+   * @param pNom Nom du projet.
+   * @param pDescription Description du projet.
+   * @param pDateDebutPrevue Date de début prévue du projet.
+   * @param pDateFinPrevue Date de fin prévue du projet.
    */
-  public MProjet (int pId, String pNom, String pDescription, 
-                  Date pDateDebutPrevue, Date pDateFinPrevue, float pBudget)
+  public MProjet (int pId, String pNom, String pDescription, Date pDateDebutPrevue,
+                  Date pDateFinPrevue)
   {
-    mId              = pId;
+    super () ;
+    
+    mId              = pId ;
     mNom             = pNom ;
     mDescription     = pDescription ;
     mDateDebutPrevue = pDateDebutPrevue ;
     mDateFinPrevue   = pDateFinPrevue ;
-    mBudget          = pBudget ;
-    mListeIterations = new ArrayList () ;
-    mListeRisques    = new ArrayList () ;
+    
+    mIterations = new ArrayList () ;
   }
-  
+
+
   /**
-   * Crée une instance de Mprojet
-   * @param pId Identifiant du projet
-   * @param pNom Nom du projet
-   * @param pDescription Description du projet
-   * @param pDateDebutPrevue Date de début prévue du projet
-   * @param pDateFinPrevue Date de fin prévue du projet
-   * @param pBudget Budget du projet
-   * @param pListeIterations Liste des itérations du projet
+   * Récupère la liste des artefacts réalisés durant le projet.
+   * @return Liste des artefacts réalisés durant le projet.
    */
-  public MProjet (int pId, String pNom, String pDescription, Date pDateDebutPrevue, 
-                  Date pDateFinPrevue, float pBudget, ArrayList pListeIterations)
+  public ArrayList getListeArtefacts ()
   {
-    mId              = pId;
-    mNom             = pNom ;
-    mDescription     = pDescription ;
-    mDateDebutPrevue = pDateDebutPrevue ;
-    mDateFinPrevue   = pDateFinPrevue ;
-    mBudget          = pBudget ;
-    mListeIterations = pListeIterations ;
-    mListeRisques    = new ArrayList () ;
+    return mArtefacts ;
   }
-  
+
+
   /**
-   * Crée une instance de Mprojet
-   * @param pId Identifiant du projet
-   * @param pNom Nom du projet
-   * @param pDescription Description du projet
-   * @param pDateDebutPrevue Date de début prévue du projet
-   * @param pDateFinPrevue Date de fin prévue du projet
-   * @param pBudget Budget du projet
-   * @param pListeRisques Liste des risques du projet
+   * Initialise la liste des artefacts réalisés durant le projet.
+   * @param pArtefacts Liste des artefacts réalisés durant le projet.
    */
-  public MProjet (int pId, String pNom, String pDescription, 
-                  Date pDateDebutPrevue, Date pDateFinPrevue, 
-                  ArrayList pListeRisques, float pBudget)
+  public void setListeArtefacts (ArrayList pArtefacts)
   {
-    mId              = pId;
-    mNom             = pNom ;
-    mDescription     = pDescription ;
-    mDateDebutPrevue = pDateDebutPrevue ;
-    mDateFinPrevue   = pDateFinPrevue ;
-    mBudget          = pBudget ;
-    mListeIterations = new ArrayList () ;
-    mListeRisques    = pListeRisques ;
+    mArtefacts = pArtefacts ;
   }
-  
+
+
   /**
-   * Crée une instance de Mprojet
-   * @param pNom Nom du projet
-   * @param pDescription Description du projet
-   * @param pDateDebutPrevue Date de début prévue du projet
-   * @param pDateFinPrevue Date de fin prévue du projet
-   * @param pBudget Budget du projet
-   * @param pListeRisques Liste des risques du projet
-   * @param pListeActivites
+   * Récupère le nombre d'artefacts réalisés durant le projet.
+   * @return Nombre d'artefacts réalisées durant le projet.
    */
-  public MProjet (int pId, String pNom, String pDescription, 
-                  Date pDateDebutPrevue, Date pDateFinPrevue, float pBudget, 
-                  ArrayList pListeRisques, ArrayList pListeActivites)
+  public int getNbArtefacts ()
   {
-    mId              = pId;
-    mNom             = pNom ;
-    mDescription     = pDescription ;
-    mDateDebutPrevue = pDateDebutPrevue ;
-    mDateFinPrevue   = pDateFinPrevue ;
-    mBudget          = pBudget ;
-    mListeIterations = pListeActivites ;
-    mListeRisques    = pListeRisques ;
+    return mIterations.size () ;
   }
-  
+
+
   /**
-   * @return Retourne la valeur de l'attribut budget.
+   * Récupère l'artefact d'indice spécifié réalisée durant le projet.
+   * @param pIndice Indice de l'artefact dans la liste.
+   * @return Artefact réalisé durant le projet.
    */
-  public float getBudget ()
+  public MArtefact getArtefact (int pIndice)
   {
-    return mBudget ;
+    return (MArtefact) mIterations.get (pIndice) ;
   }
-  
+
+
   /**
-   * @param initialse budget avec pBudget.
+   * Ajoute l'artefact spécifié au projet.
+   * @param pArtefact Artefact réalisé durant le projet.
    */
-  public void setBudget (float pBudget)
+  public void addArtefact (MArtefact pArtefact)
   {
-    mBudget = pBudget ;
+    mIterations.add (pArtefact) ;
   }
-  
+
+
   /**
-   * @return Retourne la valeur de l'attribut dateDebutPrevue.
+   * Récupère la liste des collaborateurs sur le projet.
+   * @return Liste des collaborateurs sur le projet.
+   */
+  public ArrayList getListeCollaborateurs ()
+  {
+    return mCollaborateurs ;
+  }
+
+
+  /**
+   * Initialise la liste des collaborateurs sur le projet.
+   * @param pCollaborateurs Liste des collaborateurs sur le projet.
+   */
+  public void setListeCollaborateurs (ArrayList pCollaborateurs)
+  {
+    mCollaborateurs = pCollaborateurs ;
+  }
+
+
+  /**
+   * Récupère le nombre de collaborateurs sur le projet.
+   * @return Nombre de collaborateurs sur le projet.
+   */
+  public int getNbCollaborateurs ()
+  {
+    return mIterations.size () ;
+  }
+
+
+  /**
+   * Récupère le collaborateur d'indice spécifié sur le projet.
+   * @param pIndice Indice du collaborateur dans la liste.
+   * @return Collaborateur sur le projet.
+   */
+  public MCollaborateur getCollaborateur (int pIndice)
+  {
+    return (MCollaborateur) mIterations.get (pIndice) ;
+  }
+
+
+  /**
+   * Ajoute le collaborateur spécifié au projet.
+   * @param pCollaborateur Collaborateur sur le projet.
+   */
+  public void addCollaborateur (MCollaborateur pCollaborateur)
+  {
+    mIterations.add (pCollaborateur) ;
+  }
+
+
+  /**
+   * Récupère la date de début prévue pour le projet.
+   * @return Date de début prévue pour le projet.
    */
   public Date getDateDebutPrevue ()
   {
     return mDateDebutPrevue ;
   }
-  
+
+
   /**
-   * @param initialse dateDebutPrevue avec pDateDebutPrevue.
+   * Initialise la date de début prévue pour le projet.
+   * @param pDateDebutPrevue Date de début prévue pour le projet.
    */
   public void setDateDebutPrevue (Date pDateDebutPrevue)
   {
     mDateDebutPrevue = pDateDebutPrevue ;
   }
-  
+
+
   /**
-   * @return Retourne la valeur de l'attribut dateFinPrevue.
+   * Récupère la date de fin prévue pour le projet.
+   * @return Date de fin prévue pour le projet.
    */
   public Date getDateFinPrevue ()
   {
     return mDateFinPrevue ;
   }
-  
+
+
   /**
-   * @param initialse dateFinPrevue avec pDateFinPrevue.
+   * Initialise la date de fin prévue pour le projet.
+   * @param pDateFinPrevue Date de fin prévue pour le projet.
    */
   public void setDateFinPrevue (Date pDateFinPrevue)
   {
     mDateFinPrevue = pDateFinPrevue ;
   }
-  
+
+
   /**
-   * @return Retourne la valeur de l'attribut description.
+   * Récupère la description du projet.
+   * @return Description du projet.
    */
   public String getDescription ()
   {
     return mDescription ;
   }
-  
+
+
   /**
-   * @param initialse description avec pDescription.
+   * Initialise la description du projet.
+   * @param pDescription Description du projet.
    */
   public void setDescription (String pDescription)
   {
     mDescription = pDescription ;
   }
-  
+
+
   /**
-   * @return Retourne la valeur de l'attribut nom.
-   */
-  public String getNom ()
-  {
-    return mNom ;
-  }
-  
-  /**
-   * @param initialse nom avec pNom.
-   */
-  public void setNom (String pNom)
-  {
-    mNom = pNom ;
-  }
-  
-  /**
-   * @return Retourne la valeur de l'attribut listeIterations.
+   * Récupère la liste des itérations réalisées durant le projet.
+   * @return Liste des itérations réalisées durant le projet.
    */
   public ArrayList getListeIterations ()
   {
-    return mListeIterations ;
+    return mIterations ;
   }
-  
+
+
   /**
-   * @param initialise listeIterations avec pListeIterations.
+   * Initialise la liste des itérations réalisées durant le projet.
+   * @param pIterations Liste des itérations réalisées durant le projet.
    */
-  public void setListeIterations (ArrayList pListeIterations)
+  public void setListeIterations (ArrayList pIterations)
   {
-    mListeIterations = pListeIterations ;
+    mIterations = pIterations ;
   }
-  
+
+
   /**
-   * @return Retourne la valeur de l'attribut listeRisques.
+   * Récupère le nombre d'itérations réalisées durant le projet.
+   * @return Nombre d'itérations réalisées durant le projet.
    */
-  public ArrayList getListeRisques ()
+  public int getNbIterations ()
   {
-    return mListeRisques ;
+    return mIterations.size () ;
   }
-  
+
+
   /**
-   * @param initialise listeRisques avec pListeRisques.
+   * Récupère l'itération d'indice spécifié réalisée durant le projet.
+   * @param pIndice Indice de l'itération dans la liste.
+   * @return Itération réalisée durant le projet.
    */
-  public void setListeRisques (ArrayList pListeRisques)
+  public MIteration getIteration (int pIndice)
   {
-    mListeRisques = pListeRisques ;
+    return (MIteration) mIterations.get (pIndice) ;
   }
-  
+
+
   /**
-   * @return Retourne la valeur de l'attribut id.
+   * Ajoute l'itération spécifiée au projet.
+   * @param pTache Itération réalisée durant le projet.
+   */
+  public void addIteration (MTache pTache)
+  {
+    mIterations.add (pTache) ;
+  }
+
+
+  /**
+   * Récupère l'identifiant du projet.
+   * @return Identifie le projet de manière unique.
    */
   public int getId ()
   {
     return mId ;
   }
-  
+
+
   /**
-   * @param initialise id avec pId.
+   * Initialise l'identifiant du projet.
+   * @param pId Identifie le projet de manière unique.
    */
   public void setId (int pId)
   {
     mId = pId ;
+  }
+
+
+  /**
+   * Récupère le nom du projet.
+   * @return Nom du projet.
+   */
+  public String getNom ()
+  {
+    return mNom ;
+  }
+
+
+  /**
+   * Initialise le nom du projet.
+   * @param pNom Nom du projet.
+   */
+  public void setNom (String pNom)
+  {
+    mNom = pNom ;
+  }
+
+
+  /**
+   * Récupère le processus utilisé par le projet.
+   * @return Processus utilisé par le projet.
+   */
+  public MProcessus getProcessus ()
+  {
+    return mProcessus ;
+  }
+
+
+  /**
+   * Associe le processus utilisé par le projet.
+   * @param pProcessus Processus utilisé par le projet.
+   */
+  public void setProcessus (MProcessus pProcessus)
+  {
+    mProcessus = pProcessus ;
   }
 }

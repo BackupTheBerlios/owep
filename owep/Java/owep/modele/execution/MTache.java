@@ -3,6 +3,8 @@ package owep.modele.execution ;
 
 import java.util.ArrayList ;
 import java.util.Date ;
+import owep.modele.MModeleBase ;
+import owep.modele.processus.MActivite ;
 
 
 /**
@@ -11,190 +13,208 @@ import java.util.Date ;
  */
 public class MTache extends MModeleBase
 {
-  // Indique l'état de la tâche
-  public static final int ETAT_EN_COURS    = 0 ;
-  public static final int ETAT_TERMINE     = 1 ;
-  public static final int ETAT_NON_DEMARRE = 2 ;
-  
-  
-  private int             mId ;                  // Identifie la tâche de manière unique
-  private String          mNom ;                 // Nom de la tâche
-  private String          mDescription ;         // Description de la tâche
-  private double          mChargeInitiale ;      // Charge prévue par le chef de projet
-  private double          mTempsPasse ;          // Temps passé sur la tâche
-  private double          mResteAPasser ;        // Temps restant à passer sur la tâche
-  private Date            mDateDebutPrevue ;     // Date de début prévue par le chef de projet
-  private Date            mDateDebutReelle ;     // Date de début réelle de la tâche
-  private Date            mDateFinPrevue ;       // Date de fin prévue par le chef de projet
-  private Date            mDateFinReelle ;       // Date de fin réelle de la tâche
-  private ArrayList       mListeArtefactEntree ; // Liste des artefacts nécessaires à la réalisation
-  private ArrayList       mListeArtefactSortie ; // Liste des artefacts à produire durant la tâche
-  private MActivite       mActivite ;            // Activité du processus correspondant à la tâche
-  private MCollaborateur  mCollaborateur ;       // Collaborateur réalisant la tâche
-  private ArrayList       mListeProblemes ;       // Liste des problèmes de la tâche
-  
-  
+  /**
+   * Indique que la tâche a été créée par le chef de projet mais ne peut être démarrée si certaines
+   * conditions ou dépendances ne sont pas remplies.
+   */
+  public static final int ETAT_CREEE    = 0 ;
+  /**
+   * Indique que la tâche peut être démarrée par le collaborateur concerné.
+   */
+  public static final int ETAT_PRETE    = 1 ;
+  /**
+   * Indique que la tâche est en cours de réalisation.
+   */
+  public static final int ETAT_EN_COURS = 2 ;
+  /**
+   * Indique que la tâche est terminée.
+   */
+  public static final int ETAT_TERMINE  = 3 ;
+
+
+  private int            mId ;               // Identifie la tâche de manière unique.
+  private String         mNom ;              // Nom de la tâche.
+  private String         mDescription ;      // Description de la tâche.
+  private int            mEtat ;             // Etat de la tâche.
+  private double         mChargeInitiale ;   // Charge prévue par le chef de projet.
+  private double         mTempsPasse ;       // Temps passé sur la tâche.
+  private double         mResteAPasser ;     // Temps restant à passer sur la tâche.
+  private Date           mDateDebutPrevue ;  // Date de début prévue par le chef de projet.
+  private Date           mDateFinPrevue ;    // Date de fin prévue par le chef de projet.
+  private Date           mDateDebutReelle ;  // Date de début réelle de la tâche.
+  private Date           mDateFinReelle ;    // Date de fin réelle de la tâche.
+  private ArrayList      mArtefactsEntrees ; // Liste des artefacts nécessaires à la tâche.
+  private ArrayList      mArtefactsSorties ; // Liste des artefacts à produire durant la tâche.
+  private MActivite      mActivite ;         // Activité que la tâche instancie. 
+  private MCollaborateur mCollaborateur ;    // Collaborateur réalisant la tâche.
+  private MIteration     mIteration ;        // Itération durant laquelle est effectuée la tâche.
+
+
   /**
    * Crée une instance vide de MTache.
    */
   public MTache ()
   {
-    mListeArtefactEntree = new ArrayList () ;
-    mListeArtefactSortie = new ArrayList () ;
-    mListeProblemes      = new ArrayList () ;
+    super () ;
+    
+    mEtat = ETAT_CREEE ;
+    
+    mArtefactsEntrees = new ArrayList () ;
+    mArtefactsSorties = new ArrayList () ;
   }
-  
-  
+
+
   /**
    * Crée une instance de MArtefact initialisée avec les données du chef de projet.
-   * @param pId Identifiant unique de l'artefact
-   * @param pNom Nom de la tâche
-   * @param pDescription Description de la tâche
-   * @param pChargeInitiale Charge prévue par le chef de projet
-   * @param pDateDebutPrevue Date de début prévue par le chef de projet
-   * @param pDateFinPrevue Date de fin prévue par le chef de projet
-   * @param pActivite Activité du processus correspondant à la tâche
+   * @param pId Identifiant unique de l'artefact.
+   * @param pNom Nom de la tâche.
+   * @param pDescription Description de la tâche.
+   * @param pChargeInitiale Charge prévue par le chef de projet.
+   * @param pDateDebutPrevue Date de début prévue par le chef de projet.
+   * @param pDateFinPrevue Date de fin prévue par le chef de projet.
    */
   public MTache (int pId, String pNom, String pDescription, double pChargeInitiale,
-                 Date pDateDebutPrevue, Date pDateFinPrevue, MActivite pActivite)
+                 Date pDateDebutPrevue, Date pDateFinPrevue)
   {
-    mId                  = pId ;
-    mNom                 = pNom ;
-    mDescription         = pDescription ;
-    mChargeInitiale      = pChargeInitiale ;
-    mDateDebutPrevue     = pDateDebutPrevue ;
-    mDateFinPrevue       = pDateFinPrevue ;
-    mActivite            = pActivite ;
-    mListeArtefactEntree = new ArrayList () ;
-    mListeArtefactSortie = new ArrayList () ;
-    mListeProblemes      = new ArrayList () ;
+    super () ;
+    
+    mId              = pId ;
+    mNom             = pNom ;
+    mDescription     = pDescription ;
+    mEtat            = ETAT_CREEE ;
+    mChargeInitiale  = pChargeInitiale ;
+    mDateDebutPrevue = pDateDebutPrevue ;
+    mDateFinPrevue   = pDateFinPrevue ;
+    
+    mArtefactsEntrees = new ArrayList () ;
+    mArtefactsSorties = new ArrayList () ;
   }
-  
-  
+
+
   /**
    * Crée une instance de MArtefact initialisée avec les données du chef de projet.
-   * @param pId Identifiant unique de l'artefact
-   * @param pNom Nom de la tâche
-   * @param pDescription Description de la tâche
-   * @param pChargeInitiale Charge prévue par le chef de projet
-   * @param pTempsPasse Temps passé sur la tâche
-   * @param pDateDebutPrevue Date de début prévue par le chef de projet
-   * @param pDateDebutReelle Date de début réelle de la tâche
-   * @param pDateFinPrevue Date de fin prévue par le chef de projet
-   * @param pDateFinReelle Date de fin réelle de la tâche
-   * @param pActivite Activité du processus correspondant à la tâche
+   * @param pId Identifiant unique de l'artefact.
+   * @param pNom Nom de la tâche.
+   * @param pDescription Description de la tâche.
+   * @param pChargeInitiale Charge prévue par le chef de projet.
+   * @param pTempsPasse Temps passé sur la tâche.
+   * @param pResteAPasser Temps restant à passer sur la tâche.
+   * @param pDateDebutPrevue Date de début prévue par le chef de projet.
+   * @param pDateDebutReelle Date de début réelle de la tâche.
+   * @param pDateFinPrevue Date de fin prévue par le chef de projet.
+   * @param pDateFinReelle Date de fin réelle de la tâche.
    */
   public MTache (int pId, String pNom, String pDescription, double pChargeInitiale,
                  double pTempsPasse, double pResteAPasser, Date pDateDebutPrevue,
-                 Date pDateDebutReelle, Date pDateFinPrevue, Date pDateFinReelle,
-                 MActivite pActivite)
+                 Date pDateFinPrevue, Date pDateDebutReelle, Date pDateFinReelle)
   {
-    mId                  = pId ;
-    mNom                 = pNom ;
-    mDescription         = pDescription ;
-    mChargeInitiale      = pChargeInitiale ;
-    mTempsPasse          = pTempsPasse ;
-    mResteAPasser        = pResteAPasser ;
-    mDateDebutPrevue     = pDateDebutPrevue ;
-    mDateDebutReelle     = pDateDebutReelle ;
-    mDateFinPrevue       = pDateFinPrevue ;
-    mDateFinReelle       = pDateFinReelle ;
-    mActivite            = pActivite ;
-    mListeArtefactEntree = new ArrayList () ;
-    mListeArtefactSortie = new ArrayList () ;
-    mListeProblemes      = new ArrayList () ;
+    super () ;
+    
+    mId              = pId ;
+    mNom             = pNom ;
+    mDescription     = pDescription ;
+    mEtat            = ETAT_CREEE ;
+    mChargeInitiale  = pChargeInitiale ;
+    mTempsPasse      = pTempsPasse ;
+    mResteAPasser    = pResteAPasser ;
+    mDateDebutPrevue = pDateDebutPrevue ;
+    mDateDebutReelle = pDateDebutReelle ;
+    mDateFinPrevue   = pDateFinPrevue ;
+    mDateFinReelle   = pDateFinReelle ;
+    
+    mArtefactsEntrees = new ArrayList () ;
+    mArtefactsSorties = new ArrayList () ;
   }
-  
-  
+
+
   /**
-   * Récupère l'activité du processus correspondant à la tâche.
-   * @return Activité du processus correspondant à la tâche
+   * Récupère l'activité que la tâche instancie.
+   * @return Activité que la tâche instancie.
    */
   public MActivite getActivite ()
   {
     return mActivite ;
   }
-  
-  
+
+
   /**
-   * Associe l'activité du processus correspondant à la tâche.
-   * @param pActivite Activité du processus correspondant à la tâche
+   * Associe l'activité que la tâche instancie.
+   * @param pActivite Activité que la tâche instancie.
    */
   public void setActivite (MActivite pActivite)
   {
     mActivite = pActivite ;
   }
-  
-  
+
+
   /**
-   * Ajoute un nouvel artefact en entrée.
-   * @param pArtefactEntree Artefact en entrée
+   * Récupère la liste des artefacts en entrées de la tâche.
+   * @return Liste des artefacts nécessaires à la tâche.
    */
-  public void ajouterArtefactEntree (MArtefact pArtefactEntree)
+  public ArrayList getListeArtefactsEntrees ()
   {
-    mListeArtefactEntree.add (pArtefactEntree) ;
+    return mArtefactsEntrees ;
   }
-  
-  
+
+
   /**
-   * Récupère un artefact en entrée à partir de son indice dans la liste.
-   * @param pIndice Indice de l'artefact en entrée
-   * @return Artefact en entrée
+   * Initialise la liste des artefacts en entrées de la tâche.
+   * @param pArtefactsEntrees Liste des artefacts nécessaires à la tâche.
    */
-  public MArtefact getArtefactEntree (int pIndice)
+  public void setListeArtefactsEntrees (ArrayList pArtefactsEntrees)
   {
-    return (MArtefact) mListeArtefactEntree.get (pIndice) ;
+    mArtefactsEntrees = pArtefactsEntrees ;
   }
-  
-  
+
+
   /**
    * Récupère le nombre d'artefacts en entrées.
    * @return Nombre d'artefacts en entrées.
    */
-  public int getNbArtefactEntree ()
+  public int getNbArtefactsEntrees ()
   {
-    return mListeArtefactEntree.size () ;
+    return mArtefactsEntrees.size () ;
   }
-  
-  
+
+
   /**
-   * Récupère la liste des artefacts en entrées
-   * @return Liste des artefacts en entrées.
+   * Récupère l'artefact d'indice spécifié nécessaire à la tâche.
+   * @param pIndice Indice de l'artefact en entrée dans la liste.
+   * @return Artefact nécessaire à la tâche.
    */
-  public ArrayList getListeArtefactEntree ()
+  public MArtefact getArtefact (int pIndice)
   {
-    return mListeArtefactEntree ;
+    return (MArtefact) mArtefactsEntrees.get (pIndice) ;
   }
-  
-  
+
+
   /**
-   * Initialise la liste des artefacts en entrées
-   * @param pListeArtefactEntree Liste des artefacts en entrées.
+   * Ajoute l'artefact spécifié en entrée de la tâche.
+   * @param pArtefact Artefact nécessaire à la tâche.
    */
-  public void setListeArtefactEntree (ArrayList pListeArtefactEntree)
+  public void addArtefact (MTache pArtefact)
   {
-    mListeArtefactEntree = pListeArtefactEntree ;
+    mArtefactsEntrees.add (pArtefact) ;
   }
-  
-  
+
+
   /**
-   * Ajoute un nouvel artefact en sortie.
-   * @param pArtefactEntree Artefact en sortie
+   * Récupère la liste des artefacts en sorties de la tâche.
+   * @return Liste des artefacts à produire durant la tâche.
    */
-  public void ajouterArtefactSortie (MArtefact pArtefactSortie)
+  public ArrayList getListeArtefactsSorties ()
   {
-    mListeArtefactSortie.add (pArtefactSortie) ;
+    return mArtefactsSorties ;
   }
-  
-  
+
+
   /**
-   * Récupère un artefact en sortie à partir de son indice dans la liste.
-   * @param pIndice Indice de l'artefact en sortie
-   * @return Artefact en entrée
+   * Initialise la liste des artefacts en sorties de la tâche.
+   * @param pArtefactsSorties Liste des artefacts à produire durant la tâche.
    */
-  public MArtefact getArtefactSortie (int pIndice)
+  public void setListeArtefactsSorties (ArrayList pArtefactsSorties)
   {
-    return (MArtefact) mListeArtefactSortie.get (pIndice) ;
+    mArtefactsSorties = pArtefactsSorties ;
   }
 
 
@@ -202,32 +222,33 @@ public class MTache extends MModeleBase
    * Récupère le nombre d'artefacts en sorties.
    * @return Nombre d'artefacts en sorties.
    */
-  public int getNbArtefactSortie ()
+  public int getNbArtefactsSorties ()
   {
-    return mListeArtefactSortie.size () ;
+    return mArtefactsSorties.size () ;
   }
-  
-  
+
+
   /**
-   * Récupère la liste des artefacts en sorties
-   * @return Liste des artefacts en sorties.
+   * Récupère l'artefact d'indice spécifié à produire durant la tâche.
+   * @param pIndice Indice de l'artefact en sortie dans la liste.
+   * @return Artefact à produire durant la tâche.
    */
-  public ArrayList getListeArtefactSortie ()
+  public MArtefact getArtefactSortie (int pIndice)
   {
-    return mListeArtefactSortie ;
+    return (MArtefact) mArtefactsSorties.get (pIndice) ;
   }
-  
-  
+
+
   /**
-   * Initialise la liste des artefacts en sorties
-   * @param pListeArtefactSortie Liste des artefacts en sorties.
+   * Ajoute l'artefact spécifié en sortie de la tâche.
+   * @param pArtefact Artefact à produire durant la tâche.
    */
-  public void setListeArtefactSortie (ArrayList pListeArtefactSortie)
+  public void addArtefactSortie (MTache pArtefact)
   {
-    mListeArtefactSortie = pListeArtefactSortie ;
+    mArtefactsSorties.add (pArtefact) ;
   }
-  
-  
+
+
   /**
    * Récupère la charge prévue par le chef de projet.
    * @return Charge prévue par le chef de projet.
@@ -236,8 +257,8 @@ public class MTache extends MModeleBase
   {
     return mChargeInitiale ;
   }
-  
-  
+
+
   /**
    * Initialise la charge prévue par le chef de projet.
    * @param pChargeInitiale Charge prévue par le chef de projet.
@@ -245,41 +266,40 @@ public class MTache extends MModeleBase
   public void setChargeInitiale (double pChargeInitiale)
   {
     assert pChargeInitiale > 0.0 ;
-    
     mChargeInitiale = pChargeInitiale ;
   }
-  
-  
+
+
   /**
    * Récupère le collaborateur réalisant la tâche.
-   * @return Collaborateur réalisant la tâche
+   * @return Collaborateur réalisant la tâche.
    */
   public MCollaborateur getCollaborateur ()
   {
     return mCollaborateur ;
   }
-  
-  
+
+
   /**
    * Associe le collaborateur réalisant la tâche.
-   * @param pCollaborateur Collaborateur réalisant la tâche
+   * @param pCollaborateur Collaborateur réalisant la tâche.
    */
   public void setCollaborateur (MCollaborateur pCollaborateur)
   {
     mCollaborateur = pCollaborateur ;
   }
-  
-  
+
+
   /**
    * Récupère la date de début prévue par le chef de projet.
-   * @return Date de début prévue par le chef de projet
+   * @return Date de début prévue par le chef de projet.
    */
   public Date getDateDebutPrevue ()
   {
     return mDateDebutPrevue ;
   }
-  
-  
+
+
   /**
    * Récupère la date de début prévue par le chef de projet.
    * @param pDateDebutPrevue The mDateDebutPrevue to set.
@@ -287,14 +307,13 @@ public class MTache extends MModeleBase
   public void setDateDebutPrevue (Date pDateDebutPrevue)
   {
     assert mDateFinPrevue != null ? pDateDebutPrevue.before (mDateFinPrevue) : true ;
-    
     mDateDebutPrevue = pDateDebutPrevue ;
   }
-  
-  
+
+
   /**
    * Récupère la date de début réelle de la tâche.
-   * @return Date de début réelle de la tâche
+   * @return Date de début réelle de la tâche.
    */
   public Date getDateDebutReelle ()
   {
@@ -304,101 +323,101 @@ public class MTache extends MModeleBase
 
   /**
    * Initialise la date de début réelle de la tâche.
-   * @param pDateDebutReelle Date de début réelle de la tâche
+   * @param pDateDebutReelle Date de début réelle de la tâche.
    */
   public void setDateDebutReelle (Date pDateDebutReelle)
   {
     assert mDateFinReelle != null ? pDateDebutReelle.before (mDateFinReelle) : true ;
-    
     mDateDebutReelle = pDateDebutReelle ;
   }
-  
-  
+
+
   /**
    * Récupère la date de fin prévue par le chef de projet.
-   * @return Date de fin prévue par le chef de projet
+   * @return Date de fin prévue par le chef de projet.
    */
   public Date getDateFinPrevue ()
   {
     return mDateFinPrevue ;
   }
-  
-  
+
+
   /**
    * Initialise la date de fin prévue par le chef de projet.
-   * @return Date de fin prévue par le chef de projet
+   * @param pDateFinPrevue Date de fin prévue par le chef de projet.
    */
   public void setDateFinPrevue (Date pDateFinPrevue)
   {
     assert mDateDebutPrevue != null ? pDateFinPrevue.after (mDateDebutPrevue) : true ;
-    
     mDateFinPrevue = pDateFinPrevue ;
   }
-  
-  
+
+
   /**
    * Récupère la daate de fin réelle de la tâche.
-   * @return Date de fin réelle de la tâche
+   * @return Date de fin réelle de la tâche.
    */
   public Date getDateFinReelle ()
   {
     return mDateFinReelle ;
   }
-  
-  
+
+
   /**
    * Récupère la date de fin prévue par le chef de projet.
-   * @return Date de fin réelle de la tâche
+   * @param pDateFinReelle Date de fin réelle de la tâche.
    */
   public void setDateFinReelle (Date pDateFinReelle)
   {
     assert mDateDebutReelle != null ? pDateFinReelle.after (mDateDebutReelle) : true ;
-    
     mDateFinReelle = pDateFinReelle ;
   }
-  
-  
+
+
   /**
    * Récupère la description de la tâche.
-   * @return Description de la tâche
+   * @return Description de la tâche.
    */
   public String getDescription ()
   {
     return mDescription ;
   }
-  
-  
+
+
   /**
    * Initialise la description de la tâche.
-   * @param pDescription Description de la tâche
+   * @param pDescription Description de la tâche.
    */
   public void setDescription (String pDescription)
   {
     mDescription = pDescription ;
   }
-  
-  
+
+
   /**
    * Récupère l'état de réalisation de la tâche.
    * @return Etat de réalisation de la tâche.
    */
   public int getEtat ()
   {
-    if (mTempsPasse == 0)
+    return mEtat ;
+  }
+
+
+  /**
+   * Initialise l'état de réalisation de la tâche.
+   * @param pEtat Etat de réalisation de la tâche.
+   */
+  public void setEtat (int pEtat)
+  {
+    mEtat = pEtat ;
+    if (mEtat == ETAT_TERMINE)
     {
-      return ETAT_NON_DEMARRE ;
-    }
-    else if (mResteAPasser == 0)
-    {
-      return ETAT_TERMINE ;
-    }
-    else
-    {
-      return ETAT_EN_COURS ;
+      mResteAPasser = 0 ;
     }
   }
-  
-  
+
+
   /**
    * Récupère l'identifiant de la tâche.
    * @return Identifiant unique de la tâche
@@ -407,8 +426,8 @@ public class MTache extends MModeleBase
   {
     return mId ;
   }
-  
-  
+
+
   /**
    * Initialise l'identifiant de la tâche.
    * @param pId Identifiant unique de la tâche
@@ -417,8 +436,28 @@ public class MTache extends MModeleBase
   {
     mId = pId ;
   }
-  
-  
+
+
+  /**
+   * Récupère l'itération durant laquelle est effectuée la tâche.
+   * @return Itération durant laquelle est effectuée la tâche.
+   */
+  public MIteration getIteration ()
+  {
+    return mIteration ;
+  }
+
+
+  /**
+   * Initialise l'itération durant laquelle est effectuée la tâche.
+   * @param pIteration Itération durant laquelle est effectuée la tâche.
+   */
+  public void setIteration (MIteration pIteration)
+  {
+    mIteration = pIteration ;
+  }
+
+
   /**
    * Récupère le nom de la tâche.
    * @return Nom de la tâche
@@ -427,8 +466,8 @@ public class MTache extends MModeleBase
   {
     return mNom ;
   }
-  
-  
+
+
   /**
    * Initialise le nom de la tâche.
    * @param pNom Nom de la tâche
@@ -437,8 +476,8 @@ public class MTache extends MModeleBase
   {
     mNom = pNom ;
   }
-  
-  
+
+
   /**
    * Récupère le temps restant à passer sur la tâche.
    * @return Temps restant à passer sur la tâche
@@ -447,20 +486,18 @@ public class MTache extends MModeleBase
   {
     return mResteAPasser ;
   }
-  
-  
+
+
   /**
-   * Récupère le temps restant à passer sur la tâche.
+   * Initialise le temps restant à passer sur la tâche.
    * @param pResteAPasser Temps restant à passer sur la tâche
    */
   public void setResteAPasser (double pResteAPasser)
   {
-    assert pResteAPasser > 0 ;
-    
     mResteAPasser = pResteAPasser ;
   }
-  
-  
+
+
   /**
    * Récupère le temps passé sur la tâche.
    * @return Temps passé sur la tâche
@@ -469,8 +506,8 @@ public class MTache extends MModeleBase
   {
     return mTempsPasse ;
   }
-  
-  
+
+
   /**
    * Initialise le temps passé sur la tâche.
    * @param pTempsPasse Temps passé sur la tâche
@@ -478,11 +515,10 @@ public class MTache extends MModeleBase
   public void setTempsPasse (double pTempsPasse)
   {
     assert pTempsPasse > 0 ;
-    
     mTempsPasse = pTempsPasse ;
   }
-  
-  
+
+
   /**
    * Calcule le budget consommé pour la tâche. Formule : tempsPasse / chargeInitiale).
    * @return Budget consommé pour la tâche.
@@ -491,53 +527,37 @@ public class MTache extends MModeleBase
   {
     return mTempsPasse / mChargeInitiale ;
   }
-  
-  
+
+
   /**
-   * Calcule le nombre d'hommes x jours de dépassement de charges.
-   * Formule : tempsPasse + resteAPasser - chargeInitiale.
+   * Calcule le nombre d'hommes x jours de dépassement de charges. Formule : tempsPasse +
+   * resteAPasser - chargeInitiale.
    * @return Nombre d'hommes x jours de dépassement de charges.
    */
   public double getHJDepassementCharge ()
   {
     return mTempsPasse + mResteAPasser - mChargeInitiale ;
   }
-  
-  
+
+
   /**
-   * Calcule le pourcentage de dépassement de charges.
-   * Formule : (tempsPasse + resteAPasser - chargeInitiale) / chargeInitiale.
+   * Calcule le pourcentage de dépassement de charges. Formule : (tempsPasse + resteAPasser -
+   * chargeInitiale) / chargeInitiale.
    * @return Pourcentage de dépassement de charges.
    */
   public double getPrcDepassementCharge ()
   {
     return (mTempsPasse + mResteAPasser - mChargeInitiale) / mChargeInitiale ;
   }
-  
-  
+
+
   /**
-   * Calcule le pourcentage de dépassement de charges.
-   * Formule : tempsPasse / (tempsPasse + resteAPasser).
+   * Calcule le pourcentage de dépassement de charges. Formule : tempsPasse / (tempsPasse +
+   * resteAPasser).
    * @return Pourcentage de dépassement de charges.
    */
   public double getPrcAvancement ()
   {
     return mTempsPasse / (mTempsPasse + mResteAPasser) ;
-  }
-   
-  /**
-   * @return Retourne la valeur de l'attribut listeProblemes.
-   */
-  public ArrayList getListeProblemes ()
-  {
-    return mListeProblemes ;
-  }
-  
-  /**
-   * @param initialise listeProblemes avec pListeProblemes.
-   */
-  public void setListeProblemes (ArrayList pListeProblemes)
-  {
-    mListeProblemes = pListeProblemes ;
   }
 }
