@@ -9,9 +9,11 @@ import org.exolab.castor.jdo.QueryResults;
 import com.mysql.jdbc.Driver;
 import owep.controle.CConstante;
 import owep.controle.CControleurBase;
+import owep.infrastructure.localisation.LocalisateurIdentifiant;
 import owep.infrastructure.Session;
 import owep.modele.execution.MActiviteImprevue;
 import owep.modele.execution.MProjet;
+import owep.modele.execution.MTacheImprevue;
 import owep.vue.transfert.VTransfert;
 
 
@@ -83,50 +85,88 @@ public class CActiviteImprevue extends CControleurBase
   
   public String traiter () throws ServletException
   {
-    if (! VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
+    if ((! VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT)) &&
+        (! VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITMODIFIER)) &&
+        (! VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER)))
     {
       // Transmet les données à la JSP d'affichage.
       return "..\\JSP\\Processus\\TActiviteImprevue.jsp" ;
     }
     else
     {    
-      Connection lConnection = null ;
-      try
-      {
-        mActiviteImprevue = new MActiviteImprevue ();
-        VTransfert.transferer (getRequete (), mActiviteImprevue, CConstante.PAR_ARBREACTIVITE) ;
-        mActiviteImprevue.setProjet (mProjet);
+        Connection lConnection = null ;
         
-        DriverManager.registerDriver (new Driver ()) ;
-        lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", "root", "mysql") ;
-        lConnection.setAutoCommit(false);
-        mActiviteImprevue.create (lConnection) ;
-        lConnection.commit () ;
-        
-        
-
-        mProjet.addActiviteImprevue (mActiviteImprevue) ;
-        getSession ().ouvrirProjet (mProjet) ;
-        return "..\\JSP\\Processus\\TActiviteImprevue.jsp" ;
-      }
-      catch (Exception eException)
-      {
-        eException.printStackTrace () ;
-        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-      }
-      // Ferme la connexion à la base de données.
-      finally
-      {        
         try
         {
-          lConnection.close () ;
+          DriverManager.registerDriver (new Driver ()) ;
+	      lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", LocalisateurIdentifiant.LID_BDUSER, LocalisateurIdentifiant.LID_BDPASS) ;
+	      lConnection.setAutoCommit(false);
+          if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
+          {
+            
+            mActiviteImprevue = new MActiviteImprevue ();
+            VTransfert.transferer (getRequete (), mActiviteImprevue, CConstante.PAR_ARBREACTIVITE) ;
+	        mActiviteImprevue.setProjet (mProjet);
+	        
+	    //    getBaseDonnees().begin();
+	      //  getBaseDonnees().create(mActiviteImprevue);
+	        //getBaseDonnees ().commit () ;
+	        mActiviteImprevue.create (lConnection) ;
+	        lConnection.commit () ;
+	
+	        mProjet.addActiviteImprevue (mActiviteImprevue) ;
+	        getSession ().ouvrirProjet (mProjet) ;
+          }
+          else if(VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER))
+          {
+            int lIndiceActiviteImprevue = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEACTIVITESIMPREVUES));
+            MActiviteImprevue lActiviteImprevue = mProjet.getActiviteImprevue (lIndiceActiviteImprevue);
+            for (int i =lActiviteImprevue.getNbTachesImprevues (); i > 0; i--){
+              MTacheImprevue lTacheImprevue = lActiviteImprevue.getTacheImprevue(i);
+              for (int j = lTacheImprevue.getNbArtefactsImprevuesEntrees (); j > 0; j--){
+                lTacheImprevue.supprimerArtefactImprevueEntree (j) ;
+              }
+              for (int j = lTacheImprevue.getNbArtefactsImprevuesSorties (); j > 0; j--){
+                lTacheImprevue.supprimerArtefactImprevueSortie (j) ;
+              }
+              lActiviteImprevue.supprimerTacheImprevue (i);
+            }
+            lActiviteImprevue.delete (lConnection) ;
+            mProjet.supprimerActiviteImprevue (lIndiceActiviteImprevue) ;
+            lConnection.commit ();
+          }
+          else if(VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITMODIFIER))
+          {
+            int lIndiceActiviteImprevue     = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEACTIVITESIMPREVUES)) ;
+            MActiviteImprevue lActiviteImprevueTmp = new MActiviteImprevue ();
+            VTransfert.transferer (getRequete (), lActiviteImprevueTmp, CConstante.PAR_ARBREACTIVITE) ;
+            
+            MActiviteImprevue lActiviteImprevue = mProjet.getActiviteImprevue(lIndiceActiviteImprevue);
+            lActiviteImprevue.setNom(lActiviteImprevueTmp.getNom());
+            lActiviteImprevue.setDescription(lActiviteImprevueTmp.getDescription());
+            lActiviteImprevue.update(lConnection);
+            lConnection.commit();
+          }   
         }
-        catch (SQLException eException)
+        catch (Exception eException)
         {
           eException.printStackTrace () ;
-          throw new ServletException (CConstante.EXC_DECONNEXION) ;
-        } 
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
+        // Ferme la connexion à la base de données.
+        finally
+        {        
+          try
+          {
+            lConnection.close () ;
+          }
+          catch (SQLException eException)
+          {
+            eException.printStackTrace () ;
+            throw new ServletException (CConstante.EXC_DECONNEXION) ;
+          } 
+        }
       }
-    }    
+    return "..\\JSP\\Processus\\TActiviteImprevue.jsp" ;
   }
 }

@@ -11,6 +11,7 @@ import com.mysql.jdbc.Driver;
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
 import owep.infrastructure.Session ;
+import owep.infrastructure.localisation.LocalisateurIdentifiant;
 import owep.modele.execution.MArtefact ;
 import owep.modele.execution.MCollaborateur ;
 import owep.modele.execution.MCondition;
@@ -477,7 +478,7 @@ public class CIterationModif extends CControleurBase
       try
       {
         DriverManager.registerDriver (new Driver ()) ;
-        lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", "root", "mysql") ;
+        lConnection = DriverManager.getConnection ("jdbc:mysql://localhost/owep", LocalisateurIdentifiant.LID_BDUSER, LocalisateurIdentifiant.LID_BDPASS) ;
         lConnection.setAutoCommit(false);
         if (mIteration.getId () == 0)
         {
