@@ -4,6 +4,8 @@ package owep.controle.processus ;
 import java.util.ArrayList ;
 import java.util.HashMap ;
 import java.util.Iterator ;
+import java.util.ResourceBundle;
+
 import javax.servlet.ServletException ;
 import org.exolab.castor.jdo.OQLQuery ;
 import org.exolab.castor.jdo.PersistenceException ;
@@ -255,9 +257,19 @@ public class CCreationCollaborateur extends CControleurBase
             {
               e1.printStackTrace () ;
             }
-            // redirection vers la page 3 avec la liste des collaborateurs selectionné ds
-            // listeCollaborateur
             getRequete ().setAttribute ("listeCollaborateur", mListeCollaborateur) ;
+
+            ResourceBundle messages = java.util.ResourceBundle.getBundle ("MessagesBundle") ;
+            String lMessage = messages.getString ("collaborateurRoleConfirmation") ;
+            getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
+
+            // Affiche la page de visualisation des taches à réaliser dans la nouvelle itération.
+            if(getSession().getIteration() != null)
+              return "/Tache/ListeTacheVisu" ;
+            
+            //else
+            getRequete ().setAttribute (CConstante.PAR_COLLABORATEUR, getSession().getCollaborateur()) ;
+            return "/JSP/Iteration/TAucuneIteration.jsp" ;
           }
           getRequete ().setAttribute ("numPage", mNumPageSuivante) ;
           break ;
