@@ -79,7 +79,7 @@
 
   </tr>
     <td class="caseNiveau3Lien" colspan="8">
-      <a href="/owep/Gestion/ProblemeModif" onmouseover="tooltipOn(this, event, 'Ajoute un nouveau problème survenu sur le projet.')" onmouseout="tooltipOff(this, event)">Ajouter un problème...</a>
+      <a href="/owep/Gestion/RisqueModif" onmouseover="tooltipOn(this, event, 'Ajoute un nouveau risque survenu sur le projet.')" onmouseout="tooltipOff(this, event)">Ajouter un risque...</a>
     </td>
   </tr>
   
