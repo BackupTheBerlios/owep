@@ -123,7 +123,7 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <p class="menuNiveau2">Gestion des problèmes</p>
+      <a class="menuNiveau2" href="../Gestion/ListeProblemeVisu">Problèmes</a>
     </td>
   </tr>
   <tr>

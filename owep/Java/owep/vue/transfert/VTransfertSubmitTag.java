@@ -35,7 +35,6 @@ public class VTransfertSubmitTag extends TagSupport
     // Récupère l'arbre principal de transfert.
     ArrayList   lListeArbres  = (ArrayList) pageContext.getAttribute (VTransfertConstante.TRANSFERT_LISTEARBRES, PageContext.REQUEST_SCOPE) ;
     VArbreBeans lArbreCourant = (VArbreBeans) lListeArbres.get (0) ;
-    String      lGestionnaire = "" ;
     
     try
     {
@@ -61,12 +60,12 @@ public class VTransfertSubmitTag extends TagSupport
       {
         pageContext.getOut ().print ("<input class='bouton' type=\"button\" value=\"" + mLibelle + "\" " + 
                                      "onclick=\"" + VTransfertConstante.TRANSFERT_SOUMISSION + ".value='" + mValeur + "' ;\n" +  
-                                     mValidation + "document.formIterationModif.submit();\">") ;
+                                     mValidation + "\">") ;
       }
       else
       {
         pageContext.getOut ().print ("<input class='bouton' type=\"button\" value=\"" + mLibelle + "\" " + 
-                                     "onclick=\"document.formIterationModif.submit () ;\">") ;
+                                     "onclick=\"document." + CConstante.PAR_FORMULAIRE + ".submit () ;\">") ;
       }
       pageContext.getOut ().flush () ;
     }
@@ -104,14 +103,14 @@ public class VTransfertSubmitTag extends TagSupport
         // Ajoute la fonction de vérifiaction de champ vide si nécessaire.
         if (pArbre.getAssociation (i).isObligatoire ())
         {
-          lGestionnaireValidation += "if (! isVide (document.formIterationModif." +
+          lGestionnaireValidation += "if (! isVide (document." + CConstante.PAR_FORMULAIRE + "." +
                                      pArbre.getAssociation (i).getChamp () + ".value, '" +
                                      pArbre.getAssociation (i).getLibelle () + "')) {\n" ;
         }
         if (! lFonctionValidation.equals (""))
         {
           // Ajoute la fonction de vérification du champ courant au gestionnaire d'évenement.
-          lGestionnaireValidation += lFonctionValidation + " (document.formIterationModif." +
+          lGestionnaireValidation += lFonctionValidation + " (document." + CConstante.PAR_FORMULAIRE + "." +
                                     pArbre.getAssociation (i).getChamp () + ".value, '" +
                                     pArbre.getAssociation (i).getLibelle () + "') ;\n" ;
         }

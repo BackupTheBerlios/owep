@@ -76,32 +76,32 @@ public abstract class CControleurBase extends HttpServlet
       {
         JDO.loadConfiguration (LocalisateurIdentifiant.LID_BDCONFIGURATION) ;
         lJdo = new JDO (LocalisateurIdentifiant.LID_BDNOM) ;
-
+        
         mBaseDonnees = lJdo.getDatabase () ;
         mBaseDonnees.setAutoStore (false) ;
-    }
-    catch (Exception eException)
-    {
-      eException.printStackTrace () ;
-      throw new ServletException (CConstante.EXC_CONNEXION) ;
-    }
+      }
+      catch (Exception eException)
+      {
+        eException.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_CONNEXION) ;
+      }
       
-    // Appelle la JSP d'affichage retournée par traiter.
-    initialiserBaseDonnees () ;
-    initialiserParametres () ;
-    lRequeteDispatcher = pRequete.getRequestDispatcher (traiter ()) ;
-    if (lRequeteDispatcher == null)
-    {
-      throw new ServletException (CConstante.EXC_FORWARD) ;
-    }
-    else
-    {
-      // mis à jour de la session
-      lSession.setAttribute ("SESSION", mSession) ;
-      
-      // redirection vers la page convenue
-      lRequeteDispatcher.forward (mRequete, mReponse) ;
-    }
+      // Appelle la JSP d'affichage retournée par traiter.
+      initialiserBaseDonnees () ;
+      initialiserParametres () ;
+      lRequeteDispatcher = pRequete.getRequestDispatcher (traiter ()) ;
+      if (lRequeteDispatcher == null)
+      {
+        throw new ServletException (CConstante.EXC_FORWARD) ;
+      }
+      else
+      {
+        // mis à jour de la session
+        lSession.setAttribute ("SESSION", mSession) ;
+        
+        // redirection vers la page convenue
+        lRequeteDispatcher.forward (mRequete, mReponse) ;
+      }
     }
   }
   

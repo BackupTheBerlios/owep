@@ -76,7 +76,7 @@ function validerChamps ()
   }
   else
   {
-    document.forms[0].submit () ;
+    document.pFormulaire.submit () ;
   }
 } 
 
@@ -91,7 +91,7 @@ function validerSelect (pSelect, pMessage)
   }
   else
   {
-    document.forms[0].submit () ;
+    document.pFormulaire.submit () ;
   }
 }
 

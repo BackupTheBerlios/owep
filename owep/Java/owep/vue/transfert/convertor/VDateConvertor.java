@@ -13,16 +13,17 @@ import java.util.Date ;
 public class VDateConvertor
 {
   /**
-   * Permet de retourner la classe Data.
-   * @return la classe Date.
+   * Retourner la classe de Date.
+   * @return Classe Date.
    */
   public static Class getType () 
   {
     return java.util.Date.class ;
   }
   
+  
   /**
-   * Permet de convetir la valeur passer en date.
+   * Permet de convetir la valeur passée en date.
    * @param pValeur la valeur que l'on doit convertir.
    * @return la valeur convertit au format date.
    * @throws ParseException si une erreur survient lors de la convertion.
@@ -41,11 +42,12 @@ public class VDateConvertor
   
   
   /**
-   * Récupère une date formatée sous forme de chaîne.
-   * @param pDate Date à convertir.
-   * @return Date sous forme de chaîne formatée.
+   * Convertit la date en chaîne.
+   * @param pDate Date à convertir en chaîne.
+   * @param pVide Si vrai, renvoie une chaîne vide, sinon renvoie un espace insécable HTML.
+   * @return Date formatée sous forme de chaîne.
    */
-  public static String getString (Date pDate)
+  public static String getString (Date pDate, boolean pVide)
   {
     if (pDate != null)
     {
@@ -54,11 +56,18 @@ public class VDateConvertor
     }
     else
     {
-      return "" ;
+      if (pVide)
+      {
+        return "" ;
+      }
+      else
+      {
+        return "&nbsp;" ;
+      }
     }
   }
-
-
+  
+  
   /**
    * Récupère la fonction javascript permettant de valider ce type. Celle-ci retourne un booléen.
    * @return Fonction javascript permettant de valider ce type.

@@ -134,6 +134,14 @@
     <servlet-name>CListeProblemeVisu</servlet-name>
     <url-pattern>/Gestion/ListeProblemeVisu</url-pattern>
   </servlet-mapping>  
+  <servlet>
+    <servlet-name>CProblemeModif</servlet-name>
+    <servlet-class>owep.controle.gestion.CProblemeModif</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CProblemeModif</servlet-name>
+    <url-pattern>/Gestion/ProblemeModif</url-pattern>
+  </servlet-mapping>  
   
   
   

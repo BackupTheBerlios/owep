@@ -75,6 +75,19 @@ input.niveau2
   padding-bottom   : 2px ;
   padding-top      : 2px ;
 }
+textarea.niveau2
+{
+  background-color : rgb(255,204,153) ;
+  border           : solid rgb(128,0,0) ;
+  border-width     : 1px 1px 1px 1px ;
+  color            : rgb(51,85,165) ;
+  font-family      : arial ;
+  font-size        : 12px ;
+  font-weight      : bold ;
+  margin           : 1px 0px 1px 0px ;
+  padding-bottom   : 2px ;
+  padding-top      : 2px ;
+}
 select.niveau1
 {
   background-color : rgb(180,50,15) ;
@@ -107,7 +120,7 @@ p.titre
   text-align      : center ;
   text-decoration : underline ;
 }
-p.titre1
+.titre1
 {
   color           : rgb(51,85,165) ;
   font-family     : arial ;
@@ -115,13 +128,19 @@ p.titre1
   font-weight     : bold ;
   text-decoration : underline ;
 }
-p.titre2
+.titre2
 {
   color       : rgb(51,85,165) ;
   font-family : arial ;
   font-size   : 16px ;
   font-weight : bold ;
-  text-indent : 12px ;
+}
+.titre3
+{
+  color       : rgb(51,85,165) ;
+  font-family : arial ;
+  font-size   : 12px ;
+  font-weight : bold ;
 }
 p.texte
 {
@@ -130,7 +149,23 @@ p.texte
   font-size   : 12px ;
   text-indent : 24px ;
 }
-p.paragrapheSubmit
+p.texte
+{
+  color       : black ;
+  font-family : arial ;
+  font-size   : 12px ;
+  text-indent : 24px ;
+}
+p.texteObligatoire
+{
+  text-align  : center ;
+  color       : black ;
+  font-family : arial ;
+  font-size   : 10px ;
+  font-weight : bold ;
+  text-indent : 24px ;
+}
+p.texteSubmit
 {
   text-align : right ;
 }
@@ -168,7 +203,7 @@ td.caseNiveau2
   padding-right    : 2px ;
   padding-top      : 2px ;
   padding-bottom   : 2px ; 
-  text-align       : center ;
+  text-align       : left ;
 }
 td.caseNiveau3
 {
@@ -182,6 +217,7 @@ td.caseNiveau3
   padding-left     : 2px ;
   padding-right    : 2px ;
   padding-top      : 2px ;
+  text-align       : left ;
 }
 
 td.caseNiveau2SansBordure
@@ -210,6 +246,7 @@ td.caseNiveau3Lien
   padding-left     : 2px ;
   padding-right    : 2px ;
   padding-top      : 2px ;
+  text-align       : left ;
 }
 
 td.caseNiveau3SansBordure
@@ -222,6 +259,7 @@ td.caseNiveau3SansBordure
   padding-left     : 2px ;
   padding-right    : 2px ;
   padding-top      : 2px ;
+  text-align       : left ;
 }
 
 

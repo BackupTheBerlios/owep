@@ -68,12 +68,12 @@
       <td class="caseNiveau3" width="50%">
         Date de début prévue * : <input <transfert:transfertchamp membre="setDateDebutPrevue" type="java.util.Date" libelle="Date de début prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/> 
                                 type="text" size="8" class="niveau2"
-                                value="<%= VDateConvertor.getString (lIteration.getDateDebutPrevue ()) %>"  maxlength="<%= CConstante.TXT_DATE %>">
+                                value="<%= VDateConvertor.getString (lIteration.getDateDebutPrevue (), true) %>"  maxlength="<%= CConstante.TXT_DATE %>">
       </td>
       <td class="caseNiveau3" width="50%">
         Date de fin prévue * : <input <transfert:transfertchamp membre="setDateFinPrevue" type="java.util.Date" libelle="Date de fin prévue" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>  
                               type="text" size="8" class="niveau2"
-                              value="<%= VDateConvertor.getString (lIteration.getDateFinPrevue ()) %>" 
+                              value="<%= VDateConvertor.getString (lIteration.getDateFinPrevue (), true) %>" 
                               maxlength="<%= CConstante.TXT_DATE %>">
       </td>
     </tr>
@@ -114,11 +114,11 @@
         
         <!-- Ajoute le champ "DateDebutPrevu" à la liste -->
         <input <transfert:transfertchamp membre="setDateDebutPrevue" type="" libelle="Date de début prévue de la tâche" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
-         type="hidden" value="<%= VDateConvertor.getString (lTache.getDateDebutPrevue ()) %>">
+         type="hidden" value="<%= VDateConvertor.getString (lTache.getDateDebutPrevue (), true) %>">
         
         <!-- Ajoute le champ "DateFinPrevue" à la liste -->
         <input <transfert:transfertchamp membre="setDateFinPrevue" type="" libelle="Date de fin prévue de la tâche" convertor="VDateConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBREITERATION %>"/>
-         type="hidden" value="<%= VDateConvertor.getString (lTache.getDateFinPrevue ()) %>">
+         type="hidden" value="<%= VDateConvertor.getString (lTache.getDateFinPrevue (), true) %>">
         
         
         <!-- Ajoute les champs Disciplines, activités et collaborateurs -->
@@ -521,7 +521,7 @@
   %>
         <!-- Données de la tâche. -->
         gListeTaches.push (new Array ("<%= lTache.getNom () %>", "<%=lTache.getDescription ()%>", "<%=lTache.getChargeInitiale () %>",
-                                      "<%= VDateConvertor.getString (lTache.getDateDebutPrevue ()) %>", "<%= VDateConvertor.getString (lTache.getDateFinPrevue ()) %>",
+                                      "<%= VDateConvertor.getString (lTache.getDateDebutPrevue (), true) %>", "<%= VDateConvertor.getString (lTache.getDateFinPrevue (), true) %>",
                                       "<%= lIndiceDefTravailAbsolu %>", "<%= lIndiceActivite %>",
                                       "<%= lIndiceCollaborateur %>", new Array (), new Array())) ;
   <%
