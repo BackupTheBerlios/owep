@@ -102,7 +102,7 @@ function envoyer()
       document.formCreerProjet.mFichierProcessus.value != ""))
     texte = texte + "<%=lMessage.getString("projetMessageProcessus")%>\n";
     
-    if(document.formCreerProjet.mProcessus[<%=listProcessus.size()%>].checked)
+    if(document.formCreerProjet.mProcessus<%=listProcessus.size()>0?"["+listProcessus.size()+"]":""%>.checked)
     {
       var fich = document.formCreerProjet.mFichierProcessus.value;
       var extension = fich.slice(fich.length-4);

@@ -74,7 +74,7 @@ public class CConnexion extends HttpServlet
     // Initie la connexion à la base de données.
     try
     {
-      JDO.loadConfiguration (LocalisateurIdentifiant.LID_BDCONFIGURATION) ;
+      JDO.loadConfiguration (getServletContext ().getRealPath ("/")+LocalisateurIdentifiant.LID_BDCONFIGURATION) ;
       lJdo = new JDO (LocalisateurIdentifiant.LID_BDNOM) ;
       mBaseDonnees = lJdo.getDatabase () ;
       mBaseDonnees.setAutoStore (false) ;

@@ -2,6 +2,8 @@ package owep.controle.processus ;
 
 
 import java.util.ArrayList ;
+import java.util.HashMap ;
+import java.util.Iterator ;
 
 import javax.servlet.ServletException ;
 
@@ -9,7 +11,6 @@ import org.exolab.castor.jdo.OQLQuery ;
 import org.exolab.castor.jdo.PersistenceException ;
 import org.exolab.castor.jdo.QueryResults ;
 
-import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
 import owep.modele.execution.MCollaborateur ;
 import owep.modele.execution.MProjet ;
@@ -21,30 +22,30 @@ import owep.modele.processus.MRole ;
 /**
  * Controleur pour la création d'un collaborateur
  */
+// TODO ne pas pouvoir enleve un collab ni un role sur la jsp
 public class CCreationCollaborateur extends CControleurBase
 {
-  private String         mPageSource ;   // Page appelant la création d'un collaborateur
+  private String         mNom ;                // Nom du collaborateur à créer
+  private String         mPrenom ;             // Prenom du collaborateur à créer
+  private String         mLogin ;              // Login du collaborateur à créer
+  private String         mMail ;               // Email du collaborateur à créer
+  private String         mAdresse ;            // Adresse du collaborateur à créer
+  private String         mTelephone ;          // Numéro du telephone du collaborateur à créer
+  private String         mPortable ;           // Numéro du portable du collaborateur à créer
+  private String         mCommentaire ;        // Commentaire du collaborateur à créer
+  private String         mMdp ;                // Mot de passe du collaborateur à créer
+  private int            mDroit ;              //Droit du collaboratur (collaborateur = 0 ;
+  // superviseur = 1)
 
-  private String         mNom ;          // Nom du collaborateur à créer
-  private String         mPrenom ;       // Prenom du collaborateur à créer
-  private String         mLogin ;        // Login du collaborateur à créer
-  private String         mMail ;         // Email du collaborateur à créer
-  private String         mAdresse ;      // Adresse du collaborateur à créer
-  private String         mTelephone ;    // Numéro du telephone du collaborateur à créer
-  private String         mPortable ;     // Numéro du portable du collaborateur à créer
-  private String         mCommentaire ;  // Commentaire du collaborateur à créer
-  private String         mMdp ;          // Mot de passe du collaborateur à créer
-  private int            mDroit ;        //Droit du collaboratur (collaborateur = 0 ; chef de
-  // projet = 1)
+  private String         mNumPageSuivante ;
+  private int            mNumPage ;
 
   private ArrayList      mListeRole ;
+  private ArrayList      mListeCollaborateur ;
+  private HashMap        mSelectRole ;         // Liste des roles (list id = value) selectionné pour
+                                               // chaque utilisateur (id = key)
+  private MCollaborateur mCollaborateur ;      // Collaborateur à créer
 
-  private MCollaborateur mCollaborateur ; // Collaborateur à créer
-
-  private ArrayList      mSelectRole ;   // Liste des roles selectionné pour
-
-
-  // l'utilisateur qu'on souhaite créer
 
   /**
    * Récupère les données nécessaire au controleur dans la base de données.
@@ -54,6 +55,68 @@ public class CCreationCollaborateur extends CControleurBase
    */
   public void initialiserBaseDonnees () throws ServletException
   {
+    OQLQuery lRequete ; // Requête à réaliser sur la base
+    QueryResults lResultat ; // Résultat de la requête sur la base
+    mListeRole = new ArrayList () ;
+    mListeCollaborateur = new ArrayList () ;
+
+    MProjet lProjet = getSession ().getProjet () ;
+    getRequete ().setAttribute ("idProjet", String.valueOf (lProjet.getId ())) ;
+
+    // liste Role
+    try
+    {
+      getBaseDonnees ().begin () ;
+
+      lRequete = getBaseDonnees ()
+        .getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId=$1") ;
+      lRequete.bind (lProjet.getId ()) ;
+      lResultat = lRequete.execute () ;
+      lProjet = (MProjet) lResultat.next () ;
+
+      MProcessus lProcessus = lProjet.getProcessus () ;
+      ArrayList lListComposant = lProcessus.getListeComposants () ;
+      Iterator it = lListComposant.iterator () ;
+      while (it.hasNext ())
+      {
+        MComposant lComposant = (MComposant) it.next () ;
+        mListeRole.addAll (lComposant.getListeRoles ()) ;
+      }
+
+      getRequete ().setAttribute ("listeRole", mListeRole) ;
+
+      getBaseDonnees ().commit () ;
+    }
+    catch (PersistenceException e)
+    {
+      e.printStackTrace () ;
+    }
+
+    // liste Collaborateur
+    try
+    {
+      getBaseDonnees ().begin () ;
+
+      lRequete = getBaseDonnees ()
+        .getOQLQuery (
+                      "select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR") ;
+      lResultat = lRequete.execute () ;
+
+      MCollaborateur lCollaborateur ;
+      while (lResultat.hasMore ())
+      {
+        lCollaborateur = (MCollaborateur) lResultat.next () ;
+        mListeCollaborateur.add (lCollaborateur) ;
+      }
+
+      getRequete ().setAttribute ("listeCollaborateur", mListeCollaborateur) ;
+
+      getBaseDonnees ().commit () ;
+    }
+    catch (PersistenceException e1)
+    {
+      e1.printStackTrace () ;
+    }
   }
 
   /**
@@ -64,30 +127,51 @@ public class CCreationCollaborateur extends CControleurBase
    */
   public void initialiserParametres () throws ServletException
   {
-    mPageSource = getRequete ().getParameter ("mPageSource") ;
+    mNumPageSuivante = getRequete ().getParameter ("numPageSuivante") ;
+    String numPage = getRequete ().getParameter ("numPage") ;
 
-    mNom = getRequete ().getParameter ("mNom") ;
-    mPrenom = getRequete ().getParameter ("mPrenom") ;
-    mLogin = getRequete ().getParameter ("mLogin") ;
-    mMail = getRequete ().getParameter ("mMail") ;
-    mAdresse = getRequete ().getParameter ("mAdresse") ;
-    mTelephone = getRequete ().getParameter ("mTelephone") ;
-    mPortable = getRequete ().getParameter ("mPortable") ;
-    mCommentaire = getRequete ().getParameter ("mCommentaire") ;
-    mDroit = 0 ;
-    mMdp = mLogin ;
-
-    mSelectRole = new ArrayList () ;
-    getListeRole () ;
-    for (int i = 0 ; i < mListeRole.size () ; i++)
+    if (numPage == null)
     {
-      int role = ((MRole) mListeRole.get (i)).getId () ;
-      String idRoleSelect = getRequete ().getParameter ("mRoleSelect" + role) ;
-      if (idRoleSelect != null)
-      {
-        mSelectRole.add (idRoleSelect) ;
-      }
+      if (mNumPageSuivante == null)
+        mNumPage = 0 ;
+      else
+        mNumPage = 1 ;
     }
+    else
+      mNumPage = Integer.parseInt (numPage) ;
+
+    switch (mNumPage)
+    {
+      case 1 : // page où l'on associe des roles aux collaborateurs qu'on veut associer au projet
+        if(!mNumPageSuivante.equals("2")){
+        mSelectRole = new HashMap();
+      	for(int i = 1 ; i <= mListeCollaborateur.size() ; i++)
+      	{
+      	  String mRoleSelected = getRequete().getParameter("mRoleSelected"+i);
+      	  String[] idRole = mRoleSelected.split("_");
+      	  ArrayList listIdRole = new ArrayList();
+      	  for(int j = 0 ; j< idRole.length ; j++){
+      	    if(!idRole[j].equals(""))
+      	      listIdRole.add(idRole[j]);
+      	  }
+      	  mSelectRole.put(String.valueOf(i),listIdRole);
+      	}
+        }
+      	break ;
+      case 2 : // page où on créer un collaborateur
+        mNom = getRequete ().getParameter ("mNom") ;
+        mPrenom = getRequete ().getParameter ("mPrenom") ;
+        mLogin = getRequete ().getParameter ("mLogin") ;
+        mMail = getRequete ().getParameter ("mMail") ;
+        mAdresse = getRequete ().getParameter ("mAdresse") ;
+        mTelephone = getRequete ().getParameter ("mTelephone") ;
+        mPortable = getRequete ().getParameter ("mPortable") ;
+        mCommentaire = getRequete ().getParameter ("mCommentaire") ;
+        mDroit = 0 ;
+        mMdp = MCollaborateur.encode (mLogin) ;
+        break ;
+    }
+
   }
 
   /**
@@ -102,120 +186,157 @@ public class CCreationCollaborateur extends CControleurBase
     OQLQuery lRequete ; // Requête à réaliser sur la base
     QueryResults lResultat ; // Résultat de la requête sur la base
 
-    if (mNom == null)
+    switch (mNumPage)
     {
-      getRequete ().setAttribute ("mPageSource", getRequete ().getHeader ("referer")) ;
-      getRequete ().setAttribute ("listeRole", mListeRole) ;
-      return "..\\JSP\\Processus\\CreationCollaborateur.jsp" ;
-    }
+      case 0 :
+        getRequete ().setAttribute ("numPage", "1") ;
+        // Permier appel
+        break ;
+      case 1 :
+        if (mNumPageSuivante.equals ("2"))
+        {
+          // redirection vers la page 2
+        }
+        else
+        {
+          // ajout des collaborateurs selectionné au projet
+          try
+          {
+            getBaseDonnees ().begin () ;
+            
+            // recup données collab role
+            ArrayList listCollab = new ArrayList();
+            Iterator itCollab = mListeCollaborateur.iterator();
+            while(itCollab.hasNext()){
+              MCollaborateur lCollaborateur = (MCollaborateur) itCollab.next();
+              ArrayList listIdRole = (ArrayList) mSelectRole.get(String.valueOf(lCollaborateur.getId()));
+              if(listIdRole.size()>0){
+                lRequete = getBaseDonnees().getOQLQuery("select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mId=$1");
+                lRequete.bind(lCollaborateur.getId());
+                lResultat = lRequete.execute();
+                lCollaborateur = (MCollaborateur) lResultat.next();
+                
+                // Ajout du collaborateur au projet
+                ArrayList listeProjet = lCollaborateur.getListeProjets();
+                Iterator itProjet = listeProjet.iterator();
+                boolean b = false;
+                while(itProjet.hasNext() && !b){
+                  MProjet lProjet = (MProjet) itProjet.next();
+                  if(lProjet.getId() == getSession().getProjet().getId()){
+                    b = true;
+                    lCollaborateur.addProjet(lProjet);
+                  }
+                }
+                
+                // Ajout du role au collaborateur
+                Iterator itIdRole = listIdRole.iterator();
+                while(itIdRole.hasNext()){
+                  String idRole = (String) itIdRole.next();
+                  lRequete = getBaseDonnees().getOQLQuery("select ROLE from owep.modele.processus.MRole ROLE where mId=$1");
+                  lRequete.bind(idRole);
+                  lResultat = lRequete.execute();
+                  MRole lRole = (MRole) lResultat.next();
+                  
+                  Iterator itRole = lCollaborateur.getListeRoles().iterator();
+                  b = false;
+                  while(itRole.hasNext() && !b){
+                    MRole role = (MRole) itRole.next();
+                    b = (role.getId() == lRole.getId());
+                  }
+                  if(!b)
+                    lCollaborateur.addRole(lRole);
+                }
+              }
+              listCollab.add(lCollaborateur);
+            }
+            mListeCollaborateur = listCollab;
+            
+            getBaseDonnees ().commit () ;
+          }
+          catch (PersistenceException e1)
+          {
+            e1.printStackTrace () ;
+          }
 
-    if (mNom.equals (""))
-    {
-      renvoieAttribut () ;
-      getRequete ().setAttribute ("mProbleme", "nom") ;
-      return "..\\JSP\\Processus\\CreationCollaborateur.jsp" ;
-    }
+          // redirection vers la page 3 avec la liste des collaborateurs selectionné ds
+          // listeCollaborateur
+          getRequete ().setAttribute ("listeCollaborateur", mListeCollaborateur) ;
+        }
+        getRequete ().setAttribute ("numPage", mNumPageSuivante) ;
+        break ;
+      case 2 :
+        // creation du nouveau collaborateur
+        try
+        {
+          getBaseDonnees ().begin () ;
 
-    if (mLogin.equals (""))
-    {
-      renvoieAttribut () ;
-      getRequete ().setAttribute ("mProbleme", "login") ;
-      return "..\\JSP\\Processus\\CreationCollaborateur.jsp" ;
-    }
+          lRequete = getBaseDonnees ()
+            .getOQLQuery (
+                          "select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mUtilisateur = $1") ;
+          lRequete.bind (mLogin) ;
+          lResultat = lRequete.execute () ;
 
-    if (mMail.equals (""))
-    {
-      renvoieAttribut () ;
-      getRequete ().setAttribute ("mProbleme", "mail") ;
-      return "..\\JSP\\Processus\\CreationCollaborateur.jsp" ;
+          // Vérifie que le compte utilisateur n'est pas déjà présent
+          if (lResultat.size () != 0)
+          {
+            //getBaseDonnees ().commit () ;
+            getRequete ().setAttribute (
+                                        "mProbleme",
+                                        getSession ().getMessages ()
+                                          .getString ("collaborateurMessageLogin")) ;
+            getRequete ().setAttribute ("numPage", "2") ;
+            renvoieAttribut () ;
+            getBaseDonnees ().commit () ;
+          }
+          else
+          {
+            // Creation du nouveau collaborateur
+            mCollaborateur = new MCollaborateur (mPrenom, mNom, mAdresse, mTelephone, mPortable,
+                                                 mMail, mCommentaire, mLogin, mMdp, mDroit) ;
+
+            // Enregistre le nouveau collaborateur dans la base de données
+            getBaseDonnees ().create (mCollaborateur) ;
+            getBaseDonnees ().commit () ;
+
+            // liste Collaborateur
+            getBaseDonnees ().begin () ;
+
+            lRequete = getBaseDonnees ()
+              .getOQLQuery (
+                            "select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR") ;
+            lResultat = lRequete.execute () ;
+
+            mListeCollaborateur = new ArrayList () ;
+            MCollaborateur lCollaborateur ;
+            while (lResultat.hasMore ())
+            {
+              lCollaborateur = (MCollaborateur) lResultat.next () ;
+              mListeCollaborateur.add (lCollaborateur) ;
+            }
+
+            getRequete ().setAttribute ("listeCollaborateur", mListeCollaborateur) ;
+
+            getBaseDonnees ().commit () ;
+
+            getRequete ().setAttribute ("numPage", "1") ;
+          }
+        }
+        catch (PersistenceException e1)
+        {
+          e1.printStackTrace () ;
+        }
+        break ;
     }
 
     try
     {
-      getBaseDonnees ().begin () ;
-
-      // Cherche la présence de collaborateur ayant le login demandé par
-      // le nouveau
-      lRequete = getBaseDonnees ()
-        .getOQLQuery (
-                      "select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mUtilisateur = $1") ;
-      lRequete.bind (mLogin) ;
-      lResultat = lRequete.execute () ;
-
-      // Vérifie que le compte utilisateur n'est pas déjà présent
-      if (lResultat.size () != 0)
-      {
-        getBaseDonnees ().commit () ;
-        getBaseDonnees ().close () ;
-
-        getRequete ().setAttribute ("mProbleme", "unique") ;
-        renvoieAttribut () ;
-        return "..\\JSP\\Processus\\CreationCollaborateur.jsp" ;
-      }
-
-      // Créé le nouveau collaborateur
-      mCollaborateur = new MCollaborateur (mPrenom, mNom, mAdresse, mTelephone, mPortable, mMail,
-                                           mCommentaire, mLogin, mMdp, mDroit) ;
-
-      // Enregistre le nouveau collaborateur dans la base de données
-      getBaseDonnees ().create (mCollaborateur) ;
-      getBaseDonnees ().commit () ;
-
-      getBaseDonnees ().begin () ;
-
-      // Recupére le nouveau collaborateur enregistré
-      lRequete = getBaseDonnees ()
-        .getOQLQuery (
-                      "select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mUtilisateur = $1") ;
-      lRequete.bind (mLogin) ;
-      lResultat = lRequete.execute () ;
-      mCollaborateur = (MCollaborateur) lResultat.next () ;
-
-      // Attribution des roles
-      for (int i = 0 ; i < mSelectRole.size () ; i++)
-      {
-        lRequete = getBaseDonnees ()
-          .getOQLQuery ("select ROLE from owep.modele.processus.MRole ROLE where mId = $1") ;
-        lRequete.bind (mSelectRole.get (i)) ;
-        lResultat = lRequete.execute () ;
-
-        MRole roleSelect = (MRole) lResultat.next () ;
-
-        mCollaborateur.addRole (roleSelect) ;
-      }
-
-      lRequete = getBaseDonnees ()
-        .getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
-      lRequete.bind (getSession().getProjet().getId()) ;
-      lResultat = lRequete.execute () ;
-      MProjet projet = (MProjet) lResultat.next () ;
-      mCollaborateur.addProjet(projet);
-
-      getBaseDonnees ().commit () ;
       getBaseDonnees ().close () ;
-
-      getRequete ().setAttribute ("mProbleme", "false") ;
-      getRequete ().setAttribute ("mPageSource", mPageSource) ;
-      return "..\\JSP\\Processus\\CreationCollaborateur.jsp" ;
     }
-    catch (PersistenceException e)
+    catch (PersistenceException eException)
     {
-      e.printStackTrace () ;
-      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      eException.printStackTrace () ;
     }
-    // Ferme la connexion à la base de données.
-    finally
-    {
-      try
-      {
-        getBaseDonnees ().close () ;
-      }
-      catch (PersistenceException eException)
-      {
-        eException.printStackTrace () ;
-        throw new ServletException (CConstante.EXC_DECONNEXION) ;
-      }
-    }
+    return "..\\JSP\\Processus\\CreationCollaborateur.jsp" ;
 
   }
 
@@ -224,9 +345,6 @@ public class CCreationCollaborateur extends CControleurBase
    */
   private void renvoieAttribut ()
   {
-    getRequete ().setAttribute ("mPageSource", mPageSource) ;
-    getRequete ().setAttribute ("listeRole", mListeRole) ;
-
     getRequete ().setAttribute ("mNom", (mNom == null ? "" : mNom)) ;
     getRequete ().setAttribute ("mPrenom", (mPrenom == null ? "" : mPrenom)) ;
     getRequete ().setAttribute ("mLogin", (mLogin == null ? "" : mLogin)) ;
@@ -235,32 +353,6 @@ public class CCreationCollaborateur extends CControleurBase
     getRequete ().setAttribute ("mTelephone", (mTelephone == null ? "" : mTelephone)) ;
     getRequete ().setAttribute ("mPortable", (mPortable == null ? "" : mPortable)) ;
     getRequete ().setAttribute ("mCommentaire", (mCommentaire == null ? "" : mCommentaire)) ;
-  }
-
-  /**
-   * Cherche tous les roles possibles pour le processus associé au projet ouvert
-   */
-  private void getListeRole ()
-  {
-    MProjet lProjet = getSession ().getProjet () ;
-    MProcessus lProcessus = lProjet.getProcessus () ;
-    ArrayList lListeComposants = lProcessus.getListeComposants () ;
-    MComposant lComposant ;
-
-    mListeRole = new ArrayList () ;
-    for (int i = 0 ; i < lListeComposants.size () ; i++)
-    {
-      lComposant = (MComposant) lListeComposants.get (i) ;
-      ArrayList lListeRole = lComposant.getListeRoles () ;
-      for (int j = 0 ; j < lListeRole.size () ; j++)
-      {
-        if (!mListeRole.contains (lListeRole.get (j)))
-        {
-          mListeRole.add (lListeRole.get (j)) ;
-        }
-      }
-    }
-
   }
 
 }

@@ -264,7 +264,7 @@ public class CGererProjet extends CControleurBase
         }
 
         // Recherche de l'id du nouveau processus
-        int maxIdProcessus = 1 ;
+        int maxIdProcessus = 0 ;
         try
         {
           getBaseDonnees ().begin () ;

@@ -853,3 +853,42 @@ img.logoIdentification
   vertical-align    : top ;
   width             : 400px ;
 }
+
+
+/**************************************************************************************************
+ * Page d'identification
+ **************************************************************************************************/
+img.logoInstallation
+{
+  background-image  : url(/owep/Image/Red/Instal.jpg) ;
+  background-repeat : no-repeat ;
+  height           : 130px ;
+  width            : 130px ;
+  vertical-align    : top ;
+}
+table.regionInstallationCentre
+{
+  border       : solid rgb(128,0,0) ;
+  border-width : 0px 2px 0px 2px ;
+  height       : 100% ;
+  width        : 100% ;
+  align        : center;
+}
+table.regionLogoInstallation
+{
+  border            : solid rgb(128,0,0) ;
+  border-width      : 2px 0px 0px 2px ;
+  height       : 100% ;
+  width        : 100% ;
+}
+table.regionInstallationDroite
+{
+  border       : solid rgb(128,0,0) ;
+  border-width : 2px 2px 0px 0px ;
+  height       : 100% ;
+  width        : 100% ;
+}
+td.InstallationCentre
+{
+  vertical-align : top;
+}

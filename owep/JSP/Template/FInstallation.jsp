@@ -27,14 +27,14 @@
     <tr>
     
       <!-- colonne de gauche -->
-      <td class="regionGauche" height="100%">
-        <table class="regionIdentificationGauche" cellpadding="0" cellspacing="0">
+      <td class="regionGauche"><!--  height="100%"-->
+        <table class="regionLogoInstallation" cellpadding="0" cellspacing="0">
         <tbody>
         
           <!-- logo de l'application -->
           <tr>
-            <td class="regionIdentificationPrincipal">
-              <img src="/owep/Image/Vide.gif" class="logoIdentification">
+            <td><!-- class="regionIdentificationPrincipal"-->
+              <img src="/owep/Image/Vide.gif" class="logoInstallation">
             </td>
           </tr>
           
@@ -45,12 +45,12 @@
       
       
       <!-- colonne principale -->
-      <td height="100%" width="100%">
-        <table class="regionIdentificationDroite" cellpadding="0" cellspacing="0">
+      <td width="100%"><!-- height="100%"-->
+        <table class="regionInstallationDroite" cellpadding="0" cellspacing="0">
         <tbody>
                 
           <tr>
-            <td class="regionIdentificationPrincipal">
+            <td class="regionIdentificationPrincipal"><!---->
               <table>
                 <tr>
                   <td class="titre" width="100%">
@@ -84,8 +84,6 @@
               %>
               </table>
               <br/>
-              <template:region nom="RegionNavigation"/>
-              <template:region nom="RegionPrincipal"/>
             </td>
           </tr>
           
@@ -95,6 +93,30 @@
       </td>
     </tr>
     
+    <tr>
+      <td colspan="2" width="100%" height="100%">
+        <table class="regionInstallationCentre" cellpadding="0" cellspacing="0">
+        <tr>
+          <td width="10px">&nbsp</td>
+          <td class="InstallationCentre" width="130px">
+<!--            <br><br><br>
+            <font class="titre2">Etapes :</font>
+            <br><br>
+            <font class="titre3">
+              &nbsp&nbsp&nbspAccueil<br>
+              &nbsp&nbsp&nbspBase de données<br>
+              &nbsp&nbsp&nbspCompte superviseur<br>
+              &nbsp&nbsp&nbspConfiguration<br>
+              &nbsp&nbsp&nbspFin
+            </font>-->
+          </td>
+          <td class="InstallationCentre">
+            <template:region nom="RegionPrincipal"/>
+          </td>
+        </tr>
+        </table>
+      </td>
+    </tr>
     
     <!-- pied de page -->
     <tr>
