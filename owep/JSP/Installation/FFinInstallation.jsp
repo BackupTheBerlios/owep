@@ -1,4 +1,3 @@
-<br><br>
 <center>
   <font class="titre3">L'installation est maintenant terminée.</font>
   <br><br>
@@ -8,3 +7,8 @@
   <br><br>
   <font class="texte">Merci d'avoir choisi le logiciel OWEP.</font>
 </center>
+
+<!-- Aide en ligne -->
+<script type="text/javascript" language="JavaScript">
+pCodeAide  = "L'installation est terminée." ;
+</script>
