@@ -1,5 +1,11 @@
 <%@page import="owep.controle.CConstante" %>
 <%@page import="owep.modele.execution.MProjet" %>
+<%@page import="owep.modele.execution.MIteration" %>
+<%@page import="owep.vue.transfert.convertor.VDateConvertor" %>
+<%@page import="owep.vue.transfert.convertor.VStringConvertor" %>
+<%@page import="owep.vue.transfert.VTransfertConstante" %>
+
+<%@taglib uri='/WEB-INF/tld/transfert.tld' prefix='transfert' %>
 
 <%
   // Utilisé pour stocker le code javascript.
