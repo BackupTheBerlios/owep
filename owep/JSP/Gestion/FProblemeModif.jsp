@@ -118,11 +118,13 @@
       </td>
       <td class="caseNiveau3" align="center" valign="middle" width="0" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">&nbsp;</font><br/>
-        <input type="button" value="     Ajouter >   " class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoquePossible, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoque) ;"
-         onmouseover="tooltipOn(this, event, 'Cliquez pour ajouter la tâche de la liste de gauche à la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
-        <br/>
-        <input type="button" value="< Supprimer" class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoque, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoquePossible) ;"
-         onmouseover="tooltipOn(this, event, 'Cliquez pour supprimer la tâche de la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
+        <center>
+          <input type="button" value="    Ajouter >  " class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoquePossible, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoque) ;"
+           onmouseover="tooltipOn(this, event, 'Cliquez pour ajouter la tâche de la liste de gauche à la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
+          <br/>
+          <input type="button" value="< Supprimer" class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoque, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesProvoquePossible) ;"
+           onmouseover="tooltipOn(this, event, 'Cliquez pour supprimer la tâche de la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
+        </center>
       </td>
       <td class="caseNiveau3" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">Tâches choisies :</font><br/>
@@ -181,11 +183,13 @@
       </td>
       <td class="caseNiveau3" align="center" valign="middle" width="0" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">&nbsp;</font><br/>
-        <input type="button" value="    < Ajouter    " class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResoutPossible, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResout)"
-         onmouseover="tooltipOn(this, event, 'Cliquez pour ajouter la tâche de la liste de gauche à la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
-        <br/>
-        <input type="button" value="Supprimer >" class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResout, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResoutPossible)"
-         onmouseover="tooltipOn(this, event, 'Cliquez pour supprimer la tâche de la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
+        <center>
+          <input type="button" value="   < Ajouter   " class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResoutPossible, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResout)"
+           onmouseover="tooltipOn(this, event, 'Cliquez pour ajouter la tâche de la liste de gauche à la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
+          <br/>
+          <input type="button" value="Supprimer >" class="bouton" onclick="transfererItem (document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResout, document.<%= CConstante.PAR_FORMULAIRE %>.pSelectTachesResoutPossible)"
+           onmouseover="tooltipOn(this, event, 'Cliquez pour supprimer la tâche de la liste des tâches choisies.')" onmouseout="tooltipOff(this, event)"/>
+        </center>
       </td>
       <td class="caseNiveau3" style="border-width : 0px 0px 1px 0px ;">
         <font class="titre3">Tâches choisies :</font><br/>
