@@ -1,18 +1,17 @@
 <%@page import="java.util.ArrayList" %>
 <%@page import="owep.controle.CConstante" %>
 <%@page import="owep.modele.execution.MRisque" %>
-<%@page import="owep.modele.execution.MTache" %>
-<%@page import="owep.modele.execution.MTacheImprevue" %>
-<%@page import="owep.vue.transfert.convertor.VDateConvertor" %>
+<%@page import="owep.modele.execution.MProjet" %>
 <%@page import="owep.vue.transfert.convertor.VIntegerConvertor" %>
 <%@page import="owep.vue.transfert.convertor.VStringConvertor" %>
 
 
 <%
   // Récupération des paramètres.
-  ArrayList pListeRisques = (ArrayList) request.getAttribute (CConstante.PAR_LISTERISQUES) ;
+  MProjet pProjet = (MProjet) request.getAttribute (CConstante.PAR_PROJET) ;
 %>
 
+<center>
 <table width="90%" class="tableau" border="0" cellpadding="0" cellspacing="0">
 <tbody>
   <tr>
@@ -41,9 +40,9 @@
   
   
   <%
-  for (int lIndiceRisque = 0; lIndiceRisque < pListeRisques.size (); lIndiceRisque ++)
+  for (int lIndiceRisque = 0; lIndiceRisque < pProjet.getNbRisques (); lIndiceRisque ++)
   {
-    MRisque lRisque = (MRisque) pListeRisques.get (lIndiceRisque) ;
+    MRisque lRisque = pProjet.getRisque (lIndiceRisque) ;
   %>
     </tr>
      <td style="text-align: center" class="caseNiveau2">
@@ -85,6 +84,7 @@
   
 </tbody>
 </table>
+</center>
 
 
 <!-- Aide en ligne -->

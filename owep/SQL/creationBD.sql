@@ -1,3 +1,8 @@
+drop database owep ;
+create database owep ;
+use owep ;
+
+
 /*******************************
  * Tables du modèle processus. *
  *******************************/

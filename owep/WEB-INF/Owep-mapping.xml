@@ -229,6 +229,9 @@
     <field name="mArtefactsImprevues" type="owep.modele.execution.MArtefactImprevue" collection="arraylist" get-method="getListeArtefactsImprevues" set-method="setListeArtefactsImprevues">
       <sql many-key="ARI_PRJ_ID"/>
     </field>
+    <field name="mRisques" type="owep.modele.execution.MRisque" collection="arraylist" get-method="getListeRisques" set-method="setListeRisques">
+      <sql many-key="RIS_PRJ_ID"/>
+    </field>
     <field name="mIndicateurs" type="owep.modele.execution.MIndicateur" collection="arraylist" get-method="getListeIndicateurs" set-method="setListeIndicateurs">
       <sql many-key="IND_PRJ_ID"/>
     </field>

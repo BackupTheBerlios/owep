@@ -73,9 +73,17 @@ function isDate (pDate, pLibelle)
  */
 function isInteger (pInteger, pLibelle)
 {
-  var lRegExpression = /^\S+$/ ;
+  var lChiffre = true ;
   
-  if ((pInteger.length != 0) && (! lRegExpression.test (pInteger)))
+  for (i = 0; i < pInteger.length; i ++)
+  {
+    if ('0123456789'.indexOf (pInteger.charAt (i)) < 0)
+    {
+      lChiffre = false ;
+    }
+  }
+  
+  if (! lChiffre)
   {
     gChampsInvalides += 'Le champ \'' + pLibelle + '\' est incorrect.\n' ;
     return false ;

@@ -15,21 +15,22 @@ import owep.modele.processus.MProcessus ;
  */
 public class MProjet extends MModeleBase
 {
-  private int            mId ;                // Identifie le projet de manière unique.
-  private String         mNom ;               // Nom du projet.
-  private String         mDescription ;       // Description du projet.
-  private Date           mDateDebutPrevue ;   // Date de début prévue pour le projet.
-  private Date           mDateFinPrevue ;     // Date de fin prévue pour le projet.
-  private double         mBudget ;            // Budget alloué au projet
-  private ArrayList      mArtefacts ;         // Liste des artefacts réalisés durant le projet.
-  private ArrayList      mCollaborateurs ;    // Liste des collaborateurs travaillant sur le projet.
-  private ArrayList      mIterations ;        // Liste des itérations réalisées durant le projet.
-  private MProcessus     mProcessus ;         // Processus utilisé par le projet.
-  private MCollaborateur mChefProjet ;        // Chef de projet.
+  private int            mId ;                 // Identifie le projet de manière unique.
+  private String         mNom ;                // Nom du projet.
+  private String         mDescription ;        // Description du projet.
+  private Date           mDateDebutPrevue ;    // Date de début prévue pour le projet.
+  private Date           mDateFinPrevue ;      // Date de fin prévue pour le projet.
+  private double         mBudget ;             // Budget alloué au projet
+  private ArrayList      mArtefacts ;          // Liste des artefacts réalisés durant le projet.
+  private ArrayList      mCollaborateurs ;     // Liste des collaborateurs travaillant sur le projet.
+  private ArrayList      mIterations ;         // Liste des itérations réalisées durant le projet.
+  private MProcessus     mProcessus ;          // Processus utilisé par le projet.
+  private MCollaborateur mChefProjet ;         // Chef de projet.
   private ArrayList      mActivitesImprevues ; // Listes des activités imprévues de ce projet
   private ArrayList      mArtefactsImprevues ; // Liste des artefacts imprévues réalisés durant le
                                                // projet.
-  private ArrayList      mIndicateurs ;       // Liste des indicateurs associés au projet.
+  private ArrayList      mRisques ;            // Liste des risques qui doivent être gérer sur le projet.
+  private ArrayList      mIndicateurs ;        // Liste des indicateurs associés au projet.
 
   /**
    * Crée une instance vide de MProjet.
@@ -37,12 +38,13 @@ public class MProjet extends MModeleBase
   public MProjet ()
   {
     super () ;
-    mIterations = new ArrayList () ;
-    mArtefacts = new ArrayList () ;
-    mCollaborateurs = new ArrayList () ;
+    mIterations         = new ArrayList () ;
+    mArtefacts          = new ArrayList () ;
+    mCollaborateurs     = new ArrayList () ;
     mActivitesImprevues = new ArrayList () ;
     mArtefactsImprevues = new ArrayList () ;
-    mIndicateurs = new ArrayList () ;
+    mRisques            = new ArrayList () ;
+    mIndicateurs        = new ArrayList () ;
   }
 
   /**
@@ -53,11 +55,13 @@ public class MProjet extends MModeleBase
     super () ;
     mId = pId ;
     
-    mIterations          = new ArrayList () ;
-    mArtefacts           = new ArrayList () ;
-    mCollaborateurs      = new ArrayList () ;
-    mActivitesImprevues  = new ArrayList () ;
-    mArtefactsImprevues  = new ArrayList () ;
+    mIterations         = new ArrayList () ;
+    mArtefacts          = new ArrayList () ;
+    mCollaborateurs     = new ArrayList () ;
+    mActivitesImprevues = new ArrayList () ;
+    mArtefactsImprevues = new ArrayList () ;
+    mRisques            = new ArrayList () ;
+    mIndicateurs        = new ArrayList () ;
   }
   
   /**
@@ -72,17 +76,19 @@ public class MProjet extends MModeleBase
                   Date pDateFinPrevue)
   {
     super () ;
-    mId = pId ;
-    mNom = pNom ;
-    mDescription = pDescription ;
+    mId              = pId ;
+    mNom             = pNom ;
+    mDescription     = pDescription ;
     mDateDebutPrevue = pDateDebutPrevue ;
-    mDateFinPrevue = pDateFinPrevue ;
-    mIterations = new ArrayList () ;
-    mArtefacts = new ArrayList () ;
-    mCollaborateurs = new ArrayList () ;
+    mDateFinPrevue   = pDateFinPrevue ;
+    
+    mIterations         = new ArrayList () ;
+    mArtefacts          = new ArrayList () ;
+    mCollaborateurs     = new ArrayList () ;
     mActivitesImprevues = new ArrayList () ;
     mArtefactsImprevues = new ArrayList () ;
-    mIndicateurs = new ArrayList () ;
+    mRisques            = new ArrayList () ;
+    mIndicateurs        = new ArrayList () ;
   }
 
 
@@ -572,8 +578,59 @@ public class MProjet extends MModeleBase
   {
     mIndicateurs = pIndicateurs ;
   }
+  
+  
+  /**
+   * Récupère le nombre de risques qui doivent être gérer sur le projet.
+   * @return Nombre de risques qui doivent être gérer sur le projet.
+   */
+  public int getNbRisques ()
+  {
+    return mRisques.size () ;
+  }
 
 
+  /**
+   * Récupère le risque d'indice spécifié pour le projet.
+   * @param pIndice Indice du risque dans la liste.
+   * @return Risque à gérer.
+   */
+  public MRisque getRisque (int pIndice)
+  {
+    return (MRisque) mRisques.get (pIndice) ;
+  }
+  
+  
+  /**
+   * Récupère le risque d'indice spécifié pour le projet.
+   * @param pRisque Risque à ajouter.
+   */
+  public void addRisque (MRisque pRisque)
+  {
+    mRisques.add (pRisque) ;
+  }
+  
+  
+  /**
+   * Récupère la liste des risques qui doivent être gérer sur le projet.
+   * @return Liste des risques qui doivent être gérer sur le projet.
+   */
+  public ArrayList getListeRisques ()
+  {
+    return mRisques ;
+  }
+  
+  
+  /**
+   * Initialise la liste des risques qui doivent être gérer sur le projet.
+   * @param pRisques Liste des risques qui doivent être gérer sur le projet.
+   */
+  public void setListeRisques (ArrayList pRisques)
+  {
+    mRisques = pRisques ;
+  }
+  
+  
   /**
    * Récupère le nombre d'indicateurs sur le projet.
    * @return Nombre d'indicateurs sur le projet.

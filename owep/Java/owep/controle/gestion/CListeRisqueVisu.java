@@ -17,7 +17,7 @@ import owep.modele.execution.MProjet ;
  */
 public class CListeRisqueVisu extends CControleurBase
 {
-  private ArrayList mListeRisques ; // Liste des risques survenus sur le projet en cours.
+  private MProjet mProjet ; // Contient la liste des risques.
   
   
   /**
@@ -32,27 +32,26 @@ public class CListeRisqueVisu extends CControleurBase
     QueryResults lResultat ; // Résultat de la requête sur la base.
     
     lSession = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
-    lProjet  = lSession.getProjet () ;
+    mProjet  = lSession.getProjet () ;
     
     // Charge la liste des problèmes pour le projet ouvert.
     try
     {
       getBaseDonnees ().begin () ;
       
-      // Exécute la requête de récupération des problèmes.
-      lRequete  = getBaseDonnees ().getOQLQuery ("select RISQUE from owep.modele.execution.MRisque RISQUE") ;
+      // Récupère le projet actuellement ouvert.
+      lRequete = getBaseDonnees ().getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId = $1") ;
+      lRequete.bind (mProjet.getId ()) ;
       lResultat = lRequete.execute () ;
-      
-      // Parcours le résultat de la requête et ajoute chaque problème à la liste.
-      mListeRisques = new ArrayList () ;
-      while (lResultat.hasMore ())
+      // Si on récupère correctement le projet dans la base,
+      if (lResultat.hasMore ())
       {
-        MRisque lRisque = (MRisque) lResultat.next () ;
-        // Prend en compte le problème que s'il appartient au projet ouvert.
-        if (lRisque.getProjet ().getId () == lProjet.getId ())
-        {
-          mListeRisques.add (lRisque) ;
-        }
+        mProjet = (MProjet) lResultat.next () ;
+      }
+      // Si le projet n'existe pas,
+      else
+      {
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
       }
       
       getBaseDonnees ().commit () ;
@@ -94,7 +93,7 @@ public class CListeRisqueVisu extends CControleurBase
    */
   public String traiter () throws ServletException
   {
-    getRequete ().setAttribute (CConstante.PAR_LISTERISQUES, mListeRisques) ;
+    getRequete ().setAttribute (CConstante.PAR_PROJET, mProjet) ;
     
     // Transmet les données à la JSP d'affichage.
     return "/JSP/Gestion/TListeRisqueVisu.jsp" ;
