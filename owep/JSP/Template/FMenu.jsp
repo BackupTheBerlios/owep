@@ -3,22 +3,21 @@
 <%@page import="owep.modele.execution.MProjet"%>
 <%@page import="java.util.ResourceBundle"%>
 
-<%//Récupération du ressource bundle%>
-<%
-  Session getSession = (Session)(request.getSession().getAttribute("SESSION"));
-  ResourceBundle messages = getSession.getMessages();
-%>  
-
 <jsp:useBean id="lSession" class="owep.infrastructure.Session" scope="page"/>
 <jsp:useBean id="lProjet" class="owep.modele.execution.MProjet" scope="page"/>
 
 <%
-  // Déclaration des variables
-  int idProjetOuvert ;
-  
-  // Recuperation de la session
+    // Recuperation de la session
   HttpSession httpSession = request.getSession(true);
   lSession = (Session) httpSession.getAttribute("SESSION");
+  
+  //Récupération du ressource bundle
+  ResourceBundle messages = lSession.getMessages();
+%>  
+
+<%
+  // Déclaration des variables
+  int idProjetOuvert ;
   
   // Recuperation de la liste de projet possible
   ArrayList lListProjet = lSession.getListProjetPossible();

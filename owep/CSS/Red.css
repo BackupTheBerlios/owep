@@ -183,6 +183,20 @@ td.caseNiveau3
   padding-right    : 2px ;
   padding-top      : 2px ;
 }
+
+td.caseNiveau2SansBordure
+{
+  background-color : rgb(255,255,255) ;
+  color            : rgb(128,0,0) ;
+  font-family      : arial ;
+  font-size        : 14px ;
+  font-weight      : bold ;
+  padding-left     : 2px ;
+  padding-right    : 2px ;
+  padding-top      : 2px ;
+  padding-bottom   : 2px ; 
+}
+
 td.caseNiveau3Lien
 {
   background-color : rgb(255,255,255) ;
@@ -197,6 +211,7 @@ td.caseNiveau3Lien
   padding-right    : 2px ;
   padding-top      : 2px ;
 }
+
 td.caseNiveau3SansBordure
 {
   background-color : rgb(255,255,255) ;

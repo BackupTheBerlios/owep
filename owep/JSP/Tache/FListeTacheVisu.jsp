@@ -1,11 +1,20 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="owep.controle.CConstante"%>
 <%@page import="owep.modele.execution.MCollaborateur"%>
+<%@page import="owep.infrastructure.Session"%>
 
+<jsp:useBean id="lSession" class="owep.infrastructure.Session" scope="page"/>
 <jsp:useBean id="lCollaborateur" class="owep.modele.execution.MCollaborateur" scope="page"/>
 <jsp:useBean id="lTache"         class="owep.modele.execution.MTache"         scope="page"/> 
 
 <%
+    // Recuperation de la session
+    HttpSession httpSession = request.getSession(true);
+    lSession = (Session) httpSession.getAttribute("SESSION");
+
+	//Sauvegarde de l'URL en session pour la liste de itérations
+	lSession.setURLPagePrecedente("/Tache/ListeTacheVisu");
+
     SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
     lCollaborateur = (MCollaborateur) request.getAttribute (CConstante.PAR_COLLABORATEUR) ;
     if(lCollaborateur.getNbTaches()>0)
@@ -48,6 +57,10 @@
       <td class='caseNiveau3'><%=(int)lTache.getResteAPasser ()  %></td>
       <!-- On passe l id du bouton cliqué et l id de la tache en parametre de la requete -->      
       <td class='caseNiveau3'>
+      
+      <!-- Si l'itération visualisée correspond à l'itération en cours -->
+      <% if (lSession.getIteration().getEtat() >= 1) {%>
+      
       <!-- Si le collaborateur n'a pas de taches en état démarré, on peut commencer ou reprendre n'importe quelle tâche -->  
       <% if(lCollaborateur.getTacheEnCours()==0)
            {
@@ -106,6 +119,12 @@
                  Terminée
           <% }
            } %>
+
+		<!-- Si on ne visualise pas l'itération en cours -->
+		<%} else {%>
+		Tâche non prête	
+        <%}%>
+
       </td>
       <td class='caseNiveau3'><% if (lTache.getDateDebutPrevue () != null)
                                  {

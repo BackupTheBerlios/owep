@@ -25,6 +25,7 @@ public class MIteration extends MModeleBase
   private Date      mDateFinReelle ;   // Date de fin réelle de l'itération.
   private MProjet   mProjet ;          // Projet dont l'itération est une étape.
   private ArrayList mTaches ;          // Liste des tâches réalisées durant l'itération.
+  private int       mEtat ;            // Etat de la tache
 
 
   /**
@@ -356,6 +357,20 @@ public class MIteration extends MModeleBase
     return (MTache) mTaches.get (pIndice) ;
   }
 
+  /**
+   * @return Retourne la valeur de l'attribut etat.
+   */
+  public int getEtat ()
+  {
+    return mEtat ;
+  }
+  /**
+   * @param initialse etat avec pEtat.
+   */
+  public void setEtat (int pEtat)
+  {
+    mEtat = pEtat ;
+  }
 
   /**
    * Ajoute la tâche spécifiée à l'itération.

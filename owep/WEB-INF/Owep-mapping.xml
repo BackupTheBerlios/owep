@@ -228,7 +228,7 @@
     <field name="mDateFinReelle" type="date" get-method="getDateFinReelle" set-method="setDateFinReelle">
       <sql name="ITE_DATEFINREELLE" type="date"/>
     </field>
-    <field name="mEtat" type="integer" get-method="getNumero" set-method="setNumero" required="true">
+    <field name="mEtat" type="integer" get-method="getEtat" set-method="setEtat" required="true">
       <sql name="ITE_ETAT" type="integer"/>
     </field>
     <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet" required="true">

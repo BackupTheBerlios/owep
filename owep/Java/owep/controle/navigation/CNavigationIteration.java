@@ -82,29 +82,7 @@ public class CNavigationIteration extends CControleurBase
      */
     public String traiter () throws ServletException
     {  
-      // Transmet les données à la JSP d'affichage.
-      
-      /*//Recherche de l'url d'origine pour retourner à la bonne page
-      String pageOrigine="/"; //url recherchée 
-      boolean debutPageOrigine=false; //qd true alors on lit les composant de l'url
-      int i=0;
-      
-      //On récupère l'url dans la requete; chaque élément de l'url est séparé par %2F
-      StringTokenizer st = new StringTokenizer(getRequete().getParameter("url"),"%2F");// séparateur %2F
-     
-      //On parcourt les éléments de l'url et on les récupère à partir d'owep.
-      while (st.hasMoreTokens()){  //boucle de lecture
-        
-        if(debutPageOrigine)
-          pageOrigine += "/" + st.nextToken();
-        
-        if(st.nextToken() == "owep")
-          debutPageOrigine=true;
-        
-        i++;
-      }
-    return pageOrigine;  */
-      return "/Tache/ListeTacheVisu";
+      return getSession().getURLPagePrecedente();
     }
 
   

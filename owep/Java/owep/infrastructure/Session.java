@@ -18,7 +18,8 @@ public class Session
   private ArrayList mListeProjetPossible; // Liste des projets concernant l'utilisateur connecté
   private MIteration mIteration = null; // itération ouvert par le collaborateur connecté
   private ResourceBundle messages = null; // resource bundle
-  private MConfiguration mConfiguration = null; // resource bundle
+  private MConfiguration mConfiguration = null; // Tous les éléments de configuration
+  private String URLPagePrecedente = null ; //conserve l'URL de la page précédente pour pouvoire y retourner
   
   /**
    * Ouvre la session pour le collaborateur passé en paramètre et initialise les variables.
@@ -126,5 +127,19 @@ public class Session
   public void setConfiguration (MConfiguration pCofiguration)
   {
     mConfiguration = pCofiguration ;
+  }
+  /**
+   * @return Retourne la valeur de l'attribut uRLPagePrecedente.
+   */
+  public String getURLPagePrecedente ()
+  {
+    return URLPagePrecedente ;
+  }
+  /**
+   * @param initialse uRLPagePrecedente avec pPagePrecedente.
+   */
+  public void setURLPagePrecedente (String pPagePrecedente)
+  {
+    URLPagePrecedente = pPagePrecedente ;
   }
 }
