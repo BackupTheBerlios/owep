@@ -16,7 +16,7 @@ import owep.modele.execution.MProjet ;
  */
 public class CProblemeSuppr extends CControleurBase
 {
-  private MProbleme mProbleme ; // Problème à créer ou modifier.
+  private MProbleme mProbleme ; // Problème à supprimer.
   
   
   /**

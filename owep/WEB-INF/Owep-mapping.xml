@@ -571,6 +571,9 @@
     <field name="mImpact" type="string" get-method="getImpact" set-method="setImpact">
       <sql name="RIS_IMPACT" type="char"/>
     </field>
+    <field name="mActions" type="string" get-method="getActions" set-method="setActions">
+      <sql name="RIS_ACTIONS" type="char"/>
+    </field>
     <field name="mEtat" type="string" get-method="getEtat" set-method="setEtat" required="true">
       <sql name="RIS_ETAT" type="char"/>
     </field>

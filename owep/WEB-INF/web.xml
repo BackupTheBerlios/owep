@@ -212,6 +212,30 @@
     <servlet-name>CProblemeSuppr</servlet-name>
     <url-pattern>/Gestion/ProblemeSuppr</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>CListeRisqueVisu</servlet-name>
+    <servlet-class>owep.controle.gestion.CListeRisqueVisu</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CListeRisqueVisu</servlet-name>
+    <url-pattern>/Gestion/ListeRisqueVisu</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>CRisqueModif</servlet-name>
+    <servlet-class>owep.controle.gestion.CRisqueModif</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CRisqueModif</servlet-name>
+    <url-pattern>/Gestion/RisqueModif</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>CRisqueSuppr</servlet-name>
+    <servlet-class>owep.controle.gestion.CRisqueSuppr</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CRisqueSuppr</servlet-name>
+    <url-pattern>/Gestion/RisqueSuppr</url-pattern>
+  </servlet-mapping>
   
   
   

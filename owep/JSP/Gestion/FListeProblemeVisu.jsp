@@ -48,7 +48,7 @@
     MProbleme lProbleme = (MProbleme) pListeProblemes.get (lIndiceProbleme) ;
   %>
     </tr>
-     <td class="caseNiveau2">
+     <td style="text-align: center" class="caseNiveau2">
         <a href="/owep/Gestion/ProblemeModif?<%= CConstante.PAR_PROBLEME %>=<%= lProbleme.getId () %>"><%= VStringConvertor.getString (lProbleme.getNom (), false) %></a>
       </td>
       <td class="caseNiveau3">
@@ -170,7 +170,7 @@
 
 <!-- Aide en ligne -->
 <script type="text/javascript" language="JavaScript">
-pCodeAide  = "La page de <b>gestion de problème</b> permet de visualiser tout les problèmes qui sont <b>survenus</b> sur votre projet." ;
+pCodeAide  = "La page de <b>gestion de problèmes</b> permet de visualiser tout les problèmes qui sont <b>survenus</b> sur votre projet." ;
 pCodeAide += " Chaque problème est relié aux tâches qui l'ont <b>engendré</b>" ;
 pCodeAide += " et éventuellement au tâches durant lesquelles le problème sera <b>résolu</b>." ;
 </script>

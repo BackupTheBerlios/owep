@@ -51,14 +51,16 @@ public class CConstante
   public static final String PAR_ETAT                  = "pEtat" ;
   public static final String PAR_PROJET                = "pProjet" ;
   public static final String PAR_PROBLEME              = "pProbleme" ;
+  public static final String PAR_RISQUE              = "pRisque" ;
 
   public static final String PAR_ARBREITERATION        = "pArbreIteration" ;
   public static final String PAR_ARBRETACHES           = "pArbreTaches" ;
   public static final String PAR_ARBREARTEFACTSORTIES  = "pArbreArtefactSorties" ;
   public static final String PAR_ARBREPROBLEME         = "pArbreProblemes" ;
-  public static final String PAR_ARBREACTIVITE          = "pArbreActivite" ;
-  public static final String PAR_ARBRETACHESIMPREVUES   = "pArbreTachesImprevues" ;
-  public static final String PAR_ARBREACTIVITEIMPREVUE  = "pArbreActiviteImprevue" ;
+  public static final String PAR_ARBRERISQUE           = "pArbreRisques" ;
+  public static final String PAR_ARBREACTIVITE         = "pArbreActivite" ;
+  public static final String PAR_ARBRETACHESIMPREVUES  = "pArbreTachesImprevues" ;
+  public static final String PAR_ARBREACTIVITEIMPREVUE = "pArbreActiviteImprevue" ;
 
   public static final String PAR_LISTETACHES             = "pListeTaches" ;
   public static final String PAR_LISTETACHESPROVOQUE     = "pListeTachesProvoque" ;
@@ -78,6 +80,8 @@ public class CConstante
   public static final String PAR_LISTEACTIVITESIMPREVUES = "pListeActivitesImprevues" ;
   public static final String PAR_LISTETACHESIMPREVUES    = "pListeTachesImprevues" ;
   public static final String PAR_LISTEPROBLEMES          = "pListeProblemes" ;
+  public static final String PAR_LISTERISQUES            = "pListeRisques" ;
+  
   
   // Identifiants des paramètres de sessions.
   public static final String SES_SESSION   = "SESSION" ;
@@ -85,15 +89,18 @@ public class CConstante
   public static final String SES_TACHE     = "pSessionTache" ;
   
   // Longueur des champs dans le formulaire.
-  public static final int LNG_CHARGE       = 5 ;
-  public static final int LNG_DATE         = 7 ;
-  public static final int LNG_PETIT        = 35 ;
-  public static final int LNG_MOYEN        = 53 ;
-  public static final int LNG_LARGE        = 60 ;
-  public static final int LNG_LOGIN        = 15 ;
-  public static final int LNG_FICHIER      = 75 ;
-  public static final int LNG_VALEUR       = 5 ;
-  public static final int LNG_COLSCOMMENTAIRE  = 25 ;
+  public static final int LNG_CHARGE          = 5 ;
+  public static final int LNG_DATE            = 7 ;
+  public static final int LNG_PETIT           = 35 ;
+  public static final int LNG_MOYEN           = 53 ;
+  public static final int LNG_LARGE           = 60 ;
+  public static final int LNG_LOGIN           = 15 ;
+  public static final int LNG_FICHIER         = 75 ;
+  public static final int LNG_VALEUR          = 5 ;
+  public static final int LNG_NUMERO          = 2 ;
+  public static final int LNG_COMMENTAIRE     = 1024 ;
+  public static final int LNG_COLSCOMMENTAIRE = 60 ;
+  public static final int LNG_ROWSCOMMENTAIRE = 4 ;
   
   // Taille des champs dans la base de données.
   public static final int TXT_CHARGE  = 5 ;
@@ -101,6 +108,7 @@ public class CConstante
   public static final int TXT_PETIT   = 32 ;
   public static final int TXT_MOYEN   = 48 ;
   public static final int TXT_LARGE   = 256 ;
+  public static final int TXT_NUMERO  = 2 ;
   public static final int TXT_LOGIN   = 24 ;
   public static final int TXT_FICHIER = 255 ;
 }

@@ -409,24 +409,6 @@ td.regionPrincipal
   padding-top    : 16px ;
   vertical-align : top ;
 }
-table.regionIdentificationDroite
-{
-  border       : solid rgb(128,0,0) ;
-  border-width : 2px 2px 0px 0px ;
-  height       : 100% ;
-  width        : 100% ;
-}
-td.regionIdentificationPrincipal
-{
-  border         : solid rgb(128,0,0) ;
-  border-width   : 0px 0px 0px 0px ;
-  height         : 100% ;
-  padding-bottom : 16px ;
-  padding-left   : 12px ;
-  padding-right  : 12px ;
-  padding-top    : 16px ;
-  vertical-align : top ;
-}
 td.regionAidePrincipal
 {
   border         : solid rgb(128,0,0) ;
@@ -776,11 +758,32 @@ table.regionIdentificationGauche
 {
   border            : solid rgb(128,0,0) ;
   border-width      : 2px 0px 0px 2px ;
+  height       : 100% ;
+  width        : 100% ;
+}
+table.regionIdentificationDroite
+{
+  border       : solid rgb(128,0,0) ;
+  border-width : 2px 2px 0px 0px ;
+  height       : 100% ;
+  width        : 100% ;
+}
+td.regionIdentificationPrincipal
+{
+  border         : solid rgb(128,0,0) ;
+  border-width   : 0px 0px 0px 0px ;
+  height         : 100% ;
+  padding-bottom : 16px ;
+  padding-left   : 12px ;
+  padding-right  : 12px ;
+  padding-top    : 16px ;
+  vertical-align : top ;
 }
 img.logoIdentification
 {
   background-image  : url(/owep/Image/Red/regionIdentification.png) ;
   background-repeat : no-repeat ;
   height            : 400px ;
+  vertical-align    : top ;
   width             : 400px ;
 }

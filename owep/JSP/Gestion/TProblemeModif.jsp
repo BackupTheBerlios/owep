@@ -3,7 +3,6 @@
 
 <template:template nom="/JSP/Template/FTemplate.jsp">
   <template:section region="RegionTitre"      contenu="Détail du problème"                    typePage="false"/>
-  <template:section region="RegionScript"     contenu="/owep/JavaScript/VerificationChamp.js" typePage="false"/>
   <template:section region="RegionPrincipal"  contenu="/JSP/Gestion/FProblemeModif.jsp"       typePage="true"/>
   <template:section region="RegionLogo"       contenu="/JSP/Template/FLogo.jsp"               typePage="true"/>
   <template:section region="RegionMenu"       contenu="/JSP/Template/FMenu.jsp"               typePage="true"/>

@@ -144,16 +144,16 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <p class="menuNiveau2"
-       onmouseover="tooltipOn(this, event, 'Liste des risques suceptibles de survenir et action pour leur gestion.')" onmouseout="tooltipOff(this, event)">
+      <a class="menuNiveau2" href="../Gestion/ListeRisqueVisu"
+       onmouseover="tooltipOn(this, event, 'Liste des risques qui pourrait survenir sur le projet.')" onmouseout="tooltipOff(this, event)">
         Risques
-      </p>
+      </a>
     </td>
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
       <a class="menuNiveau2" href="../Gestion/ListeProblemeVisu"
-       onmouseover="tooltipOn(this, event, 'Listes des problèmes survenus sur le projet et tâches pour les résoudre.')" onmouseout="tooltipOff(this, event)">
+       onmouseover="tooltipOn(this, event, 'Liste des problèmes survenus sur le projet et tâches pour les résoudre.')" onmouseout="tooltipOff(this, event)">
         Problèmes
       </a>
     </td>

@@ -27,12 +27,12 @@
     
       <!-- colonne de gauche -->
       <td class="regionGauche" height="100%">
-        <table class="regionIdentificationGauche" height="100%" cellpadding="0" cellspacing="0">
+        <table class="regionIdentificationGauche" cellpadding="0" cellspacing="0">
         <tbody>
         
           <!-- logo de l'application -->
           <tr>
-            <td>
+            <td class="regionIdentificationPrincipal">
               <img src="/owep/Image/Vide.gif" class="logoIdentification">
             </td>
           </tr>
