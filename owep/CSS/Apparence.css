@@ -4,34 +4,34 @@
 body
 {
   background-color        : rgb(255,255,255) ;
-  scrollbar-base-color    : rgb(80,123,184) ;
+  scrollbar-base-color    : rgb(180,50,15) ;
   scrollbar-3dlight-color : rgb(255,255,255) ;
   scrollbar-arrow-color   : rgb(255,255,255) ;
 }
 a
 {
-  color           : rgb(57,101,198) ;
+  color           : rgb(128,0,0) ;
   font-family     : arial ;
   font-size       : 12px ;
   text-decoration : none ;
 }
 a:link
 {
-  color           : rgb(57,101,198) ;
+  color           : rgb(128,0,0) ;
   font-family     : arial ;
   font-size       : 12px ;
   text-decoration : none ;
 }
 a:hover
 {
-  color           : rgb(57,101,198) ;
+  color           : rgb(128,0,0) ;
   font-family     : arial ;
   font-size       : 12px ;
   text-decoration : underline ;
 }
 a:visited
 {
-  color           : rgb(57,101,198) ;
+  color           : rgb(128,0,0) ;
   font-family     : arial ;
   font-size       : 12px ;
   text-decoration : none ;
@@ -96,7 +96,7 @@ a:visited
 .texteMessage
 {
   text-align  : center ;
-  color       : rgb(80,123,184) ;
+  color       : rgb(180,50,15) ;
   font-family : arial ;
   font-size   : 12px ;
   font-weight : bold ;
@@ -139,7 +139,7 @@ a.niveau1:visited
 }
 a.niveau2:active
 {
-  color           : rgb(80,123,184) ;
+  color           : rgb(180,50,15) ;
   font-family     : arial ;
   font-size       : 12px ;
   font-weight     : bold ;
@@ -147,7 +147,7 @@ a.niveau2:active
 }
 a.niveau2:hover
 {
-  color           : rgb(80,123,184) ;
+  color           : rgb(180,50,15) ;
   font-family     : arial ;
   font-size       : 12px ;
   font-weight      : bold ;
@@ -155,7 +155,7 @@ a.niveau2:hover
 }
 a.niveau2:link
 {
-  color           : rgb(80,123,184) ;
+  color           : rgb(180,50,15) ;
   font-family     : arial ;
   font-size       : 12px ;
   font-weight     : bold ;
@@ -163,7 +163,7 @@ a.niveau2:link
 }
 a.niveau2:visited
 {
-  color           : rgb(80,123,184) ;
+  color           : rgb(180,50,15) ;
   font-family     : arial ;
   font-size       : 12px ;
   font-weight     : bold ;
@@ -236,8 +236,8 @@ a.texte:visited
  **************************************************************************************************/
 input.bouton
 {
-  background-color : rgb(80,123,184) ;
-  border           : solid rgb(57,101,198) ;
+  background-color : rgb(180,50,15) ;
+  border           : solid rgb(128,0,0) ;
   border-width     : 1px 1px 1px 1px ;
   color            : rgb(255,255,255) ;
   font-family      : arial ;
@@ -249,8 +249,8 @@ input.bouton
 }
 input.niveau1
 {
-  background-color : rgb(80,123,184) ;
-  border           : solid rgb(57,101,198) ;
+  background-color : rgb(180,50,15) ;
+  border           : solid rgb(128,0,0) ;
   border-width     : 1px 1px 1px 1px ;
   color            : rgb(255,255,255) ;
   font-family      : arial ;
@@ -262,8 +262,8 @@ input.niveau1
 }
 input.niveau2
 {
-  background-color : rgb(171,221,229) ;
-  border           : solid rgb(57,101,198) ;
+  background-color : rgb(255,204,153) ;
+  border           : solid rgb(128,0,0) ;
   border-width     : 1px 1px 1px 1px ;
   color            : rgb(51,85,165) ;
   font-family      : arial ;
@@ -275,8 +275,8 @@ input.niveau2
 }
 textarea.niveau2
 {
-  background-color : rgb(171,221,229) ;
-  border           : solid rgb(57,101,198) ;
+  background-color : rgb(255,204,153) ;
+  border           : solid rgb(128,0,0) ;
   border-width     : 1px 1px 1px 1px ;
   color            : rgb(51,85,165) ;
   font-family      : arial ;
@@ -288,8 +288,8 @@ textarea.niveau2
 }
 select.niveau1
 {
-  background-color : rgb(80,123,184) ;
-  border           : solid rgb(57,101,198) ;
+  background-color : rgb(180,50,15) ;
+  border           : solid rgb(128,0,0) ;
   border-width     : 1px 1px 1px 1px ;
   color            : rgb(255,255,255) ;
   font-family      : arial ;
@@ -299,8 +299,8 @@ select.niveau1
 }
 select.niveau2
 {
-  background-color : rgb(171,221,229) ;
-  border           : solid rgb(57,101,198) ;
+  background-color : rgb(255,204,153) ;
+  border           : solid rgb(128,0,0) ;
   border-width     : 1px 1px 1px 1px ;
   color            : rgb(51,85,165) ;
   font-family      : arial ;
@@ -318,14 +318,14 @@ select.niveau2
  **************************************************************************************************/
 table.tableau
 {
-  border       : solid rgb(57,101,198) ;
+  border       : solid rgb(128,0,0) ;
   border-width : 2px 2px 1px 1px ;
   font-family  : arial ;
 }
 td.caseNiveau1
 {
-  background-color : rgb(80,123,184) ;
-  border           : solid rgb(57,101,198) ;
+  background-color : rgb(180,50,15) ;
+  border           : solid rgb(128,0,0) ;
   border-width     : 0px 0px 1px 1px ;
   color            : rgb(255,255,255) ;
   font-family      : arial ;
@@ -339,10 +339,10 @@ td.caseNiveau1
 }
 td.caseNiveau2
 {
-  background-color : rgb(171,221,229) ;
-  border           : solid rgb(57,101,198) ;
+  background-color : rgb(255,204,153) ;
+  border           : solid rgb(128,0,0) ;
   border-width     : 0px 0px 1px 1px ;
-  color            : rgb(57,101,198) ;
+  color            : rgb(128,0,0) ;
   font-family      : arial ;
   font-size        : 12px ;
   font-weight      : bold ;
@@ -355,7 +355,7 @@ td.caseNiveau2
 td.caseNiveau3
 {
   background-color : rgb(255,255,255) ;
-  border           : solid rgb(57,101,198) ;
+  border           : solid rgb(128,0,0) ;
   border-width     : 0px 0px 1px 1px ;
   color            : black ;
   font-family      : arial ;
@@ -369,7 +369,7 @@ td.caseNiveau3
 td.caseNiveau2SansBordure
 {
   background-color : rgb(255,255,255) ;
-  color            : rgb(57,101,198) ;
+  color            : rgb(128,0,0) ;
   font-family      : arial ;
   font-size        : 14px ;
   font-weight      : bold ;
@@ -382,7 +382,7 @@ td.caseNiveau2SansBordure
 td.caseNiveau3Lien
 {
   background-color : rgb(255,255,255) ;
-  border           : solid rgb(57,101,198) ;
+  border           : solid rgb(128,0,0) ;
   border-width     : 0px 0px 1px 1px ;
   color            : black ;
   font-family      : arial ;
@@ -417,21 +417,21 @@ td.caseNiveau3SansBordure
  **************************************************************************************************/
 table.regionGauche
 {
-  border       : solid rgb(57,101,198) ;
+  border       : solid rgb(128,0,0) ;
   border-width : 2px 0px 0px 2px ;
   width        : 170px ;
   height       : 100% ;
 }
 table.regionDroite
 {
-  border       : solid rgb(57,101,198) ;
+  border       : solid rgb(128,0,0) ;
   border-width : 2px 2px 0px 0px ;
   height       : 100% ;
   width        : 100% ;
 }
 td.regionPrincipal
 {
-  border         : solid rgb(57,101,198) ;
+  border         : solid rgb(128,0,0) ;
   border-width   : 1px 0px 0px 1px ;
   height         : 100% ;
   padding-bottom : 16px ;
@@ -442,7 +442,7 @@ td.regionPrincipal
 }
 td.regionAidePrincipal
 {
-  border         : solid rgb(57,101,198) ;
+  border         : solid rgb(128,0,0) ;
   border-width   : 2px 2px 2px 2px ;
   height         : 100% ;
   padding-bottom : 16px ;
@@ -462,11 +462,10 @@ td.regionAidePrincipal
  **************************************************************************************************/
 td.regionLogo
 {
-  background-image : url(/owep/Image/Blue/regionLogo.png) ;
+  background-image : url(/owep/Image/Red/regionLogo.png) ;
   height           : 159px ;
   width            : 170px ;
 }
-
 
 
 
@@ -475,31 +474,31 @@ td.regionLogo
  **************************************************************************************************/
 img.bouttonPlay
 {
-  background-image : url(/owep/Image/Blue/play.jpg) ;
+  background-image : url(/owep/Image/Red/play.jpg) ;
   height           : 25px ;
   width            : 25px ;
 }
 img.bouttonPlayActif
 {
-  background-image : url(/owep/Image/Blue/play_actif.jpg) ;
+  background-image : url(/owep/Image/Red/play_actif.jpg) ;
   height           : 25px ;
   width            : 25px ;
 }
 img.bouttonPause
 {
-  background-image : url(/owep/Image/Blue/pause.jpg) ;
+  background-image : url(/owep/Image/Red/pause.jpg) ;
   height           : 25px ;
   width            : 25px ;
 }
 img.bouttonPauseActif
 {
-  background-image : url(/owep/Image/Blue/pause_actif.jpg) ;
+  background-image : url(/owep/Image/Red/pause_actif.jpg) ;
   height           : 25px ;
   width            : 25px ;
 }
 img.bouttonStop
 {
-  background-image : url(/owep/Image/Blue/stop.jpg) ;
+  background-image : url(/owep/Image/Red/stop.jpg) ;
   height           : 25px ;
   width            : 25px ;
 }
@@ -516,47 +515,47 @@ td.regionMenu
 }
 td.caseMenuProjet
 {
-  background-image : url(/owep/Image/Blue/caseMenuListe.png) ;
+  background-image : url(/owep/Image/Red/caseMenuListe.png) ;
   height           : 33px ;
   padding-bottom   : 2px ;
   text-align       : center ;
 }
 td.caseMenuConnexion
 {
-  background-image : url(/owep/Image/Blue/caseMenuNiveau2.png) ;
+  background-image : url(/owep/Image/Red/caseMenuNiveau2.png) ;
   height           : 18px ;
   text-align       : center ;
 }
 td.caseMenuNiveau1
 {
-  background-color : rgb(80,123,184) ;
-  background-image : url(/owep/Image/Blue/caseMenuNiveau1.png) ;
+  background-color : rgb(180,50,15) ;
+  background-image : url(/owep/Image/Red/caseMenuNiveau1.png) ;
   height           : 27px ;
   padding-bottom   : 2px ;
   padding-left     : 9px ;
 }
 td.caseMenuNiveau2
 {
-  background-image : url(/owep/Image/Blue/caseMenuNiveau2.png) ;
+  background-image : url(/owep/Image/Red/caseMenuNiveau2.png) ;
   height           : 18px ;
   padding-left     : 18px ;
 }
 td.caseMenuSeparation
 {
-  background-image : url(/owep/Image/Blue/caseMenuSeparation.png) ;
+  background-image : url(/owep/Image/Red/caseMenuSeparation.png) ;
   height           : 16px ;
   font-family      : arial ;
   font-size        : 6px ;
 }
 td.caseMenuSeparation2
 {
-  background-image : url(/owep/Image/Blue/caseMenuNiveau2.png) ;
+  background-image : url(/owep/Image/Red/caseMenuNiveau2.png) ;
   font-family      : arial ;
   font-size        : 6px ;
 }
 select.menuProjet
 {
-  background-color : rgb(80,123,184) ;
+  background-color : rgb(180,50,15) ;
   color            : rgb(255,255,255) ;
   font-family      : arial ;
   font-size        : 13px ;
@@ -648,11 +647,11 @@ a.menuNiveau2:visited
  **************************************************************************************************/
 td.regionMessagerie
 {
-  background-color : rgb(171,221,229) ;
+  background-color : rgb(255,204,153) ;
 }
 td.caseMessageCommande
 {
-  background-image : url(/owep/Image/Blue/messageCommande.png) ;
+  background-image : url(/owep/Image/Red/messageCommande.png) ;
   border-width     : 0px 0px 0px 0px ;
   height           : 26px ;
   padding-left     : 5px ;
@@ -746,9 +745,9 @@ p.message
  **************************************************************************************************/
 td.regionPied
 {
-  background-color : rgb(80,123,184) ;
-  background-image : url(/owep/Image/Blue/regionPied.png) ;
-  border           : solid rgb(57,101,198) ;
+  background-color : rgb(180,50,15) ;
+  background-image : url(/owep/Image/Red/regionPied.png) ;
+  border           : solid rgb(128,0,0) ;
   border-width     : 0px 2px 2px 2px ;
   height           : 18px ;
   text-align       : center ;
@@ -767,20 +766,20 @@ td.regionPied
  **************************************************************************************************/
 img.imageAide
 {
-  border           : solid rgb(57,101,198) ;
+  border           : solid rgb(128,0,0) ;
   border-width     : 1px 1px 1px 1px ;
   margin           : 0px 0px 30px 0px ;
   text-align       : right ;
 }
 img.iconeAide
 {
-  background-image : url(/owep/Image/Blue/iconeAide.png) ;
+  background-image : url(/owep/Image/Red/iconeAide.png) ;
   height           : 48px ;
   width            : 48px ;
 }
 img.iconeCaseAide
 {
-  background-image : url(/owep/Image/Blue/iconeTexteAide.png) ;
+  background-image : url(/owep/Image/Red/iconeTexteAide.png) ;
   height           : 48px ;
   width            : 48px ;
 }
@@ -795,8 +794,8 @@ img.iconeCaseAide
 }
 div.domTT
 {
-  border           : 1px solid rgb(57,101,198) ;
-  background-color : rgb(80,123,184) ;
+  border           : 1px solid rgb(128,0,0) ;
+  background-color : rgb(180,50,15) ;
 }
 div.domTTCaption
 {
@@ -811,7 +810,7 @@ div.domTTContent
   font-size        : 12px ;
   font-family      : sans-serif ;
   padding          : 3px 2px ;
-  background-color : rgb(171,221,229) ;
+  background-color : rgb(255,204,153) ;
 }
 
 
@@ -822,21 +821,21 @@ div.domTTContent
  **************************************************************************************************/
 table.regionIdentificationGauche
 {
-  border            : solid rgb(57,101,198) ;
+  border            : solid rgb(128,0,0) ;
   border-width      : 2px 0px 0px 2px ;
   height       : 100% ;
   width        : 100% ;
 }
 table.regionIdentificationDroite
 {
-  border       : solid rgb(57,101,198) ;
+  border       : solid rgb(128,0,0) ;
   border-width : 2px 2px 0px 0px ;
   height       : 100% ;
   width        : 100% ;
 }
 td.regionIdentificationPrincipal
 {
-  border         : solid rgb(57,101,198) ;
+  border         : solid rgb(128,0,0) ;
   border-width   : 0px 0px 0px 0px ;
   height         : 100% ;
   padding-bottom : 16px ;
@@ -847,7 +846,7 @@ td.regionIdentificationPrincipal
 }
 img.logoIdentification
 {
-  background-image  : url(/owep/Image/Blue/regionIdentification.png) ;
+  background-image  : url(/owep/Image/Red/regionIdentification.png) ;
   background-repeat : no-repeat ;
   height            : 400px ;
   vertical-align    : top ;
