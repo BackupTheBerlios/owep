@@ -89,6 +89,9 @@ public class CConstante
   public static final String PAR_LISTERISQUES            = "pListeRisques" ;
   
   
+  public static final String PAR_LISTEITERATIONSMENU     = "pListeIterationsMenu" ;
+  
+  
   public static final String PAR_CONFIGURATION           = "pConfiguration" ; 
   public static final String PAR_LANGUE                  = "pLangue" ;
   public static final String PAR_APPARENCE               = "pApparence" ; 

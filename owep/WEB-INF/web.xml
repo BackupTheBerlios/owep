@@ -332,6 +332,15 @@
     <servlet-name>CNavigationIteration</servlet-name>
     <url-pattern>/Navigation/NavigationIteration</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>CRefreshIteration</servlet-name>
+    <servlet-class>owep.controle.navigation.CRefreshIteration</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CRefreshIteration</servlet-name>
+    <url-pattern>/Navigation/RefreshIteration</url-pattern>
+  </servlet-mapping>
+  
   
   
   
@@ -369,6 +378,7 @@
   <session-config>
 	<session-timeout>3000</session-timeout>
   </session-config>
+  
 
 
 </web-app>

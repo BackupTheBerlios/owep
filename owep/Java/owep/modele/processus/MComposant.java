@@ -380,7 +380,7 @@ public class MComposant extends MModeleBase
    */
   public int getNbRoles ()
   {
-    return mProduits.size () ;
+    return mRoles.size () ;
   }
 
   /**
@@ -391,7 +391,7 @@ public class MComposant extends MModeleBase
    */
   public MRole getRole (int pIndice)
   {
-    return (MRole) mProduits.get (pIndice) ;
+    return (MRole) mRoles.get (pIndice) ;
   }
 
   /**

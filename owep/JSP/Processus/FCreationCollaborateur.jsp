@@ -320,7 +320,7 @@ function valider(){
   </tbody>
   </table>
   <input type="hidden" name="numPage" value="2">
-  <p class="texteObligatoire">Les champs marqué d'un * sont obligatoires.</p>
+  <p class="texteObligatoire">Les champs marqués d'un * sont obligatoires.</p>
   <p class="texteSubmit">
     <input class="bouton" type="button" value="Valider" onclick="valider();"
      onmouseover="tooltipOn(this, event, 'Cliquez pour valider le formulaires.')" onmouseout="tooltipOff(this, event)">

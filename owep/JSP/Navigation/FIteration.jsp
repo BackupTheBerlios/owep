@@ -15,15 +15,16 @@
     messages = java.util.ResourceBundle.getBundle("MessagesBundle");
   
   	//récupération de la liste des itérations à partir du projet
-  	ArrayList listeIteration ;
-  	if (request.getAttribute (CConstante.PAR_LISTEITERATIONS)!=null)
+  	request.getRequestDispatcher ("/Navigation/RefreshIteration").include (request, response) ;
+  	ArrayList listeIteration = (ArrayList) request.getAttribute (CConstante.PAR_LISTEITERATIONSMENU) ;
+/*  	if (request.getAttribute (CConstante.PAR_LISTEITERATIONS)!=null)
   	{
       listeIteration = (ArrayList) request.getAttribute (CConstante.PAR_LISTEITERATIONS) ;
     }
     else
     {
       listeIteration = (ArrayList) lSession.getProjet().getListeIterations() ;
-    }
+    }*/
     //Si il y a des itérations planifiées
     if(listeIteration.size()>0)
     {

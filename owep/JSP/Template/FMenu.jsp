@@ -1,6 +1,7 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="owep.infrastructure.Session"%>
 <%@page import="owep.modele.execution.MProjet"%>
+<%@page import="owep.controle.CConstante"%>
 <%@page import="java.util.ResourceBundle"%>
 
 <jsp:useBean id="lSession" class="owep.infrastructure.Session" scope="page"/>
@@ -36,7 +37,7 @@
   ArrayList lListProjet = lSession.getListProjetPossible();
   
   // Recuperation du projet ouvert
-  lProjet = lSession.getProjet();
+  lProjet = (MProjet) request.getAttribute (CConstante.PAR_PROJET) ;
   
   
   // Si aucun projet n'est ouvert

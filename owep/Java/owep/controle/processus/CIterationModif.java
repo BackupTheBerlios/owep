@@ -23,6 +23,7 @@ import owep.modele.processus.MComposant ;
 import owep.modele.processus.MDefinitionTravail ;
 import owep.modele.processus.MProcessus ;
 import owep.modele.processus.MProduit ;
+import owep.modele.processus.MRole;
 import owep.vue.transfert.VTransfert ;
 import java.util.ResourceBundle;
 
@@ -38,7 +39,8 @@ public class CIterationModif extends CControleurBase
   private MIteration mIteration;  // Itération modifiée ou ajoutée.
   private String     mMessage;    // Message qui sera affiché dans la jsp suite à une opération 
   private ResourceBundle bundle;
-
+  boolean collab = false;
+  
   /**
    * Récupère les données nécessaire au controleur dans la base de données. 
    * @throws ServletException Si une erreur survient durant la connexion
@@ -58,7 +60,20 @@ public class CIterationModif extends CControleurBase
     //Récupération du ressource bundle
     bundle = ((Session) httpSession.getAttribute("SESSION")).getMessages();
     
+    
+    for (int i=0; !collab && i < mProjet.getProcessus().getNbComposants(); i++){
+      MComposant lComposanttmp = mProjet.getProcessus().getComposant(i);
+      for (int j = 0; !collab && j < lComposanttmp.getNbRoles(); j++){
+        MRole lRoleTmp = lComposanttmp.getRole(j);
+        if (lRoleTmp.getNbCollaborateurs() != 0){
+          collab = true;
+        }
+      }
+    }
+    
     // Charge une copie du projet ouvert.
+    
+    if (collab){
     try
     {
       getBaseDonnees ().begin () ;
@@ -71,45 +86,44 @@ public class CIterationModif extends CControleurBase
       
       getRequete ().setAttribute(CConstante.PAR_PROJET, mProjet);
       
-      if ((VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_VIDE)) &&
-          (getRequete ().getParameter (CConstante.PAR_MODIFIER) == null))
-      {
-        // Initialise une nouvelle itération.
-        mIteration = new MIteration () ;
-        mIteration.setNom ("") ;
-        mIteration.setNumero (mProjet.getNbIterations () + 1) ;
-        mIteration.setProjet (mProjet) ;
-        mProjet.addIteration(mIteration);
-        if (mProjet.getNbIterations() == 0){
-          mIteration.setEtat(MIteration.ETAT_EN_COURS);
-        }
+      
+        if ((VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_VIDE)) &&
+          	(getRequete ().getParameter (CConstante.PAR_MODIFIER) == null))
+        {
+          // Initialise une nouvelle itération.
+          mIteration = new MIteration () ;
+          mIteration.setNom ("") ;
+          mIteration.setNumero (mProjet.getNbIterations () + 1) ;
+          mIteration.setProjet (mProjet) ;
+          mProjet.addIteration(mIteration);
+        
 
-        try
-        {
-          // création de l'itération dans la base de données.
-          getBaseDonnees ().create (mIteration) ;
+	        try
+	        {
+	          // création de l'itération dans la base de données.
+	          getBaseDonnees ().create (mIteration) ;
+	        }
+	        catch (ClassNotPersistenceCapableException e)
+	        {
+	          e.printStackTrace () ;
+	          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+	        }
+	        catch (DuplicateIdentityException e)
+	        {
+	          e.printStackTrace () ;
+	          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+	        }
+	        catch (TransactionNotInProgressException e)
+	        {
+	          e.printStackTrace () ;
+	          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+	        }
+	        catch (PersistenceException e)
+	        {
+	          e.printStackTrace () ;
+	          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+	        }
         }
-        catch (ClassNotPersistenceCapableException e)
-        {
-          e.printStackTrace () ;
-          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-        }
-        catch (DuplicateIdentityException e)
-        {
-          e.printStackTrace () ;
-          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-        }
-        catch (TransactionNotInProgressException e)
-        {
-          e.printStackTrace () ;
-          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-        }
-        catch (PersistenceException e)
-        {
-          e.printStackTrace () ;
-          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-        }
-      }
       
       int lIdIteration ;
       // si c'est une modification, récupération de l'identifiant de l'itération à modifier
@@ -135,6 +149,7 @@ public class CIterationModif extends CControleurBase
       eException.printStackTrace () ;
       throw new ServletException (CConstante.EXC_TRAITEMENT) ;
     }
+    }
   }
   
   
@@ -147,7 +162,7 @@ public class CIterationModif extends CControleurBase
     Session          lSession ;  // Session actuelle de l'utilisateur.
     OQLQuery         lRequete ;  // Requête à réaliser sur la base
     QueryResults     lResultat ; // Résultat de la requête sur la base
-    
+    if (collab){
     try
     {
       MProcessus lProcessus = mProjet.getProcessus () ;
@@ -663,6 +678,7 @@ public class CIterationModif extends CControleurBase
       VTransfert.transferer (getRequete (), mIteration, CConstante.PAR_ARBREITERATION) ;
     }
   }
+  }
   
   
   /**
@@ -675,6 +691,12 @@ public class CIterationModif extends CControleurBase
   {
     
    // Ferme la connexion à la base de données.    
+    if (!collab){
+      
+    mMessage = "Vous ne pouvez créer d'itération tant qu'aucun rôle n'est affecté à un collaborateur";
+    getRequete ().setAttribute (CConstante.PAR_MESSAGE, mMessage) ;
+    return "/Processus/CreationCollaborateur" ;
+    } 
     try
     {
       getBaseDonnees ().commit () ;
@@ -702,7 +724,13 @@ public class CIterationModif extends CControleurBase
       {
         mMessage = bundle.getString("clIteration")+ " " + mIteration.getNumero () + " "+ bundle.getString("cBienModifiee");
       }
+      
+      
+        
+     
+      getRequete ().setAttribute (CConstante.PAR_MESSAGE, mMessage) ;
       return "..\\JSP\\Processus\\TProjetVisu.jsp" ;
+     
+      }
     }
-  }
 }
