@@ -60,15 +60,10 @@ public class CProblemeModif extends CControleurBase
         throw new ServletException (CConstante.EXC_TRAITEMENT) ;
       }
       
-      getBaseDonnees ().commit () ;
-      
       
       // Si un problème est passé en paramètre,
       if (lIdProbleme != null)
       {
-        // Charge le problème passé en paramètre.
-        getBaseDonnees ().begin () ;
-        
         // Récupère le problème choisi par l'utilisateur.
         lRequete = getBaseDonnees ().getOQLQuery ("select PROBLEME from owep.modele.execution.MProbleme PROBLEME where mId = $1 AND mTacheProvoque.mIteration.mProjet.mId = $2") ;
         lRequete.bind (Integer.parseInt (lIdProbleme)) ;
@@ -84,8 +79,6 @@ public class CProblemeModif extends CControleurBase
         {
           throw new ServletException (CConstante.EXC_TRAITEMENT) ;
         }
-        
-        getBaseDonnees ().commit () ;
       }
       // Si aucun problème existant n'est passé en paramètre,
       else
@@ -179,6 +172,7 @@ public class CProblemeModif extends CControleurBase
         // Si l'utilisateur accède à la page d'ajout/modification, transmet les données à la page.
         getRequete ().setAttribute (CConstante.PAR_PROBLEME, mProbleme) ;
         getRequete ().setAttribute (CConstante.PAR_PROJET, mProjet) ;
+        getBaseDonnees ().commit () ;
         getBaseDonnees ().close () ;
         
         // Affiche la page de modification de problème.
@@ -186,21 +180,18 @@ public class CProblemeModif extends CControleurBase
       }
       else
       {
-        // Crée l'objet ou le met à jour s'il existe déjà.
-        getBaseDonnees ().begin () ;
-        
         // Si l'utilisateur valide les données, alors on les enregistre dans la base.
         String lMessage = "" ;
         if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
         {
+          // Crée l'objet ou le met à jour s'il existe déjà.
           if (mProbleme.getId () == 0)
           {
-            mProbleme.create (getBaseDonnees ()) ;
+            getBaseDonnees ().create (mProbleme) ;
             lMessage = "Le problème \"" + mProbleme.getNom () + "\" a été créé." ;
           }
           else
           {
-            getBaseDonnees ().update (mProbleme) ;
             lMessage = "Le problème \"" + mProbleme.getNom () + "\" a été mis à jour." ;
           }
         }

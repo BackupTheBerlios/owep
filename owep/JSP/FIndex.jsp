@@ -6,7 +6,15 @@
   String mProbleme = (String) request.getAttribute("mProbleme"); // Probleme rencontré lors de l'enregistrement du collaborateur
 
   //localisation
-  java.util.ResourceBundle messages = java.util.ResourceBundle.getBundle("MessagesBundle");
+  String langue = new String("fr");
+  String pays = new String("FR");
+  
+  java.util.Locale currentLocale;
+  java.util.ResourceBundle messages;
+  currentLocale = new java.util.Locale(langue, pays);
+
+  messages = java.util.ResourceBundle.getBundle("MessagesBundle", currentLocale);
+
   // Si l'attribut mProbleme existe alors un probleme est survenu lors de l'dentification
   if(mProbleme != null)
   {
@@ -45,7 +53,6 @@ Le login et le mot de passe saisi ne sont pas valide<br>
   </font>
 </form>
 </center>
-
 
 <!-- Aide en ligne -->
 <script type="text/javascript" language="JavaScript">

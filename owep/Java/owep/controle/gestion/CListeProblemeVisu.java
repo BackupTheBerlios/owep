@@ -55,6 +55,8 @@ public class CListeProblemeVisu extends CControleurBase
           mListeProblemes.add (lProbleme) ;
         }
       }
+      
+      getBaseDonnees ().commit () ;
     }
     catch (Exception eException)
     {
@@ -65,7 +67,6 @@ public class CListeProblemeVisu extends CControleurBase
     {
       try
       {
-        getBaseDonnees ().commit () ;
         getBaseDonnees ().close () ;
       }
       catch (Exception eException)
