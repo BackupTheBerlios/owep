@@ -17,6 +17,7 @@ public class MIteration
   private Date      mDateFinPrevue ;   // Date de fin prévue pour l'itération.
   private Date      mDateDebutReelle ; // Date de début réelle de l'itération.
   private Date      mDateFinReelle ;   // Date de fin réelle de l'itération.
+  private int       mEtat ;            // Numéro de l'état. 
   private MProjet   mProjet ;          // Projet dont l'itération est une étape.
   private ArrayList mTaches ;          // Liste des tâches réalisées durant l'itération.
 
@@ -45,6 +46,7 @@ public class MIteration
     mNumero          = pNumero ;
     mDateDebutPrevue = pDateDebutPrevue ;
     mDateFinPrevue   = pDateFinPrevue ;
+    mEtat = 0;
     
     mTaches = new ArrayList () ;
   }
@@ -68,6 +70,7 @@ public class MIteration
     mDateFinPrevue   = pDateFinPrevue ;
     mDateDebutReelle = pDateDebutReelle ;
     mDateFinReelle   = pDateFinReelle ;
+    mEtat = 0;
     
     mTaches = new ArrayList () ;
   }
@@ -192,7 +195,24 @@ public class MIteration
     mNumero = pNumero ;
   }
 
+  /**
+   * Récupère le état de l'itération.
+   * @return état de l'itération.
+   */
+  public int getEtat ()
+  {
+    return mEtat ;
+  }
 
+  /**
+   * Initialise le état de l'itération.
+   * @param pEtat état de l'itération.
+   */
+  public void setEtat (int pEtat)
+  {
+    mEtat = pEtat ;
+  }
+  
   /**
    * Récupère le projet dont l'itération est une étape.
    * @return Projet dont l'itération est une étape.

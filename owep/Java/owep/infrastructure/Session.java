@@ -7,6 +7,7 @@
 package owep.infrastructure;
 
 import owep.modele.execution.MCollaborateur;
+import owep.modele.execution.MIteration;
 import owep.modele.execution.MProjet;
 
 /**
@@ -19,7 +20,8 @@ public class Session
 {
   private MCollaborateur mCollaborateur = null;  // collaborateur connecté
   private MProjet mProjet = null; // projet ouvert par le collaborateur connecté
-  
+  private MIteration mIteration = null; // itération ouvert par le collaborateur connecté
+   
   public void ouvertureSession(MCollaborateur pCollaborateur)
   {
     mCollaborateur = pCollaborateur;
@@ -39,6 +41,16 @@ public class Session
   {
     mProjet = pProjet;
   }
+  
+  public MIteration getIteration()
+  {
+    return mIteration;
+  }
+  
+  public void setIteration(MIteration pIteration)
+  {
+    mIteration = pIteration;
+  }  
   
   public void fermerProjet()
   {

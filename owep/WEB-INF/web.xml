@@ -9,38 +9,41 @@
     <taglib-location>/WEB-INF/tld/template.tld</taglib-location>
   </taglib>
 
-  <!-- Liste des Servlets -->
+  <!-- Liste des Servlets pour les taches -->
   <servlet> 
     <servlet-name>CListeTacheVisu</servlet-name> 
-    <servlet-class>owep.controle.CListeTacheVisu</servlet-class> 
+    <servlet-class>owep.controle.tache.CListeTacheVisu</servlet-class> 
   </servlet> 
   <servlet-mapping> 
     <servlet-name>CListeTacheVisu</servlet-name> 
     <url-pattern>/Tache/ListeTacheVisu</url-pattern> 
   </servlet-mapping> 
   
-  <!-- Liste des Servlets -->
-  <servlet> 
+  <servlet>
     <servlet-name>CTacheVisu</servlet-name> 
-    <servlet-class>owep.controle.CTacheVisu</servlet-class> 
-  </servlet> 
-  <servlet-mapping> 
+    <servlet-class>owep.controle.tache.CTacheVisu</servlet-class> 
+  </servlet>
+  <servlet-mapping>
     <servlet-name>CTacheVisu</servlet-name> 
     <url-pattern>/Tache/TacheVisu</url-pattern> 
-  </servlet-mapping> 
+  </servlet-mapping>
+ 
+  <!-- Liste des Servlets pour les artefacts --> 
   
   <servlet> 
-    <servlet-name>CRapportActivite</servlet-name> 
-    <servlet-class>owep.controle.CRapportActivite</servlet-class> 
+    <servlet-name>CArtefactAjout</servlet-name> 
+    <servlet-class>owep.controle.artefact.CArtefactAjout</servlet-class> 
   </servlet> 
   <servlet-mapping> 
-    <servlet-name>CRapportActivite</servlet-name> 
-    <url-pattern>/Tache/RapportActivite</url-pattern> 
-  </servlet-mapping> 
+    <servlet-name>CArtefactAjout</servlet-name> 
+    <url-pattern>/Artefact/ArtefactAjout</url-pattern> 
+  </servlet-mapping>   
+  
+  <!-- Liste des Servlets pour la connexion -->  
   
   <servlet> 
     <servlet-name>CEtat</servlet-name> 
-    <servlet-class>owep.controle.CEtat</servlet-class> 
+    <servlet-class>owep.controle.tache.CEtat</servlet-class> 
   </servlet> 
   <servlet-mapping> 
     <servlet-name>CEtat</servlet-name> 
@@ -49,7 +52,7 @@
   
   <servlet> 
     <servlet-name>CValidationRapport</servlet-name> 
-    <servlet-class>owep.controle.CValidationRapport</servlet-class> 
+    <servlet-class>owep.controle.tache.CValidationRapport</servlet-class> 
   </servlet> 
   <servlet-mapping> 
     <servlet-name>CValidationRapport</servlet-name> 

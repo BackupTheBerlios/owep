@@ -23,5 +23,5 @@ public class CConstante
   public static final String PAR_RESTEAPASSER    = "pResteAPasser" ;
   public static final String PAR_ETAT            = "pEtat" ;
   public static final String PAR_DATEDEBUTREELLE = "pDateDebutReel" ;
-  public static final String PAR_DATEFINREELLE   = "pDateFinReestimee" ;
+  public static final String PAR_DATEFINREELLE   = "pDateFinReestimee" ; 
 }

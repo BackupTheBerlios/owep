@@ -12,6 +12,7 @@ import org.exolab.castor.jdo.QueryResults ;
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
 import owep.modele.execution.MCollaborateur ;
+import owep.modele.execution.MIteration;
 import owep.modele.execution.MProjet ;
 
 
@@ -93,6 +94,21 @@ public class COuvrirProjet extends CControleurBase
 
       // Enregistre le projet à ouvrir dans la session
       getSession ().ouvrirProjet (lProjet) ;
+      
+      // Cherche l'itération à ouvrir
+      getBaseDonnees ().begin () ;
+      lRequete = getBaseDonnees ()
+        .getOQLQuery ("select ITERATION from owep.modele.execution.MIteration ITERATION where mProjet = $1 and mEtat = 1") ;
+      lRequete.bind (lProjet) ;
+      lResultat = lRequete.execute () ;
+
+      MIteration lIteration = (MIteration) lResultat.next () ;
+
+      getBaseDonnees ().commit () ;
+
+      // Enregistre l'itération à ouvrir dans la session
+      getSession ().setIteration(lIteration) ;      
+      
       return "..\\Tache\\ListeTacheVisu" ;
     }
     catch (PersistenceException e)

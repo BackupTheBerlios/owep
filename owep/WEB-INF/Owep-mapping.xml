@@ -222,6 +222,9 @@
     <field name="mDateFinReelle" type="date" get-method="getDateFinReelle" set-method="setDateFinReelle">
       <sql name="ITE_DATEFINREELLE" type="date"/>
     </field>
+    <field name="mEtat" type="integer" get-method="getNumero" set-method="setNumero" required="true">
+      <sql name="ITE_ETAT" type="integer"/>
+    </field>
     <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet" required="true">
       <sql name="ITE_PRJ_ID"/>
     </field>
@@ -348,7 +351,10 @@
     <field name="mDescription" type="string" get-method="getDescription" set-method="setDescription">
       <sql name="ART_DESCRIPTION" type="char"/>
     </field>
-    <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet" required="true">
+    <field name="mNomFichier" type="string" get-method="getNomFichier" set-method="setNomFichier">
+      <sql name="ART_NOM_FICHIER" type="char"/>
+    </field>
+    <field name="mProjet" type="owep.modele.execution.MProjet" get-method="getProjet" set-method="setProjet">
       <sql name="ART_PRJ_ID"/>
     </field>
     <field name="mCollaborateur" type="owep.modele.execution.MCollaborateur" get-method="getCollaborateur" set-method="setCollaborateur" required="true">

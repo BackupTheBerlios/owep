@@ -4,7 +4,7 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package owep.controle;
+package owep.controle.tache;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -15,6 +15,8 @@ import org.exolab.castor.jdo.OQLQuery;
 import org.exolab.castor.jdo.PersistenceException;
 import org.exolab.castor.jdo.QueryResults;
 
+import owep.controle.CConstante;
+import owep.controle.CControleurBase;
 import owep.infrastructure.Session;
 import owep.modele.execution.MCollaborateur;
 import owep.modele.execution.MTache;

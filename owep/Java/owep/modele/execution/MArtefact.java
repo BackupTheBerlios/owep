@@ -1,7 +1,5 @@
 package owep.modele.execution ;
 
-import java.io.File;
-
 
 import owep.modele.MModeleBase ;
 import owep.modele.processus.MProduit;
@@ -12,21 +10,18 @@ import owep.modele.processus.MProduit;
  */
 public class MArtefact extends MModeleBase
 {
-  // Indique la disponibilité de l'artefact
-  public static final int INDISPONIBLE = 0 ;
-  public static final int DISPONIBLE = 1 ;
-    
-  private int            mId ;            // Identifie l'artefact de manière unique
-  private String         mNom ;           // Nom de l'artefact
-  private String         mDescription ;   // Description de l'artefact
+  private int            mId ;            // Identifie l'artefact de manière unique.
+  private String         mNom ;           // Nom de l'artefact.
+  private String         mDescription ;   // Description de l'artefact.
+  private String         mNomFichier ;    // Nom du fichier correspondant à l'artefact.
   private MTache         mTacheEntree ;   // Tâche dont est issu l'artefact.
   private MTache         mTacheSortie ;   // Tâche qui nécessite l'artefact.
   private MProduit       mProduit ;       // Produit que l'artefact instancie.
   private MCollaborateur mCollaborateur ; // Collaborateur responsable de l'artefact.
   private MProjet        mProjet ;        // Projet pour lequel est réalisé l'artefact.
-  private File           mFichier;        // fichier correspondant à l'artefact
-  
 
+  public String PATH_ARTEFACT = "Artefacts/"; //Variable global avec le path vers les artefacts (à mettre dans un fichier avec des variables globales)
+  
   /**
    * Crée une instance vide de MArtefact.
    */
@@ -41,12 +36,13 @@ public class MArtefact extends MModeleBase
    * @param pNom Nom de l'artefact.
    * @param pDescription Description de l'artefact.
    */
-  public MArtefact (int pId, String pNom, String pDescription)
+  public MArtefact (int pId, String pNom, String pDescription, String pNomFichier)
   {
     mId          = pId ;
     mNom         = pNom ;
     mDescription = pDescription ;
-    mFichier = null;
+    mNomFichier  = pNomFichier ; 
+
   }
 
 
@@ -129,6 +125,24 @@ public class MArtefact extends MModeleBase
     mNom = pNom ;
   }
 
+  /**
+   * Récupère le nom du fichier de l'artefact.
+   * @return Nom du fichier de l'artefact.
+   */
+  public String getNomFichier ()
+  {
+    return mNomFichier ;
+  }
+
+
+  /**
+   * Initialise le nom du fichier de l'artefact.
+   * @param pNomFichier Nom du fichier de l'artefact.
+   */
+  public void setNomFichier (String pNomFichier)
+  {
+    mNomFichier = pNomFichier ;
+  }
 
   /**
    * Récupère le produit que l'artefact instancie.
@@ -210,12 +224,19 @@ public class MArtefact extends MModeleBase
   }
   
   /**
-   * Vérifie si un artefact est disponible
-   * @return Disponibilité de l'artefact
+   * Récupère le lien vers le fichier correspondant à l'artefact.
+   * @return le lien vers le fichier correspondant à l'artefact si il existe.
    */
-  public String estDisponible()
+  public String getPathFichier ()
   {
-      if (mFichier != null && mFichier.exists()) return "V";
-      else return "X";
+    if (mNomFichier!=null)
+    {
+      return PATH_ARTEFACT+mProjet.getNom()+"/"+mTacheEntree.getIteration().getNumero()+"/"+mProduit.getNom()+"/" ;
+    }
+    else
+    {
+      return "Non disponible";
+    }
   }
+ 
 }

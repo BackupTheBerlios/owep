@@ -7,6 +7,13 @@
 
 <meta http-equiv="refresh" content="60; URL=./ListeTacheVisu">
 
+<%
+    SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
+    lCollaborateur = (MCollaborateur) request.getAttribute (CConstante.PAR_COLLABORATEUR) ;
+    if(lCollaborateur.getNbTaches()>0)
+    {
+%>
+
 <table class="tableau" border="0" cellpadding="0" cellspacing="0">
 <tbody>
   <tr>
@@ -28,8 +35,6 @@
   </tr>
   
   <%
-    SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
-    lCollaborateur = (MCollaborateur) request.getAttribute (CConstante.PAR_COLLABORATEUR) ;
     for (int i = 0; i < lCollaborateur.getNbTaches(); i ++)
     {
       lTache = lCollaborateur.getTache (i) ;
@@ -148,3 +153,5 @@
   %>
 </tbody>
 </table>
+
+<%}%>

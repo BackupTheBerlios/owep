@@ -3,110 +3,128 @@
 <%@page import="owep.modele.execution.MTache"%>
 
 <jsp:useBean id="lArtefact" class="owep.modele.execution.MArtefact" scope="page"/>
-<jsp:useBean id="lTache"         class="owep.modele.execution.MTache"         scope="page"/> 
+<jsp:useBean id="lTache"    class="owep.modele.execution.MTache"    scope="page"/> 
 
 <%
     SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
     lTache = (MTache) request.getAttribute (CConstante.PAR_TACHE) ;
-  %>
+    
+    String [] tabEtat = {"Créée", "Prète", "Commencée", "Suspendue", "Terminée"};
+%>
 
-<table border="0" cellpadding="0" cellspacing="0">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
 <tbody>
   <tr>
-    <td>Tâche : </td>
-    <td><%= lTache.getNom ()%></td>
+    <td width="20%">Tâche : </td>
+    <td align="left"><%= lTache.getNom ()%></td>
   </tr>
   <tr>
-    <td>Etat : </td>
-    <td><%= lTache.getEtat()%></td>
+    <td width="20%">Etat : </td>
+    <td align="left"><%= tabEtat[lTache.getEtat()]%></td>
   </tr>
   <tr>
-    <td>Description : </td>
-    <td><%= lTache.getDescription()%></td>
+    <td width="20%">Description : </td>
+    <td align="left"><%= lTache.getDescription()%></td>
   </tr>
 </tbody>
-</table>  
+</table> 
+ 
+<br><br>
 
-<table border="0" cellpadding="0" cellspacing="0">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
 <tbody>
   <tr>
-	  <td>Temps prévu : </td>
-	  <td><%=lTache.getChargeInitiale ()%></td>
-    <td>Temps passé : </td>
-    <td><%=lTache.getTempsPasse ()    %></td>
-    <td>Reste à passer : </td>
-    <td><%=lTache.getResteAPasser ()  %></td>
-  </tr>
-</tbody>
-</table>
-<table border="0" cellpadding="0" cellspacing="0">
-<tbody>
-  <tr>
-    <td colspan="4">Date : </td>
-  </tr>
-  <tr>
-    <td>début prévue : </td>
-    <td><% if (lTache.getDateDebutPrevue () != null)
-                                 {
-                                   out.print (lDateFormat.format (lTache.getDateDebutPrevue ())) ;
-                                 }
-                                 else
-                                 {
-                                   out.print ("X") ;
-                                 } %>
-    </td>
-    <td>début réelle : </td>
-    <td><% if (lTache.getDateDebutReelle () != null)
-                                 {
-                                   out.print (lDateFormat.format (lTache.getDateDebutReelle ())) ;
-                                 }
-                                 else
-                                 {
-                                   out.print ("X") ;
-                                 } %>
-    </td>
-  </tr>
-  <tr>
-    <td>fin prévue</td>
-    <td><% if (lTache.getDateFinPrevue () != null)
-                              {
-                                out.print (lDateFormat.format (lTache.getDateFinPrevue ())) ;
-                              }
-                           else
-                           {
-                             out.print ("X") ;
-                           } %>
-    </td>
-    <td>fin réestimée : </td>
-    <td><% if (lTache.getDateFinReelle () != null)
-                                 {
-                                   out.print (lDateFormat.format (lTache.getDateFinReelle ())) ;
-                                 }
-                                 else
-                                 {
-                                   out.print ("X") ;
-                                 } %>
-    </td>
+	<td width="15%">Temps prévu : </td>
+	<td width="20%"><%=lTache.getChargeInitiale ()%></td>
+    <td width="15%">Temps passé : </td>
+    <td width="20%"><%=lTache.getTempsPasse ()    %></td>
+    <td width="15%">Reste à passer : </td>
+    <td width="15%"><%=lTache.getResteAPasser ()  %></td>
   </tr>
 </tbody>
 </table>
 
-<table border="0" cellpadding="0" cellspacing="0">
+<br>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
 <tbody>
   <tr>
-    <td colspan="4">Dépassement de charge : </td>
+    <td colspan="5">Dates : </td>
   </tr>
   <tr>
-    <td>pourcentage : </td>
-    <td><%= lTache.getPrcDepassementCharge () * 100 %></td>
-    <td>hommes jour : </td>
-    <td><%= lTache.getHJDepassementCharge ()        %></td>
+    <td width="15%">début prévue : </td>
+    <td width="20%"><% if (lTache.getDateDebutPrevue () != null)
+           {
+             out.print (lDateFormat.format (lTache.getDateDebutPrevue ())) ;
+           }
+           else
+           {
+             out.print ("X") ;
+           } %>
+    </td>
+    <td width="15%">début réelle : </td>
+    <td width="20%"><% if (lTache.getDateDebutReelle () != null)
+           {
+             out.print (lDateFormat.format (lTache.getDateDebutReelle ())) ;
+           }
+           else
+           {
+             out.print ("X") ;
+           } %>
+    </td>
+    <td width="30%"></td>
+  </tr>
+  <tr>
+    <td width="15%">fin prévue</td>
+    <td width="20%"><% if (lTache.getDateFinPrevue () != null)
+           {
+             out.print (lDateFormat.format (lTache.getDateFinPrevue ())) ;
+           }
+           else
+           {
+             out.print ("X") ;
+           } %>
+    </td>
+    <td width="15%">fin réestimée : </td>
+    <td width="20%"><% if (lTache.getDateFinReelle () != null)
+           {
+             out.print (lDateFormat.format (lTache.getDateFinReelle ())) ;
+           }
+           else
+           {
+             out.print ("X") ;
+           } %>
+    </td>
+    <td width="30%"></td>
   </tr>
 </tbody>
 </table>
 
+<br>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+  <tr>
+    <td colspan="5">Dépassement de charge : </td>
+  </tr>
+  <tr>
+    <td width="15%">pourcentage : </td>
+    <td width="20%"><%= lTache.getPrcDepassementCharge () * 100 %></td>
+    <td width="15%">hommes jour : </td>
+    <td width="20%"><%= lTache.getHJDepassementCharge ()        %></td>
+    <td width="30%"></td>
+  </tr>
+</tbody>
+</table>
+
+<br><br>
+
+<table width="100%">
+  <tr>
 <%if (lTache.getNbArtefactsEntrees()>0){%>
-	<table class="tableau" border="0" cellpadding="0" cellspacing="0">
+  <td width="50%" valign="top">
+    <center>Artefacts en entrée de la tache</center><br>
+	<table width="100%" class="tableau" border="0" cellpadding="0" cellspacing="0">
 	<tbody>
 	  <tr>
 	    <td class="caseNiveau1">Artefact</td>
@@ -115,20 +133,27 @@
 	  </tr>
 	  <%for (int i = 0; i < lTache.getNbArtefactsEntrees(); i ++)
 	    {
-	      lArtefact = lTache.getArtefact(i) ;
+	      lArtefact = lTache.getArtefact(i) ;  
 	  %>
 	    <tr>
 	      <td class='caseNiveau2'><%= lArtefact.getNom()%></td>
-	      <td class='caseNiveau2'><%= lArtefact.estDisponible()%></td>
-	      <td class='caseNiveau2'><%= lArtefact.getTacheEntree().getCollaborateur()%></td>
+	      <%if (lArtefact.getNomFichier() != null){%>
+	        <td class='caseNiveau2'><a href=<%= "../"+lArtefact.getPathFichier()+lArtefact.getNomFichier()%>><%= lArtefact.getNomFichier()%></a></td>
+	      <%}else{%>
+            <td class='caseNiveau2'>Nom disponible</td>
+          <%}%>
+	      <td class='caseNiveau2'><%= lArtefact.getCollaborateur().getPrenom()+" "+lArtefact.getCollaborateur().getNom()%></td>
 	    </tr>
 	  <%}%>
 	</tbody>
 	</table>
+  </td>	
 <%}%>
 
 <%if (lTache.getNbArtefactsSorties()>0){%>
-	<table class="tableau" border="0" cellpadding="0" cellspacing="0">
+  <td width="50%" valign="top">
+    <center>Artefacts en sortie de la tache</center><br>
+	<table width="100%" class="tableau" border="0" cellpadding="0" cellspacing="0">
 	<tbody>
 	  <tr>
 	    <td class="caseNiveau1">Artefact</td>
@@ -141,10 +166,18 @@
 	  %>
 	    <tr>
 	      <td class='caseNiveau2'><%= lArtefact.getNom()%></td>
-	      <td class='caseNiveau2'><%= lArtefact.estDisponible()%></td>
-	      <td class='caseNiveau2'><%= "Upload"%></td>
+	      <%if (lArtefact.getNomFichier() != null){%>
+	        <td class='caseNiveau2'><a href=<%= "../"+lArtefact.getPathFichier()+lArtefact.getNomFichier()%>><%= lArtefact.getNomFichier()%></a></td>
+	      <%}else{%>
+            <td class='caseNiveau2'>Nom disponible</td>
+          <%}%>
+	        <td class='caseNiveau2'><a href=<%= "../Artefact/ArtefactAjout?pArtefact="+ Integer.toString(lArtefact.getId())+"&pTacheAVisualiser="+lTache.getId()%>><%= "Ajouter"%></a></td>
 	    </tr>
 	  <%}%>
 	</tbody>
 	</table>
+  </td>	
 <%}%>
+
+  </tr>
+</table>

@@ -1,4 +1,4 @@
-package owep.controle ;
+package owep.controle.tache;
 
 
 import java.util.ArrayList;
@@ -7,6 +7,9 @@ import javax.servlet.http.HttpSession;
 import org.exolab.castor.jdo.OQLQuery ;
 import org.exolab.castor.jdo.PersistenceException ;
 import org.exolab.castor.jdo.QueryResults ;
+
+import owep.controle.CConstante;
+import owep.controle.CControleurBase;
 import owep.infrastructure.Session;
 import owep.modele.execution.MCollaborateur ;
 import owep.modele.execution.MCondition;

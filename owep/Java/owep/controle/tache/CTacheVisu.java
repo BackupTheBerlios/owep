@@ -4,7 +4,7 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package owep.controle;
+package owep.controle.tache;
 
 import javax.servlet.ServletException;
 
@@ -12,6 +12,8 @@ import org.exolab.castor.jdo.OQLQuery;
 import org.exolab.castor.jdo.PersistenceException;
 import org.exolab.castor.jdo.QueryResults;
 
+import owep.controle.CConstante;
+import owep.controle.CControleurBase;
 import owep.modele.execution.MTache;
 
 /**
@@ -33,16 +35,16 @@ public class CTacheVisu extends CControleurBase{
     {
       OQLQuery       lRequete ;       // Requête à réaliser sur la base
       QueryResults   lResultat ;      // Résultat de la requête sur la base
-      
+
       try
       {
         getBaseDonnees ().begin () ;
         
         //récupération de l'id de la tache donc on veut afficher le détail
         int idTache = Integer.parseInt(getRequete().getParameter(("pTacheAVisualiser")));
+        System.out.println(idTache);
         // Récupère la tâche à visualiser.
-        String req = "select TACHE from owep.modele.execution.MTache TACHE where mId = $1";
-        lRequete = getBaseDonnees ().getOQLQuery (req) ;
+        lRequete = getBaseDonnees ().getOQLQuery ("select TACHE from owep.modele.execution.MTache TACHE where mId = $1") ;
         lRequete.bind (idTache) ;
         lResultat      = lRequete.execute () ;
         mTache = (MTache) lResultat.next () ;
@@ -69,7 +71,6 @@ public class CTacheVisu extends CControleurBase{
       }
     }
     
-    
     /**
      * Récupère les paramètres passés au controleur. 
      * @throws ServletException -
@@ -77,22 +78,31 @@ public class CTacheVisu extends CControleurBase{
      */
     public void initialiserParametres () throws ServletException
     {
-      
+      /*// Récupère le numéro d'itération.
+      if (getRequete ().getParameter (CConstante.PAR_ITERATION) == null)
+      {
+        // TODO Requête recup it en cours.
+      }
+      else
+      {
+        mIterationNum = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_ITERATION)) ;
+      }
+      mIterationNum = 1 ;*/
     }
     
     
     /**
-     * Récupère la liste des tâches d'un collaborateur pour l'itération choisie, et la transmet à la
-     * JSP. 
+     * Effectue tout le traîtement du controleur puis retourne l'URL vers laquelle le client doit
+     * être redirigé. 
      * @return URL de la page vers laquelle doit être redirigé le client.
      * @throws ServletException Si une erreur survient dans le controleur
-     * @see owep.controle.CControleurBase#traiter()
      */
     public String traiter () throws ServletException
-    {  
+    {
       // Transmet les données à la JSP d'affichage.
       getRequete ().setAttribute (CConstante.PAR_TACHE, mTache) ;
       
       return "..\\JSP\\Tache\\TTacheVisu.jsp" ;
     }
 }
+
