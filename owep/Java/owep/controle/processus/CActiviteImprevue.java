@@ -1,21 +1,20 @@
 package owep.controle.processus;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.util.ResourceBundle;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpSession;
 import org.exolab.castor.jdo.OQLQuery;
 import org.exolab.castor.jdo.PersistenceException;
 import org.exolab.castor.jdo.QueryResults;
 import org.exolab.castor.jdo.TransactionAbortedException;
 import org.exolab.castor.jdo.TransactionNotInProgressException;
-import com.mysql.jdbc.Driver;
 import owep.controle.CConstante;
 import owep.controle.CControleurBase;
-import owep.infrastructure.localisation.LocalisateurIdentifiant;
 import owep.infrastructure.Session;
 import owep.modele.execution.MActiviteImprevue;
 import owep.modele.execution.MArtefactImprevue;
+import owep.modele.execution.MCollaborateur;
+import owep.modele.execution.MIteration;
 import owep.modele.execution.MProjet;
 import owep.modele.execution.MTacheImprevue;
 import owep.vue.transfert.VTransfert;
@@ -23,17 +22,19 @@ import owep.vue.transfert.VTransfert;
 
 
 /**
- * Description de la classe.
+ * Controleur pour les activités imprévues.
  */
 public class CActiviteImprevue extends CControleurBase
 {
   private MProjet    mProjet ;    // Projet actuellement ouvert par l'utilisateur.
   private MActiviteImprevue mActiviteImprevue ; // Activité imprévue à créer
+  private String     mMessage;    // Message qui sera afficher dans la jsp pour indiquer l'opération effectuée.
+  private ResourceBundle bundle;
 
   /**
-   * TODO Description de initialiserBaseDonnees.
-   * @throws ServletException
-   * @see owep.controle.CControleurBase#initialiserBaseDonnees()
+   * Permet d'initialiser la connexion avec la base de données et d'initiliser si besoin les 
+   * variables de la classe.
+   * @throws ServletException si une erreur se produit lors de la connexion avec la base de données.
    */
   
   public void initialiserBaseDonnees () throws ServletException
@@ -49,6 +50,11 @@ public class CActiviteImprevue extends CControleurBase
       
       lSession = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
       mProjet  = lSession.getProjet () ;
+      
+      // Recuperation de la session
+      HttpSession httpSession = getRequete ().getSession(true);
+      //Récupération du ressource bundle
+      bundle = ((Session) httpSession.getAttribute("SESSION")).getMessages();
       
       // Charge une copie du projet ouvert.
       try
@@ -76,7 +82,6 @@ public class CActiviteImprevue extends CControleurBase
    * @throws ServletException
    * @see owep.controle.CControleurBase#initialiserParametres()
    */
-  
   public void initialiserParametres () throws ServletException
   {
   }
@@ -90,23 +95,26 @@ public class CActiviteImprevue extends CControleurBase
   
   public String traiter () throws ServletException
   {
+    Session          lSession ;  // Session actuelle de l'utilisateur.
+    OQLQuery         lRequete ;  // Requête à réaliser sur la base
+    QueryResults     lResultat ; // Résultat de la requête sur la base
     if ((! VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT)) &&
         (! VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITMODIFIER)) &&
         (! VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER)))
-    {
+    {      
       try
       {
         getBaseDonnees().commit();
       }
       catch (TransactionNotInProgressException e)
       {
-        // TODO Ecrire le bloc try-catch.
         e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
       }
       catch (TransactionAbortedException e)
       {
-        // TODO Ecrire le bloc try-catch.
         e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
       }
       finally
       {        
@@ -116,8 +124,8 @@ public class CActiviteImprevue extends CControleurBase
         }
         catch (PersistenceException e)
         {
-          // TODO Ecrire le bloc try-catch.
           e.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
         }
       }
     }
@@ -125,6 +133,13 @@ public class CActiviteImprevue extends CControleurBase
     {    
         try
         {
+          MActiviteImprevue lActiviteImprevue;
+          MTacheImprevue lTacheImprevue;
+          MCollaborateur lCollaborateur;
+          MArtefactImprevue lArtefactImprevueSortie;
+          MArtefactImprevue lArtefactImprevueEntree;
+          MIteration lIteration;
+          
           // Ajout d'une activité imprévue
           if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
           {
@@ -135,32 +150,81 @@ public class CActiviteImprevue extends CControleurBase
 	        mProjet.addActiviteImprevue (mActiviteImprevue) ;
 	        
 	        getBaseDonnees().create(mActiviteImprevue);
-	        //getSession ().setProjet(mProjet) ;
+	        
+	        mMessage = bundle.getString("clActiviteImprevue")+ " " + mActiviteImprevue.getNom () + " " + bundle.getString("cBienCreee");
           }
           // Suppression d'une activité imprévue
           else if(VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITSUPPRIMER))
           {
             int lIndiceActiviteImprevue = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEACTIVITESIMPREVUES));
-            MActiviteImprevue lActiviteImprevue = mProjet.getActiviteImprevue (lIndiceActiviteImprevue);
-            for (int i =lActiviteImprevue.getNbTachesImprevues (); i > 0; i--){
-              MTacheImprevue lTacheImprevue = lActiviteImprevue.getTacheImprevue(i);
-              for (int j = lTacheImprevue.getNbArtefactsImprevuesEntrees (); j > 0; j--){
+            int lIdActiviteImprevue = mProjet.getActiviteImprevue (lIndiceActiviteImprevue).getId ();
+            
+            lRequete = getBaseDonnees ().getOQLQuery ("select ACTIVITEIMPREVUE from owep.modele.execution.MActiviteImprevue ACTIVITEIMPREVUE where mId = $1") ;
+            lRequete.bind (lIdActiviteImprevue) ;
+            lResultat  = lRequete.execute () ;
+            lActiviteImprevue = (MActiviteImprevue) lResultat.next () ;
+            
+            // Parcours des tâches imprévues de l'activité afin de les supprimer
+            for (int i =lActiviteImprevue.getNbTachesImprevues () -1; i >= 0; i--)
+            {
+              int lIdTacheImprevue = lActiviteImprevue.getTacheImprevue(i).getId ();
+              
+              lRequete = getBaseDonnees ().getOQLQuery ("select TACHEIMPREVUE from owep.modele.execution.MTacheImprevue TACHEIMPREVUE where mId = $1") ;
+              lRequete.bind (lIdTacheImprevue) ;
+              lResultat  = lRequete.execute () ;
+              lTacheImprevue = (MTacheImprevue) lResultat.next () ;
+              
+              lRequete = getBaseDonnees ().getOQLQuery ("select ITERATION from owep.modele.execution.MIteration ITERATION where mId = $1") ;
+              lRequete.bind (lTacheImprevue.getIteration ().getId ()) ;
+              lResultat  = lRequete.execute () ;
+              lIteration = (MIteration) lResultat.next () ;
+              
+              lRequete = getBaseDonnees ().getOQLQuery ("select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mId = $1") ;
+              lRequete.bind (lTacheImprevue.getCollaborateur ().getId ()) ;
+              lResultat  = lRequete.execute () ;
+              lCollaborateur = (MCollaborateur) lResultat.next () ;
+              
+              lCollaborateur.supprimerTacheImprevue(lTacheImprevue);
+              lIteration.supprimerTacheImprevue(lTacheImprevue);
+              
+              // On supprime les artefacts en entrées de la tâche imprévue courante.
+              for (int j = lTacheImprevue.getNbArtefactsImprevuesEntrees ()-1; j >= 0; j--){
+                lRequete = getBaseDonnees ().getOQLQuery ("select ARTEFACTIMPREVUE from owep.modele.execution.MArtefactImprevue ARTEFACTIMPREVUE where mId = $1") ;
+                lRequete.bind (lTacheImprevue.getArtefactImprevueEntree (j).getId ()) ;
+                lResultat  = lRequete.execute () ;
+                lArtefactImprevueEntree = (MArtefactImprevue) lResultat.next () ;
+                
+                lArtefactImprevueEntree.setTacheImprevueEntree(null);
                 lTacheImprevue.supprimerArtefactImprevueEntree (j) ;
               }
-              for (int j = lTacheImprevue.getNbArtefactsImprevuesSorties (); j > 0; j--){
-                lTacheImprevue.supprimerArtefactImprevueSortie (j) ;
+              // On supprime les artefacts en sorties de la tâche imprévue courante.
+              for (int j = lTacheImprevue.getNbArtefactsImprevuesSorties ()-1; j >= 0; j--){
+                int lIdArtefactImprevue = lTacheImprevue.getArtefactImprevueSortie(j).getId ();
+                
+                lRequete = getBaseDonnees ().getOQLQuery ("select ARTEFACTIMPREVUE from owep.modele.execution.MArtefactImprevue ARTEFACTIMPREVUE where mId = $1") ;
+                lRequete.bind (lIdArtefactImprevue) ;
+                lResultat  = lRequete.execute () ;
+                lArtefactImprevueSortie = (MArtefactImprevue) lResultat.next () ;
+                
+                lTacheImprevue.supprimerArtefactImprevueSortie (lArtefactImprevueSortie) ;
+                getBaseDonnees ().remove (lArtefactImprevueSortie);
               }
-              lActiviteImprevue.supprimerTacheImprevue (i);
+              // on supprime la tâche de l'activité.
+              lActiviteImprevue.supprimerTacheImprevue (lTacheImprevue);
+              getBaseDonnees ().remove (lTacheImprevue);
+              
+              
             }
+            // on met à jour le modèle
             mProjet.supprimerActiviteImprevue (lIndiceActiviteImprevue) ;
+            lActiviteImprevue.setProjet(null);
+            getBaseDonnees ().remove (lActiviteImprevue);
+            
+            mMessage = bundle.getString("clActiviteImprevue")+ " " + mActiviteImprevue.getNom () + " " + bundle.getString("cBienSupprimee");
            }
           // Modification d'une activité imprévue.
           else if(VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMITMODIFIER))
-          {
-            Session          lSession ;  // Session actuelle de l'utilisateur.
-            OQLQuery         lRequete ;  // Requête à réaliser sur la base
-            QueryResults     lResultat ; // Résultat de la requête sur la base
-            
+          {            
             int lIndiceActiviteImprevue     = Integer.parseInt (getRequete ().getParameter (CConstante.PAR_LISTEACTIVITESIMPREVUES)) ;
             MActiviteImprevue lActiviteImprevueTmp = new MActiviteImprevue ();
             VTransfert.transferer (getRequete (), lActiviteImprevueTmp, CConstante.PAR_ARBREACTIVITE) ;
@@ -170,10 +234,12 @@ public class CActiviteImprevue extends CControleurBase
             lRequete = getBaseDonnees ().getOQLQuery ("select ACTIVITEIMPREVUE from owep.modele.execution.MActiviteImprevue ACTIVITEIMPREVUE where mId = $1") ;
             lRequete.bind (lIdActiviteImprevue) ;
             lResultat  = lRequete.execute () ;
-            MActiviteImprevue lActiviteImprevue = (MActiviteImprevue) lResultat.next () ;
+            lActiviteImprevue = (MActiviteImprevue) lResultat.next () ;
             
             lActiviteImprevue.setNom(lActiviteImprevueTmp.getNom());
             lActiviteImprevue.setDescription(lActiviteImprevueTmp.getDescription());
+            
+            mMessage = bundle.getString("clActiviteImprevue")+ " " + mActiviteImprevue.getNom () + " " + bundle.getString("cBienModifiee");
           } 
 
         }
@@ -193,11 +259,12 @@ public class CActiviteImprevue extends CControleurBase
           }
           catch (PersistenceException e)
           {
-            // TODO Ecrire le bloc try-catch.
             e.printStackTrace () ;
+            throw new ServletException (CConstante.EXC_TRAITEMENT) ;
           }
         }
       }
+    getRequete ().setAttribute (CConstante.PAR_MESSAGE, mMessage) ;
     return "..\\JSP\\Processus\\TActiviteImprevue.jsp" ;
   }
 }

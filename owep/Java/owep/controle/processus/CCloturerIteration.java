@@ -7,18 +7,27 @@
 package owep.controle.processus;
 
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 
+import org.exolab.castor.jdo.ClassNotPersistenceCapableException;
+import org.exolab.castor.jdo.DuplicateIdentityException;
 import org.exolab.castor.jdo.OQLQuery;
+import org.exolab.castor.jdo.PersistenceException;
 import org.exolab.castor.jdo.QueryResults;
+import org.exolab.castor.jdo.TransactionNotInProgressException;
 
 import owep.controle.CConstante;
 import owep.controle.CControleurBase;
 import owep.infrastructure.Session;
+import owep.modele.execution.MActiviteImprevue;
+import owep.modele.execution.MCollaborateur;
 import owep.modele.execution.MIteration;
 import owep.modele.execution.MProjet;
 import owep.modele.execution.MTache;
+import owep.modele.execution.MTacheImprevue;
+import owep.modele.processus.MActivite;
 import owep.vue.transfert.VTransfert ;
 
 /**
@@ -66,9 +75,6 @@ public class CCloturerIteration extends CControleurBase
         {
           throw new ServletException (CConstante.EXC_TRAITEMENT) ;
         }
-        
-        //getBaseDonnees().commit();
-        //getBaseDonnees().begin();
         
         // Charge l'itération en cours.
         lRequete = getBaseDonnees ().getOQLQuery ("select ITERATION from owep.modele.execution.MIteration ITERATION where mEtat = $1 AND mProjet.mId = $2") ;
@@ -149,15 +155,7 @@ public class CCloturerIteration extends CControleurBase
           /*************** Modification de l'itération en cours ************/
          
           //L'état passe à terminée
-          mIteration.setEtat(MIteration.ETAT_TERMINE);
-          // Si l'utilisateur valide les données, alors on les enregistre dans la base.
-          if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
-          {
-            //getBaseDonnees().commit();
-            //getBaseDonnees().begin();
-            //getBaseDonnees().update (mIteration) ;
-          }
-          
+          mIteration.setEtat(MIteration.ETAT_TERMINE);          
           
           /***************** Ensuite on change d'itération *****************/
           
@@ -186,22 +184,184 @@ public class CCloturerIteration extends CControleurBase
               if (lTache.getNbConditions()==0)
                 lTache.setEtat(MTache.ETAT_NON_DEMARRE);
             }
-            //getBaseDonnees().commit();
-            //getBaseDonnees().begin();
-            //getBaseDonnees ().update (mNouvelleIteration) ;
+            
+            //On parcour la liste des taches de l'itération précédente
+            //afin de dupliquer les taches non terminées dans la nouvelle itération
+            //et de les terminer dans l'itération précédente
+            for(int i = 0; i < mIteration.getNbTaches(); i++)
+            {
+              MTache lTache = mIteration.getTache (i);
+              if(lTache.getEtat() != MTache.ETAT_TERMINE)
+              {
+                MTache lNouvelleTache = new MTache(lTache);
+                lNouvelleTache.setChargeInitiale(lTache.getResteAPasser());
+                lNouvelleTache.setResteAPasser(lTache.getResteAPasser());
+                lNouvelleTache.setTempsPasse(lTache.getTempsPasse());
+                lNouvelleTache.setIteration(mNouvelleIteration);
+                lNouvelleTache.setEtat(MTache.ETAT_NON_DEMARRE);
+                mNouvelleIteration.addTache(lNouvelleTache);
+                
+                /*********** Charge le collaborateur responsable. ***********/
+                lRequete = getBaseDonnees ().getOQLQuery ("select COLLABORATEUR	from owep.modele.execution.MCollaborateur COLLABORATEUR where mId = $1") ;
+                lRequete.bind (lNouvelleTache.getCollaborateur().getId()) ;
+                lResultat = lRequete.execute () ;
+                // Si on récupère correctement l'itération dans la base,
+                if (lResultat.hasMore ())
+                {
+                  MCollaborateur lCollaborateur = (MCollaborateur) lResultat.next () ;
+                  lCollaborateur.addTache(lNouvelleTache);
+                }
+                // Si l'itération n'existe pas ou n'appartient pas au projet ouvert,
+                else
+                {
+                  throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+                }
+ 
+                /*********** Charge l'activité. ***********/
+                lRequete = getBaseDonnees ().getOQLQuery ("select ACTIVITE	from owep.modele.processus.MActivite ACTIVITE where mId = $1") ;
+                lRequete.bind (lNouvelleTache.getActivite().getId()) ;
+                lResultat = lRequete.execute () ;
+                // Si on récupère correctement l'itération dans la base,
+                if (lResultat.hasMore ())
+                {
+                  MActivite lActivite = (MActivite) lResultat.next () ;
+                  lActivite.addTache(lNouvelleTache);
+                }
+                // Si l'itération n'existe pas ou n'appartient pas au projet ouvert,
+                else
+                {
+                  throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+                }
+                
+                /*********** Création de la tache ***********/
+                try
+                {
+                  // ajout de la tâche dans la base de données.
+                  getBaseDonnees ().create (lNouvelleTache);
+                }
+                catch (ClassNotPersistenceCapableException e)
+                {
+                  e.printStackTrace () ;
+                  throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+                }
+                catch (DuplicateIdentityException e)
+                {
+                  e.printStackTrace () ;
+                  throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+                }
+                catch (TransactionNotInProgressException e)
+                {
+                  e.printStackTrace () ;
+                  throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+                }
+                catch (PersistenceException e)
+                {
+                  e.printStackTrace () ;
+                  throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+                }
+                lTache.setEtat(MTache.ETAT_TERMINE);
+              }
+            }
+
+            //On fait de même avec la liste des taches imprévues
+            for(int i = 0; i < mIteration.getNbTachesImprevues(); i++)
+            {
+              MTacheImprevue lTache = mIteration.getTacheImprevue(i);
+              if(lTache.getEtat() != MTache.ETAT_TERMINE)
+              {
+                MTacheImprevue lNouvelleTache = new MTacheImprevue(lTache);
+                lNouvelleTache.setChargeInitiale(lTache.getResteAPasser());
+                lNouvelleTache.setResteAPasser(lTache.getResteAPasser());
+                lNouvelleTache.setTempsPasse(lTache.getTempsPasse());
+                lNouvelleTache.setIteration(mNouvelleIteration);
+                lNouvelleTache.setEtat(MTache.ETAT_NON_DEMARRE);
+                mNouvelleIteration.addTacheImprevue(lNouvelleTache);
+                
+                /*********** Charge le collaborateur responsable. ***********/
+                lRequete = getBaseDonnees ().getOQLQuery ("select COLLABORATEUR	from owep.modele.execution.MCollaborateur COLLABORATEUR where mId = $1") ;
+                lRequete.bind (lNouvelleTache.getCollaborateur().getId()) ;
+                lResultat = lRequete.execute () ;
+                // Si on récupère correctement l'itération dans la base,
+                if (lResultat.hasMore ())
+                {
+                  MCollaborateur lCollaborateur = (MCollaborateur) lResultat.next () ;
+                  lCollaborateur.addTacheImprevue(lNouvelleTache);
+                }
+                // Si l'itération n'existe pas ou n'appartient pas au projet ouvert,
+                else
+                {
+                  throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+                }
+ 
+                /*********** Charge l'activité. ***********/
+                lRequete = getBaseDonnees ().getOQLQuery ("select ACTIVITEIMPREVUE	from owep.modele.execution.MActiviteImprevue ACTIVITEIMPREVUE where mId = $1") ;
+                lRequete.bind (lNouvelleTache.getActiviteImprevue().getId()) ;
+                lResultat = lRequete.execute () ;
+                // Si on récupère correctement l'itération dans la base,
+                if (lResultat.hasMore ())
+                {
+                  MActiviteImprevue lActivite = (MActiviteImprevue) lResultat.next () ;
+                  lActivite.addTacheImprevue(lNouvelleTache);
+                }
+                // Si l'itération n'existe pas ou n'appartient pas au projet ouvert,
+                else
+                {
+                  throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+                }
+                
+                /*********** Création de la tache ***********/
+                try
+                {
+                  // ajout de la tâche dans la base de données.
+                  getBaseDonnees ().create (lNouvelleTache);
+                }
+                catch (ClassNotPersistenceCapableException e)
+                {
+                  e.printStackTrace () ;
+                  throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+                }
+                catch (DuplicateIdentityException e)
+                {
+                  e.printStackTrace () ;
+                  throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+                }
+                catch (TransactionNotInProgressException e)
+                {
+                  e.printStackTrace () ;
+                  throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+                }
+                catch (PersistenceException e)
+                {
+                  e.printStackTrace () ;
+                  throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+                }
+                lTache.setEtat(MTache.ETAT_TERMINE);
+              }
+            }
+            
+            getSession().setIteration(mNouvelleIteration);
+            
           }
           // Si l'itération n'existe pas ou n'appartient pas au projet ouvert,
           else
           {
-            throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+            //On termine les taches et les taches imprévues
+            for(int i = 0; i < mIteration.getNbTaches(); i++)
+            {
+              mIteration.getTache(i).setEtat(MTache.ETAT_TERMINE); 
+            }
+            for(int i = 0; i < mIteration.getNbTachesImprevues(); i++)
+            {
+              mIteration.getTacheImprevue(i).setEtat(MTache.ETAT_TERMINE); 
+            }
+            
+            getSession().setIteration(null);
           }
 
-          // Valide les données.
-          //getBaseDonnees ().commit () ;
-          //getBaseDonnees ().close () ;
+          ResourceBundle messages = java.util.ResourceBundle.getBundle("MessagesBundle");
+          String lMessage = messages.getString("cloturerIterationMessageConfirmation1") + " " + mIteration.getNumero() + " " + messages.getString("cloturerIterationMessageConfirmation2");
+          getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
           
-          getSession().setIteration(mNouvelleIteration);
-
           // Affiche la page de visualisation des taches à réaliser dans la nouvelle itération.
           return "/Tache/ListeTacheVisu" ;
         }

@@ -16,7 +16,8 @@ import owep.modele.execution.MProjet;
  */
 public class CProjetVisu extends CControleurBase
 {
-  MProjet mProjet;
+  MProjet mProjet; // Projet dont l'itération fait partie.
+  
   /**
    * Récupère les données nécessaire au controleur dans la base de données. 
    * @throws ServletException Si une erreur survient durant la connexion
@@ -58,8 +59,8 @@ public class CProjetVisu extends CControleurBase
       }
       catch (PersistenceException e)
       {
-        // TODO Ecrire le bloc try-catch.
         e.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_TRAITEMENT) ;
       }
     }
   }
