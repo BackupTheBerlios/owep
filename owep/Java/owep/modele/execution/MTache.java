@@ -31,6 +31,7 @@ public class MTache extends MModeleBase
   private ArrayList       mListeArtefactSortie ; // Liste des artefacts à produire durant la tâche
   private MActivite       mActivite ;            // Activité du processus correspondant à la tâche
   private MCollaborateur  mCollaborateur ;       // Collaborateur réalisant la tâche
+  private ArrayList       mListeProblemes ;       // Liste des problèmes de la tâche
   
   
   /**
@@ -40,6 +41,7 @@ public class MTache extends MModeleBase
   {
     mListeArtefactEntree = new ArrayList () ;
     mListeArtefactSortie = new ArrayList () ;
+    mListeProblemes      = new ArrayList () ;
   }
   
   
@@ -65,6 +67,7 @@ public class MTache extends MModeleBase
     mActivite            = pActivite ;
     mListeArtefactEntree = new ArrayList () ;
     mListeArtefactSortie = new ArrayList () ;
+    mListeProblemes      = new ArrayList () ;
   }
   
   
@@ -99,6 +102,7 @@ public class MTache extends MModeleBase
     mActivite            = pActivite ;
     mListeArtefactEntree = new ArrayList () ;
     mListeArtefactSortie = new ArrayList () ;
+    mListeProblemes      = new ArrayList () ;
   }
   
   
@@ -519,5 +523,21 @@ public class MTache extends MModeleBase
   public double getPrcAvancement ()
   {
     return mTempsPasse / (mTempsPasse + mResteAPasser) ;
+  }
+   
+  /**
+   * @return Retourne la valeur de l'attribut listeProblemes.
+   */
+  public ArrayList getListeProblemes ()
+  {
+    return mListeProblemes ;
+  }
+  
+  /**
+   * @param initialise listeProblemes avec pListeProblemes.
+   */
+  public void setListeProblemes (ArrayList pListeProblemes)
+  {
+    mListeProblemes = pListeProblemes ;
   }
 }
