@@ -1,0 +1,63 @@
+@charset "iso-8859-1";
+
+body {font-size: 14px; color: black; background-color: rgb(255,255,255)}
+a {font-size: 12px; color:rgb(254, 101, 27); text-decoration: underline}
+a:link {font-size : 12px; color:blue}
+a:hover {font-size: 12px; color:red; text-decoration: none}
+a:visited {font-size: 12px; color:red ; text-decoration: none}
+table.tableau {border: solid rgb(128,0,0); border-width:  2px 2px 1px 1px}
+tr.titre {padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px; border: solid rgb(128,0,0); border-width:  0px 0px 1px 1px; color: rgb(128,0,0); font-size: 14px; font-weight: bold; text-align: center; background-color:rgb(255,204,153)}
+td.titre {padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px; border: solid rgb(128,0,0); border-width:  0px 0px 1px 1px; color: rgb(128,0,0); font-size: 14px; font-weight: bold; text-align: center; background-color:rgb(255,204,153)}
+td.roleClair {padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px; border: solid rgb(128,0,0); border-width:  0px 0px 1px 1px; color: black; font-size: 14px; font-weight: bold; text-align: center; background-color:rgb(242, 231, 196)}
+td.roleFonce {padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px; border: solid rgb(128,0,0); border-width:  0px 0px 1px 1px; color: black; font-size: 14px; font-weight: bold; text-align: center; background-color:rgb(225, 199, 119)}
+tr.clair {padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px; border: solid rgb(128,0,0); border-width:  0px 0px 1px 1px; font-size: 13px; color: black; background-color:white;text-align: center}
+td.clair {padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px; border: solid rgb(128,0,0); border-width:  0px 0px 1px 1px; font-size: 13px; color: black; background-color:white;text-align: center}
+tr.foncé {padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px; border: solid rgb(128,0,0); border-width:  0px 0px 1px 1px; font-size: 13px;color: black; background-color:rgb(240,240,240);text-align: center}
+td.foncé {padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px; border: solid rgb(128,0,0); border-width:  0px 0px 1px 1px; font-size: 13px;color: black; background-color:rgb(240,240,240);text-align: center}
+td.total {padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px; border: solid rgb(128,0,0); border-width:  0px 0px 1px 1px; font-size: 13px; color: black; background-color:rgb(255,94,94);text-align: center}
+.titrepage {font-size: 30px;color: rgb(51,102,153); font-weight: bold; background-color:white; text-align: center}
+
+
+/* Style général de la page */
+table.panneauGauche {border: solid rgb(128,0,0); border-width:  2px 1px 2px 2px; background-color: rgb(255,204,153)}
+table.panneauDroit {border: solid rgb(128,0,0); border-width:  2px 2px 2px 0px}
+table.panneauLogo {font-size: 14px; color: black}
+table.panneauMenu {font-size: 14px; color: black}
+table.panneauMessagerie {border: solid rgb(128,0,0); border-width:  0px 0px 1px 0px; background-color: rgb(255,204,153)}
+table.panneauPied {border: solid rgb(128,0,0); border-width:  0px 1px 1px 1px; background-color: rgb(128,0,0); color: rgb(255,255,255); font-size: 14px; font-weight: bold; text-align : center}
+table.panneauPrincipal {padding-left: 8px; padding-right: 8px; padding-top: 8px; padding-bottom: 8px; font-size: 14px}
+
+
+/* Style du menu */
+td.caseMenuListe {padding-top: 3px; padding-bottom: 3px; background-color: rgb(128,0,0); padding-left: 5px; text-align: center}
+td.caseMenuSeparation {font-size: 14px; font-weight: bold; color: black}
+td.caseMenuConnexion {padding-top: 1px; padding-bottom: 1px; background-color: rgb(255,204,153); text-align: center}
+td.caseMenuNiveau1 {padding-top: 1px; padding-bottom: 1px; background-color: rgb(128,0,0); padding-left: 5px}
+td.caseMenuNiveau2 {padding-top: 0px; padding-bottom: 0px; padding-left: 15px}
+.menuListe {background-color: rgb(128,0,0); font-size: 14px; color: rgb(255,255,255); font-weight: bolder}
+.menuConnexion:link {font-size: 12px; color: rgb(128,0,0); font-weight: bold; text-decoration: none}
+.menuConnexion:active {font-size: 12px; color: rgb(128,0,0); font-weight: bold; text-decoration: none}
+.menuConnexion:visited {font-size: 12px; color: rgb(128,0,0); font-weight: bold; text-decoration: none}
+.menuConnexion:hover {font-size: 12px; color: rgb(128,0,0); font-weight: bold; text-decoration: underline}
+.menuSeparation {font-size: 14px; font-weight: bold}
+.menuNiveau1 {font-size: 14px; font-weight: bold; color: white}
+.menuNiveau2:link {font-size: 14px; color: rgb(51,85,165); font-weight: bold; text-decoration: none}
+.menuNiveau2:active {font-size: 14px; color: rgb(51,85,165); font-weight: bold; text-decoration: none}
+.menuNiveau2:visited {font-size: 14px; color: rgb(51,85,165); font-weight: bold; text-decoration: none}
+.menuNiveau2:hover {font-size: 14px; color: rgb(51,85,165); font-weight: bold; text-decoration: underline}
+
+
+/* Style de la messagerie */
+td.caseMessage {padding-right: 5px; background-color: rgb(255,204,153)}
+td.caseMessageCommande {padding-left: 5px; padding-right: 5px; padding-top: 1px; padding-bottom: 1px; border: solid rgb(255,204,153); border-width:  1px 1px 1px 1px; background-color: rgb(128,0,0)}
+.message {font-size: 13px; font-weight: bold; color: rgb(0,0,0)}
+.messageCommande:link {font-size: 14px; font-weight: bold; color: white}
+.messageCommande:active {font-size: 14px; font-weight: bold; color: white}
+.messageCommande:visited {font-size: 14px; font-weight: bold; color: white}
+.messageCommande:hover {font-size: 14px; font-weight: bold; color: white; text-decoration: underline}
+.messageOrigine:link {padding-left: 5px; font-size: 13px; color: rgb(51,85,165); font-weight: bold; text-decoration: none}
+.messageOrigine:active {padding-left: 5px; font-size: 13px; color: rgb(51,85,165); font-weight: bold; text-decoration: none}
+.messageOrigine:visited {padding-left: 5px; font-size: 13px; color: rgb(51,85,165); font-weight: bold; text-decoration: none}
+.messageOrigine:hover {padding-left: 5px; font-size: 13px; color: rgb(51,85,165); font-weight: bold; text-decoration: underline}
+
+/* End of style section. Generated by AceHTML at 21/11/2004 13:44:03 */
