@@ -1,7 +1,5 @@
 package owep.controle.tache ;
 
-
-import java.util.ArrayList ;
 import javax.servlet.ServletException ;
 import javax.servlet.http.HttpSession ;
 import org.exolab.castor.jdo.OQLQuery ;
@@ -54,8 +52,6 @@ public class CListeTacheVisu extends CControleurBase
       lRequete.bind (idCollab) ;
       lResultat = lRequete.execute () ;
       mCollaborateur = (MCollaborateur) lResultat.next () ;
-
-      getBaseDonnees ().commit () ;
     }
     catch (Exception eException)
     {
@@ -72,9 +68,11 @@ public class CListeTacheVisu extends CControleurBase
    */
   public void initialiserParametres () throws ServletException
   {
-    ArrayList lListeTaches = new ArrayList () ; // Liste des taches dont l 'état a été mis à jour
+    OQLQuery lRequete ; // Requête à réaliser sur la base
+    QueryResults lResultat ; // Résultat de la requête sur la base
     int cond ; // booléen de validité de la condition
     int ltacheSansCondition ; // booléen pour savoir si on est sur une tache sans condition
+    int nbTaches = 0 ; // nombre de tache pour l iteration en cours
     // initialisation de l'état de chaque tache
     // pour chaque tache
     try
@@ -89,7 +87,15 @@ public class CListeTacheVisu extends CControleurBase
           ltacheSansCondition = 1 ;
           // on regarde si toutes les conditions pour que la tache soit prete sont vérifiées
           MTache lTache = mCollaborateur.getTache (i) ;
-
+          int lIdTache = lTache.getId() ;
+          // Récupère la liste des tâches du collaborateur.
+          lRequete = getBaseDonnees ()
+            .getOQLQuery (
+                          "select TACHE from owep.modele.execution.MTache TACHE where mId = $1") ;
+          lRequete.bind (lIdTache) ;
+          lResultat = lRequete.execute () ;
+          lTache = (MTache) lResultat.next () ;
+          
           //Si la tache correspond à l'itération sélectionnée
           if (lTache.getIteration ().getId () == mSession.getIteration ().getId ())
           {
@@ -119,16 +125,11 @@ public class CListeTacheVisu extends CControleurBase
               else
                 lTache.setEtat (-1) ;
             }
-
-            // Met à jour l'état de la tâche dans la base de données
-            getBaseDonnees ().begin () ;
-            getBaseDonnees ().update (lTache) ;
-            getBaseDonnees ().commit () ;
-
-            lListeTaches.add (lTache) ;
+            nbTaches++ ;
+            mCollaborateur.setListe (new Integer(nbTaches), lTache) ;
           }
         }
-        mCollaborateur.setListeTaches (lListeTaches) ;
+        mCollaborateur.setListe (new Integer(0), new Integer(nbTaches)) ;
       }
     }
     catch (Exception eException)
@@ -141,6 +142,7 @@ public class CListeTacheVisu extends CControleurBase
     {
       try
       {
+        getBaseDonnees ().commit () ;
         getBaseDonnees ().close () ;
       }
       catch (PersistenceException eException)

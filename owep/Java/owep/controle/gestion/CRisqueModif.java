@@ -4,6 +4,7 @@ package owep.controle.gestion ;
 import java.util.StringTokenizer;
 import javax.servlet.ServletException ;
 import org.exolab.castor.jdo.OQLQuery ;
+import org.exolab.castor.jdo.PersistenceException;
 import org.exolab.castor.jdo.QueryResults ;
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
@@ -58,14 +59,11 @@ public class CRisqueModif extends CControleurBase
         throw new ServletException (CConstante.EXC_TRAITEMENT) ;
       }
       
-      getBaseDonnees ().commit () ;
-      
       
       // Si un problème est passé en paramètre,
       if (lIdRisque != null)
       {
         // Charge le problème passé en paramètre.
-        getBaseDonnees ().begin () ;
         
         // Récupère le problème choisi par l'utilisateur.
         lRequete = getBaseDonnees ().getOQLQuery ("select RISQUE from owep.modele.execution.MRisque RISQUE where mId = $1 AND mProjet.mId = $2") ;
@@ -82,8 +80,6 @@ public class CRisqueModif extends CControleurBase
         {
           throw new ServletException (CConstante.EXC_TRAITEMENT) ;
         }
-        
-        getBaseDonnees ().commit () ;
       }
       // Si aucun problème existant n'est passé en paramètre,
       else
@@ -94,14 +90,6 @@ public class CRisqueModif extends CControleurBase
     catch (Exception eException)
     {
       eException.printStackTrace () ;
-      try
-      {
-        getBaseDonnees ().close () ;
-      }
-      catch (Exception eCloseException)
-      {
-        eCloseException.printStackTrace () ;
-      }
       throw new ServletException (CConstante.EXC_TRAITEMENT) ;
     }
   }
@@ -138,7 +126,6 @@ public class CRisqueModif extends CControleurBase
         // Si l'utilisateur accède à la page d'ajout/modification, transmet les données à la page.
         getRequete ().setAttribute (CConstante.PAR_RISQUE, mRisque) ;
         getRequete ().setAttribute (CConstante.PAR_PROJET, mProjet) ;
-        getBaseDonnees ().close () ;
         
         // Affiche la page de modification de problème.
         return "/JSP/Gestion/TRisqueModif.jsp" ;
@@ -146,7 +133,6 @@ public class CRisqueModif extends CControleurBase
       else
       {
         // Crée l'objet ou le met à jour s'il existe déjà.
-        getBaseDonnees ().begin () ;
         
         // Si l'utilisateur valide les données, alors on les enregistre dans la base.
         String lMessage = "" ;
@@ -159,13 +145,9 @@ public class CRisqueModif extends CControleurBase
           }
           else
           {
-            getBaseDonnees ().update (mRisque) ;
             lMessage = "Le risque \"" + mRisque.getNom () + "\" a été mis à jour." ;
           }
         }
-        // Valide les données.
-        getBaseDonnees ().commit () ;
-        getBaseDonnees ().close () ;
         
         // Affiche la page de visualisation de la liste des problèmes.
         getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
@@ -176,6 +158,19 @@ public class CRisqueModif extends CControleurBase
     {
       eException.printStackTrace () ;
       throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+    }
+    finally
+    {
+      try
+      {
+        getBaseDonnees ().commit () ;
+        getBaseDonnees ().close () ;
+      }
+      catch (PersistenceException eException)
+      {
+        eException.printStackTrace () ;
+        throw new ServletException (CConstante.EXC_DECONNEXION) ;
+      }
     }
   }
 }

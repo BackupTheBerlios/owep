@@ -133,7 +133,7 @@ public class Parser implements ContentHandler
       }
       mIdActivite++ ;
 
-      mBaseDonnees.commit () ;
+      //mBaseDonnees.commit () ;
     }
     catch (PersistenceException e)
     {
@@ -144,7 +144,7 @@ public class Parser implements ContentHandler
     // Composant
     try
     {
-      mBaseDonnees.begin () ;
+      //mBaseDonnees.begin () ;
       lRequete = mBaseDonnees
         .getOQLQuery ("select COMPOSANT from owep.modele.processus.MComposant COMPOSANT") ;
       lResultat = lRequete.execute () ;
@@ -158,7 +158,7 @@ public class Parser implements ContentHandler
       }
       mIdComposant++ ;
 
-      mBaseDonnees.commit () ;
+      //mBaseDonnees.commit () ;
     }
     catch (PersistenceException e)
     {
@@ -169,7 +169,7 @@ public class Parser implements ContentHandler
     // Produit
     try
     {
-      mBaseDonnees.begin () ;
+      //mBaseDonnees.begin () ;
       lRequete = mBaseDonnees
         .getOQLQuery ("select PRODUIT from owep.modele.processus.MProduit PRODUIT") ;
       lResultat = lRequete.execute () ;
@@ -183,7 +183,7 @@ public class Parser implements ContentHandler
       }
       mIdProduit++ ;
 
-      mBaseDonnees.commit () ;
+      //mBaseDonnees.commit () ;
     }
     catch (PersistenceException e)
     {
@@ -194,7 +194,7 @@ public class Parser implements ContentHandler
     // Role
     try
     {
-      mBaseDonnees.begin () ;
+      //mBaseDonnees.begin () ;
       lRequete = mBaseDonnees.getOQLQuery ("select ROLE from owep.modele.processus.MRole ROLE") ;
       lResultat = lRequete.execute () ;
 
@@ -207,7 +207,7 @@ public class Parser implements ContentHandler
       }
       mIdRole++ ;
 
-      mBaseDonnees.commit () ;
+      //mBaseDonnees.commit () ;
     }
     catch (PersistenceException e)
     {
@@ -218,7 +218,7 @@ public class Parser implements ContentHandler
     // Definition travail
     try
     {
-      mBaseDonnees.begin () ;
+      //mBaseDonnees.begin () ;
       lRequete = mBaseDonnees
         .getOQLQuery ("select DEFINITIONTRAVAIL from owep.modele.processus.MDefinitionTravail DEFINITIONTRAVAIL") ;
       lResultat = lRequete.execute () ;
@@ -232,7 +232,7 @@ public class Parser implements ContentHandler
       }
       mIdDefinitionTravail++ ;
 
-      mBaseDonnees.commit () ;
+      //mBaseDonnees.commit () ;
     }
     catch (PersistenceException e)
     {
@@ -253,7 +253,7 @@ public class Parser implements ContentHandler
     // Insertion dans la base de donnée
     try
     {
-      mBaseDonnees.begin () ;
+      //mBaseDonnees.begin () ;
 
       // Processus
       MProcessus lProcessus = (MProcessus) mObjet.get (OBJET_PROCESSUS) ;
@@ -262,7 +262,7 @@ public class Parser implements ContentHandler
         mBaseDonnees.create (lProcessus) ;
       }
 
-      mBaseDonnees.commit () ;
+      //mBaseDonnees.commit () ;
 
       // Composant
       for (int i = 1 ; i <= nbComposant ; i++)
@@ -270,12 +270,12 @@ public class Parser implements ContentHandler
         MComposant lComposant = (MComposant) mObjet.get (OBJET_COMPOSANT + i) ;
         if (lComposant != null)
         {
-          mBaseDonnees.begin () ;
+          //mBaseDonnees.begin () ;
 
           mObjet.put (OBJET_COMPOSANT + i, lComposant) ;
 
           mBaseDonnees.create (lComposant) ;
-          mBaseDonnees.commit () ;
+          //mBaseDonnees.commit () ;
         }
       }
 
@@ -286,12 +286,12 @@ public class Parser implements ContentHandler
           .get (OBJET_DEFINITIONTRAVAIL + i) ;
         if (lDefinitionTravail != null)
         {
-          mBaseDonnees.begin () ;
+          //mBaseDonnees.begin () ;
 
           mObjet.put (OBJET_DEFINITIONTRAVAIL + i, lDefinitionTravail) ;
 
           mBaseDonnees.create (lDefinitionTravail) ;
-          mBaseDonnees.commit () ;
+          //mBaseDonnees.commit () ;
         }
       }
 
@@ -301,12 +301,12 @@ public class Parser implements ContentHandler
         MRole lRole = (MRole) mObjet.get (OBJET_ROLE + i) ;
         if (lRole != null)
         {
-          mBaseDonnees.begin () ;
+          //mBaseDonnees.begin () ;
 
           mObjet.put (OBJET_ROLE + i, lRole) ;
 
           mBaseDonnees.create (lRole) ;
-          mBaseDonnees.commit () ;
+          //mBaseDonnees.commit () ;
         }
       }
 
@@ -316,12 +316,12 @@ public class Parser implements ContentHandler
         MActivite lActivite = (MActivite) mObjet.get (OBJET_ACTIVITE + i) ;
         if (lActivite != null)
         {
-          mBaseDonnees.begin () ;
+          //mBaseDonnees.begin () ;
 
           mObjet.put (OBJET_ACTIVITE + i, lActivite) ;
 
           mBaseDonnees.create (lActivite) ;
-          mBaseDonnees.commit () ;
+          //mBaseDonnees.commit () ;
         }
       }
 
@@ -331,12 +331,12 @@ public class Parser implements ContentHandler
         MProduit lProduit = (MProduit) mObjet.get (OBJET_PRODUIT + i) ;
         if (lProduit != null)
         {
-          mBaseDonnees.begin () ;
+          //mBaseDonnees.begin () ;
 
           mObjet.put (OBJET_PRODUIT + i, lProduit) ;
 
           mBaseDonnees.create (lProduit) ;
-          mBaseDonnees.commit () ;
+          //mBaseDonnees.commit () ;
         }
       }
 
@@ -351,7 +351,7 @@ public class Parser implements ContentHandler
           {
             if (listProduit.contains (mIdObjet.get (OBJET_PRODUIT + j)))
             {
-              mBaseDonnees.begin () ;
+              //mBaseDonnees.begin () ;
               MProduit lProduit = (MProduit) mObjet.get (OBJET_PRODUIT + j) ;
 
               lRequete = mBaseDonnees
@@ -368,7 +368,7 @@ public class Parser implements ContentHandler
               lActivite = (MActivite) lResultat.next () ;
 
               lProduit.addActiviteSortie (lActivite) ;
-              mBaseDonnees.commit () ;
+              //mBaseDonnees.commit () ;
             }
           }
         }
@@ -385,7 +385,7 @@ public class Parser implements ContentHandler
           {
             if (listProduit.contains (mIdObjet.get (OBJET_PRODUIT + j)))
             {
-              mBaseDonnees.begin () ;
+              //mBaseDonnees.begin () ;
               MProduit lProduit = (MProduit) mObjet.get (OBJET_PRODUIT + j) ;
 
               lRequete = mBaseDonnees
@@ -402,7 +402,7 @@ public class Parser implements ContentHandler
               lActivite = (MActivite) lResultat.next () ;
 
               lProduit.addActiviteEntree (lActivite) ;
-              mBaseDonnees.commit () ;
+              //mBaseDonnees.commit () ;
             }
           }
         }
@@ -419,7 +419,7 @@ public class Parser implements ContentHandler
           {
             if (listProduit.contains (mIdObjet.get (OBJET_ACTIVITE + j)))
             {
-              mBaseDonnees.begin () ;
+              //mBaseDonnees.begin () ;
               MActivite lActivite = (MActivite) mObjet.get (OBJET_ACTIVITE + j) ;
 
               lRequete = mBaseDonnees
@@ -436,7 +436,7 @@ public class Parser implements ContentHandler
               lRole = (MRole) lResultat.next () ;
 
               lActivite.addRole (lRole) ;
-              mBaseDonnees.commit () ;
+              //mBaseDonnees.commit () ;
             }
           }
         }
@@ -452,7 +452,8 @@ public class Parser implements ContentHandler
     {
       try
       {
-        mBaseDonnees.close () ;
+      	mBaseDonnees.commit () ;
+      	mBaseDonnees.close () ;
       }
       catch (PersistenceException e1)
       {

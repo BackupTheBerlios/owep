@@ -593,4 +593,14 @@ public class MProjet extends MModeleBase
   {
     return (MIndicateur) mIndicateurs.get (pIndice) ;
   }
+  
+  
+  /**
+   * Ajoute l'indicateur spécifié au projet.
+   * @param pIndicateur Indicateur à ajouter au projet.
+   */
+  public void addIndicateur (MIndicateur pIndicateur)
+  {
+    mIndicateurs.add (pIndicateur) ;
+  }
 }

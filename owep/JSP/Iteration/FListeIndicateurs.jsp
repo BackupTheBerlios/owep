@@ -9,16 +9,34 @@
 <HEAD>
 <SCRIPT LANGUAGE="JavaScript">  
   <!--
-// fonction de vérification du bon format des valeurs
-    function test_valeur(valeur) {
+    /**
+    * Variables globales du module javascript.
+    */
+    var gChampsInvalides = new String ('') ;
+    
+    // fonction de vérification du bon format des valeurs
+    function test_valeur(valeur, pLibelle, pIndicateur) {
       expr_reg = /^[0-9]+$/ ;
 
       if ( expr_reg.test(valeur.value) == 0 ) 
       {
+        gChampsInvalides += 'Le champ \'' + pLibelle + '\' de l\'indicateur \'' + pIndicateur + '\' est incorrect.\n' ;
         // ce n'est pas un nombre entier
         alert ("Vous devez saisir un nombre entier") ;
       }
     } 
+    
+    function valider() { 
+      if (gChampsInvalides != '')
+      {
+        alert (gChampsInvalides) ;
+        gChampsInvalides = '' ;
+      }
+      else
+      {
+        document.formValidation.submit () ;
+      }  
+    }
   // --> 
   </SCRIPT>
   
@@ -68,7 +86,7 @@
 		{
 		  %>
 		  <tr>      
-	      <td class="caseNiveau3"><%=lProjet.getIndicateur(i).getNom()%></td>
+	      <td class="caseNiveau2"><%=lProjet.getIndicateur(i).getNom()%></td>
 	      <td class="caseNiveau3"><%=lProjet.getIndicateur(i).getDescription()%></td>
 		    <%MMesureIndicateur lMesureIndicateur = (MMesureIndicateur)lProjet.getListe(new Integer(i)); %>
 		    <%if (lProjet.getIndicateur(i).getUnite()==null)
@@ -81,13 +99,13 @@
           {
           %>
           <input type=hidden name="<%=CConstante.PAR_TYPEINDICATEUR+i%>" value="valeur">
-          <td class="caseNiveau3"><input type=text size=<%=CConstante.LNG_VALEUR%> name="<%=CConstante.PAR_VALEURMESURE+i%>"   value="<%=(int)lMesureIndicateur.getValeur()%>" onBlur="test_valeur(this)"></td>
+          <td class="caseNiveau3"><input class="niveau2" type=text size=<%=CConstante.LNG_VALEUR%> name="<%=CConstante.PAR_VALEURMESURE+i%>"   value="<%=(int)lMesureIndicateur.getValeur()%>" onBlur="test_valeur(this, 'Valeur', '<%=lProjet.getIndicateur(i).getNom()%>')"></td>
 		      <td class="caseNiveau3"><%=lProjet.getIndicateur(i).getUnite()%></td>
 		    <%}%>
 		    <%if (lMesureIndicateur.getCommentaire()==null){
 		      lMesureIndicateur.setCommentaire("") ;
 		    }%>
-		    <td class="caseNiveau3"><TEXTAREA COLS="<%=CConstante.LNG_COLSCOMMENTAIRE%>" WRAP="VIRTUAL" name="<%=CConstante.PAR_COMMENTAIREMESURE+i%>"><%=lMesureIndicateur.getCommentaire()%></TEXTAREA>
+		    <td class="caseNiveau3"><TEXTAREA class="niveau2" COLS="<%=CConstante.LNG_COLSCOMMENTAIRE%>" WRAP="VIRTUAL" name="<%=CConstante.PAR_COMMENTAIREMESURE+i%>"><%=lMesureIndicateur.getCommentaire()%></TEXTAREA>
         </td>
 		  </tr>
 		  <%
@@ -98,22 +116,19 @@
 	<BR>
 	
 	<center>
-	  <table border="0">
-	    <tr>
-	      <td>
-	        <font class="texteSubmit">
-	        <input type="submit" value="Valider" OnClick="valider()">
-	        </font>
-	        </form>
-	      </td>
-	      <td>
-	        <form action="/Tache/ListeTacheVisu" method="post">
-	        <input type="submit" value="Annuler">
-	        </form>
-	      </td>
-	    </tr>
-	  </table>
-	</center>
+    <table border="0">
+      <tr>
+        <td>
+          <input class="bouton" type="button" value="Valider" OnClick="valider()" onmouseover="tooltipOn(this, event, 'Cliquez pour valider les données du formulaire.')" onmouseout="tooltipOff(this, event)">
+        </td>
+        <td>
+          <input type="button" value="Annuler" class="bouton" onclick="window.location.href = '/owep/Tache/ListeTacheVisu' ;" onmouseover="tooltipOn(this, event, 'Cliquez pour annuler le remplissage des indicateurs et retourner à la liste des tâches')" onmouseout="tooltipOff(this, event)"/>
+        </td>
+      </tr>
+    </table>
+</center>
+
+</form>
 	
 <%
   }

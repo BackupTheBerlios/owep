@@ -51,8 +51,6 @@ public class CValidationIndicateurs extends CControleurBase
       lRequete.bind (lIdProjet) ;
       lResultat = lRequete.execute () ;
       mProjet = (MProjet) lResultat.next () ;
-
-      getBaseDonnees ().commit () ;
     }
     catch (Exception eException)
     {
@@ -92,8 +90,6 @@ public class CValidationIndicateurs extends CControleurBase
             mIteration = mProjet.getIteration(j);
         }
         int lIdIteration = mIteration.getId() ;
-        
-        getBaseDonnees ().begin () ;
           
         // Récupère la mesure dans la base de données
         lRequete = getBaseDonnees ()
@@ -104,8 +100,6 @@ public class CValidationIndicateurs extends CControleurBase
         lResultat = lRequete.execute () ;
   
         lMesureIndicateur = (MMesureIndicateur) lResultat.next () ;
-  
-        getBaseDonnees ().commit () ;
         
         // récupération des données du formulaire
         double lValeur ;
@@ -124,11 +118,6 @@ public class CValidationIndicateurs extends CControleurBase
         // récupération du champ commentaire
         String lCommentaire = (String)(getRequete().getParameter(CConstante.PAR_COMMENTAIREMESURE+i));
         lMesureIndicateur.setCommentaire(lCommentaire) ;
-        
-        // mise a jour de l'indicateur dans la base de données
-        getBaseDonnees ().begin () ;
-        getBaseDonnees ().update (lMesureIndicateur) ;
-        getBaseDonnees ().commit () ; 
       }
     }
     catch (PersistenceException e)
@@ -141,6 +130,7 @@ public class CValidationIndicateurs extends CControleurBase
     {
       try
       {
+        getBaseDonnees ().commit() ;
         getBaseDonnees ().close () ;
       }
       catch (PersistenceException eException)
@@ -162,6 +152,9 @@ public class CValidationIndicateurs extends CControleurBase
   public String traiter () throws ServletException
   {
     // Transmet les données à la JSP d'affichage.
+    String lMessage = "Les indicateurs ont bien été enregistrés." ;
+    getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
+
     return "/Tache/ListeTacheVisu" ;
   }
 }

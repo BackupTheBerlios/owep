@@ -4,9 +4,9 @@
 <mapping>
 
   <!-- Mapping modèle processus -->
-  <class name="owep.modele.processus.MProcessus" identity="mId">
+  <class name="owep.modele.processus.MProcessus" identity="mId" key-generator="MAX">
     <map-to table="PRC_PROCESSUS"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="PRC_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -33,9 +33,9 @@
   </class>
   
   
-  <class name="owep.modele.processus.MComposant" identity="mId">
+  <class name="owep.modele.processus.MComposant" identity="mId" key-generator="MAX">
     <map-to table="COM_COMPOSANT"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="COM_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -68,9 +68,9 @@
   </class>
   
   
-  <class name="owep.modele.processus.MDefinitionTravail" identity="mId">
+  <class name="owep.modele.processus.MDefinitionTravail" identity="mId" key-generator="MAX">
     <map-to table="DFT_DEFINITIONTRAVAIL"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="DFT_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -91,9 +91,9 @@
   </class>
   
   
-  <class name="owep.modele.processus.MActivite" identity="mId">
+  <class name="owep.modele.processus.MActivite" identity="mId" key-generator="MAX">
     <map-to table="ACT_ACTIVITE"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="ACT_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -123,9 +123,9 @@
   </class>
 
   
-  <class name="owep.modele.processus.MRole" identity="mId">
+  <class name="owep.modele.processus.MRole" identity="mId" key-generator="MAX">
     <map-to table="ROL_ROLE"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="ROL_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -151,9 +151,9 @@
     </field>
   </class>
   
-  <class name="owep.modele.processus.MProduit" identity="mId">
+  <class name="owep.modele.processus.MProduit" identity="mId" key-generator="MAX">
     <map-to table="PRD_PRODUIT"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="PRD_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -188,9 +188,9 @@
   
   
   <!-- Mapping modèle exécution -->
-  <class name="owep.modele.execution.MProjet" identity="mId">
+  <class name="owep.modele.execution.MProjet" identity="mId" key-generator="MAX">
     <map-to table="PRJ_PROJET"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="PRJ_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -235,9 +235,9 @@
   </class>
   
   
-  <class name="owep.modele.execution.MIteration" identity="mId">
+  <class name="owep.modele.execution.MIteration" identity="mId" key-generator="MAX">
     <map-to table="ITE_ITERATION"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="ITE_ID" type="integer"/>
     </field>
     <field name="mNumero" type="integer" get-method="getNumero" set-method="setNumero" required="true">
@@ -279,9 +279,9 @@
   </class>
 
 
-  <class name="owep.modele.execution.MCollaborateur" identity="mId">
+  <class name="owep.modele.execution.MCollaborateur" identity="mId" key-generator="MAX">
     <map-to table="COL_COLLABORATEUR"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="COL_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -341,9 +341,9 @@
   </class>
   
   
-  <class name="owep.modele.execution.MTache" identity="mId">
+  <class name="owep.modele.execution.MTache" identity="mId" key-generator="MAX">
     <map-to table="TAC_TACHE"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="TAC_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -406,9 +406,9 @@
   </class>
   
   
-  <class name="owep.modele.execution.MArtefact" identity="mId">
+  <class name="owep.modele.execution.MArtefact" identity="mId" key-generator="MAX">
     <map-to table="ART_ARTEFACT" xml="artefact" />
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="ART_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -438,7 +438,7 @@
   </class>
   
 
-  <class name="owep.modele.execution.MCondition" identity="mId">
+  <class name="owep.modele.execution.MCondition" identity="mId" key-generator="MAX">
     <map-to table="CND_CONDITION"/>
     <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="CND_ID" type="integer"/>
@@ -454,9 +454,9 @@
     </field>
   </class>
   
-  <class name="owep.modele.execution.MActiviteImprevue" identity="mId">
+  <class name="owep.modele.execution.MActiviteImprevue" identity="mId" key-generator="MAX">
     <map-to table="AIM_ACTIVITEIMPREVUE"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="AIM_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -473,9 +473,9 @@
     </field>
   </class>
   
-  <class name="owep.modele.execution.MTacheImprevue" identity="mId">
+  <class name="owep.modele.execution.MTacheImprevue" identity="mId" key-generator="MAX">
     <map-to table="TIM_TACHEIMPREVUE"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="TIM_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -528,9 +528,9 @@
     </field>
   </class>
   
-  <class name="owep.modele.execution.MArtefactImprevue" identity="mId">
+  <class name="owep.modele.execution.MArtefactImprevue" identity="mId" key-generator="MAX">
     <map-to table="ARI_ARTEFACTIMPREVUE" xml="artefactimprevue" />
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="ARI_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -557,9 +557,9 @@
   </class>
   
   <!-- Mapping gestion de projet -->
-  <class name="owep.modele.execution.MRisque" identity="mId">
+  <class name="owep.modele.execution.MRisque" identity="mId" key-generator="MAX">
     <map-to table="RIS_RISQUE"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="RIS_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -585,9 +585,9 @@
     </field>
   </class>
   
-  <class name="owep.modele.execution.MIndicateur" identity="mId">
+  <class name="owep.modele.execution.MIndicateur" identity="mId" key-generator="MAX">
     <map-to table="IND_INDICATEUR"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="IND_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -607,9 +607,9 @@
     </field>
   </class>
   
-  <class name="owep.modele.execution.MMesureIndicateur" identity="mId">
+  <class name="owep.modele.execution.MMesureIndicateur" identity="mId" key-generator="MAX">
     <map-to table="MSI_MESUREINDICATEUR"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="MSI_ID" type="integer"/>
     </field>
     <field name="mValeur" type="double" get-method="getValeur" set-method="setValeur">
@@ -630,9 +630,9 @@
   </class>
   
   
-  <class name="owep.modele.execution.MProbleme" identity="mId">
+  <class name="owep.modele.execution.MProbleme" identity="mId" key-generator="MAX">
     <map-to table="PRB_PROBLEME"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="PRB_ID" type="integer"/>
     </field>
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
@@ -670,9 +670,10 @@
   
   
   <!-- Mapping table de configuration -->
-  <class name="owep.modele.configuration.MConfigurationSite" identity="mId">
+  
+  <class name="owep.modele.configuration.MConfigurationSite" identity="mId" key-generator="MAX">
     <map-to table="CON_CONFIGURATION"/>
-    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
+    <field name="mId" type="integer" get-method="getId" set-method="setId" required="true">
       <sql name="CON_ID" type="integer"/>
     </field>
     <field name="mLangue" type="string" get-method="getLangue" set-method="setLangue" required="true">

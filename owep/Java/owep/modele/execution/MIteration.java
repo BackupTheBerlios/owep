@@ -437,6 +437,16 @@ public class MIteration extends MModeleBase
   {
     mMesures = pMesures ;
   }
+  
+  /**
+   * Ajoute une mesure a l iteration.
+   * @param pMesure Mesure à ajouter a l iteration.
+   */
+  public void addMesure (MMesureIndicateur pMesure)
+  {
+    mMesures.add (pMesure) ;
+  }
+  
   /**
    * Récupère la liste des tâches imprévues réalisées durant l'itération.
    * @return Liste des tâches imprévues réalisées durant l'itération.

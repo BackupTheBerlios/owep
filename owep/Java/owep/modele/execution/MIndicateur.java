@@ -149,4 +149,13 @@ public class MIndicateur extends MModeleBase
   {
     mMesures = pMesures ;
   }
+  
+  /**
+   * Ajoute la mesure spécifiée à l'indicateur.
+   * @param pMesure Mesure à ajouter à l'indicateur.
+   */
+  public void addMesure (MMesureIndicateur pMesure)
+  {
+    mMesures.add (pMesure) ;
+  }
 }

@@ -47,8 +47,6 @@ public class CTacheVisu extends CControleurBase{
         lRequete.bind (idTache) ;
         lResultat      = lRequete.execute () ;
         mTache = (MTache) lResultat.next () ;
-        
-        getBaseDonnees ().commit () ;
       }
       catch (Exception eException)
       {
@@ -60,7 +58,8 @@ public class CTacheVisu extends CControleurBase{
       {
         try
         {
-          getBaseDonnees ().close () ;
+        	getBaseDonnees ().commit () ;
+        	getBaseDonnees ().close () ;
         }
         catch (PersistenceException eException)
         {

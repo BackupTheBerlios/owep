@@ -61,8 +61,6 @@ public class CAvancementProjet extends CControleurBase{
         lResultat      = lRequete.execute () ;
         mProjet = (MProjet) lResultat.next () ;
         
-        getBaseDonnees ().commit () ;
-        
         // recuperation du numero de l iteration choisie dans le menu deroulant
         mIteration = mSession.getIteration() ;
         mIterationNum = mIteration.getNumero();
@@ -89,8 +87,6 @@ public class CAvancementProjet extends CControleurBase{
           {
             // on recupere l id de la tache a recharger
             int idTache = mIteration.getTache(i).getId() ;
-            
-            getBaseDonnees ().begin () ;
               
             // Récupère la tache a recharger dans la BD
             lRequete = getBaseDonnees ().getOQLQuery ("select TACHE from owep.modele.execution.MTache TACHE where mId = $1") ;
@@ -98,7 +94,6 @@ public class CAvancementProjet extends CControleurBase{
             lResultat      = lRequete.execute () ;
             lTache = (MTache) lResultat.next () ;
             
-            getBaseDonnees ().commit () ;
             // ajout de la tache rechargée a la liste des taches rechargées
             lListeTache.add(lTache) ;
           }
@@ -116,6 +111,7 @@ public class CAvancementProjet extends CControleurBase{
       {
         try
         {
+          getBaseDonnees ().commit () ;
           getBaseDonnees ().close () ;
         }
         catch (PersistenceException eException)

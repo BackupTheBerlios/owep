@@ -58,8 +58,6 @@ public class CAvancementCollaborateur extends CControleurBase{
         lResultat      = lRequete.execute () ;
         mProjet = (MProjet) lResultat.next () ;
         
-        getBaseDonnees ().commit () ;
-        
         // recuperation du numero de l iteration choisie dans le menu deroulant
         mIteration = mSession.getIteration() ;
         mIterationNum = mIteration.getNumero();
@@ -90,16 +88,11 @@ public class CAvancementCollaborateur extends CControleurBase{
             // sinon on recherche la tache en cours dans la BD
             else
             {
-  
-              getBaseDonnees ().begin () ;
-              
               // Récupère la tache en cours du collaborateur dans la BD
               lRequete = getBaseDonnees ().getOQLQuery ("select TACHE from owep.modele.execution.MTache TACHE where mId = $1") ;
               lRequete.bind (idTacheEnCours) ;
               lResultat      = lRequete.execute () ;
               lTacheEnCours = (MTache) lResultat.next () ;
-              
-              getBaseDonnees ().commit () ;
               
               boolean tacheOK = false ;
               // on regarde si la tache en cours fait partie de l iteration selectionnée
@@ -134,6 +127,7 @@ public class CAvancementCollaborateur extends CControleurBase{
       {
         try
         {
+          getBaseDonnees ().commit () ;
           getBaseDonnees ().close () ;
         }
         catch (PersistenceException eException)

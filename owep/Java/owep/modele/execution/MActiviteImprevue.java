@@ -231,4 +231,33 @@ public class MActiviteImprevue
   {
     mTachesImprevues.remove (pTacheImprevue) ;
   }
+  
+  /**
+   * Supprime la tâche imprévue spécifiée qui instancie l'activité.
+   * @param pTacheImprevue Tâche imprévue qui instancie l'activité.
+   */
+  public void supprimerTacheImprevue (int pPosition)
+  {
+    mTachesImprevues.remove (pPosition) ;
+  }
+  
+
+  /**
+   * Mise à jour de l'activité imprévue courant dans la base de données.
+   * @param pConnection Connexion avec la base de données.
+   * @throws SQLException si une erreur survient durant la mise à jour de la bd.
+   */
+  public void delete (Connection pConnection) throws SQLException
+  {
+    
+    int lId = getId () ;
+    
+    // Préparation de la requête.
+    String lRequete = "DELETE FROM AIM_ACTIVITEIMPREVUE " ;
+    lRequete += "WHERE AIM_ID = " + lId ;
+    
+    
+    Statement lRequest = pConnection.createStatement () ;
+    lRequest.executeUpdate (lRequete) ;
+  }
 }

@@ -67,24 +67,24 @@ public class CCloturerIteration extends CControleurBase
           throw new ServletException (CConstante.EXC_TRAITEMENT) ;
         }
         
-        getBaseDonnees().commit();
-        getBaseDonnees().begin();
+        //getBaseDonnees().commit();
+        //getBaseDonnees().begin();
         
-          // Charge l'itération en cours.
-          lRequete = getBaseDonnees ().getOQLQuery ("select ITERATION from owep.modele.execution.MIteration ITERATION where mEtat = $1 AND mProjet.mId = $2") ;
-          lRequete.bind (MIteration.ETAT_EN_COURS) ;
-          lRequete.bind (mProjet.getId ()) ;
-          lResultat = lRequete.execute () ;
-          // Si on récupère correctement l'itération dans la base,
-          if (lResultat.hasMore ())
-          {
-            mIteration = (MIteration) lResultat.next () ;
-          }
-          // Si l'itération n'existe pas ou n'appartient pas au projet ouvert,
-          else
-          {
-            throw new ServletException (CConstante.EXC_TRAITEMENT) ;
-          }
+        // Charge l'itération en cours.
+        lRequete = getBaseDonnees ().getOQLQuery ("select ITERATION from owep.modele.execution.MIteration ITERATION where mEtat = $1 AND mProjet.mId = $2") ;
+        lRequete.bind (MIteration.ETAT_EN_COURS) ;
+        lRequete.bind (mProjet.getId ()) ;
+        lResultat = lRequete.execute () ;
+        // Si on récupère correctement l'itération dans la base,
+        if (lResultat.hasMore ())
+        {
+          mIteration = (MIteration) lResultat.next () ;
+        }
+        // Si l'itération n'existe pas ou n'appartient pas au projet ouvert,
+        else
+        {
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
           
       }
       catch (Exception eException)
@@ -127,8 +127,8 @@ public class CCloturerIteration extends CControleurBase
         // Si l'utilisateur affiche la page pour la première fois,
         if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_VIDE))
         {
-          getBaseDonnees ().commit() ;
-          getBaseDonnees ().close () ;
+          //getBaseDonnees ().commit() ;
+          //getBaseDonnees ().close () ;
           
           // Si l'utilisateur accède à la page de cloturation, transmet les données à la page.
           getRequete ().setAttribute (CConstante.PAR_ITERATION, mIteration) ;
@@ -153,9 +153,9 @@ public class CCloturerIteration extends CControleurBase
           // Si l'utilisateur valide les données, alors on les enregistre dans la base.
           if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
           {
-            getBaseDonnees().commit();
-            getBaseDonnees().begin();
-            getBaseDonnees().update (mIteration) ;
+            //getBaseDonnees().commit();
+            //getBaseDonnees().begin();
+            //getBaseDonnees().update (mIteration) ;
           }
           
           
@@ -186,9 +186,9 @@ public class CCloturerIteration extends CControleurBase
               if (lTache.getNbConditions()==0)
                 lTache.setEtat(MTache.ETAT_NON_DEMARRE);
             }
-            getBaseDonnees().commit();
-            getBaseDonnees().begin();
-            getBaseDonnees ().update (mNouvelleIteration) ;
+            //getBaseDonnees().commit();
+            //getBaseDonnees().begin();
+            //getBaseDonnees ().update (mNouvelleIteration) ;
           }
           // Si l'itération n'existe pas ou n'appartient pas au projet ouvert,
           else
@@ -197,8 +197,8 @@ public class CCloturerIteration extends CControleurBase
           }
 
           // Valide les données.
-          getBaseDonnees ().commit () ;
-          getBaseDonnees ().close () ;
+          //getBaseDonnees ().commit () ;
+          //getBaseDonnees ().close () ;
           
           getSession().setIteration(mNouvelleIteration);
 
@@ -210,6 +210,19 @@ public class CCloturerIteration extends CControleurBase
       {
         eException.printStackTrace () ;
         throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+      }
+      finally
+      {
+        try
+        {
+          getBaseDonnees ().commit () ;
+          getBaseDonnees ().close () ;
+        }
+        catch (Exception eException)
+        {
+          eException.printStackTrace () ;
+          throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+        }
       }
     }
   }

@@ -789,4 +789,14 @@ public class MCollaborateur extends MModeleBase
   {
     mMesures = pMesures ;
   }
+
+  
+  /**
+   * Ajoute une mesure pour le collaborateur.
+   * @param pMesure Mesure à ajouter au collaborateur.
+   */
+  public void addMesure (MMesureIndicateur pMesure)
+  {
+    mMesures.add (pMesure) ;
+  }
 }

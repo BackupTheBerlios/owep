@@ -468,7 +468,39 @@ td.regionLogo
 }
 
 
-
+/**************************************************************************************************
+ * Bouttons
+ **************************************************************************************************/
+img.bouttonPlay
+{
+  background-image : url(/owep/Image/Red/play.jpg) ;
+  height           : 25px ;
+  width            : 25px ;
+}
+img.bouttonPlayActif
+{
+  background-image : url(/owep/Image/Red/play_actif.jpg) ;
+  height           : 25px ;
+  width            : 25px ;
+}
+img.bouttonPause
+{
+  background-image : url(/owep/Image/Red/pause.jpg) ;
+  height           : 25px ;
+  width            : 25px ;
+}
+img.bouttonPauseActif
+{
+  background-image : url(/owep/Image/Red/pause_actif.jpg) ;
+  height           : 25px ;
+  width            : 25px ;
+}
+img.bouttonStop
+{
+  background-image : url(/owep/Image/Red/stop.jpg) ;
+  height           : 25px ;
+  width            : 25px ;
+}
 
 
 

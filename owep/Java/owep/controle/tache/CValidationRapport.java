@@ -59,12 +59,8 @@ public class CValidationRapport extends CControleurBase{
       lResultat      = lRequete.execute () ;
       mCollaborateur = (MCollaborateur) lResultat.next () ;
       
-      getBaseDonnees ().commit () ;
-      
       // récupération de l'id de la tache
       int idTache = Integer.parseInt(getRequete().getParameter(CConstante.PAR_TACHE));
-      
-      getBaseDonnees ().begin () ;
       
       // Récupère la tâche
       String req = "select TACHE from owep.modele.execution.MTache TACHE where mId = $1";
@@ -73,7 +69,6 @@ public class CValidationRapport extends CControleurBase{
       lResultat      = lRequete.execute () ;
       mTache = (MTache) lResultat.next () ;
 
-      getBaseDonnees ().commit () ;
     }
     catch (Exception eException)
     {
@@ -123,23 +118,18 @@ public class CValidationRapport extends CControleurBase{
    */
   public String traiter () throws ServletException
   {  
-    // mise à jour de la tâche avec les valeurs validées précédemment
-    mTache.setTempsPasse(tps) ;
-    mTache.setResteAPasser(rps) ; 
-    mTache.setEtat(ET) ; 
-    mTache.setDateFinReelle(finReest) ;
-    mTache.setDateDebutReelle(debutReel);
-    mTache.setDateDebutChrono(0) ;
-    // Le collaborateur n'a désormais plus de tâche en cours
-    mCollaborateur.setTacheEnCours(-1) ;
-
+    String lMessage = "" ;
     try
     {
-      // Met à jour l'état de la tâche dans la base de données
-      getBaseDonnees ().begin () ;
-      getBaseDonnees ().update (mTache) ;
-      getBaseDonnees ().update (mCollaborateur) ;
-      getBaseDonnees ().commit () ; 
+      // mise à jour de la tâche avec les valeurs validées précédemment
+      mTache.setTempsPasse(tps) ;
+      mTache.setResteAPasser(rps) ; 
+      mTache.setEtat(ET) ; 
+      mTache.setDateFinReelle(finReest) ;
+      mTache.setDateDebutReelle(debutReel);
+      mTache.setDateDebutChrono(0) ;
+      // Le collaborateur n'a désormais plus de tâche en cours
+      mCollaborateur.setTacheEnCours(-1) ;
     }
     catch (Exception eException)
     {
@@ -151,6 +141,7 @@ public class CValidationRapport extends CControleurBase{
     {
       try
       {
+        getBaseDonnees ().commit () ;
         getBaseDonnees ().close () ;
       }
       catch (PersistenceException eException)
@@ -161,6 +152,11 @@ public class CValidationRapport extends CControleurBase{
     }
  
     // Transmet les données à la JSP d'affichage.
+    if (ET == 2)
+      lMessage = "La tâche \""+mTache.getNom()+"\" a bien été suspendue.";
+    else if (ET == 3)
+      lMessage = "La tâche \""+mTache.getNom()+"\" est terminée.";
+    getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
     return "ListeTacheVisu" ;
   }
 }

@@ -52,8 +52,6 @@ public class CListeIndicateurs extends CControleurBase
       lRequete.bind (lIdProjet) ;
       lResultat = lRequete.execute () ;
       mProjet = (MProjet) lResultat.next () ;
-
-      getBaseDonnees ().commit () ;
     }
     catch (Exception eException)
     {
@@ -82,9 +80,24 @@ public class CListeIndicateurs extends CControleurBase
         // récupération des identifiants de l indicateur, du collaborateur et de l itération
         MIndicateur lIndicateur = (MIndicateur)mProjet.getIndicateur(i) ;
         int lIdIndicateur = lIndicateur.getId() ;
+        // Récupère l'indicateur dans la base de données
+        lRequete = getBaseDonnees ()
+          .getOQLQuery (
+                        "select INDICATEUR from owep.modele.execution.MIndicateur INDICATEUR where mId = $1") ;
+        lRequete.bind (lIdIndicateur) ;
+        lResultat = lRequete.execute () ;
+        lIndicateur = (MIndicateur) lResultat.next () ; 
+        
         
         MCollaborateur lCollaborateur = mSession.getCollaborateur () ;
         int lIdCollab = lCollaborateur.getId () ;
+        // Récupère le collaborateur dans la base de données
+        lRequete = getBaseDonnees ()
+          .getOQLQuery (
+                        "select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mId = $1") ;
+        lRequete.bind (lIdCollab) ;
+        lResultat = lRequete.execute () ;
+        lCollaborateur = (MCollaborateur) lResultat.next () ;
         
         // recherche de l iteration en cours
         for (int j = 0; j < mProjet.getNbIterations() ; j++)
@@ -93,9 +106,14 @@ public class CListeIndicateurs extends CControleurBase
             mIteration = mProjet.getIteration(j);
         }
         int lIdIteration = mIteration.getId() ;
+        // Récupère l'itération dans la base de données
+        lRequete = getBaseDonnees ()
+          .getOQLQuery (
+                        "select ITERATION from owep.modele.execution.MIteration ITERATION where mId = $1") ;
+        lRequete.bind (lIdIteration) ;
+        lResultat = lRequete.execute () ;
+        mIteration = (MIteration) lResultat.next () ;
         
-        // Récupère la mesure dans la base de données
-        getBaseDonnees ().begin () ;
         // Récupère la mesure dans la base de données
         lRequete = getBaseDonnees ()
           .getOQLQuery ("select MESUREINDICATEUR from owep.modele.execution.MMesureIndicateur MESUREINDICATEUR where mIndicateur = $1 and mCollaborateur = $2 and mIteration = $3") ;
@@ -115,12 +133,15 @@ public class CListeIndicateurs extends CControleurBase
           lMesureIndicateur.setCollaborateur(lCollaborateur) ;
           lMesureIndicateur.setIndicateur(lIndicateur) ;
           lMesureIndicateur.setIteration(mIteration) ;
+          lIndicateur.addMesure(lMesureIndicateur) ;
+          mIteration.addMesure(lMesureIndicateur) ;
+          lCollaborateur.addMesure(lMesureIndicateur) ;
+          
           getBaseDonnees ().create(lMesureIndicateur) ;
           
           // ajout de l indicateur a la liste des indicateurs du projet
           mProjet.setListe(new Integer(i),lMesureIndicateur) ;
         }
-        getBaseDonnees ().commit () ;
         
         // ajout de l indicateur a la liste des indicateurs du projet
         mProjet.setListe(new Integer(i),lMesureIndicateur) ;
@@ -136,6 +157,7 @@ public class CListeIndicateurs extends CControleurBase
     {
       try
       {
+        getBaseDonnees ().commit () ;
         getBaseDonnees ().close () ;
       }
       catch (PersistenceException eException)
@@ -156,10 +178,16 @@ public class CListeIndicateurs extends CControleurBase
    */
   public String traiter () throws ServletException
   {
-    // Transmet les données à la JSP d'affichage.
+  	if (mIteration == null) 
+  	{
+      String lMessage = "Vous ne pouvez pas renseigner les indicateurs puisqu'aucune itération n'a été planifiée pour le moment." ;
+      getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
+      return "/Tache/ListeTacheVisu" ;
+  	}
+  	// Transmet les données à la JSP d'affichage.
     getRequete ().setAttribute (CConstante.PAR_PROJET, mProjet) ;
     getRequete ().setAttribute (CConstante.PAR_ITERATION, mIteration) ;
-    
     return "/JSP/Iteration/TListeIndicateurs.jsp" ;
   }
 }
+

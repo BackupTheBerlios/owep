@@ -1,9 +1,16 @@
 <%@ page language="java" %>
+<%@page import="owep.modele.execution.MTache"%>
+<%@page import="owep.controle.CConstante"%>
 <%@ taglib uri="/WEB-INF/tld/template.tld" prefix="template" %>
 <!DOCTYPE HTML PUBLIC "-//w3c//dtd html 4.0 transitional//en">
 
+<%
+  MTache lTache  = (MTache) request.getAttribute (CConstante.PAR_TACHE) ;
+  String nomTache = "Rapport d'activité pour la tâche : "+lTache.getNom() ;
+%>
+
 <template:template nom="/JSP/Template/FTemplate.jsp">
-  <template:section region="RegionTitre"      contenu="Rapport d'activité pour la tâche"             typePage="false"/>
+  <template:section region="RegionTitre"      contenu="<%=nomTache%>"                     typePage="false"/>
   <template:section region="RegionPrincipal"  contenu="/JSP/Tache/FValidationRapport.jsp" typePage="true"/>
   <template:section region="RegionLogo"       contenu="/JSP/Template/FLogo.jsp"         typePage="true"/>
   <template:section region="RegionMenu"       contenu="/JSP/Template/FMenu.jsp"         typePage="true"/>

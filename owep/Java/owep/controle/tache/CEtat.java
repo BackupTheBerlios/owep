@@ -62,19 +62,14 @@ public class CEtat extends CControleurBase{
         lResultat      = lRequete.execute () ;
         mCollaborateur = (MCollaborateur) lResultat.next () ;
         
-        getBaseDonnees ().commit () ;
-        
         // récupération de l'id de la tache
         int idTache = Integer.parseInt(getRequete().getParameter(CConstante.PAR_TACHE));
-        getBaseDonnees ().begin () ;
         // Récupère la tâche
         String req = "select TACHE from owep.modele.execution.MTache TACHE where mId = $1";
         lRequete = getBaseDonnees ().getOQLQuery (req) ;
         lRequete.bind (idTache) ;
         lResultat      = lRequete.execute () ;
         mTache = (MTache) lResultat.next () ;
- 
-        getBaseDonnees ().commit () ;
       }
       catch (Exception eException)
       {
@@ -112,6 +107,7 @@ public class CEtat extends CControleurBase{
      */
     public String traiter () throws ServletException
     {  
+      String lMessage = "" ;
       try
       {
         Date dateFinChrono = new Date () ;
@@ -127,6 +123,7 @@ public class CEtat extends CControleurBase{
             // si la tache était dans l'état non démarré  
             if (mTache.getEtat() == 0) 
             {
+                lMessage = "La tâche \""+mTache.getNom()+"\" a bien été démarrée.";
                 // on met l etat de la tache à 'commencé' et on retient la date de début
                 // on met la date de fin réestimée (i.e réelle) à la date de fin prévue
                 // on retient la date courante
@@ -151,6 +148,7 @@ public class CEtat extends CControleurBase{
             // si la tache était dans l'état suspendu
             if (mTache.getEtat() == 2) 
             {
+              lMessage = "La tâche \""+mTache.getNom()+"\" a bien été redémarrée.";
               // on met l etat de la tache à 'commencé' et on retient la date de début
               mTache.setEtat(1) ; 
               mTache.setDateDebutChrono(new Date().getTime()) ;
@@ -158,32 +156,29 @@ public class CEtat extends CControleurBase{
               mCollaborateur.setTacheEnCours(mTache.getId()) ;
             } 
 
-            // Met à jour l'état de la tâche dans la base de données
-            getBaseDonnees ().begin () ;
-            getBaseDonnees ().update (mTache) ;
-            getBaseDonnees ().update (mCollaborateur) ;
-            getBaseDonnees ().commit () ; 
-
             // Transmet les données à la JSP d'affichage.
+            getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
             return "ListeTacheVisu" ;
               
           // cas ou on appuie sur le bouton suspendre 
           case 2 : 
             // on met l etat de la tache à 'suspendu'
-            mTache.setEtat(2) ; 
+            mTache.setListe("etat", new Integer(2)) ;
             // calcul du temps passé
             
             // temps passé = date de fin du chrono - date de début du chrono
             long difftps = calendrierFinChrono.getTime().getTime() - mTache.getDateDebutChrono();
             // conversion du temps en minutes
             int tps = (int)(difftps/(60*1000.0));
-            mTache.setTempsPasse(mTache.getTempsPasse() + tps) ;
+            int tempsPasse = (int)mTache.getTempsPasse() + tps ;
+            mTache.setListe("tempsPasse", new Integer(tempsPasse)) ;
             
             // calcul du reste à passer = Reste à passer - temps passé
             double rps = mTache.getResteAPasser() - tps ;
             // le reste à passer ne peut pas être négatif
             if ( rps < 0 ) rps = 0 ;
-            mTache.setResteAPasser(rps) ;
+            mTache.setListe("resteAPasser", new Double(rps)) ;
+            mTache.setListe("dateFinReelle", mTache.getDateFinReelle()) ;
             
             // Transmet les données à la JSP d'affichage.
             getRequete ().setAttribute (CConstante.PAR_TACHE, mTache) ;
@@ -192,10 +187,11 @@ public class CEtat extends CControleurBase{
           // cas ou on appuie sur le bouton terminer
           case 3 :  
             // on met l etat de la tache à 'terminé'
-            mTache.setEtat(3) ; 
+            mTache.setListe("etat", new Integer(3)) ;
+            
             // on met le reste à passer à 0 et la date de fin réestimée à la date courante
-            mTache.setResteAPasser(0);
-            mTache.setDateFinReelle(new Date()) ;
+            mTache.setListe("resteAPasser", new Double(0)) ;
+            mTache.setListe("dateFinReelle", new Date()) ;
             
             // calcul du temps passé
             
@@ -203,7 +199,8 @@ public class CEtat extends CControleurBase{
             long difftps2 = calendrierFinChrono.getTime().getTime() - mTache.getDateDebutChrono();
             // conversion du temps en minutes
             int tps2 = (int)(difftps2/(60*1000.0));
-            mTache.setTempsPasse(mTache.getTempsPasse() + tps2) ;
+            tempsPasse = (int)mTache.getTempsPasse() + tps2 ;
+            mTache.setListe("tempsPasse", new Integer(tempsPasse)) ;
             
             // Transmet les données à la JSP d'affichage.
             getRequete ().setAttribute (CConstante.PAR_TACHE, mTache) ;
@@ -224,6 +221,7 @@ public class CEtat extends CControleurBase{
       {
         try
         {
+          getBaseDonnees ().commit () ;
           getBaseDonnees ().close () ;
         }
         catch (PersistenceException eException)

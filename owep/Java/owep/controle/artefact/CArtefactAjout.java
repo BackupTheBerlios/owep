@@ -64,8 +64,6 @@ public class CArtefactAjout extends CControleurBase
         lRequete.bind (idArtefact) ;
         lResultat = lRequete.execute () ;
         mArtefact = (MArtefact) lResultat.next () ;
-      
-        getBaseDonnees ().commit () ;
       }
       catch (Exception eException)
       {
@@ -165,10 +163,6 @@ public class CArtefactAjout extends CControleurBase
             e.printStackTrace();
           }       
         }
-        // Met à jour la base de données.
-        getBaseDonnees ().begin () ;
-        getBaseDonnees ().update (mArtefact) ;
-        getBaseDonnees ().commit () ;
         
         return "..\\Tache\\TacheVisu?pTacheAVisualiser="+mArtefact.getTacheSortie().getId() ;
       }
@@ -191,6 +185,7 @@ public class CArtefactAjout extends CControleurBase
     {
       try
       {
+        getBaseDonnees ().commit () ;
         getBaseDonnees ().close () ;
       }
       catch (PersistenceException eException)

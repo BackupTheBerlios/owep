@@ -69,8 +69,6 @@ public class CDetailAvancementCollab extends CControleurBase{
         lResultat      = lRequete.execute () ;
         mCollaborateur = (MCollaborateur) lResultat.next () ;
         
-        getBaseDonnees ().commit () ;
-        
         // recuperation du numero de l iteration choisie dans le menu deroulant
         mIteration = mSession.getIteration() ;
         mIterationNum = mIteration.getNumero();
@@ -97,7 +95,6 @@ public class CDetailAvancementCollab extends CControleurBase{
           // chaque fois que l etat d une tache est modifié
           if (mIterationNum == mIterationEnCours)
           {
-            getBaseDonnees ().begin () ;
             //  identifiant de la tache à recharger
             lTacheId = mCollaborateur.getTache(i).getId();
             // Récupère la tache dans la BD
@@ -105,8 +102,6 @@ public class CDetailAvancementCollab extends CControleurBase{
             lRequete.bind (lTacheId) ;
             lResultat      = lRequete.execute () ;
             lTache = (MTache) lResultat.next () ;
-            
-            getBaseDonnees ().commit () ;
           }
           // si on veut regarder l avancement d une iteration autre que celle en cours
           // inutile de racharger a partir de la bd
@@ -136,6 +131,7 @@ public class CDetailAvancementCollab extends CControleurBase{
       {
         try
         {
+        	getBaseDonnees ().commit() ;
           getBaseDonnees ().close () ;
         }
         catch (PersistenceException eException)

@@ -59,7 +59,6 @@ public class CAvancementTachesCollabs extends CControleurBase{
         lRequete.bind (idProjet) ;
         lResultat      = lRequete.execute () ;
         mProjet = (MProjet) lResultat.next () ;
-        
         getBaseDonnees ().commit () ;
         
         // recuperation du numero de l iteration choisie dans le menu deroulant
@@ -80,6 +79,7 @@ public class CAvancementTachesCollabs extends CControleurBase{
           // creation de la liste des taches des collaborateurs
           MCollaborateur lCollaborateur ;
           MTache lTache ; 
+
           // pour chaque collaborateur
           for (int i = 0 ; i < mProjet.getNbCollaborateurs() ; i++)
           {
