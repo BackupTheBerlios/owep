@@ -1191,4 +1191,5 @@ pCodeAide += " Vous devez définir, pour celà, toute une série de <b>tâches</b> q
 pCodeAide += " Lorsque vous validez une nouvelle tâche, celle-ci s\'ajoute à la <b>liste des tâches</b> à gauche de l\'écran." ;
 pCodeAide += " Une fois les tâches ajoutées, vous pouvez précisez, pour chacune d\'entre elle, leurs <b>artefacts en entrées et sorties</b> (c\'est à dire tous <b>\"documents\" nécessaires</b> à la réalisation des tâches et ceux qu\'elles <b>produisent</b>)." ;
 pCodeAide += " Pour terminer, vous pouvez définir de quelles tâches tierces <b>dépendent</b> chacune des tâches. Il est ainsi possible d\'indiquer qu\'une tâche ne doit <b>démarrer</b> que lorsqu\'une seconde à été <b>entamée</b> ou <b>terminée</b>." ;
+pCodeAide += " <a href=\"#\" onclick=\"popup ('/owep/JSP/Aide/TAideIterationModif.jsp')\">(Tutoriel pas à pas...)</a>" ;
 </script>
