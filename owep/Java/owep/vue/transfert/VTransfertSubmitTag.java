@@ -61,12 +61,12 @@ public class VTransfertSubmitTag extends TagSupport
       {
         pageContext.getOut ().print ("<input class='bouton' type=\"button\" value=\"" + mLibelle + "\" " + 
                                      "onclick=\"" + VTransfertConstante.TRANSFERT_SOUMISSION + ".value='" + mValeur + "' ;\n" +  
-                                     mValidation + "\">") ;
+                                     mValidation + "document.formIterationModif.submit();\">") ;
       }
       else
       {
         pageContext.getOut ().print ("<input class='bouton' type=\"button\" value=\"" + mLibelle + "\" " + 
-                                     "onclick=\"document.forms[0].submit () ;\">") ;
+                                     "onclick=\"document.formIterationModif.submit () ;\">") ;
       }
       pageContext.getOut ().flush () ;
     }
@@ -104,14 +104,14 @@ public class VTransfertSubmitTag extends TagSupport
         // Ajoute la fonction de vérifiaction de champ vide si nécessaire.
         if (pArbre.getAssociation (i).isObligatoire ())
         {
-          lGestionnaireValidation += "if (! isVide (document.forms[0]." +
+          lGestionnaireValidation += "if (! isVide (document.formIterationModif." +
                                      pArbre.getAssociation (i).getChamp () + ".value, '" +
                                      pArbre.getAssociation (i).getLibelle () + "')) {\n" ;
         }
         if (! lFonctionValidation.equals (""))
         {
           // Ajoute la fonction de vérification du champ courant au gestionnaire d'évenement.
-          lGestionnaireValidation += lFonctionValidation + " (document.forms[0]." +
+          lGestionnaireValidation += lFonctionValidation + " (document.formIterationModif." +
                                     pArbre.getAssociation (i).getChamp () + ".value, '" +
                                     pArbre.getAssociation (i).getLibelle () + "') ;\n" ;
         }

@@ -5,9 +5,9 @@
 
 
 <center>
-	<form action="../Navigation/NavigationIteration" id="navigation">
+	<form action="../Navigation/NavigationIteration" id="navigation" name="formulaireIteration">
     Choisissez l'itération : 	    
-       <select name="<%=CConstante.PAR_ITERATION%>" size=1 onChange="forms[0].submit();">   
+       <select name="<%=CConstante.PAR_ITERATION%>" size=1 onChange="formulaireIteration.submit();">   
       <%
       	MIteration iteration;
       	Session getSession = (Session)(request.getSession().getAttribute("SESSION"));
