@@ -246,6 +246,9 @@
     <field name="mNom" type="string" get-method="getNom" set-method="setNom" required="true">
       <sql name="ITE_NOM" type="char"/>
     </field>
+    <field name="mBilan" type="string" get-method="getBilan" set-method="setBilan" required="true">
+      <sql name="ITE_BILAN" type="char"/>
+    </field>
     <field name="mDateDebutPrevue" type="date" get-method="getDateDebutPrevue" set-method="setDateDebutPrevue" required="true">
       <sql name="ITE_DATEDEBUTPREVUE" type="date"/>
     </field>
@@ -667,7 +670,7 @@
   
   
   <!-- Mapping table de configuration -->
-  <class name="owep.modele.configuration.MConfiguration" identity="mId">
+  <class name="owep.modele.configuration.MConfigurationSite" identity="mId">
     <map-to table="CON_CONFIGURATION"/>
     <field name="mId" type="integer" get-method="getId" set-method="setId" required="true" key-generator="MAX">
       <sql name="CON_ID" type="integer"/>
@@ -675,17 +678,14 @@
     <field name="mLangue" type="string" get-method="getLangue" set-method="setLangue" required="true">
       <sql name="CON_LANGUE" type="char"/>
     </field>
-    <field name="mPays" type="string" get-method="getPays" set-method="setPays" required="true">
-      <sql name="CON_PAYS" type="char"/>
-    </field>
     <field name="mApparence" type="string" get-method="getApparence" set-method="setApparence" required="true">
       <sql name="CON_APPARENCE" type="char"/>
     </field>
     <field name="mPathArtefact" type="string" get-method="getPathArtefact" set-method="setPathArtefact" required="true">
       <sql name="CON_PATH_ARTEFACT" type="char"/>
     </field>
-    <field name="mPathSauvegarde" type="string" get-method="getPathSauvegarde" set-method="setPathSauvegarde" required="true">
-      <sql name="CON_PATH_SAUVEGARDE" type="char"/>
+    <field name="mPathExport" type="string" get-method="getPathExport" set-method="setPathExport" required="true">
+      <sql name="CON_PATH_EXPORT" type="char"/>
     </field>
   </class>
   

@@ -21,6 +21,10 @@
   {
     mEstChefProjet = (lSession.getProjet().getChefProjet().getId() == lSession.getCollaborateur().getId());
   }
+  
+  //Droit administrateur
+  int ADMIN = 1;
+  boolean mEstAdmin = (lSession.getCollaborateur().getDroit() == ADMIN);
 %>  
 
 <%
@@ -159,6 +163,11 @@
     </td>
   </tr>
   <tr>
+    <td class="caseMenuNiveau2">
+      <a class="menuNiveau2" href="../Processus/CloturerIteration">Cloturer l'itération</a>
+    </td>
+  </tr>
+  <tr>
     <td class="caseMenuSeparation">
       &nbsp;
     </td>
@@ -202,11 +211,9 @@
       </a>
     </td>
   </tr>
-<%
-    // Test si le collaborateur connecté a le droit de créer un projet
-    if(lSession.getCollaborateur().getDroit() == 1)
-    {
-%>
+  
+<%//Test si l'utilisateur connecté a les droits de l'administrateur
+  if (mProjetOuvert && mEstAdmin) {%>
   <tr>
     <td class="caseMenuNiveau2">
       <a class="menuNiveau2" href="../Processus/GererProjet"
@@ -233,7 +240,7 @@
   }
   
   // Si aucun projet n'est ouvert le collaborateur peut créer un projet si il en a le droit
-  if(!mProjetOuvert && lSession.getCollaborateur().getDroit() == 1)
+  if(!mProjetOuvert && mEstAdmin)
   {
 %>
   <!-- menu projet -->
@@ -268,13 +275,17 @@
     </td>
   </tr>
   
-<%//Test si l'utilisateur connecté est le chef de projet
-  if (mProjetOuvert && mEstChefProjet) {%>  
+<%//Test si l'utilisateur connecté a les droits de l'administrateur
+  if (mProjetOuvert && mEstAdmin) {%>   
   <tr>
     <td class="caseMenuNiveau2">
-      <p class="menuNiveau2">Option de l'application</p>
+      <a class="menuNiveau2" href="../Configuration/ConfigurationSite">Option de l'application</a><br>
     </td>
   </tr>
+<%}%>  
+  
+<%//Test si l'utilisateur connecté est le chef de projet
+  if (mProjetOuvert && mEstChefProjet) {%>  
   <tr>
     <td class="caseMenuNiveau2">
       <p class="menuNiveau2">Option de projet</p>

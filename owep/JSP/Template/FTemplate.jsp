@@ -2,6 +2,7 @@
 <%@ taglib uri='/WEB-INF/tld/template.tld' prefix='template' %>
 <%@page import="owep.controle.CConstante"%>
 
+
 <!-- en-tête de la page -->
 <html>
 <head>
@@ -9,7 +10,7 @@
   <meta name="author" content="OWEP Team">
   <meta name="description" content="Outil de Workflow pour une équipe de Projet">
   <title>OWEP</title>
-  <link rel="stylesheet" href="../CSS/Red.css" type="text/css">
+  <link rel="stylesheet" href="../CSS/Apparence.css" type="text/css">
   <script language="javascript" src="/owep/JavaScript/VerificationChamp.js"></script>
   <script language="javascript" src="/owep/JavaScript/AideEnLigne.js"></script>
   <script language="javascript" src="/owep/JavaScript/DomTT/domLib.js"></script>

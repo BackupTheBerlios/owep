@@ -8,9 +8,9 @@ package owep.infrastructure.localisation ;
 public class LocalisateurIdentifiant
 {
   public static final String LID_BDNOM           = "owep" ;
-  public static final String LID_BDCONFIGURATION = "D:\\eclipse\\workspace\\OWEP\\WEB-INF\\Database.xml" ;
+  public static final String LID_BDCONFIGURATION = "c:\\logiciels\\eclipse\\eclipse\\workspace\\OWEP\\WEB-INF\\Database.xml" ;
   public static final String LID_BDUSER          = "root" ;
-  public static final String LID_BDPASS          = "mysql" ;
+  public static final String LID_BDPASS          = "6431" ;
   
   public static final String LID_PLAY = "D:\\eclipse\\workspace\\OWEP\\Image\\Boutons\\play.jpg" ;
   public static final String LID_PLAYACTIF = "D:\\eclipse\\workspace\\OWEP\\Image\\Boutons\\play_actif.jpg" ;

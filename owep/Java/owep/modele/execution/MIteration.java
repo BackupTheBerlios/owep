@@ -23,6 +23,7 @@ public class MIteration extends MModeleBase
   private int       mId ;              // Identifie l'itération de manière unique.
   private int       mNumero ;          // Numéro de l'itération.
   private String    mNom ;             // Nom désignant l'itération.
+  private String    mBilan ;           // Bilan de l'itération
   private Date      mDateDebutPrevue ; // Date de début prévue pour l'itération.
   private Date      mDateFinPrevue ;   // Date de fin prévue pour l'itération.
   private Date      mDateDebutReelle ; // Date de début réelle de l'itération.
@@ -329,7 +330,22 @@ public class MIteration extends MModeleBase
     mProjet = pProjet ;
   }
 
-
+  /**
+   * @return Retourne la valeur de l'attribut bilan.
+   */
+  public String getBilan ()
+  {
+    return mBilan ;
+  }
+  
+  /**
+   * @param initialse bilan avec pBilan.
+   */
+  public void setBilan (String pBilan)
+  {
+    mBilan = pBilan ;
+  }
+  
   /**
    * Récupère la liste des tâches réalisées durant l'itération.
    * @return Liste des tâches réalisées durant l'itération.

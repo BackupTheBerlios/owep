@@ -1,34 +1,27 @@
 package owep.infrastructure ;
 
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
-import java.util.ArrayList ;
-import java.util.ResourceBundle ;
-
-import owep.modele.configuration.MConfiguration ;
-import owep.modele.execution.MCollaborateur ;
-import owep.modele.execution.MIteration ;
-import owep.modele.execution.MProjet ;
-
+import owep.modele.configuration.MConfigurationSite;
+import owep.modele.execution.MCollaborateur;
+import owep.modele.execution.MIteration;
+import owep.modele.execution.MProjet;
 
 /**
  * Permet le passage de variable tout au long d'une session utilisateur
  */
 public class Session
 {
-  private MCollaborateur mCollaborateur    = null ; // Collaborateur connecté
-  private MProjet        mProjet           = null ; // Projet ouvert par le collaborateur connecté
-  private ArrayList      mListeProjetPossible ;    // Liste des projets concernant l'utilisateur
-                                                   // connecté
-  private MIteration     mIteration        = null ; // itération ouverte par le collaborateur
-                                                    // connecté
-  private ResourceBundle messages          = null ; // resource bundle
-  private MConfiguration mConfiguration    = null ; // Tous les éléments de configuration
-  private String         URLPagePrecedente = null ; //conserve l'URL de la page précédente pour
-                                                    // pouvoire y retourner
-  private int            idCollabAVisualiser ;     // identifiant du collaborateur dont on veut
-                                                   // visualiser la liste des taches
-
-
+  private MCollaborateur mCollaborateur = null;  // Collaborateur connecté
+  private MProjet mProjet = null; // Projet ouvert par le collaborateur connecté
+  private ArrayList mListeProjetPossible; // Liste des projets concernant l'utilisateur connecté
+  private MIteration mIteration = null; // itération ouverte par le collaborateur connecté
+  private ResourceBundle messages = null; // resource bundle
+  private MConfigurationSite mConfiguration = null; // Tous les éléments de configuration
+  private String URLPagePrecedente = null ; //conserve l'URL de la page précédente pour pouvoire y retourner
+  private int idCollabAVisualiser ; // identifiant du collaborateur dont on veut visualiser la liste des taches
+  
   /**
    * TODO Récupère idCollabAVisualiser.
    * 
@@ -154,7 +147,7 @@ public class Session
   /**
    * @return Retourne la valeur de l'attribut cofiguration.
    */
-  public MConfiguration getConfiguration ()
+  public MConfigurationSite getConfiguration ()
   {
     return mConfiguration ;
   }
@@ -162,7 +155,7 @@ public class Session
   /**
    * @param initialse cofiguration avec pCofiguration.
    */
-  public void setConfiguration (MConfiguration pCofiguration)
+  public void setConfiguration (MConfigurationSite pCofiguration)
   {
     mConfiguration = pCofiguration ;
   }

@@ -185,7 +185,14 @@
     <url-pattern>/Processus/TacheImprevue</url-pattern>
   </servlet-mapping>
   
-  
+   <servlet>
+    <servlet-name>CCloturerIteration</servlet-name>
+    <servlet-class>owep.controle.processus.CCloturerIteration</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CCloturerIteration</servlet-name>
+    <url-pattern>/Processus/CloturerIteration</url-pattern>
+  </servlet-mapping> 
   
   <!-- Liste des servlets pour la gestion de projets -->
   <servlet>
@@ -289,9 +296,21 @@
     <url-pattern>/Outil/ExporterProjet</url-pattern> 
   </servlet-mapping> 
   
+  
+  <!-- Configuration du site -->
+  <servlet> 
+    <servlet-name>CConfigurationSite</servlet-name> 
+    <servlet-class>owep.controle.configuration.CConfigurationSite</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CConfigurationSite</servlet-name> 
+    <url-pattern>/Configuration/ConfigurationSite</url-pattern> 
+  </servlet-mapping> 
+  
+  
   <!-- Configuration de la session -->
   <session-config>
-	<session-timeout>30</session-timeout>
+	<session-timeout>3000</session-timeout>
   </session-config>
 
 
