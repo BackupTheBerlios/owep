@@ -125,6 +125,7 @@ public class CProblemeSuppr extends CControleurBase
     }
     
     // Affiche la page de visualisation de la liste des problèmes.
+    getRequete ().setAttribute (CConstante.PAR_MESSAGE, "Le problème \"" + mProbleme.getNom () + "\" a été supprimé.") ;
     return "/Gestion/ListeProblemeVisu" ;
   }
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" %>
 <%@ taglib uri='/WEB-INF/tld/template.tld' prefix='template' %>
+<%@page import="owep.controle.CConstante"%>
 
 <!-- en-tête de la page -->
 <html>
@@ -81,6 +82,19 @@
                     </div>
                   </td>
                 </tr>
+              <%
+                String lMessage = (String) request.getAttribute (CConstante.PAR_MESSAGE) ;
+                if (lMessage != null)
+                {
+              %>
+                <tr>
+                  <td class="texteMessage" width="100%">
+                      <%= lMessage %>
+                  </td>
+                </tr>
+              <%
+                }
+              %>
               </table>
               <br/>
               <template:region nom="RegionNavigation"/>

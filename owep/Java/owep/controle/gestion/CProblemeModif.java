@@ -167,17 +167,20 @@ public class CProblemeModif extends CControleurBase
       {
         // Crée l'objet ou le met à jour s'il existe déjà.
         getBaseDonnees ().begin () ;
-          
+        
         // Si l'utilisateur valide les données, alors on les enregistre dans la base.
+        String lMessage = "" ;
         if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_SUBMIT))
         {
           if (mProbleme.getId () == 0)
           {
             mProbleme.create (getBaseDonnees ()) ;
+            lMessage = "Le problème \"" + mProbleme.getNom () + "\" a été créé." ;
           }
           else
           {
             getBaseDonnees ().update (mProbleme) ;
+            lMessage = "Le problème \"" + mProbleme.getNom () + "\" a été mis à jour." ;
           }
         }
         // Valide les données.
@@ -185,6 +188,7 @@ public class CProblemeModif extends CControleurBase
         getBaseDonnees ().close () ;
         
         // Affiche la page de visualisation de la liste des problèmes.
+        getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
         return "/Gestion/ListeProblemeVisu" ;
       }
     }

@@ -93,6 +93,15 @@ a:visited
   font-weight : bold ;
   text-indent : 24px ;
 }
+.texteMessage
+{
+  text-align  : center ;
+  color       : rgb(180,50,15) ;
+  font-family : arial ;
+  font-size   : 12px ;
+  font-weight : bold ;
+  text-indent : 24px ;
+}
 .texteSubmit
 {
   text-align : right ;
