@@ -193,7 +193,7 @@
             </td>
             <td>
               <input <transfert:transfertchamp membre="setNom" type="java.lang.String" libelle="Nom" convertor="VStringConvertor" obligatoire="true" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
-               type="text" size="8" class="niveau2" value="" maxlength="<%= CConstante.TXT_MOYEN %>"><br/>
+               type="text" size="<%= CConstante.LNG_PETIT %>" class="niveau2" value="" maxlength="<%= CConstante.TXT_MOYEN %>">&nbsp;&nbsp;&nbsp;<input class="bouton" type="button" value="Réinitialiser" onclick="reinitialiserChamps () ;"><br/>
               <% lChampTacheNom = VTransfert.getDernierChamp () ; %>
             </td>
           </tr>
@@ -205,7 +205,7 @@
             </td>
             <td>
               <input <transfert:transfertchamp membre="setDescription" type="java.lang.String" libelle="Description" convertor="VStringConvertor" obligatoire="false" idArbre="<%= CConstante.PAR_ARBRETACHES %>"/>
-               type="text" size="8" class="niveau2" value="" maxlength="<%= CConstante.TXT_LARGE %>"><br/>
+               type="text" size="<%= CConstante.LNG_MOYEN %>" class="niveau2" value="" maxlength="<%= CConstante.TXT_LARGE %>"><br/>
               <% lChampTacheDescription = VTransfert.getDernierChamp () ; %>
             </td>
           </tr>
@@ -339,6 +339,16 @@
           </tr>
           <tr>
             <td colspan="2"> &nbsp;
+            <transfert:transfertbean scope="Session" type="owep.modele.execution.MArtefact" bean="getArtefactSortie" idArbre="<%= CConstante.PAR_ARBREARTEFACTSORTIES %>">
+            <% lCodeValidation = "validerTacheAjout () ;" ; %>
+        <transfert:transfertsubmit libelle="Ajouter" valeur="<%= CConstante.PAR_SUBMITAJOUTER %>" verification="true" validation="<%= lCodeValidation %>"/>
+        
+        <% lCodeValidation = "validerTacheModif (document." + CConstante.PAR_FORMULAIRE + "." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.') ;" ; %>
+        <transfert:transfertsubmit libelle="Modifier" valeur="<%= CConstante.PAR_SUBMITMODIFIER %>" verification="true" validation="<%= lCodeValidation %>"/>
+        
+        <% lCodeValidation = "validerTacheSuppr (document." + CConstante.PAR_FORMULAIRE +"." + CConstante.PAR_LISTETACHES + ", 'Attention aucune tâche n\\'a été sélectionnée.') ;" ; %>
+        <transfert:transfertsubmit libelle="Supprimer" valeur="<%= CConstante.PAR_SUBMITSUPPRIMER %>" verification="true" validation="<%= lCodeValidation %>"/>
+      
             </td>
           </tr>
           <tr>
@@ -1031,6 +1041,23 @@
     
   }
   
+  function reinitialiserChamps () 
+  {
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSSORTIES %>.length = 0 ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampArtefactNom %>.value = '' ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampArtefactDescription %>.value = '' ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSPOSSIBLES %>.length = 0 ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEARTEFACTSENTREES %>.length = 0 ;
+    
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampTacheNom %>.value = '' ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampTacheDescription %>.value = '' ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampTacheChargeInitiale %>.value = '' ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampTacheDateDebutPrevue %>.value = '' ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= lChampTacheDateFinPrevue %>.value = '' ;
+    
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEDISCIPLINES %>.disabled = false ;
+    document.<%= CConstante.PAR_FORMULAIRE%>.<%= CConstante.PAR_LISTEACTIVITES %>.disabled = false ;
+  }
   <!------------------------------------------->
   <!-- Fonctions de validation du formulaire -->
   <!------------------------------------------->
