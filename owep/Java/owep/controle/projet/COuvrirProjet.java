@@ -22,7 +22,7 @@ import owep.modele.execution.MProjet ;
 public class COuvrirProjet extends CControleurBase
 {
   private String mIdProjet ; // Id du projet que le collaborateur souhaite ouvrir
-
+  private ArrayList mListeProjetPossible ; // Liste des projets concernant l'utilisateur connecté
 
   /**
    * Récupère les données nécessaire au controleur dans la base de données.
@@ -32,6 +32,53 @@ public class COuvrirProjet extends CControleurBase
    */
   public void initialiserBaseDonnees () throws ServletException
   {
+    OQLQuery lRequete ; // Requête à réaliser sur la base
+    QueryResults lResultat ; // Résultat de la requête sur la base
+    MProjet lProjet ; // Projet enregistré
+
+    MCollaborateur lCollaborateur = getSession ().getCollaborateur () ; // Collaborateur connecté
+    mListeProjetPossible = new ArrayList () ;
+
+    try
+    {
+      getBaseDonnees ().begin () ;
+
+      // Cherche tous les projets enregistré
+      lRequete = getBaseDonnees ()
+        .getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET") ;
+      lResultat = lRequete.execute () ;
+
+      // Pour chaque projet présent dans la base de donnée, on cherche si le collaborateur connecté
+      // y participe
+      while (lResultat.hasMore ())
+      {
+        lProjet = (MProjet) lResultat.next () ;
+        ArrayList lListCollaborateur = lProjet.getListeCollaborateurs () ;
+        int i = 0 ;
+        for (i = 0 ; i < lListCollaborateur.size () ; i++)
+        {
+          // Si le collaborateur connecté participe à ce projet alors on ajoute le projet a la list
+          // retourné
+          if (lCollaborateur.getId () == ((MCollaborateur) lListCollaborateur.get (i)).getId ())
+          {
+            mListeProjetPossible.add (lProjet) ;
+            i = lListCollaborateur.size () ;
+          }
+        }
+      }
+
+      getBaseDonnees ().commit () ;
+
+      // La connexion à la base de données est fermé dans le finally de la fonction traiter
+    }
+    catch (PersistenceException e)
+    {
+      e.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+    }
+
+    // Enregistre la liste de projet possible dans la session
+    getSession ().setListProjetPossible (mListeProjetPossible) ;
   }
 
   /**
@@ -58,22 +105,20 @@ public class COuvrirProjet extends CControleurBase
     OQLQuery lRequete ; // Requête à réaliser sur la base
     QueryResults lResultat ; // Résultat de la requête sur la base
     MProjet lProjet ; // Projet à ouvrir
-    ArrayList lListProjet ; // Liste des projets ayant le collaborateur connecté
 
     if (mIdProjet == null)
     {
-      lListProjet = getProjet () ;
       // Si la liste de projet n'en contient qu'un 
-      if (lListProjet.size () == 1)
+      if (mListeProjetPossible.size () == 1)
       {
         // Alors on ouvre directement ce projet
-        int mId = ((MProjet) lListProjet.get (0)).getId () ;
+        int mId = ((MProjet) mListeProjetPossible.get (0)).getId () ;
         mIdProjet = String.valueOf (mId) ;
       }
       else
       {
         // Sinon on affiche la liste des projets possibles pour que le collaborateur choisisse
-        getRequete ().setAttribute ("listProjetPossible", lListProjet) ;
+        getRequete ().setAttribute ("listProjetPossible", mListeProjetPossible) ;
         return "..\\JSP\\Projet\\OuvrirProjet.jsp" ;
       }
     }
@@ -135,9 +180,9 @@ public class COuvrirProjet extends CControleurBase
    * Cherche tous les projets auxquels le collaborateur participe
    * 
    * @return Liste des projets auxquelq le collaborateur participe
-   * @throws ServletException ArrayList
+   * @throws ServletException
    */
-  private ArrayList getProjet () throws ServletException
+/*  private ArrayList getProjet () throws ServletException
   {
     OQLQuery lRequete ; // Requête à réaliser sur la base
     QueryResults lResultat ; // Résultat de la requête sur la base
@@ -186,5 +231,5 @@ public class COuvrirProjet extends CControleurBase
 
     return lListProjet ;
 
-  }
+  }*/
 }

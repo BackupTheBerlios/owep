@@ -1,13 +1,64 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="owep.infrastructure.Session"%>
+<%@page import="owep.modele.execution.MProjet"%>
 
-<table width="100%" height="100%" cellpadding="0" cellspacing="0">
+<jsp:useBean id="lSession" class="owep.infrastructure.Session" scope="page"/>
+<jsp:useBean id="lProjet" class="owep.modele.execution.MProjet" scope="page"/>
+
+<%
+  // Déclaration des variables
+  int idProjetOuvert ;
+  
+  // Recuperation de la session
+  HttpSession httpSession = request.getSession(true);
+  lSession = (Session) httpSession.getAttribute("SESSION");
+  
+  // Recuperation de la liste de projet possible
+  ArrayList lListProjet = lSession.getListProjetPossible();
+  
+  // Recuperation du projet ouvert
+  lProjet = lSession.getProjet();
+  
+  // Si aucun projet n'est ouvert
+  if(lProjet == null)
+  {
+    // Alors  la variable idProjetOuvert prend pour valeur -1
+    idProjetOuvert = -1;
+  }
+  else
+  {
+    // Sinon la variable prend pour valeur l'id du projet
+    idProjetOuvert = lProjet.getId();
+  }
+%>
+
+<table class="regionMenu" style="width : 100%; height : 100%" cellpadding="0" cellspacing="0">
+<!-- <table width="100%" height="100%" cellpadding="0" cellspacing="0"> -->
 <tbody>
 
-  <!-- menu Général -->
+  <!-- menu Avancement -->
   <tr>
-    <td class="caseMenuProjet">
-      <select class="menuProjet" name="LDProjet" size ="1">
-        <option value="Projet1">Projet 1</option>
+    <td class="caseMenuListe">
+    
+    <form name="changerProjet" action="../Projet/OuvrirProjet" method="post">
+      <!-- Le formulaire ayant pour nom changerProjet est envoyé dés qu'un changement sur la sélection de la liste a été constaté -->
+      <select class="menuListe" name="mIdProjet" size ="1" onchange="changerProjet.submit()">
+<%
+  // Affichage de la liste des projets possibles
+  // Le projet ouvert est sélectionné par défaut
+  for(int i = 0 ; i<lListProjet.size() ; i++)
+  {
+    lProjet = (MProjet) lListProjet.get(i);
+%>
+        <option VALUE="<%=lProjet.getId()%>" <%=(idProjetOuvert == lProjet.getId())?"selected":""%>>
+          <%=lProjet.getNom()%>
+        </option>
+<%
+  }
+%>
       </select>
+    </form>
+    
     </td>
   </tr>
   <tr>

@@ -1,7 +1,7 @@
 package owep.controle.processus ;
 
 
-import java.util.ArrayList;
+import java.util.ArrayList ;
 
 import javax.servlet.ServletException ;
 
@@ -12,9 +12,10 @@ import org.exolab.castor.jdo.QueryResults ;
 import owep.controle.CConstante ;
 import owep.controle.CControleurBase ;
 import owep.modele.execution.MCollaborateur ;
-import owep.modele.execution.MProjet;
-import owep.modele.processus.MComposant;
-import owep.modele.processus.MProcessus;
+import owep.modele.execution.MProjet ;
+import owep.modele.processus.MComposant ;
+import owep.modele.processus.MProcessus ;
+import owep.modele.processus.MRole ;
 
 
 /**
@@ -33,12 +34,17 @@ public class CCreationCollaborateur extends CControleurBase
   private String mPortable ; // Numéro du portable du collaborateur à créer
   private String mCommentaire ; // Commentaire du collaborateur à créer
   private String mMdp ; // Mot de passe du collaborateur à créer
-  private int    mDroit ; //Droit du collaboratur (collaborateur = 0 ; chef de projet = 1)
-  
-  private ArrayList mListeRole;
-  
+  private int mDroit ; //Droit du collaboratur (collaborateur = 0 ; chef de
+  // projet = 1)
+
+  private ArrayList mListeRole ;
+
   private MCollaborateur mCollaborateur ; // Collaborateur à créer
 
+  private ArrayList mSelectRole ; // Liste des roles selectionné pour
+
+
+  // l'utilisateur qu'on souhaite créer
 
   /**
    * Récupère les données nécessaire au controleur dans la base de données.
@@ -70,7 +76,18 @@ public class CCreationCollaborateur extends CControleurBase
     mCommentaire = getRequete ().getParameter ("mCommentaire") ;
     mDroit = 0 ;
     mMdp = mLogin ;
+
+    mSelectRole = new ArrayList () ;
     getListeRole () ;
+    for (int i = 0 ; i < mListeRole.size () ; i++)
+    {
+      int role = ((MRole) mListeRole.get (i)).getId () ;
+      String idRoleSelect = getRequete ().getParameter ("mRoleSelect" + role) ;
+      if (idRoleSelect != null)
+      {
+        mSelectRole.add (idRoleSelect) ;
+      }
+    }
   }
 
   /**
@@ -117,7 +134,8 @@ public class CCreationCollaborateur extends CControleurBase
     {
       getBaseDonnees ().begin () ;
 
-      // Cherche la présence de collaborateur ayant le login demandé par le nouveau
+      // Cherche la présence de collaborateur ayant le login demandé par
+      // le nouveau
       lRequete = getBaseDonnees ()
         .getOQLQuery (
                       "select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mUtilisateur = $1") ;
@@ -142,6 +160,31 @@ public class CCreationCollaborateur extends CControleurBase
       // Enregistre le nouveau collaborateur dans la base de données
       getBaseDonnees ().create (mCollaborateur) ;
       getBaseDonnees ().commit () ;
+
+      getBaseDonnees().begin();
+
+      // Recupére le nouveau collaborateur enregistré
+      lRequete = getBaseDonnees ()
+        .getOQLQuery (
+                      "select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mUtilisateur = $1") ;
+      lRequete.bind (mLogin) ;
+      lResultat = lRequete.execute () ;
+      mCollaborateur = (MCollaborateur) lResultat.next();
+      
+      // Attribution des roles
+      for (int i = 0 ; i < mSelectRole.size () ; i++)
+      {
+        lRequete = getBaseDonnees ()
+          .getOQLQuery ("select ROLE from owep.modele.processus.MRole ROLE where mId = $1") ;
+        lRequete.bind (mSelectRole.get (i)) ;
+        lResultat = lRequete.execute () ;
+
+        MRole roleSelect = (MRole) lResultat.next () ;
+
+        mCollaborateur.addRole (roleSelect) ;
+      }
+
+      getBaseDonnees().commit();
       getBaseDonnees ().close () ;
 
       getRequete ().setAttribute ("mProbleme", "false") ;
@@ -186,6 +229,10 @@ public class CCreationCollaborateur extends CControleurBase
     getRequete ().setAttribute ("mPortable", (mPortable == null ? "" : mPortable)) ;
     getRequete ().setAttribute ("mCommentaire", (mCommentaire == null ? "" : mCommentaire)) ;
   }
+
+  /**
+   * Cherche tous les roles possibles pour le processus associé au projet ouvert
+   */
   private void getListeRole ()
   {
     MProjet lProjet = getSession ().getProjet () ;

@@ -35,6 +35,7 @@ public class MCollaborateur extends MModeleBase
    */
   public MCollaborateur ()
   {
+    mRoles = new ArrayList () ;
     mTaches = new ArrayList () ;
   }
 
@@ -68,6 +69,7 @@ public class MCollaborateur extends MModeleBase
     mDroit        = pDroit;
     
     mTaches = new ArrayList () ;
+    mRoles = new ArrayList () ;
   }
 
 
