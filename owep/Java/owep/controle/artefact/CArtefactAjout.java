@@ -146,6 +146,9 @@ public class CArtefactAjout extends CControleurBase
         //Si l'utilisateur a entré un nom de fichier
         if(fullFile.getName()!="")
         {
+          //sauvegarde du nom du fichier dans la bd
+          mArtefact.setNomFichier(fullFile.getName());  
+          
           //Création du répertoire ou on télécharge le fichier si il n'existe pas
           (new File(getServletContext().getRealPath("/")+mArtefact.getPathFichier())).mkdirs();
           //création du fichier 
@@ -154,8 +157,6 @@ public class CArtefactAjout extends CControleurBase
           {
             //Sauvegarde du fichier 
             itemFichier.write(savedFile);
-            //sauvegarde du nom du fichier dans la bd
-            mArtefact.setNomFichier(fullFile.getName());  
           }  
           catch (Exception e)
           {

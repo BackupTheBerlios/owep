@@ -133,7 +133,7 @@
 	  </tr>
 	  <%for (int i = 0; i < lTache.getNbArtefactsEntrees(); i ++)
 	    {
-	      lArtefact = lTache.getArtefact(i) ;  
+	      lArtefact = lTache.getArtefactEntree(i) ;  
 	  %>
 	    <tr>
 	      <td class='caseNiveau2'><%= lArtefact.getNom()%></td>
@@ -142,7 +142,7 @@
 	      <%}else{%>
             <td class='caseNiveau2'>Nom disponible</td>
           <%}%>
-	      <td class='caseNiveau2'><%= lArtefact.getCollaborateur().getPrenom()+" "+lArtefact.getCollaborateur().getNom()%></td>
+	      <td class='caseNiveau2'><%= lArtefact.getResponsable().getPrenom()+" "+lArtefact.getResponsable().getNom()%></td>
 	    </tr>
 	  <%}%>
 	</tbody>
