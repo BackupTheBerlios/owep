@@ -109,7 +109,7 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Iteration/ListeIndicateurs?menu=clique">Indicateurs</a>
+      <a class="menuNiveau2" href="../Iteration/ListeIndicateurs?menu=clique">Mesures supplémentaires</a>
     </td>
   </tr>
   <tr>
@@ -132,7 +132,7 @@
   </tr>
   <tr>
     <td class="caseMenuNiveau2">
-      <a class="menuNiveau2" href="../Avancement/AvancementProjet?menu=clique"
+      <a class="menuNiveau2" href="../Avancement/AvancementGlobalProjet?menu=clique"
        onmouseover="tooltipOn(this, event, 'Détail de l\'avancement pour le projet ouvert et chacune des itérations.')" onmouseout="tooltipOff(this, event)">
         Projet
       </a>

@@ -95,6 +95,14 @@
   <!-- Liste des Servlets pour les avancements --> 
   
   <servlet> 
+    <servlet-name>CAvancementGlobalProjet</servlet-name> 
+    <servlet-class>owep.controle.avancement.CAvancementGlobalProjet</servlet-class> 
+  </servlet> 
+  <servlet-mapping> 
+    <servlet-name>CAvancementGlobalProjet</servlet-name> 
+    <url-pattern>/Avancement/AvancementGlobalProjet</url-pattern> 
+  </servlet-mapping>
+  <servlet> 
     <servlet-name>CAvancementProjet</servlet-name> 
     <servlet-class>owep.controle.avancement.CAvancementProjet</servlet-class> 
   </servlet> 

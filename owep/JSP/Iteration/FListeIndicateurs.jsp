@@ -5,7 +5,12 @@
 
 <jsp:useBean id="lProjet" class="owep.modele.execution.MProjet" scope="page"/>
 
-<% lProjet  = (MProjet) request.getAttribute (CConstante.PAR_PROJET) ; %>
+<% 
+    //localisation
+    java.util.ResourceBundle messages;
+    messages = java.util.ResourceBundle.getBundle("MessagesBundle");
+    lProjet  = (MProjet) request.getAttribute (CConstante.PAR_PROJET) ; 
+%>
 <HEAD>
 <SCRIPT LANGUAGE="JavaScript">  
   <!--
@@ -20,9 +25,9 @@
 
       if ( expr_reg.test(valeur.value) == 0 ) 
       {
-        gChampsInvalides += 'Le champ \'' + pLibelle + '\' de l\'indicateur \'' + pIndicateur + '\' est incorrect.\n' ;
+        gChampsInvalides += '<%=messages.getString("JSChamp")%> \'' + pLibelle + '\' <%=messages.getString("indicateursJSIndic")%> \'' + pIndicateur + '\' <%=messages.getString("JSIncorrect")%>\n' ;
         // ce n'est pas un nombre entier
-        alert ("Vous devez saisir un nombre entier") ;
+        alert ("<%=messages.getString("JSAlertEntier")%>") ;
       }
     } 
     
@@ -41,8 +46,7 @@
   </SCRIPT>
   
   <NOSCRIPT>
-  <B>Votre browser ne supporte pas JavaScript et ne peut donc pas exploiter
-  les fonctionnalités de cette page Web</B>
+  <B><%=messages.getString("JSBrowser")%></B>
   </NOSCRIPT>
 </HEAD>
 
@@ -50,7 +54,7 @@
   if (lProjet.getNbIndicateurs()==0)
   {
 %>
-    <center>Vous n'avez aucun indicateur à renseigner pour cette itération.</center>
+    <center><%=messages.getString("indicateursAucuneMesure")%></center>
 <%
   }
   else
@@ -62,19 +66,19 @@
 	<tbody>
 	  <tr>
 	    <td class="caseNiveau1">
-	      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Nom de l\'indicateur.')" onmouseout="tooltipOff(this, event)">Indicateur</a>
+	      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("indicateursAideMesure")%>')" onmouseout="tooltipOff(this, event)"><%=messages.getString("colonneMesure")%></a>
 	    </td>
 	    <td class="caseNiveau1">
-	      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Description de l\'indicateur.')" onmouseout="tooltipOff(this, event)">Description</a>
+	      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("indicateursAideDescription")%>')" onmouseout="tooltipOff(this, event)"><%=messages.getString("colonneDescription")%></a>
 	    </td>
 	    <td class="caseNiveau1">
-	      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Valeur associée à l\'indicateur.')" onmouseout="tooltipOff(this, event)">Valeur</a>
+	      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("indicateursAideValeur")%>')" onmouseout="tooltipOff(this, event)"><%=messages.getString("colonneValeur")%></a>
 	    </td>
 	    <td class="caseNiveau1">
-	      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Unité de mesure de l\'indicateur.')" onmouseout="tooltipOff(this, event)">Unité</a>
+	      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("indicateursAideUnite")%>')" onmouseout="tooltipOff(this, event)"><%=messages.getString("colonneUnite")%></a>
 	    </td>
 	    <td class="caseNiveau1">
-	      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Commentaires associés à l\'indicateur.')" onmouseout="tooltipOff(this, event)">Commentaires</a>
+	      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("indicateursAideCommentaire")%>')" onmouseout="tooltipOff(this, event)"><%=messages.getString("colonneCommentaires")%></a>
 	    </td>
 	  </tr>
 	  
@@ -99,7 +103,7 @@
           {
           %>
           <input type=hidden name="<%=CConstante.PAR_TYPEINDICATEUR+i%>" value="valeur">
-          <td class="caseNiveau3"><input class="niveau2" type=text size=<%=CConstante.LNG_VALEUR%> name="<%=CConstante.PAR_VALEURMESURE+i%>"   value="<%=(int)lMesureIndicateur.getValeur()%>" onBlur="test_valeur(this, 'Valeur', '<%=lProjet.getIndicateur(i).getNom()%>')"></td>
+          <td class="caseNiveau3"><input class="niveau2" type=text size=<%=CConstante.LNG_VALEUR%> name="<%=CConstante.PAR_VALEURMESURE+i%>"   value="<%=(int)lMesureIndicateur.getValeur()%>" onBlur="test_valeur(this, '<%=messages.getString("indicateursValeur")%>', '<%=lProjet.getIndicateur(i).getNom()%>')"></td>
 		      <td class="caseNiveau3"><%=lProjet.getIndicateur(i).getUnite()%></td>
 		    <%}%>
 		    <%if (lMesureIndicateur.getCommentaire()==null){
@@ -119,10 +123,10 @@
     <table border="0">
       <tr>
         <td>
-          <input class="bouton" type="button" value="Valider" OnClick="valider()" onmouseover="tooltipOn(this, event, 'Cliquez pour valider les données du formulaire.')" onmouseout="tooltipOff(this, event)">
+          <input class="bouton" type="button" value="<%=messages.getString("boutonValider")%>" OnClick="valider()" onmouseover="tooltipOn(this, event, '<%=messages.getString("indicateursValider")%>')" onmouseout="tooltipOff(this, event)">
         </td>
         <td>
-          <input type="button" value="Annuler" class="bouton" onclick="window.location.href = '/owep/Tache/ListeTacheVisu' ;" onmouseover="tooltipOn(this, event, 'Cliquez pour annuler le remplissage des indicateurs et retourner à la liste des tâches')" onmouseout="tooltipOff(this, event)"/>
+          <input type="button" value="<%=messages.getString("boutonAnnuler")%>" class="bouton" onclick="window.location.href = '/owep/Tache/ListeTacheVisu' ;" onmouseover="tooltipOn(this, event, '<%=messages.getString("indicateursAnnuler")%>')" onmouseout="tooltipOff(this, event)"/>
         </td>
       </tr>
     </table>
@@ -136,6 +140,5 @@
 
 <!-- Aide en ligne -->
 <script type="text/javascript" language="JavaScript">
-pCodeAide  = "La page des <b>Indicateurs de l'itération</b> vous permet de saisir les mesures pour les indicateurs de l'itération en cours." ;
-pCodeAide += " Pour chaque <b>indicateur</b>, vous pouvez saisir une <b>valeur</b> (en faisant attention de rester cohérent avec l'<b>unité</b>) et/ou un <b>commentaire</b>." ;
+pCodeAide  = "<%=messages.getString("indicateursAide")%>" ;
 </script>

@@ -12,6 +12,7 @@ import owep.infrastructure.Session;
 import owep.modele.execution.MIteration;
 import owep.modele.execution.MProjet;
 import owep.modele.execution.MTache;
+import owep.modele.execution.MTacheImprevue;
 
 /*
  * Created on 25 janv. 2005
@@ -61,10 +62,25 @@ public class CAvancementProjet extends CControleurBase{
         lResultat      = lRequete.execute () ;
         mProjet = (MProjet) lResultat.next () ;
         
-        // recuperation du numero de l iteration choisie dans le menu deroulant
-        mIteration = mSession.getIteration() ;
-        mIterationNum = mIteration.getNumero();
-        
+        // recuperation du numero de l iteration choisie
+        // si l'iteration est dans la session (c est a dire si on a choisi l'itération par le menu deroulant)
+        if(getRequete().getParameter(CConstante.PAR_ITERATION) == null)
+        {
+          mIteration = mSession.getIteration() ;
+          mIterationNum = mIteration.getNumero();
+        }
+        // si l'itération n'est pas dans la session (c est a dire si on a choisi l'iteration en cliquant dans le tableau de suivi de projet)
+        // on la met dans la session
+        else
+        {
+          mIterationNum = Integer.parseInt(getRequete().getParameter(CConstante.PAR_ITERATION)) ;
+          // Récupère l'itération dans la BD
+          lRequete = getBaseDonnees ().getOQLQuery ("select ITERATION from owep.modele.execution.MIteration ITERATION where mId = $1") ;
+          lRequete.bind (mIterationNum) ;
+          lResultat      = lRequete.execute () ;
+          mIteration = (MIteration) lResultat.next () ;
+          mSession.setIteration(mIteration) ;
+        }
         // recherche de l iteration en cours
         for (int m = 0; m < mProjet.getNbIterations() ; m++)
         {
@@ -79,6 +95,7 @@ public class CAvancementProjet extends CControleurBase{
         {
           // creation de la liste des taches en cours des collaborateurs
           MTache lTache ;
+          MTacheImprevue lTacheImprevue ;
           // on recupere l'iteration du projet rechargé
           mIteration = mProjet.getIteration(mIterationNum - 1) ;
           ArrayList lListeTache = new ArrayList() ;
@@ -97,8 +114,26 @@ public class CAvancementProjet extends CControleurBase{
             // ajout de la tache rechargée a la liste des taches rechargées
             lListeTache.add(lTache) ;
           }
-          // mise a jour de la liste des tahes de l iteration choisie
+          // mise a jour de la liste des taches de l iteration choisie
           mIteration.setListeTaches(lListeTache) ;
+          ArrayList lListeTacheImprevues = new ArrayList() ;
+          // pour chaque tache imprevues de l iteration
+          for (int i = 0 ; i < mIteration.getNbTachesImprevues() ; i++)
+          {
+            // on recupere l id de la tache imprevue a recharger
+            int idTacheImprevue = mIteration.getTacheImprevue(i).getId() ;
+              
+            // Récupère la tache imprevue a recharger dans la BD
+            lRequete = getBaseDonnees ().getOQLQuery ("select TACHEIMPREVUE from owep.modele.execution.MTacheImprevue TACHEIMPREVUE where mId = $1") ;
+            lRequete.bind (idTacheImprevue) ;
+            lResultat      = lRequete.execute () ;
+            lTacheImprevue = (MTacheImprevue) lResultat.next () ;
+            
+            // ajout de la tache rechargée a la liste des taches rechargées
+            lListeTacheImprevues.add(lTacheImprevue) ;
+          }
+          // mise a jour de la liste des taches de l iteration choisie
+          mIteration.setListeTachesImprevues(lListeTacheImprevues) ;
         }
       }
       catch (Exception eException)

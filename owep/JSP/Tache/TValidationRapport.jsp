@@ -1,12 +1,28 @@
 <%@ page language="java" %>
 <%@page import="owep.modele.execution.MTache"%>
+<%@page import="owep.modele.execution.MTacheImprevue"%>
 <%@page import="owep.controle.CConstante"%>
 <%@ taglib uri="/WEB-INF/tld/template.tld" prefix="template" %>
 <!DOCTYPE HTML PUBLIC "-//w3c//dtd html 4.0 transitional//en">
 
 <%
-  MTache lTache  = (MTache) request.getAttribute (CConstante.PAR_TACHE) ;
-  String nomTache = "Rapport d'activité pour la tâche : "+lTache.getNom() ;
+//localisation
+    java.util.ResourceBundle messages;
+    messages = java.util.ResourceBundle.getBundle("MessagesBundle");
+%>
+
+<%
+  String nomTache = "" ;
+  if ((request.getAttribute (CConstante.PAR_TYPE_TACHE)).equals("tache"))
+  {
+    MTache lTache  = (MTache) request.getAttribute (CConstante.PAR_TACHE) ;
+    nomTache = messages.getString("validationRapportTitreTache")+lTache.getNom() ;
+  }
+  else
+  {
+    MTacheImprevue lTacheImprevue  = (MTacheImprevue) request.getAttribute (CConstante.PAR_TACHE) ;
+    nomTache = messages.getString("validationRapportTitreTacheImprevue")+lTacheImprevue.getNom() ;
+  }
 %>
 
 <template:template nom="/JSP/Template/FTemplate.jsp">

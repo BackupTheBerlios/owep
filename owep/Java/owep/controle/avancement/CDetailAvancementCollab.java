@@ -1,6 +1,7 @@
 package owep.controle.avancement;
 
 
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 import org.exolab.castor.jdo.OQLQuery;
@@ -13,6 +14,7 @@ import owep.modele.execution.MCollaborateur;
 import owep.modele.execution.MIteration;
 import owep.modele.execution.MProjet;
 import owep.modele.execution.MTache;
+import owep.modele.execution.MTacheImprevue;
 
 /*
  * Created on 25 janv. 2005
@@ -44,6 +46,8 @@ public class CDetailAvancementCollab extends CControleurBase{
     {
       OQLQuery       lRequete ;       // Requête à réaliser sur la base
       QueryResults   lResultat ;      // Résultat de la requête sur la base
+      ArrayList lListeTaches = new ArrayList () ;
+      ArrayList lListeTachesImprevues = new ArrayList () ;
       
       try
       {
@@ -85,7 +89,6 @@ public class CDetailAvancementCollab extends CControleurBase{
         
         int lTacheId ;
         MTache lTache ;
-        int j = 0 ;
         
         // pour chaque tache du collaborateur
         for (int i = 0 ; i < mCollaborateur.getNbTaches() ; i++) 
@@ -104,22 +107,60 @@ public class CDetailAvancementCollab extends CControleurBase{
             lTache = (MTache) lResultat.next () ;
           }
           // si on veut regarder l avancement d une iteration autre que celle en cours
-          // inutile de racharger a partir de la bd
+          // inutile de recharger a partir de la bd
           else
           {
             lTache = mCollaborateur.getTache(i) ;
           }
           // on n'insere dans la liste des taches que les taches faisant 
-          // partie de l'iteration en cours
+          // partie de l'iteration choisie dans le menu déroulant
           for(int k = 0; k<mIteration.getNbTaches();k++)
           {
             if (mIteration.getTache(k).getId() == lTache.getId()) 
             {
-              mCollaborateur.setListe(new Integer(j), lTache) ;
-              j = j + 1 ;
+              lListeTaches.add(lTache) ;
             }
-          }
+          } 
         }
+        
+        int lTacheImprevueId ;
+        MTacheImprevue lTacheImprevue ;
+        
+        // pour chaque tache imprevue du collaborateur
+        for (int i = 0 ; i < mCollaborateur.getNbTachesImprevues() ; i++) 
+        {
+          // si on a demandé de regarder l avancement de l itération en cours
+          // alors on recharge les taches de l iteration du collab pour etre a jour a 
+          // chaque fois que l etat d une tache est modifié
+          if (mIterationNum == mIterationEnCours)
+          {
+            //  identifiant de la tache à recharger
+            lTacheImprevueId = mCollaborateur.getTacheImprevue(i).getId();
+            // Récupère la tache dans la BD
+            lRequete = getBaseDonnees ().getOQLQuery ("select TACHEIMPREVUE from owep.modele.execution.MTacheImprevue TACHEIMPREVUE where mId = $1") ;
+            lRequete.bind (lTacheImprevueId) ;
+            lResultat      = lRequete.execute () ;
+            lTacheImprevue = (MTacheImprevue) lResultat.next () ;
+          }
+          // si on veut regarder l avancement d une iteration autre que celle en cours
+          // inutile de recharger a partir de la bd
+          else
+          {
+            lTacheImprevue = mCollaborateur.getTacheImprevue(i) ;
+          }
+          // on n'insere dans la liste des taches que les taches faisant 
+          // partie de l'iteration choisie dans le menu déroulant
+          for(int k = 0; k<mIteration.getNbTachesImprevues();k++)
+          {
+            if (mIteration.getTacheImprevue(k).getId() == lTacheImprevue.getId()) 
+            {
+              lListeTachesImprevues.add(lTacheImprevue) ;
+            }
+          } 
+        }
+        
+        mCollaborateur.setListe(new Integer(0), lListeTaches) ;
+        mCollaborateur.setListe(new Integer(1), lListeTachesImprevues) ;
       }
       catch (Exception eException)
       {
@@ -131,7 +172,7 @@ public class CDetailAvancementCollab extends CControleurBase{
       {
         try
         {
-        	getBaseDonnees ().commit() ;
+          getBaseDonnees ().commit() ;
           getBaseDonnees ().close () ;
         }
         catch (PersistenceException eException)

@@ -1,5 +1,7 @@
 package owep.controle.avancement;
 
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 import org.exolab.castor.jdo.OQLQuery;
@@ -11,6 +13,7 @@ import owep.infrastructure.Session;
 import owep.modele.execution.MIteration;
 import owep.modele.execution.MProjet;
 import owep.modele.execution.MTache;
+import owep.modele.execution.MTacheImprevue;
 
 /*
  * Created on 25 janv. 2005
@@ -30,8 +33,8 @@ public class CAvancementCollaborateur extends CControleurBase{
     private Session mSession ; // Session associé à la connexion
     private MIteration mIteration ; // numéro d'itération dont on veut voir le suivi d'avancement
     private int mIterationNum ; // Numéro d'itération dont on suit l avancement des collaborateurs
-    private int mIterationEnCours = -1 ; // Numero de l iteration en cours
-        
+    private int mNumIterationEnCours = -1 ; // Numero de l iteration en cours
+    
     /**
      * Récupère les données nécessaire au controleur dans la base de données. 
      * @throws ServletException Si une erreur survient durant la connexion
@@ -44,6 +47,7 @@ public class CAvancementCollaborateur extends CControleurBase{
       
       try
       {
+        MIteration mIterationEnCours = null ;
         // Récupère le projet pour lequel le chef de projet s 'est connecté
         HttpSession session = getRequete ().getSession (true) ;
         mSession = (Session)session.getAttribute("SESSION") ;
@@ -58,61 +62,80 @@ public class CAvancementCollaborateur extends CControleurBase{
         lResultat      = lRequete.execute () ;
         mProjet = (MProjet) lResultat.next () ;
         
-        // recuperation du numero de l iteration choisie dans le menu deroulant
-        mIteration = mSession.getIteration() ;
-        mIterationNum = mIteration.getNumero();
-        
+        if (mProjet.getNbIterations() > 0) 
+        {
+          // recuperation du numero de l iteration choisie dans le menu deroulant
+          mIteration = mSession.getIteration() ;
+          mIterationNum = mIteration.getNumero();
+        }
+          
         // recherche de l iteration en cours
         for (int m = 0; m < mProjet.getNbIterations() ; m++)
         {
           if (mProjet.getIteration(m).getEtat()==1)
-            mIterationEnCours = mProjet.getIteration(m).getId();
+          {
+            mIterationEnCours = mProjet.getIteration(m) ;
+            mNumIterationEnCours = mProjet.getIteration(m).getId();
+          }
         }
 
         // si on a demandé l affichage du suivi des collaborateurs pour l iteration en cours
-        if (mIterationNum == mIterationEnCours)
+        if (mIterationNum == mNumIterationEnCours)
         {
           // creation de la liste des taches en cours des collaborateurs
-          MTache lTacheEnCours ; 
           for (int i = 0 ; i < mProjet.getNbCollaborateurs() ; i++)
           {
-            // on recupere la tache en cours du collaborateur
-            int idTacheEnCours = mProjet.getCollaborateur(i).getTacheEnCours() ;
+            // liste contenant le type de la tache en cours (imprevue ou normale) et la tache en cours
+            ArrayList listTache = new ArrayList () ;
             
-            // si le collaborateur n'a pas de tache en cours, on met null a l indice
-            // du collaborateur dans le tableau des taches en cours
-            if (idTacheEnCours == -1)
+            // si le collabarateur n a pas de tache en cours, inutile d aller plus loin
+            if (mProjet.getCollaborateur(i).getTacheEnCours()==-1)
             {
-              mProjet.setListe(new Integer(i) , null) ;
+              // si le collaborateur n'a pas de tache en cours, on met null a l indice
+              // du collaborateur dans le tableau des taches en cours
+              mProjet.setListe(new Integer(i) , listTache) ;
             }
-            // sinon on recherche la tache en cours dans la BD
             else
             {
-              // Récupère la tache en cours du collaborateur dans la BD
-              lRequete = getBaseDonnees ().getOQLQuery ("select TACHE from owep.modele.execution.MTache TACHE where mId = $1") ;
-              lRequete.bind (idTacheEnCours) ;
-              lResultat      = lRequete.execute () ;
-              lTacheEnCours = (MTache) lResultat.next () ;
-              
-              boolean tacheOK = false ;
-              // on regarde si la tache en cours fait partie de l iteration selectionnée
-              for(int k = 0; k<mIteration.getNbTaches();k++)
-              {
-                if (mIteration.getTache(k).getId() == lTacheEnCours.getId()) 
-                {
-                  tacheOK = true ;
-                }
-              }
-              // si la tache en cours appartient a l iteration selectionnée
-              if (tacheOK == true)
-              {
-                // ajout de la tache en cours a l indice du collaborateur correspondant
-                mProjet.setListe(new Integer(i), lTacheEnCours) ;
-              }
-              else
-              {
-                mProjet.setListe(new Integer(i) , null) ;
-              }
+	          // on recherche la tache en cours dans la BD
+	          // recherche de la tache en cours dans la table tache
+	          try
+	          {
+	            // Récupère la tache en cours du collaborateur dans la BD
+	            lRequete = getBaseDonnees ().getOQLQuery ("select TACHE from owep.modele.execution.MTache TACHE where mCollaborateur = $1 and mEtat = $2 and mIteration = $3") ;
+	            lRequete.bind (mProjet.getCollaborateur(i)) ;
+	            lRequete.bind (MTache.ETAT_EN_COURS) ;
+	            lRequete.bind (mIterationEnCours) ;
+	            lResultat      = lRequete.execute () ;
+	            MTache lTacheEnCours = (MTache) lResultat.next () ;
+	            listTache.add("tache") ;
+	            listTache.add(lTacheEnCours) ;
+	            mProjet.setListe(new Integer(i) , listTache) ;
+	          }
+	          // si pas de tache en cours dans la table tache pour le collaborateur concerné
+	          catch (NoSuchElementException eException)
+	          {
+	            // recherche de la tache en cours dans la table tache imprevue
+	            try
+	            {
+	              // Récupère la tache en cours du collaborateur dans la BD
+	              lRequete = getBaseDonnees ().getOQLQuery ("select TACHEIMPREVUE from owep.modele.execution.MTacheImprevue TACHEIMPREVUE where mCollaborateur = $1 and mEtat = $2 and mIteration = $3") ;
+	              lRequete.bind (mProjet.getCollaborateur(i)) ;
+	              lRequete.bind (MTacheImprevue.ETAT_EN_COURS) ;
+	              lRequete.bind (mIterationEnCours) ;
+	              lResultat      = lRequete.execute () ;
+	              MTacheImprevue lTacheImprevueEnCours = (MTacheImprevue) lResultat.next () ;
+	              listTache.add("tacheImprevue") ;
+	              listTache.add(lTacheImprevueEnCours) ;
+	              mProjet.setListe(new Integer(i) , listTache) ;
+	            }
+	            catch (NoSuchElementException eEx)
+	            {
+	              // si le collaborateur n'a pas de tache en cours, on met null a l indice
+	              // du collaborateur dans le tableau des taches en cours
+	              mProjet.setListe(new Integer(i) , listTache) ;
+	            }
+	          }
             }
           }
         }
@@ -159,12 +182,12 @@ public class CAvancementCollaborateur extends CControleurBase{
     public String traiter () throws ServletException
     {  
       // si on veut voir l avancement pour l'itération en cours
-      if (mIterationNum == mIterationEnCours)
+      if (mIterationNum == mNumIterationEnCours)
       {
         // Transmet les données à la JSP d'affichage.
         getRequete ().setAttribute (CConstante.PAR_PROJET, mProjet) ;
         
-        // Sauvegarde de l'URL en session pour la liste de itérations
+        // Sauvegarde de l'URL en session pour la liste des itérations
         mSession.setURLPagePrecedente("/Avancement/AvancementCollaborateur");
         
         return "/JSP/Avancement/TAvancementCollaborateur.jsp" ; 

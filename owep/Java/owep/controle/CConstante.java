@@ -35,6 +35,9 @@ public class CConstante
   public static final String PAR_SUBMITAJOUTER_TACDEPEND     = "pSubmitAjouterTachesDependantes" ;
   public static final String PAR_SUBMITSUPPRIMER_TACDEPEND   = "pSubmitSupprimerTachesDependantes" ;
   public static final String PAR_TYPEINDICATEUR              = "pTypeIndicateur" ;
+  public static final String PAR_TYPE_TACHE                  = "pTypeTache" ;
+  public static final String TYPE_TACHE                      = "tache" ;
+  public static final String TYPE_TACHE_IMPREVUE             = "tacheImprevue" ;
   
   public static final String PAR_MESSAGE               = "pMessage" ;
   public static final String PAR_FORMULAIRE            = "pFormulaire" ;

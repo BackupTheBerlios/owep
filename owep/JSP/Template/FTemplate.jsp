@@ -1,4 +1,6 @@
 <%@ page language="java" %>
+<%@page import="owep.modele.execution.MProjet"%>
+<%@page import="owep.controle.CConstante"%>
 <%@ taglib uri='/WEB-INF/tld/template.tld' prefix='template' %>
 <%@page import="owep.controle.CConstante"%>
 

@@ -62,6 +62,15 @@ public class MModeleBase implements TimeStampable
   }
   
   /**
+   * TODO Récupère la taille de la liste 
+   * @return int
+   */
+  public int getTailleListe ()
+  {
+    return liste.size() ;
+  }
+  
+  /**
    * TODO Initialise liste.
    * @param liste liste.
    */

@@ -521,6 +521,12 @@ public class MIteration extends MModeleBase
       lTache = (MTache)mTaches.get(i) ; 
       chargeInitiale = chargeInitiale + lTache.getChargeInitiale() ;
     }
+    MTacheImprevue lTacheImprevue ;
+    for (int i = 0 ; i < mTachesImprevues.size() ; i++)
+    {
+      lTacheImprevue = (MTacheImprevue)mTachesImprevues.get(i) ; 
+      chargeInitiale = chargeInitiale + lTacheImprevue.getChargeInitiale() ;
+    }
     return chargeInitiale ;
   }
   
@@ -537,6 +543,12 @@ public class MIteration extends MModeleBase
       lTache = (MTache)mTaches.get(i) ; 
       tempsPasse = tempsPasse + lTache.getTempsPasse() ;
     }
+    MTacheImprevue lTacheImprevue ; 
+    for (int i = 0 ; i < mTachesImprevues.size() ; i++)
+    {
+      lTacheImprevue = (MTacheImprevue)mTachesImprevues.get(i) ; 
+      tempsPasse = tempsPasse + lTacheImprevue.getTempsPasse() ;
+    }
     return tempsPasse ;
   }
   
@@ -552,6 +564,12 @@ public class MIteration extends MModeleBase
     {
       lTache = (MTache)mTaches.get(i) ; 
       resteAPasser = resteAPasser + lTache.getResteAPasser() ;
+    }
+    MTacheImprevue lTacheImprevue ; 
+    for (int i = 0 ; i < mTachesImprevues.size() ; i++)
+    {
+      lTacheImprevue = (MTacheImprevue)mTachesImprevues.get(i) ; 
+      resteAPasser = resteAPasser + lTacheImprevue.getResteAPasser() ;
     }
     return resteAPasser ;
   }

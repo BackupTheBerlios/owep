@@ -178,12 +178,6 @@ public class CListeIndicateurs extends CControleurBase
    */
   public String traiter () throws ServletException
   {
-  	if (mIteration == null) 
-  	{
-      String lMessage = "Vous ne pouvez pas renseigner les indicateurs puisqu'aucune itération n'a été planifiée pour le moment." ;
-      getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
-      return "/Tache/ListeTacheVisu" ;
-  	}
   	// Transmet les données à la JSP d'affichage.
     getRequete ().setAttribute (CConstante.PAR_PROJET, mProjet) ;
     getRequete ().setAttribute (CConstante.PAR_ITERATION, mIteration) ;

@@ -5,8 +5,12 @@
 <!DOCTYPE HTML PUBLIC "-//w3c//dtd html 4.0 transitional//en">
 
 <%
+  //localisation
+  java.util.ResourceBundle messages;
+  messages = java.util.ResourceBundle.getBundle("MessagesBundle");
+  
   MCollaborateur lCollaborateur  = (MCollaborateur) request.getAttribute (CConstante.PAR_COLLABORATEUR) ;
-  String nomCollab = "Suivi d'avancement du collaborateur "+lCollaborateur.getNom() ;
+  String nomCollab = messages.getString("detailAvancementCollabTitre")+" "+lCollaborateur.getNom() ;
 %>
 
 <template:template nom="/JSP/Template/FTemplate.jsp">

@@ -1,17 +1,26 @@
 <%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="owep.modele.execution.MCollaborateur"%>
 <%@page import="owep.modele.execution.MTache"%>
+<%@page import="owep.modele.execution.MTacheImprevue"%>
 <%@page import="owep.controle.CConstante"%>
 <%@taglib uri='/WEB-INF/tld/transfert.tld' prefix='transfert' %>
 
 <jsp:useBean id="lCollaborateur" class="owep.modele.execution.MCollaborateur" scope="page"/>
 
-<% lCollaborateur  = (MCollaborateur) request.getAttribute (CConstante.PAR_COLLABORATEUR) ;
+<% 
+   //localisation
+   java.util.ResourceBundle messages;
+   messages = java.util.ResourceBundle.getBundle("MessagesBundle");
+
+   lCollaborateur  = (MCollaborateur) request.getAttribute (CConstante.PAR_COLLABORATEUR) ;
    SimpleDateFormat lDateFormat = new SimpleDateFormat ("dd/MM/yyyy") ;
-   if (lCollaborateur.getListe().size()==0)
+   ArrayList lListeTaches = (ArrayList)lCollaborateur.getListe(new Integer(0)) ;
+   ArrayList lListeTachesImprevues = (ArrayList)lCollaborateur.getListe(new Integer(1)) ;
+   if ((lListeTaches.size()+lListeTachesImprevues.size())==0)
    {
 %>
-   Le collaborateur <%=lCollaborateur.getNom()%> n'a pas de tâches à réaliser dans cette itération.
+   <%=messages.getString("detailAvancementCollabCollaborateur")%><%=lCollaborateur.getNom()%> <%=messages.getString("detailAvancementCollabNoTaches")%>
 <%
    }
    else
@@ -22,63 +31,60 @@
 <tbody>
   <tr>
     <td class="caseNiveau1" rowspan="2">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Tâches à réaliser par le collaborateur au cours de l\'itération.')" onmouseout="tooltipOff(this, event)">Tâches</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("detailAvancementCollabAideTache")%>')" onmouseout="tooltipOff(this, event)"><%=messages.getString("colonneTache")%></a>
     </td>
     <td class="caseNiveau1" rowspan="2">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Charge affectée par le chef de projet sur la tâche (en heures).')" onmouseout="tooltipOff(this, event)">Temps prévu(h)</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("avancementProjetAideTempsPrevu")%>')" onmouseout="tooltipOff(this, event)"><%=messages.getString("colonneTempsPrevu")%></a>
     </td>
     <td class="caseNiveau1" rowspan="2">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Temps effectivement passé par le collaborateur sur la tâche.')" onmouseout="tooltipOff(this, event)">Temps passé(h)</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("avancementProjetAideTempsPasse")%>')" onmouseout="tooltipOff(this, event)"><%=messages.getString("colonneTempsPasse")%></a>
     </td>
     <td class="caseNiveau1" rowspan="2">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Temps nécessaire, estimé par le collaborateur, pour réaliser la tâche.')" onmouseout="tooltipOff(this, event)">Reste à passer(h)</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("avancementProjetAideResteAPasser")%>')" onmouseout="tooltipOff(this, event)"><%=messages.getString("colonneResteAPasser")%></a>
     </td>
     <td class="caseNiveau1" rowspan="2">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event,
-       '<b>Créée</b> si le collaborateur ne peut lancer la tâche du fait d\'une tâche tierce non terminé ou démarré.<br/>' +
-       '<b>Non démarré</b> si le collaborateur n\'a pas entamé la tâche.<br/>' +
-       '<b>En cours</b> si le collaborateur travaille sur la tâche.<br/>' +
-       '<b>Suspendu</b> si le collaborateur a entamé la tâche mais n\'y travaille pas actuellement dessus.<br/>' +
-       '<b>Terminé</b> si le collbarateur a fini sa tâche.<br/>')" onmouseout="tooltipOff(this, event)">Etat</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event,'<%=messages.getString("avancementProjetAideEtat")%>')" onmouseout="tooltipOff(this, event)">
+         <%=messages.getString("colonneEtat")%>
+       </a>
     </td>
     <td class="caseNiveau1" colspan="4">
-      Date
+      <%=messages.getString("colonneDate")%>
     </td>
     <td class="caseNiveau1" colspan="2">
-      Dépassement de charge
+      <%=messages.getString("colonneDepassementCharges")%>
     </td>
     <td class="caseNiveau1" rowspan="2">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Pourcentage de temps effectivement passé sur la tâche par rapport au temps prévu.')" onmouseout="tooltipOff(this, event)">Budget consommé(%)</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("avancementProjetAideBudget")%>')" onmouseout="tooltipOff(this, event)"><%=messages.getString("colonneBudgetConsomme")%></a>
     </td>
     <td class="caseNiveau1" rowspan="2">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Niveau de réalisation la tâche (en pourcent).')" onmouseout="tooltipOff(this, event)">Avancement(%)</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("avancementProjetAideAv")%>')" onmouseout="tooltipOff(this, event)"><%=messages.getString("colonneAvancement")%></a>
     </td>
   </tr>
   <tr>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le chef de projet a prévue de démarrer la tâche.')" onmouseout="tooltipOff(this, event)">début prévue</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("avancementProjetAideDDP")%>')" onmouseout="tooltipOff(this, event)"><%=messages.getString("colonneDebutPrevue")%></a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le collaborateur à effectivement démarré la tâche.')" onmouseout="tooltipOff(this, event)">début réelle</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("avancementProjetAideDDR")%>')" onmouseout="tooltipOff(this, event)"><%=messages.getString("colonneDebutReelle")%></a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le chef de projet a prévue de terminer la tâche.')" onmouseout="tooltipOff(this, event)">fin prévue</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("avancementProjetAideDFP")%>')" onmouseout="tooltipOff(this, event)"><%=messages.getString("colonneFinPrevue")%></a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le collaborateur à effectivement terminé la tâche.')" onmouseout="tooltipOff(this, event)">fin réestimée</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("avancementProjetAideDFR")%>')" onmouseout="tooltipOff(this, event)"><%=messages.getString("colonneFinReestimee")%></a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Dépassement du temps de réalisation pour la tâche (en pourcent).')" onmouseout="tooltipOff(this, event)">(%)</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("avancementProjetAideDepPRC")%>')" onmouseout="tooltipOff(this, event)">(%)</a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Dépassement du temps de réalisation pour la tâche (en heures).')" onmouseout="tooltipOff(this, event)">(h)</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, '<%=messages.getString("avancementProjetAideDepH")%>')" onmouseout="tooltipOff(this, event)">(h)</a>
     </td>
   </tr>
   <!--Affichage des taches du collaborateur-->
 	<%
-	for (int i = 0; i < lCollaborateur.getListe().size(); i ++)
+	for (int i = 0; i < lListeTaches.size(); i ++)
 	{
-	  MTache lTache = (MTache)lCollaborateur.getListe(new Integer(i)) ;
+	  MTache lTache = (MTache)lListeTaches.get(i) ;
 	  %>
 	  <tr>      
       <td class="caseNiveau2"><%=lTache.getNom()%></td>
@@ -91,27 +97,27 @@
         {
           case -1 : 
         %>
-          Non prête
+          <%=messages.getString("avancementProjetNonPrete")%>
         <%  
           break ;
           case 0 : 
         %>
-          Non démarrée
+          <%=messages.getString("avancementProjetNonDemarree")%>
         <%  
           break ;
           case 1 : 
         %>
-          En cours
+          <%=messages.getString("avancementProjetEnCours")%>
         <%  
           break ;
           case 2 : 
         %>
-          Suspendue
+          <%=messages.getString("avancementProjetSuspendue")%>
         <%  
           break ;
           case 3 : 
         %>
-          Terminée
+          <%=messages.getString("avancementProjetTerminee")%>
         <%
           break ;
         }
@@ -157,6 +163,90 @@
 	  <%
 	}
 	%> 
+	
+	<!--Affichage des taches imprévues du collaborateur-->
+	<%
+	for (int i = 0; i < lListeTachesImprevues.size(); i ++)
+	{
+	  MTacheImprevue lTacheImprevue = (MTacheImprevue)lListeTachesImprevues.get(i) ;
+	  %>
+	  <tr>      
+      <td class="caseNiveau2Italic"><%=lTacheImprevue.getNom()%></td>
+      <td class="caseNiveau3"><%=(int)lTacheImprevue.getChargeInitiale()%></td>
+      <td class="caseNiveau3"><%=(int)lTacheImprevue.getTempsPasse()%></td>
+      <td class="caseNiveau3"><%=(int)lTacheImprevue.getResteAPasser()%></td>
+      <td class="caseNiveau3">
+      <%
+        switch (lTacheImprevue.getEtat())
+        {
+          case -1 : 
+        %>
+          <%=messages.getString("avancementProjetNonPrete")%>
+        <%  
+          break ;
+          case 0 : 
+        %>
+          <%=messages.getString("avancementProjetNonDemarree")%>
+        <%  
+          break ;
+          case 1 : 
+        %>
+          <%=messages.getString("avancementProjetEnCours")%>
+        <%  
+          break ;
+          case 2 : 
+        %>
+          <%=messages.getString("avancementProjetSuspendue")%>
+        <%  
+          break ;
+          case 3 : 
+        %>
+          <%=messages.getString("avancementProjetTerminee")%>
+        <%
+          break ;
+        }
+        %>
+      </td>
+      <td class="caseNiveau3"><% if (lTacheImprevue.getDateDebutPrevue () != null)
+                         {
+                           out.print (lDateFormat.format (lTacheImprevue.getDateDebutPrevue ())) ;
+                         }
+                         else
+                         {
+                           out.print ("X") ;
+                         } %></td>
+      <td class="caseNiveau3"><% if (lTacheImprevue.getDateDebutReelle () != null)
+                         {
+                           out.print (lDateFormat.format (lTacheImprevue.getDateDebutReelle ())) ;
+                         }
+                         else
+                         {
+                           out.print ("X") ;
+                         } %></td>
+      <td class="caseNiveau3"><% if (lTacheImprevue.getDateFinPrevue () != null)
+                         {
+                           out.print (lDateFormat.format (lTacheImprevue.getDateFinPrevue ())) ;
+                         }
+                         else
+                         {
+                           out.print ("X") ;
+                         } %></td>
+      <td class="caseNiveau3"><% if (lTacheImprevue.getDateFinReelle () != null)
+                         {
+                           out.print (lDateFormat.format (lTacheImprevue.getDateFinReelle ())) ;
+                         }
+                         else
+                         {
+                           out.print ("X") ;
+                         } %></td>
+      <td class="caseNiveau3"><%=(int)(lTacheImprevue.getPrcDepassementCharge () * 100)%></td>
+      <td class="caseNiveau3"><%=(int)lTacheImprevue.getHJDepassementCharge ()%></td>
+      <td class="caseNiveau3"><%=(int)(lTacheImprevue.getBudgetConsomme() * 100)%></td>
+      <td class="caseNiveau3"><%=(int)(lTacheImprevue.getPrcAvancement() * 100)%></td>
+	  </tr>
+	  <%
+	}
+	%> 
 </tbody>
 </table>
 <%
@@ -166,6 +256,5 @@
 
 <!-- Aide en ligne -->
 <script type="text/javascript" language="JavaScript">
-pCodeAide  = "La page de <b>Suivi d'avancement du collaborateur</b> vous permet de visualiser le <b>détail du travail</b> que doit réaliser le collaborateur sur l'itération en cours." ;
-pCodeAide += " Le tableau suivant détaille les <b>charges</b>, les <b>dates de réalisation</b> et l'<b>état d'avancement</b> pour chaque tâche." ;
+pCodeAide  = "<%=messages.getString("detailAvancementCollabAide")%>" ;
 </script>

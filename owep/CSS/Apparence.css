@@ -352,6 +352,22 @@ td.caseNiveau2
   padding-bottom   : 2px ;
   text-align       : left ;
 }
+td.caseNiveau2Italic
+{
+  background-color : rgb(255,204,153) ;
+  border           : solid rgb(128,0,0) ;
+  border-width     : 0px 0px 1px 1px ;
+  color            : rgb(128,0,0) ;
+  font-family      : arial ;
+  font-size        : 12px ;
+  font-weight      : bold ;
+  font-style      : italic ;
+  padding-left     : 2px ;
+  padding-right    : 2px ;
+  padding-top      : 2px ;
+  padding-bottom   : 2px ;
+  text-align       : left ;
+}
 td.caseNiveau3
 {
   background-color : rgb(255,255,255) ;
@@ -360,6 +376,21 @@ td.caseNiveau3
   color            : black ;
   font-family      : arial ;
   font-size        : 12px ;
+  padding-bottom   : 2px ;
+  padding-left     : 2px ;
+  padding-right    : 2px ;
+  padding-top      : 2px ;
+  text-align       : left ;
+}
+td.caseNiveau3Italic
+{
+  background-color : rgb(255,255,255) ;
+  border           : solid rgb(128,0,0) ;
+  border-width     : 0px 0px 1px 1px ;
+  color            : black ;
+  font-family      : arial ;
+  font-size        : 12px ;
+  font-style      : italic ;
   padding-bottom   : 2px ;
   padding-left     : 2px ;
   padding-right    : 2px ;
@@ -852,6 +883,7 @@ img.logoIdentification
   vertical-align    : top ;
   width             : 400px ;
 }
+
 
 /**************************************************************************************************
  * Page d'identification

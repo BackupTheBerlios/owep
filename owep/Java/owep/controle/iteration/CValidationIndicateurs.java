@@ -151,8 +151,10 @@ public class CValidationIndicateurs extends CControleurBase
    */
   public String traiter () throws ServletException
   {
+    java.util.ResourceBundle messages;
+    messages = java.util.ResourceBundle.getBundle("MessagesBundle");
     // Transmet les données à la JSP d'affichage.
-    String lMessage = "Les indicateurs ont bien été enregistrés." ;
+    String lMessage = messages.getString("cValidationIndicateursOK") ;
     getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
 
     return "/Tache/ListeTacheVisu" ;
