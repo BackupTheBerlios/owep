@@ -133,6 +133,60 @@ public abstract class CControleurBase extends HttpServlet
   
   
   /**
+   * Démarre une transaction vers la base de données.
+   * @throws ServletException Si une erreur survient lors de la connexion.
+   */
+  public void begin () throws ServletException
+  {
+    try
+    {
+      mBaseDonnees.begin () ;
+    }
+    catch (Exception eException)
+    {
+      eException.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+    }
+  }
+  
+  
+  /**
+   * Valide une transaction dans la base de données.
+   * @throws ServletException Si une erreur survient lors de la validation.
+   */
+  public void commit () throws ServletException
+  {
+    try
+    {
+      mBaseDonnees.commit () ;
+    }
+    catch (Exception eException)
+    {
+      eException.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+    }
+  }
+  
+  
+  /**
+   * Ferme la connexion vers la base de données.
+   * @throws ServletException Si une erreur survient lors de la fermeture.
+   */
+  public void close () throws ServletException
+  {
+    try
+    {
+      mBaseDonnees.close () ;
+    }
+    catch (Exception eException)
+    {
+      eException.printStackTrace () ;
+      throw new ServletException (CConstante.EXC_TRAITEMENT) ;
+    }
+  }
+  
+  
+  /**
    * Récupère la réponse HTTP que le controleur va fournir au client.
    * @return Réponse HTTP du controleur.
    */
