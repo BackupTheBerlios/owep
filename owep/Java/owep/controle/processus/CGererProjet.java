@@ -370,7 +370,7 @@ public class CGererProjet extends CControleurBase
 
         // Ajout du projet à la liste des projets possibles si utilisateur connecté est le
         // responsable
-        if (getSession ().getCollaborateur ().getId () == lCollaborateur.getId ())
+        if (getSession ().getIdCollaborateur () == lCollaborateur.getId ())
         {
           ArrayList listProjetPossible = getSession ().getListProjetPossible () ;
           listProjetPossible.add (lProjet) ;

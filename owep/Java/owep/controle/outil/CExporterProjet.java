@@ -4,6 +4,10 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
+import org.exolab.castor.jdo.OQLQuery;
+import org.exolab.castor.jdo.PersistenceException;
+import org.exolab.castor.jdo.QueryResults;
+
 import owep.controle.CControleurBase;
 import owep.infrastructure.Export;
 import owep.modele.execution.MProjet;
@@ -44,9 +48,35 @@ public class CExporterProjet extends CControleurBase
   public String traiter () throws ServletException
   {
     String lChemin = getServletContext ().getRealPath ("/") + "/Processus/";
-    MProjet lProjet = getSession().getProjet();
+    MProjet lProjet = null;
+    int idProjet = getSession().getIdProjet();
     try
     {
+      try
+      {
+        getBaseDonnees().begin();
+        OQLQuery lRequete = getBaseDonnees().getOQLQuery("select PROJET from owep.modele.execution.MProjet PROJET where mId=$1");
+        lRequete.bind(idProjet);
+        QueryResults lResult = lRequete.execute();
+        lProjet = (MProjet) lResult.next();
+        getBaseDonnees().commit();
+      }
+      catch (PersistenceException e1)
+      {
+        e1.printStackTrace();
+      }
+      finally
+      {
+        try
+        {
+          getBaseDonnees().close();
+        }
+        catch (PersistenceException e2)
+        {
+          e2.printStackTrace();
+        }
+      }
+      
       new Export(lProjet, lChemin);
     }
     catch (IOException e)

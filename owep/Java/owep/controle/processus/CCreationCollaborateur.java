@@ -60,8 +60,9 @@ public class CCreationCollaborateur extends CControleurBase
     mListeRole = new ArrayList () ;
     mListeCollaborateur = new ArrayList () ;
 
-    MProjet lProjet = getSession ().getProjet () ;
-    getRequete ().setAttribute ("idProjet", String.valueOf (lProjet.getId ())) ;
+    MProjet lProjet = null;//getSession ().getProjet () ;
+    int idProjet = getSession().getIdProjet();
+    getRequete ().setAttribute ("idProjet", String.valueOf (idProjet)) ;
 
     // liste Role
     try
@@ -70,7 +71,7 @@ public class CCreationCollaborateur extends CControleurBase
 
       lRequete = getBaseDonnees ()
         .getOQLQuery ("select PROJET from owep.modele.execution.MProjet PROJET where mId=$1") ;
-      lRequete.bind (lProjet.getId ()) ;
+      lRequete.bind (idProjet) ;
       lResultat = lRequete.execute () ;
       lProjet = (MProjet) lResultat.next () ;
 
@@ -218,7 +219,7 @@ public class CCreationCollaborateur extends CControleurBase
                 
                 // Récupération projet
                 lRequete = getBaseDonnees().getOQLQuery("select PROJET from owep.modele.execution.MProjet PROJET where mId=$1");
-                lRequete.bind(getSession().getProjet().getId());
+                lRequete.bind(getSession().getIdProjet());
                 lResultat = lRequete.execute();
                 MProjet lProjetOuvert = (MProjet) lResultat.next();
                 

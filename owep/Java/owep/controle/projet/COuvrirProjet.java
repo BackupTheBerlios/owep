@@ -39,12 +39,18 @@ public class COuvrirProjet extends CControleurBase
     QueryResults lResultat ; // Résultat de la requête sur la base
     MProjet lProjet ; // Projet enregistré
 
-    MCollaborateur lCollaborateur = getSession ().getCollaborateur () ; // Collaborateur connecté
+    MCollaborateur lCollaborateur = null;
+    int idCollab = getSession ().getIdCollaborateur () ; // Collaborateur connecté
     mListeProjetPossible = new ArrayList () ;
 
     try
     {
       getBaseDonnees ().begin () ;
+      
+      lRequete = getBaseDonnees().getOQLQuery("select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mId=$1");
+      lRequete.bind(idCollab);
+      lResultat = lRequete.execute();
+      lCollaborateur = (MCollaborateur) lResultat.next();
 
       // Cherche tous les projets enregistré
       lRequete = getBaseDonnees ()
@@ -162,11 +168,11 @@ public class COuvrirProjet extends CControleurBase
         // Récupère le collaborateur connecté
         HttpSession session = getRequete ().getSession (true) ;
         mSession = (Session)session.getAttribute("SESSION") ;
-        lCollaborateur = mSession.getCollaborateur() ;
+        //lCollaborateur = mSession.getCollaborateur() ;
         
         getBaseDonnees ().begin () ;
         
-        int idCollab = lCollaborateur.getId() ;
+        int idCollab = mSession.getIdCollaborateur() ;
         // Récupère la liste des tâches du collaborateur.
         lRequete = getBaseDonnees ().getOQLQuery ("select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mId = $1") ;
         lRequete.bind (idCollab) ;

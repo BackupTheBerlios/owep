@@ -32,6 +32,7 @@ public class CModificationProfil extends CControleurBase
   private String mModifMdp ;       // 0 si le mdp n'a pas ete changé, 1 sinon
   private String mErreur ;         // Message à destination du collaborateur
 
+  MCollaborateur lCollaborateur = null;//getSession ().getCollaborateur () ;
 
   /**
    * Initialise les variables en fonction de la base de données.
@@ -87,7 +88,6 @@ public class CModificationProfil extends CControleurBase
   {
     OQLQuery lRequete ;
     QueryResults lResultat ;
-    MCollaborateur lCollaborateur = getSession ().getCollaborateur () ;
 
     try
     {
@@ -96,7 +96,7 @@ public class CModificationProfil extends CControleurBase
       lRequete = getBaseDonnees ()
         .getOQLQuery (
                       "select COLLABORATEUR from owep.modele.execution.MCollaborateur COLLABORATEUR where mId=$1") ;
-      lRequete.bind (lCollaborateur.getId ()) ;
+      lRequete.bind (getSession().getIdCollaborateur()) ;
       lResultat = lRequete.execute () ;
       lCollaborateur = (MCollaborateur) lResultat.next () ;
 
@@ -164,7 +164,7 @@ public class CModificationProfil extends CControleurBase
    */
   private void passageParametre ()
   {
-    MCollaborateur lCollaborateur = getSession ().getCollaborateur () ;
+//    MCollaborateur lCollaborateur = getSession ().getCollaborateur () ;
 
     getRequete ().setAttribute ("mNom", lCollaborateur.getNom ()) ;
     getRequete ().setAttribute ("mPrenom", lCollaborateur.getPrenom ()) ;
