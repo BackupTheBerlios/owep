@@ -5,6 +5,8 @@
 <jsp:useBean id="lCollaborateur" class="owep.modele.execution.MCollaborateur" scope="page"/>
 <jsp:useBean id="lTache"         class="owep.modele.execution.MTache"         scope="page"/> 
 
+<meta http-equiv="refresh" content="60; URL=./ListeTacheVisu">
+
 <table class="tableau" border="0" cellpadding="0" cellspacing="0">
 <tbody>
   <tr>
