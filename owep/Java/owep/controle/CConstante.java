@@ -43,6 +43,7 @@ public class CConstante
   public static final String PAR_FORMULAIRE            = "pFormulaire" ;
   public static final String PAR_COLLABORATEUR         = "pCollaborateur" ;
   public static final String PAR_ARTEFACT              = "pArtefact" ;
+  public static final String PAR_ARTEFACT_IMPREVU      = "pArtefactImprevu" ;  
   public static final String PAR_TEMPSPASSE            = "pTempsPasse" ;
   public static final String PAR_RESTEAPASSER          = "pResteAPasser" ;
   public static final String PAR_DATEDEBUTREELLE       = "pDateDebutReel" ;
@@ -51,10 +52,11 @@ public class CConstante
   public static final String PAR_VALEURMESURE          = "pValeurMesure" ;
   public static final String PAR_COMMENTAIREMESURE     = "pCommentaireMesure" ;
   public static final String PAR_TACHE                 = "pTache" ;
+  public static final String PAR_TACHE_IMPREVUE        = "pTacheImprevue" ;  
   public static final String PAR_ETAT                  = "pEtat" ;
   public static final String PAR_PROJET                = "pProjet" ;
   public static final String PAR_PROBLEME              = "pProbleme" ;
-  public static final String PAR_RISQUE              = "pRisque" ;
+  public static final String PAR_RISQUE                = "pRisque" ;
 
   public static final String PAR_ARBREITERATION        = "pArbreIteration" ;
   public static final String PAR_ARBRETACHES           = "pArbreTaches" ;
@@ -76,7 +78,8 @@ public class CConstante
   public static final String PAR_LISTEARTEFACTSPOSSIBLES = "pListeArtefactsPossibles" ;
   public static final String PAR_LISTEARTEFACTSSORTIES   = "pListeArtefactsSorties" ;
   public static final String PAR_LISTEPRODUITS           = "pListeProduits" ;
-
+  public static final String PAR_LISTEITERATIONS         = "pListeIterations" ;
+  
   public static final String PAR_LISTETACHESPOSSIBLES    = "pListeTachesPossibles" ;
   public static final String PAR_LISTETACHESDEPENDANTES  = "pListeTachesDependantes" ;
   public static final String PAR_LISTETACHESCONDITION    = "pListeTachesCondition" ;

@@ -233,7 +233,7 @@
       lTacheImprevue = (MTacheImprevue)listeTachesImprevues.get(i) ;
   %>
     <tr>
-      <td class='caseNiveau2Italic'><a href="/owep/Tache/TacheVisu?pTacheAVisualiser=<%= lTacheImprevue.getId()%>"><%= lTacheImprevue.getNom ()%></a></td>
+      <td class='caseNiveau2Italic'><a href="/owep/Tache/TacheVisu?pTacheImprevueAVisualiser=<%= lTacheImprevue.getId()%>"><%= lTacheImprevue.getNom ()%></a></td>
   
       <!-- Affiche la liste des artefacts -->
             

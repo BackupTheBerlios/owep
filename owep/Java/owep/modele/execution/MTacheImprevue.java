@@ -127,6 +127,32 @@ public class MTacheImprevue extends MModeleBase
     mConditions        = new ArrayList () ;
   }
 
+
+  /**
+   * Constructeur par copie.
+   * @param pTache Tache à recopier.
+   */
+  public MTacheImprevue (MTacheImprevue pTache)
+  {
+    super () ;
+    
+    mNom              = pTache.getNom() ;
+    mDescription      = pTache.getDescription() ;
+    mEtat             = pTache.getEtat() ;
+    mChargeInitiale   = pTache.getChargeInitiale() ;
+    mTempsPasse       = pTache.getTempsPasse() ;
+    mResteAPasser     = pTache.getResteAPasser() ;
+    mDateDebutPrevue  = pTache.getDateDebutPrevue() ;
+    mDateDebutReelle  = pTache.getDateDebutReelle() ;
+    mDateFinPrevue    = pTache.getDateFinPrevue() ;
+    mDateFinReelle    = pTache.getDateFinReelle() ;
+    mCollaborateur    = pTache.getCollaborateur() ;
+    mActiviteImprevue = pTache.getActiviteImprevue() ;
+    
+    mArtefactsImprevuesEntrees  = pTache.getListeArtefactsImprevuesEntrees() ;
+    mArtefactsImprevuesSorties  = pTache.getListeArtefactsImprevuesSorties() ;
+  }
+  
   
   /**
    * Insertion de la tâche imprévue courante dans la base de données.

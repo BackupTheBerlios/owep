@@ -1,11 +1,30 @@
 <%@ page language="java" %>
 <%@page import="owep.modele.execution.MTache"%>
+<%@page import="owep.modele.execution.MTacheImprevue"%>
 <%@page import="owep.controle.CConstante"%>
 <%@ taglib uri="/WEB-INF/tld/template.tld" prefix="template" %>
 
+<jsp:useBean id="lTache"              class="owep.modele.execution.MTache"              scope="page"/> 
+<jsp:useBean id="lTacheImprevue"      class="owep.modele.execution.MTacheImprevue"      scope="page"/> 
+
 <%
-  MTache lTache  = (MTache) request.getAttribute (CConstante.PAR_TACHE) ;
-  String nomTache = "Détail de la tâche : "+lTache.getNom() ;
+    //localisation
+    java.util.ResourceBundle messages;
+    messages = java.util.ResourceBundle.getBundle("MessagesBundle");
+    
+    String nomTache;
+    
+    if(request.getAttribute (CConstante.PAR_TACHE) != null)
+    {   
+      lTache = (MTache) request.getAttribute (CConstante.PAR_TACHE) ;
+      nomTache = messages.getString("tacheVisuTitre")+lTache.getNom() ;
+    }
+    else
+    { 
+      lTacheImprevue = (MTacheImprevue) request.getAttribute (CConstante.PAR_TACHE_IMPREVUE) ;
+      nomTache = messages.getString("tacheVisuImprevueTitre")+lTacheImprevue.getNom() ;
+    }
+  
 %>
 
 <template:template nom="/JSP/Template/FTemplate.jsp">

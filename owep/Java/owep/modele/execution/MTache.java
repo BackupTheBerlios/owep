@@ -95,19 +95,6 @@ public class MTache extends MModeleBase
   }
 
 
-  /**
-   * Crée une instance de MArtefact initialisée avec les données du chef de projet.
-   * @param pId Identifiant unique de l'artefact.
-   * @param pNom Nom de la tâche.
-   * @param pDescription Description de la tâche.
-   * @param pChargeInitiale Charge prévue par le chef de projet.
-   * @param pTempsPasse Temps passé sur la tâche.
-   * @param pResteAPasser Temps restant à passer sur la tâche.
-   * @param pDateDebutPrevue Date de début prévue par le chef de projet.
-   * @param pDateDebutReelle Date de début réelle de la tâche.
-   * @param pDateFinPrevue Date de fin prévue par le chef de projet.
-   * @param pDateFinReelle Date de fin réelle de la tâche.
-   */
   public MTache (int pId, String pNom, String pDescription, double pChargeInitiale,
                  double pTempsPasse, double pResteAPasser, Date pDateDebutPrevue,
                  Date pDateFinPrevue, Date pDateDebutReelle, Date pDateFinReelle)
@@ -132,8 +119,34 @@ public class MTache extends MModeleBase
     mProblemesEntrees  = new ArrayList () ;
     mProblemesSorties  = new ArrayList () ;
   }
+  
 
-
+  /**
+   * Constructeur par copie.
+   * @param pTache Tache à recopier.
+   */
+  public MTache (MTache pTache)
+  {
+    super () ;
+    
+    mNom             = pTache.getNom() ;
+    mDescription     = pTache.getDescription() ;
+    mEtat            = pTache.getEtat() ;
+    mChargeInitiale  = pTache.getChargeInitiale() ;
+    mTempsPasse      = pTache.getTempsPasse() ;
+    mResteAPasser    = pTache.getResteAPasser() ;
+    mDateDebutPrevue = pTache.getDateDebutPrevue() ;
+    mDateDebutReelle = pTache.getDateDebutReelle() ;
+    mDateFinPrevue   = pTache.getDateFinPrevue() ;
+    mDateFinReelle   = pTache.getDateFinReelle() ;
+    mCollaborateur   = pTache.getCollaborateur() ;
+    mActivite        = pTache.getActivite() ;
+    
+    mArtefactsEntrees  = pTache.getListeArtefactsEntrees() ;
+    mArtefactsSorties  = pTache.getListeArtefactsSorties() ;
+  }
+  
+  
   /**
    * Insertion de la tâche courante dans la base de données.
    * @param pConnection Connexion avec la base de données

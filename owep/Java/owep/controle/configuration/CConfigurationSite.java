@@ -104,6 +104,11 @@ public class CConfigurationSite extends CControleurBase
           File nouvelleCSS = new File(getServletContext().getRealPath("/")+"/"+"CSS/", mApparence);
           File ancienneCSS = new File(getServletContext().getRealPath("/")+"/"+"CSS/", "Apparence.css");
           copier(nouvelleCSS, ancienneCSS);
+          
+          //message de confirmation
+          ResourceBundle messages = java.util.ResourceBundle.getBundle("MessagesBundle");
+          String lMessage = messages.getString("configurationSiteMessageConfirmation");
+          getRequete ().setAttribute (CConstante.PAR_MESSAGE, lMessage) ;
       }
       
       try

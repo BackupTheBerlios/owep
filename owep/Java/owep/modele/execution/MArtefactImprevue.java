@@ -292,7 +292,7 @@ public class MArtefactImprevue extends MModeleBase
   {
     if (mNomFichier!=null)
     {
-      return PATH_ARTEFACT+mProjet.getNom()+"/"+mTacheImprevueEntree.getIteration().getNumero()+"/" ;
+      return mProjet.getNom()+"/"+mTacheImprevueEntree.getIteration().getNumero()+"/ArtefactsImprevus/"+mTacheImprevueEntree.getNom()+"/" ;
     }
     else
     {
