@@ -23,21 +23,73 @@
 <table class="tableau" border="0" cellpadding="0" cellspacing="0">
 <tbody>
   <tr>
-    <td class="caseNiveau1" rowspan="2">Tâches</td>
-    <td class="caseNiveau1" rowspan="2">Temps prévu(h)</td>
-    <td class="caseNiveau1" rowspan="2">Temps passé(h)</td>
-    <td class="caseNiveau1" rowspan="2">Reste à passer(h)</td>
-    <td class="caseNiveau1" rowspan="2">Etat</td>
-    <td class="caseNiveau1" colspan="4">Date</td>
-    <td class="caseNiveau1" colspan="2">Dépassement de charge</td>
+    <td class="caseNiveau1" rowspan="2">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Tâches que vous devez réaliser.')" onmouseout="tooltipOff(this, event)">
+        Tâches
+      </a>
+    </td>
+    <td class="caseNiveau1" rowspan="2">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Charge affectée par le chef de projet sur la tâche (en heures).')" onmouseout="tooltipOff(this, event)">
+        Temps prévu(h)
+      </a>
+    </td>
+    <td class="caseNiveau1" rowspan="2">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Temps que vous avez effectivement passé sur la tâche.')" onmouseout="tooltipOff(this, event)">
+        Temps passé(h)
+      </a>
+    </td>
+    <td class="caseNiveau1" rowspan="2">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Temps nécessaire que vous avez estimé pour terminer la tâche.')" onmouseout="tooltipOff(this, event)">
+        Reste à passer(h)
+      </a>
+    </td>
+    <td class="caseNiveau1" rowspan="2">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event,
+       '<b>Créée</b> si vous ne pouvez lancer la tâche du fait d\'une tâche tierce non terminé ou démarré.<br/>' +
+       '<b>Non démarré</b> si vous n\'avez pas entamé la tâche.<br/>' +
+       '<b>En cours</b> si vous travaillez actuellement sur la tâche.<br/>' +
+       '<b>Suspendu</b> si vous avez entamé la tâche mais n\'y travaillez pas actuellement dessus.<br/>' +
+       '<b>Terminé</b> si vous avez fini votre tâche.<br/>')" onmouseout="tooltipOff(this, event)">Etat
+      </a>
+    </td>
+    <td class="caseNiveau1" colspan="4">
+      Date
+    </td>
+    <td class="caseNiveau1" colspan="2">
+      Dépassement de charge
+    </td>
   </tr>
   <tr>
-    <td class="caseNiveau1">début prévue</td>
-    <td class="caseNiveau1">début réelle</td>
-    <td class="caseNiveau1">fin prévue</td>
-    <td class="caseNiveau1">fin réestimée</td>
-    <td class="caseNiveau1">(%)</td>
-    <td class="caseNiveau1">(h)</td>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le chef de projet a prévue de démarrer la tâche.')" onmouseout="tooltipOff(this, event)">
+        début prévue
+      </a>
+    </td>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle vous avez effectivement démarré la tâche.')" onmouseout="tooltipOff(this, event)">
+        début réelle
+      </a>
+    </td>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le chef de projet a prévue de terminer la tâche.')" onmouseout="tooltipOff(this, event)">
+        fin prévue
+      </a>
+    </td>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle vous avez effectivement terminé la tâche.')" onmouseout="tooltipOff(this, event)">
+        fin réestimée
+      </a>
+    </td>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Dépassement du temps de réalisation pour la tâche (en pourcent).')" onmouseout="tooltipOff(this, event)">
+        (%)
+      </a>
+    </td>
+    <td class="caseNiveau1">
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Dépassement du temps de réalisation pour la tâche (en heures).')" onmouseout="tooltipOff(this, event)">
+        (h)
+      </a>
+    </td>
   </tr>
   
   <%
@@ -182,7 +234,17 @@
   else
   {
 %>
-    Aucune itération
+    Aucune itération.
 <%
   }
 %>
+
+
+<!-- Aide en ligne -->
+<script type="text/javascript" language="JavaScript">
+pCodeAide  = "La page de <b>Liste des tâches</b> permet de visualiser l\'ensemble des tâches que voud devez réaliser." ;
+pCodeAide += " Lorsque vous choisissez l\'<b>itération courante</b>, vous avez la possibilité de <b>démarrer</b> le chronomètre." ;
+pCodeAide += " Celui-ci s\'active en cliquant sur le bouton <b>Play</b> et permet de mesurer le temps que vous passer sur une seule <b>tâche</b>." ;
+pCodeAide += " Pour lancer ensuite une nouvelle tâche, vous devez <b>stopper</b> celle qui est en cours." ;
+pCodeAide += " Certaines tâches ne peuvent être démarrer que si les <b>conditions</b> définies par le chef de projet sont respectées (tâche tierces terminées, etc.)." ;
+</script>

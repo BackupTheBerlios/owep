@@ -16,19 +16,29 @@
 <tbody>
   <tr>
     <td class="caseNiveau1" rowspan="2">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Nom du collaborateur.')" onmouseout="tooltipOff(this, event)">Collaborateurs</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Nom du collaborateur.')" onmouseout="tooltipOff(this, event)">
+        Collaborateurs
+      </a>
     </td>
     <td class="caseNiveau1" rowspan="2">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Tâches que le collaborateur doit réaliser.')" onmouseout="tooltipOff(this, event)">Tâches</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Tâches que le collaborateur doit réaliser.')" onmouseout="tooltipOff(this, event)">
+        Tâches
+      </a>
     </td>
     <td class="caseNiveau1" rowspan="2">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Charge affectée par le chef de projet sur la tâche (en heures).')" onmouseout="tooltipOff(this, event)">Temps prévu(h)</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Charge affectée par le chef de projet sur la tâche (en heures).')" onmouseout="tooltipOff(this, event)">
+        Temps prévu(h)
+      </a>
     </td>
     <td class="caseNiveau1" rowspan="2">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Temps effectivement passé par le collaborateur sur la tâche.')" onmouseout="tooltipOff(this, event)">Temps passé(h)</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Temps effectivement passé par le collaborateur sur la tâche.')" onmouseout="tooltipOff(this, event)">
+        Temps passé(h)
+      </a>
     </td>
     <td class="caseNiveau1" rowspan="2">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Temps nécessaire, estimé par le collaborateur, pour réaliser la tâche.')" onmouseout="tooltipOff(this, event)">Reste à passer(h)</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Temps nécessaire, estimé par le collaborateur, pour réaliser la tâche.')" onmouseout="tooltipOff(this, event)">
+        Reste à passer(h)
+      </a>
     </td>
     <td class="caseNiveau1" rowspan="2">
       <a href="#" class="niveau1" onmouseover="tooltipOn(this, event,
@@ -36,7 +46,8 @@
        '<b>Non démarré</b> si le collaborateur n\'a pas entamé la tâche.<br/>' +
        '<b>En cours</b> si le collaborateur travaille sur la tâche.<br/>' +
        '<b>Suspendu</b> si le collaborateur a entamé la tâche mais n\'y travaille pas actuellement dessus.<br/>' +
-       '<b>Terminé</b> si le collbarateur a fini sa tâche.<br/>')" onmouseout="tooltipOff(this, event)">Etat</a>
+       '<b>Terminé</b> si le collaborateur a fini sa tâche.<br/>')" onmouseout="tooltipOff(this, event)">Etat
+      </a>
     </td>
     <td class="caseNiveau1" colspan="4">
       Date
@@ -45,41 +56,57 @@
       Dépassement de charge
     </td>
     <td class="caseNiveau1" rowspan="2">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Pourcentage de temps effectivement passé sur la tâche par rapport au temps prévu.')" onmouseout="tooltipOff(this, event)">Budget consommé(%)</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Pourcentage de temps effectivement passé sur la tâche par rapport au temps prévu.')" onmouseout="tooltipOff(this, event)">
+        Budget consommé(%)
+      </a>
     </td>
     <td class="caseNiveau1" rowspan="2">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Niveau de réalisation la tâche (en pourcent).')" onmouseout="tooltipOff(this, event)">Avancement(%)</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Niveau de réalisation la tâche (en pourcent).')" onmouseout="tooltipOff(this, event)">
+        Avancement(%)
+      </a>
     </td>
   </tr>
   <tr>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le chef de projet a prévue de démarrer la tâche.')" onmouseout="tooltipOff(this, event)">début prévue</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le chef de projet a prévue de démarrer la tâche.')" onmouseout="tooltipOff(this, event)">
+        début prévue
+      </a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le collaborateur à effectivement démarré la tâche.')" onmouseout="tooltipOff(this, event)">début réelle</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le collaborateur à effectivement démarré la tâche.')" onmouseout="tooltipOff(this, event)">
+        début réelle
+      </a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le chef de projet a prévue de terminer la tâche.')" onmouseout="tooltipOff(this, event)">fin prévue</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le chef de projet a prévue de terminer la tâche.')" onmouseout="tooltipOff(this, event)">
+        fin prévue
+      </a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le collaborateur à effectivement terminé la tâche.')" onmouseout="tooltipOff(this, event)">fin réestimée</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Date à laquelle le collaborateur à effectivement terminé la tâche.')" onmouseout="tooltipOff(this, event)">
+        fin réestimée
+      </a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Dépassement du temps de réalisation pour la tâche (en pourcent).')" onmouseout="tooltipOff(this, event)">(%)</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Dépassement du temps de réalisation pour la tâche (en pourcent).')" onmouseout="tooltipOff(this, event)">
+        (%)
+      </a>
     </td>
     <td class="caseNiveau1">
-      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Dépassement du temps de réalisation pour la tâche (en heures).')" onmouseout="tooltipOff(this, event)">(h)</a>
+      <a href="#" class="niveau1" onmouseover="tooltipOn(this, event, 'Dépassement du temps de réalisation pour la tâche (en heures).')" onmouseout="tooltipOff(this, event)">
+        (h)
+      </a>
     </td>
   </tr>
   
   
   <!--Affichage des taches en cours des collaborateurs-->
-	<%
-	// pour chaque collaborateur
-	for (int i = 0; i < lProjet.getNbCollaborateurs(); i ++)
-	{
-	  %>
-	  <tr>      
+  <%
+  // pour chaque collaborateur
+  for (int i = 0; i < lProjet.getNbCollaborateurs(); i ++)
+  {
+    %>
+    <tr>      
       <td class="caseNiveau2"><a href="/owep/Avancement/DetailAvancementCollab?<%=CConstante.PAR_COLLABORATEUR%>=<%= lProjet.getCollaborateur(i).getId()%>"><%=lProjet.getCollaborateur(i).getNom()%></a></td>
       <%
         lTacheEnCours = (MTache) lProjet.getListe(new Integer(i)) ;
@@ -92,12 +119,12 @@
         else
         {
       %>
-		      <td class="caseNiveau3"><%=lTacheEnCours.getNom()%></td>
-		      <td class="caseNiveau3"><%=(int)lTacheEnCours.getChargeInitiale()%></td>
-		      <td class="caseNiveau3"><%=(int)lTacheEnCours.getTempsPasse()%></td>
-		      <td class="caseNiveau3"><%=(int)lTacheEnCours.getResteAPasser()%></td>
-		      <td class="caseNiveau3">En cours</td>
-		      <td class="caseNiveau3"><% if (lTacheEnCours.getDateDebutPrevue () != null)
+          <td class="caseNiveau3"><%=lTacheEnCours.getNom()%></td>
+          <td class="caseNiveau3"><%=(int)lTacheEnCours.getChargeInitiale()%></td>
+          <td class="caseNiveau3"><%=(int)lTacheEnCours.getTempsPasse()%></td>
+          <td class="caseNiveau3"><%=(int)lTacheEnCours.getResteAPasser()%></td>
+          <td class="caseNiveau3">En cours</td>
+          <td class="caseNiveau3"><% if (lTacheEnCours.getDateDebutPrevue () != null)
                                  {
                                    out.print (lDateFormat.format (lTacheEnCours.getDateDebutPrevue ())) ;
                                  }
@@ -105,7 +132,7 @@
                                  {
                                    out.print ("X") ;
                                  } %></td>
-		      <td class="caseNiveau3"><% if (lTacheEnCours.getDateDebutReelle () != null)
+          <td class="caseNiveau3"><% if (lTacheEnCours.getDateDebutReelle () != null)
                                  {
                                    out.print (lDateFormat.format (lTacheEnCours.getDateDebutReelle ())) ;
                                  }
@@ -113,7 +140,7 @@
                                  {
                                    out.print ("X") ;
                                  } %></td>
-		      <td class="caseNiveau3"><% if (lTacheEnCours.getDateFinPrevue () != null)
+          <td class="caseNiveau3"><% if (lTacheEnCours.getDateFinPrevue () != null)
                                  {
                                    out.print (lDateFormat.format (lTacheEnCours.getDateFinPrevue ())) ;
                                  }
@@ -121,7 +148,7 @@
                                  {
                                    out.print ("X") ;
                                  } %></td>
-		      <td class="caseNiveau3"><% if (lTacheEnCours.getDateFinReelle () != null)
+          <td class="caseNiveau3"><% if (lTacheEnCours.getDateFinReelle () != null)
                                  {
                                    out.print (lDateFormat.format (lTacheEnCours.getDateFinReelle ())) ;
                                  }
@@ -129,17 +156,17 @@
                                  {
                                    out.print ("X") ;
                                  } %></td>
-		      <td class="caseNiveau3"><%=(int)(lTacheEnCours.getPrcDepassementCharge () * 100)%></td>
-		      <td class="caseNiveau3"><%=(int)lTacheEnCours.getHJDepassementCharge ()%></td>
+          <td class="caseNiveau3"><%=(int)(lTacheEnCours.getPrcDepassementCharge () * 100)%></td>
+          <td class="caseNiveau3"><%=(int)lTacheEnCours.getHJDepassementCharge ()%></td>
           <td class="caseNiveau3"><%=(int)(lTacheEnCours.getBudgetConsomme() * 100)%></td>
           <td class="caseNiveau3"><%=(int)(lTacheEnCours.getPrcAvancement() * 100)%></td>
       <%
         }
       %>
-	  </tr>
-	  <%
-	}
-	%> 
+    </tr>
+    <%
+  }
+    %> 
 </tbody>
 </table>
 
