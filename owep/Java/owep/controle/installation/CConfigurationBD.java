@@ -32,7 +32,7 @@ public class CConfigurationBD extends CControleurBaseInstallation
     String mUrlBd = getRequete ().getParameter ("url") ;
     String mLogin = getRequete ().getParameter ("login") ;
     String mMdp = getRequete ().getParameter ("mdp") ;
-    String mErreur = "";
+    String mErreur = "" ;
 
     if (mUrlBd == null)
     {
@@ -65,7 +65,7 @@ public class CConfigurationBD extends CControleurBaseInstallation
     }
     catch (IOException e1)
     {
-      mErreur = "Une erreur s'est produite lors de la création du fichier de configuration.";
+      mErreur = "Une erreur s'est produite lors de la création du fichier de configuration." ;
       e1.printStackTrace () ;
     }
 
@@ -78,18 +78,32 @@ public class CConfigurationBD extends CControleurBaseInstallation
       conn = (Connection) DriverManager.getConnection (mUrlBd + "?user=" + mLogin + "&password="
                                                        + mMdp) ;
       st = (Statement) conn.createStatement () ;
-      try
-      {
-        // si la database existe une exception se léve
-        st.execute ("create database owep;") ;
-      }
-      catch (SQLException e)
-      {
-        st.execute ("drop database owep;") ;
-        st.execute ("create database owep;") ;
-      }
       conn.setCatalog ("owep") ;
       st.close () ;
+    }
+    catch (SQLException e)
+    {
+      mErreur = "Une erreur s'est produite lors de la connexion à la database owep. Vérifier qu'elle existe." ;
+      e.printStackTrace();
+    }
+    catch (InstantiationException e)
+    {
+      mErreur = "Une erreur s'est produite lors de la connexion à la base de donnée." ;
+      e.printStackTrace();
+    }
+    catch (IllegalAccessException e)
+    {
+      mErreur = "Une erreur s'est produite lors de la connexion à la base de donnée." ;
+      e.printStackTrace();
+    }
+    catch (ClassNotFoundException e)
+    {
+      mErreur = "Une erreur s'est produite lors de la connexion à la base de donnée." ;
+      e.printStackTrace();
+    }
+
+    try
+    {
       st = (Statement) conn.createStatement () ;
 
       /*********************************************************************************************
@@ -453,24 +467,9 @@ public class CConfigurationBD extends CControleurBaseInstallation
                   + "CON_PATH_EXPORT     VARCHAR(48)      NOT NULL,"
                   + "PRIMARY KEY PK_CON_CONFIGURTION(CON_ID)" + ") ;") ;
     }
-    catch (InstantiationException e)
-    {
-      mErreur = "Une erreur s'est produite lors de la connexion à la base de donnée.";
-      e.printStackTrace () ;
-    }
-    catch (IllegalAccessException e)
-    {
-      mErreur = "Une erreur s'est produite lors de la connexion à la base de donnée.";
-      e.printStackTrace () ;
-    }
-    catch (ClassNotFoundException e)
-    {
-      mErreur = "Une erreur s'est produite lors de la connexion à la base de donnée.";
-      e.printStackTrace () ;
-    }
     catch (SQLException e)
     {
-      mErreur = "Une erreur s'est produite lors de la connexion à la base de donnée.";
+      mErreur = "Une erreur s'est produite lors de la création des tables.<br>Vérifier que votre database owep ne comporte aucune table." ;
       e.printStackTrace () ;
     }
     finally
@@ -483,7 +482,7 @@ public class CConfigurationBD extends CControleurBaseInstallation
         }
         catch (SQLException e2)
         {
-          mErreur = "Une erreur s'est produite lors de la connexion à la base de donnée.";
+          mErreur = "Une erreur s'est produite lors de la connexion à la base de donnée." ;
           e2.printStackTrace () ;
         }
       }
@@ -495,14 +494,15 @@ public class CConfigurationBD extends CControleurBaseInstallation
         }
         catch (SQLException e2)
         {
-          mErreur = "Une erreur s'est produite lors de la connexion à la base de donnée.";
+          mErreur = "Une erreur s'est produite lors de la connexion à la base de donnée." ;
           e2.printStackTrace () ;
         }
       }
     }
-    
-    if(!mErreur.equals("")){
-      getRequete().setAttribute("mErreur",mErreur);
+
+    if (!mErreur.equals (""))
+    {
+      getRequete ().setAttribute ("mErreur", mErreur) ;
       return "..\\JSP\\Installation\\TConfigurationBD.jsp" ;
     }
 

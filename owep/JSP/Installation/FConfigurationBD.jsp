@@ -46,5 +46,5 @@
 
 <!-- Aide en ligne -->
 <script type="text/javascript" language="JavaScript">
-pCodeAide  = "La page de <b>Configuration de la base de données</b> permet de saisir les informations nécessaires pour se connecter à la base de données." ;
+pCodeAide  = "La page de <b>Configuration de la base de données</b> permet de saisir les informations nécessaires pour se connecter à la base de données. La base de donnée doit disposer d'une database portant le nom <b>owep</b>." ;
 </script>
