@@ -26,13 +26,13 @@
           </td>
         </tr>
         <tr>
-          <td class="caseMessageCommande">
-            <a class="messageCommande" href=""><%= messages.getString("messagerieConsulter") %></a>
+        <td class="caseMessageCommande">
+            <a class="messageCommande" href="<%= messages.getString("messagerieRechercherValeur") %>"><%= messages.getString("messagerieRechercher") %></a>
           </td>
         </tr>
         <tr>
           <td class="caseMessageCommande">
-            <a class="messageCommande" href="<%= messages.getString("messagerieRechercherValeur") %>"><%= messages.getString("messagerieRechercher") %></a>
+            <a class="messageCommande" href="<%= messages.getString("messagerieAProposLien") %>"><%= messages.getString("messagerieAPropos") %></a>
           </td>
         </tr>
       </tbody>

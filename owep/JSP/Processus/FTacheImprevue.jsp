@@ -442,11 +442,6 @@
   <p class="texteObligatoire"><%= messages.getString("champObligatoire") %></p>
   
   </transfert:transfertbean>
-
-  <br>
-  <p class="paragrapheSubmit">
-    <transfert:transfertsubmit libelle="<%= messages.getString("boutonValider") %>" valeur="<%= CConstante.PAR_SUBMIT %>" verification="true" validation="validerFormulaire () ;"/>
-  </p>
   
 </form>
 
