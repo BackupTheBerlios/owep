@@ -354,10 +354,10 @@ td.caseNiveau2
 }
 td.caseNiveau2Italic
 {
-  background-color : rgb(255,204,153) ;
-  border           : solid rgb(128,0,0) ;
+  background-color : rgb(171,221,229) ;
+  border           : solid rgb(57,101,198) ;
   border-width     : 0px 0px 1px 1px ;
-  color            : rgb(128,0,0) ;
+  color            : rgb(57,101,198) ;
   font-family      : arial ;
   font-size        : 12px ;
   font-weight      : bold ;
@@ -385,7 +385,7 @@ td.caseNiveau3
 td.caseNiveau3Italic
 {
   background-color : rgb(255,255,255) ;
-  border           : solid rgb(128,0,0) ;
+  border           : solid rgb(57,101,198) ;
   border-width     : 0px 0px 1px 1px ;
   color            : black ;
   font-family      : arial ;
