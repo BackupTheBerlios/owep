@@ -51,6 +51,8 @@ public class CActiviteImprevue extends CControleurBase
       lSession = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
       mProjet  = lSession.getProjet () ;
       
+      mMessage = new String ();
+      
       // Recuperation de la session
       HttpSession httpSession = getRequete ().getSession(true);
       //Récupération du ressource bundle

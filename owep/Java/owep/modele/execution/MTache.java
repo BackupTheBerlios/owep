@@ -144,106 +144,10 @@ public class MTache extends MModeleBase
     
     mArtefactsEntrees  = pTache.getListeArtefactsEntrees() ;
     mArtefactsSorties  = pTache.getListeArtefactsSorties() ;
-  }
-  
-  
-  /**
-   * Insertion de la tâche courante dans la base de données.
-   * @param pConnection Connexion avec la base de données
-   * @throws SQLException Si une erreur survient durant l'insertion dans la BD.
-   */
-  public void create (Connection pConnection) throws SQLException 
-  {
-    assert getActivite () != null ;
     
-    // Préparation de la requête d'insertion
-    /*String lRequete = "INSERT INTO TAC_TACHE (TAC_NOM, TAC_DESCRIPTION, TAC_CHARGEINITIALE, TAC_TEMPSPASSE, TAC_RESTEAPASSER, TAC_ETAT, TAC_DATEDEBUTPREVUE, TAC_DATEFINPREVUE, TAC_DATEDEBUTREELLE, TAC_DATEFINREELLE, TAC_ITE_ID, TAC_COL_ID, TAC_ACT_ID) VALUES (' " ;
-    lRequete += getNom () + ", '" ;
-    lRequete += getDescription () + "', " ;
-    lRequete += getChargeInitiale () + ", " ;
-    lRequete += getTempsPasse () + ", " ;
-    lRequete += getResteAPasser () + ", " ;
-    lRequete += getEtat () + ", '" ;
-    lRequete += getDateDebutPrevue () + "', '" ;
-    lRequete += getDateFinPrevue () + "', '" ;
-    lRequete += getDateDebutReelle () + "', '" ;
-    lRequete += getDateFinReelle () + "', " ;
-    lRequete += getIteration ().getId () + ", " ;
-    lRequete += getCollaborateur ().getId () + ", " ;
-    if (getActivite () != null)
-    {
-      lRequete += getActivite ().getId () + ") " ;
-    }
-    else
-    {
-      lRequete += "NULL) " ;
-    }
-    Statement lRequest = pConnection.createStatement () ;
-    lRequest.executeQuery (lRequete) ;*/
-    
-    Statement lRequest = pConnection.createStatement (ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE) ;
-    ResultSet curseurTache = lRequest.executeQuery ("SELECT * FROM TAC_TACHE") ;
-    curseurTache.moveToInsertRow () ;
-    curseurTache.updateString (2, getNom ()) ;
-    curseurTache.updateString (3, getDescription ()) ;
-    curseurTache.updateDouble (4,  getChargeInitiale ()) ;
-    curseurTache.updateDouble (5, getTempsPasse ()) ;
-    curseurTache.updateDouble (6, getResteAPasser ()) ;
-    curseurTache.updateInt (7, getEtat ()) ;
-    curseurTache.updateDate (8, new java.sql.Date (getDateDebutPrevue ().getTime())) ;
-    curseurTache.updateDate (9, new java.sql.Date (getDateFinPrevue ().getTime ())) ;
-    //curseurArtefact.updateDate (10, new java.sql.Date (getDateFinPrevue ().getTime ())) ;
-    //curseurArtefact.updateDate (11 , new java.sql.Date (getDateFinPrevue ().getTime ())) ;
-    curseurTache.updateInt (12, getIteration ().getId ()) ;
-    curseurTache.updateInt (13, getCollaborateur ().getId ()) ;
-    if (getActivite () != null)
-    {
-      curseurTache.updateInt (14, getActivite ().getId ()) ;
-    }
-    curseurTache.insertRow () ;
-    curseurTache.close () ;
-    //pConnection.commit () ;
-    
-//  Préparation de la requête permettant d'obtenir l'id de la tâche
-    String lRequete = "SELECT MAX(TAC_ID) FROM TAC_TACHE" ;
-    ResultSet result = lRequest.executeQuery (lRequete) ;
-    if (result.next ())
-    {
-      setId (result.getInt (1)) ;
-    }
-    result.close () ;
-  }
-
-  
-  /**
-   * Permet de mettre à jour la tâche courant dans la base de données
-   * @param pConnection Connexion avec la BD.
-   * @throws SQLException Si une erreur survient durant la mise à jour.
-   */
-  public void update (Connection pConnection) throws SQLException
-  {
-    assert getActivite () != null ;
-    
-    int lId = getId () ;
-    
-    String lRequete = "UPDATE TAC_TACHE SET " ;
-    lRequete += "TAC_NOM = '" + getNom () + "', " ;
-    lRequete += "TAC_DESCRIPTION = '" + getDescription () + "', " ;
-    lRequete += "TAC_CHARGEINITIALE = " + getChargeInitiale () + ", " ;
-    lRequete += "TAC_TEMPSPASSE = " + getTempsPasse () + ", " ;
-    lRequete += "TAC_RESTEAPASSER = " + getResteAPasser () + ", " ;
-    lRequete += "TAC_ETAT = " + getEtat () + ", " ;
-    lRequete += "TAC_DATEDEBUTPREVUE = '" + getDateDebutPrevue () + "', " ;
-    lRequete += "TAC_DATEFINPREVUE = '" + getDateFinPrevue () + "', " ;
-    lRequete += "TAC_DATEDEBUTREELLE = '" + getDateDebutReelle () + "', " ;
-    lRequete += "TAC_DATEFINREELLE = '" + getDateFinReelle () + "', " ;
-    lRequete += "TAC_ITE_ID = " + getIteration ().getId () + ", " ;
-    lRequete += "TAC_COL_ID = " + getCollaborateur ().getId () + ", " ;
-    lRequete += "TAC_ACT_ID = " + getActivite ().getId () + " " ;
-    lRequete += "WHERE TAC_ID = " + lId ;
-    
-    Statement lRequest = pConnection.createStatement () ;
-    lRequest.executeUpdate (lRequete) ;
+    mConditions        = new ArrayList () ;
+    mProblemesEntrees  = new ArrayList () ;
+    mProblemesSorties  = new ArrayList () ;
   }
   
   
