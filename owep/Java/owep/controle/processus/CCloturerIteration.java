@@ -134,8 +134,6 @@ public class CCloturerIteration extends CControleurBase
         // Si l'utilisateur affiche la page pour la première fois,
         if (VTransfert.getValeurTransmise (getRequete (), CConstante.PAR_VIDE))
         {
-          //getBaseDonnees ().commit() ;
-          //getBaseDonnees ().close () ;
           
           // Si l'utilisateur accède à la page de cloturation, transmet les données à la page.
           getRequete ().setAttribute (CConstante.PAR_ITERATION, mIteration) ;
@@ -151,7 +149,6 @@ public class CCloturerIteration extends CControleurBase
           QueryResults lResultat ;    // Résultat de la requête sur la base.
           
           lSession     = (Session) getRequete ().getSession ().getAttribute (CConstante.SES_SESSION) ;
-          //mProjet      = lSession.getProjet () ;
           int idProjet = lSession.getIdProjet();
           
           // Récupère le projet actuellement ouvert.
